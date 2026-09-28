@@ -213,6 +213,10 @@ Python). Порядок роботи — в `docs/style-guide.md`, розділ 
    - `Manual` ✅ (22 статті довідника).
    - ✅ Світ: `Factions` (73), `ChiliadFactions` (77), `Worlds` (413), `WorldTerrain` (94),
      `ZoneTerrain` (193 з 240; решта — відкладені прийменники й дієслова).
+   - ✅ Дрібні файли (перший пакет субагента): `Data` (176), `PhysicalPhenomena` (85), описи
+     `Mods` (27), `HiddenMutations` (124), `EffectsDetails` (48), `Widgets` (12). Описи
+     кулінарних інгредієнтів — повна іменна група («ефекти броні»), тож шаблон у `Strings` —
+     «Додає до приготованих страв =ingredientTypes.orList=.».
 3. Назви й описи предметів та істот (`Items`, `Creatures`, `Furniture`, `Foods`…).
 4. Квести й діалоги (`Quests`, `Strings.Conversations`), по поселеннях.
    - ✅ `Quests` (218): назви, кроки, нагороди. Агіографи й євангелія квестів відкладено до етапу 5.
@@ -247,7 +251,12 @@ Python). Порядок роботи — в `docs/style-guide.md`, розділ 
 
 **Виключено з перекладу назавжди (ключі):** `tag IndefiniteArticle`, `tag DefiniteArticle`
 (англійська логіка артиклів), `tag PronounSet` (ім’я набору займенників). Тест на прикладі
-перевіряє, що вони не стають одиницями.
+перевіряє, що вони не стають одиницями. Так само **[перевірено в коді]**:
+- `mod@TinkerCategory` і `tag TinkerCategory` — категорія рецепта, якої гравець не бачить;
+  `CyberneticsSchemasoft` і `DataDisk` порівнюють її з англійськими назвами в коді;
+- `tag DisplayCharacter` бітів (A–D, 1–8) — код, за яким `BitType.FetchBitByCode` шукає біт;
+- шаблон лише з тегів (`<saveline Name=… Type=… />`, `<stat Name="ItemDescription" />`) — у
+  ньому нічого перекладати.
 6. `Strings` (решта UI і шаблони повідомлень), разом з етапом 5.
 
 Робочий цикл: Claude робить чернетку пакетом (за глосарієм і гайдом), `validate` її перевіряє,

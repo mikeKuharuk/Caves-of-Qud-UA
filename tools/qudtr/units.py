@@ -44,12 +44,18 @@ EXCLUDED_ATTRS = {
     ("xtagGrammar", "iArticle"),
     ("zone", "ProperName"), ("zone", "IndefiniteArticle"), ("zone", "DefiniteArticle"),
     ("part", "BaseHands"), ("part", "Category"),
+    # a recipe category the player never sees; CyberneticsSchemasoft and DataDisk compare it
+    # with English names written in the code
+    ("mod", "TinkerCategory"),
 }
 EXCLUDED_VALUES = {"true", "false"}
 # <tag|stag|property Name="X" Value="▶…">: values that are keys or English grammar, not text.
 # The English article logic reads the articles (Translator.IndefiniteArticle); PronounSet names
-# a pronoun set (GameObject.GetPropertyOrTag("PronounSet")).
-EXCLUDED_TAG_NAMES = {"IndefiniteArticle", "DefiniteArticle", "PronounSet"}
+# a pronoun set (GameObject.GetPropertyOrTag("PronounSet")); TinkerCategory is the recipe
+# category above (TinkerItem); DisplayCharacter is the code of a bit type, looked up by the
+# codes in recipes (BitType.FetchBitByCode).
+EXCLUDED_TAG_NAMES = {"IndefiniteArticle", "DefiniteArticle", "PronounSet", "TinkerCategory",
+                      "DisplayCharacter"}
 
 # Roots whose loader merges attribute by attribute (verified: ObjectBlueprintXMLChildNode.Merge),
 # so a translated file may contain just the translated attributes. Every other loader is treated
@@ -64,6 +70,8 @@ TEMPLATE_TAGS = frozenset({"description", "leveltext", "template"})
 TEMPLATE_NOTE = ("XML template: translate the text and the DisplayName/Unit attributes; keep every "
                  "tag and its other attributes (Name, Value…) as they are. A <stat/> may move within "
                  "its sentence.")
+# Inside a template (<p>, <stat/>, <statline/>, <switch>…) only these attributes are text.
+TEMPLATE_TEXT_ATTRS = frozenset({"DisplayName", "Unit"})
 MARKED_ATTR = re.compile('(=")' + MARK)
 
 BUILD_RE = re.compile(r"\b(\d+\.\d+\.\d+\.\d+)\b")
@@ -166,6 +174,15 @@ def is_template(el: ET.Element) -> bool:
     return el.tag in TEMPLATE_TAGS and len(el) > 0 and is_unit(el.text)
 
 
+def template_has_text(el: ET.Element) -> bool:
+    """Whether a template holds anything to translate: text, or a DisplayName/Unit attribute.
+
+    A template made only of tags (`<saveline Name=… Type=… />`) is no unit: there is nothing
+    in it a translator could change."""
+    return (bool(strip_marks("".join(el.itertext())).strip())
+            or any(c.get(a) for c in el.iter() if c is not el for a in TEMPLATE_TEXT_ATTRS))
+
+
 def inner_xml(el: ET.Element) -> str:
     """An element's content as XML text, markers removed, unindented like game text."""
     parts = [_esc_text(strip_marks(el.text or ""))]
@@ -251,7 +268,8 @@ class ExampleFile:
                         out.append(Unit(self.name, f"{here}@{attr}" if here else f"@{attr}", msgid, "attr",
                                         compound, _compound_note(msgid) if compound else None))
             if is_template(el) and path:
-                out.append(Unit(self.name, here, inner_xml(el), "template", note=TEMPLATE_NOTE))
+                if template_has_text(el):
+                    out.append(Unit(self.name, here, inner_xml(el), "template", note=TEMPLATE_NOTE))
                 return   # nothing inside a template is a unit of its own
             if _has_text_unit(el) and path:
                 msgid, compound = _text_msgid(el.text)

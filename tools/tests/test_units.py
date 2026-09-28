@@ -71,16 +71,26 @@ class Extract(unittest.TestCase):
         self.assertTrue(keyed.compound)
 
     def test_tags_that_are_keys_are_not_units(self):
-        # the English article logic reads IndefiniteArticle/DefiniteArticle; PronounSet names a set
+        # the English article logic reads IndefiniteArticle/DefiniteArticle; PronounSet names a set;
+        # the code compares TinkerCategory and DisplayCharacter with English values it holds
         src = OBJECTS.replace('<xtagGrammar', f'<tag Name="IndefiniteArticle" Value="{M}a" />\n'
-                              f'    <tag Name="PronounSet" Value="{M}she/her" />\n    <xtagGrammar')
+                              f'    <tag Name="PronounSet" Value="{M}she/her" />\n'
+                              f'    <tag Name="TinkerCategory" Value="{M}utility" />\n'
+                              f'    <tag Name="DisplayCharacter" Value="{M}A" />\n    <xtagGrammar')
         us = by_key(units.extract(src, "Creatures.example.xml"))
-        self.assertFalse([k for k in us if "IndefiniteArticle" in k[0] or "PronounSet" in k[0]])
+        self.assertFalse([k for k in us if k[0].split("/")[-1].startswith(
+            ("tag[IndefiniteArticle]", "tag[PronounSet]", "tag[TinkerCategory]", "tag[DisplayCharacter]"))])
         xml, _ = units.build(src, "Creatures.example.xml",
                              {("object[Ctesiphus]/part[Render]@DisplayName", "Ctesiphus"): "Ктесіф"})
         # objects merge attribute by attribute, so the untouched tags stay the base game's
         names = {t.get("Name") for t in ET.fromstring(xml).iter("tag")}
         self.assertFalse(names & {"IndefiniteArticle", "PronounSet"})
+
+    def test_tinker_category_of_a_mod_is_not_a_unit(self):
+        src = (f'<mods>\n  <mod Part="ModSharp" TinkerCategory="{M}melee weapons" '
+               f'TinkerDisplayName="{M}sharp" />\n</mods>')
+        attrs = {k[0].rsplit("@", 1)[1] for k in by_key(units.extract(src, "Mods.example.xml"))}
+        self.assertEqual(attrs, {"TinkerDisplayName"})
 
     def test_strings(self):
         us = units.extract(STRINGS, "Strings.example.xml")
@@ -257,6 +267,15 @@ class Templates(unittest.TestCase):
         plain = ("category[Physical]/mutation[Clairvoyance]/description", "You briefly gain vision of a nearby area.")
         self.assertEqual(us[plain].kind, "text")
         self.assertFalse([k for k in us if k[0].endswith("Clairvoyance]/leveltext")])
+
+    def test_template_of_tags_alone_is_no_unit(self):
+        src = (f'<templates>\n  <template ID="Effect.A.Details">{M}<saveline Name="DiseaseOnsetSave" '
+               f'Type="Disease Onset" /></template>\n'
+               f'  <template ID="Effect.B.Details">{M}<statline Name="Cooldown" DisplayName="{M}Cooldown" />'
+               f'</template>\n</templates>')
+        us = by_key(units.extract(src, "Templates.example.xml"))
+        # a DisplayName is text to translate, a save type is a key
+        self.assertEqual([k[0] for k in us], ["template[ID=Effect.B.Details]"])
 
     def test_build_writes_the_translated_markup(self):
         xml, count = units.build(MUTATIONS, "Mutations.example.xml", {LEVELTEXT: LEVELTEXT_UK})

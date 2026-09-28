@@ -14,7 +14,7 @@ import pathlib
 import re
 import xml.etree.ElementTree as ET
 
-from .units import MARK
+from .units import MARK, TEMPLATE_TEXT_ATTRS
 
 PLACEHOLDER = re.compile(r"=([A-Za-z_][^=\s]*)=")
 REPLACERS = pathlib.Path(__file__).with_name("replacers.tsv")  # tools/analysis/replacers.py
@@ -74,10 +74,6 @@ def placeholder_key(token: str) -> str:
         if name not in CASE_POSTPROCESSORS:
             kept.append(_fold(name, "post") + sep + params)
     return "|".join([".".join(parts), *kept])
-
-
-# Inside a template (<p>, <stat/>, <statline/>, <switch>…) only these attributes are text.
-TEMPLATE_TEXT_ATTRS = frozenset({"DisplayName", "Unit"})
 
 
 def _signature(el: ET.Element) -> tuple:

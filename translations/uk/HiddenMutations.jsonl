@@ -1,0 +1,125 @@
+{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "HiddenMutations.example.xml"}
+{"k":"0e59e8ce8261589675f3","p":"593cc8b063956b8e","s":"8eed39217294","t":"Темнозорість","c":["qud-gender: f"]}
+{"k":"8d1761aee37c6d2872ee","p":"c25e989f415dff42","s":"217c182ec4cb","t":"темнозорі"}
+{"k":"ad88d55df7d208cecf5b","p":"c3216fc92a547052","s":"297f0abf9b94","t":"<p>Ви бачите в темряві.</p>"}
+{"k":"c560dd757398a1483c50","p":"86a6b5673f041e0e","s":"2af8bd8c60f4","t":"Загострений нюх","c":["qud-gender: m"]}
+{"k":"83e4b8c143a18af289ba","p":"f47971ed6ba1e0fd","s":"07492900af33","t":"ті, хто має загострений нюх"}
+{"k":"3b9c000660d9dde5725c","p":"b7d10163df528330","s":"1869af0bf8d9","t":"<p>Ви наділені надзвичайно гострим нюхом.</p>"}
+{"k":"4e7748e01a3f6f122727","p":"9cc779ae76173015","s":"4ce6fc11b6ac","t":"<p>Ви відчуваєте присутність істот на відстані, зазвичай до <stat Name=\"Radius\" Unit=\"кл.\" />, залежно від місцевості</p>\n<switch Name=\"LevelMatch\">\n<case Value=\"true\"><p>Шанс розпізнати виявлених істот поблизу</p></case>\n<default><p>{{rules|Більший шанс розпізнати виявлених істот поблизу}}</p></default>\n</switch>"}
+{"k":"ea18508e426e10d9f6da","p":"3011b7d15d96e2e2","s":"92e51ce8c66b","t":"Зябра","c":["qud-gender: pl"]}
+{"k":"52969b7b8487924a31ea","p":"6fd5125fa44113eb","s":"28f77d9b6548","t":"зябродишні"}
+{"k":"8b4ba27e0968b900b554","p":"8bda762f664a9714","s":"757a8e5f7bca","t":"Проникнення","c":["qud-gender: n"]}
+{"k":"b77353bc2dbce9a4e3a3","p":"43912ee05aa581d6","s":"cb4d99ac4900","t":"лазутчики"}
+{"k":"693045d5a4ee46862b48","p":"6fd6b8fa6fbd48de","s":"a47da1c5aa32","t":"<p>Ви телепортуєтеся й забираєте з собою істот.</p>"}
+{"k":"aa66f844ea852bf3fa4b","p":"cb984f4f04358cce","s":"9002f2ba08c8","t":"<p>Ви телепортуєтеся в місце поблизу й забираєте з собою всіх у радіусі <stat Name=\"TeleportRadius\" />.</p>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
+{"k":"f2b2ed770ef4ed97a69a","p":"f03a1b0c24fd4598","s":"2096c9a7d3c1","t":"Поглинання жару","c":["qud-gender: n"]}
+{"k":"8a45cae50d56b85d58e3","p":"b7834dee66daf21a","s":"b77feb74f73c","t":"ті, хто поглинає жар"}
+{"k":"2446221d31cd32efb62e","p":"c4581f8980f7a8e5","s":"e208dcc04b8d","t":"<p>Ви регенеруєте, поглинаючи жар.</p>"}
+{"k":"e6c685a54d9f68b33a74","p":"5c832ddff634422b","s":"063b5d8d7bf5","t":"<p>Невразливість до шкоди від жару</p>\n<switch Name=\"HealFactor\">\n<case Value=\"0\" />\n<default><p>Щоразу, коли ви мали б отримати шкоду від жару, ви натомість зцілюєтеся на <stat Name=\"HealFactor\" />% цієї шкоди</p></default>\n</switch>"}
+{"k":"e871061561e1f7ae11d0","p":"f9946f40615f931c","s":"6672eea3615e","t":"Стінолаз","c":["qud-gender: m"]}
+{"k":"1751938074a23783f586","p":"e80c61230a35db53","s":"1497a6685155","t":"стінолази"}
+{"k":"eddc71287c76a28c0d2c","p":"02f6f451bdff3a9c","s":"d59b58f89173","t":"Павутина","c":["qud-gender: f"]}
+{"k":"8e41586020366d2d39b7","p":"ce253bf4a016f805","s":"6c76fdd5f48f","t":"ткачі павутини"}
+{"k":"2c09960679f4aedfa1c4","p":"691dd1097b0bd2f0","s":"fdc8d600e43a","t":"Морозна павутина","c":["qud-gender: f"]}
+{"k":"8218505bd81982376e22","p":"a04eeff982a6d2ca","s":"133cea7ab066","t":"ткачі морозної павутини"}
+{"k":"4e77bfd118e76b610162","p":"2880fadcdf4c15fc","s":"60cd7fe0a39a","t":"Кислотні слизові залози","c":["qud-gender: pl"]}
+{"k":"5fedbd315a4e4a2c362d","p":"54a3101f6b61aaaf","s":"8a4c1a3cc01e","t":"кислотоплюї"}
+{"k":"0e71dbaf9227af1dc9c5","p":"281e997b64cecdb5","s":"6e8da3305ccf","t":"Липкий язик","c":["qud-gender: m"]}
+{"k":"4a9aaeaba3fe973660b3","p":"6015edfa83e20084","s":"1ee4ce076652","t":"липкоязикі"}
+{"k":"cb32c0261114dfff9af6","p":"aa87c752a2ea35e6","s":"9df00eb9b85b","t":"Викид спор","c":["qud-gender: m"]}
+{"k":"6f2ea9894981e84a0907","p":"b97309bfa113d799","s":"5c3334a193f4","t":"ті, хто пихкає спорами"}
+{"k":"0f1d180f49f0204c10ca","p":"ac725f7af895a21d","s":"ae2ae7d302a1","t":"Магнітний імпульс","c":["qud-gender: m"]}
+{"k":"acef8e34e29d59e4899f","p":"24833bb9309e4e40","s":"ae00df7a52cd","t":"ті, хто випускає магнітні імпульси"}
+{"k":"addf9a5ddf317720ca72","p":"1a3cb3754efeae3c","s":"8c1579c84813","t":"Вивергання їжаків","c":["qud-gender: n"]}
+{"k":"074442c6a75f0aacf433","p":"ac1fdd603dd89793","s":"50721f03bbe6","t":"ті, хто вивергає їжаків"}
+{"k":"59f8b59fc9e7e681a7b4","p":"a00a009b76dbb831","s":"f274deed1b73","t":"Хвильова форма","c":["qud-gender: f"]}
+{"k":"732f0c674e1408630daa","p":"1f069edf87839b44","s":"1dfef8b6aa27","t":"ті, хто мчить уздовж хвилі"}
+{"k":"b77a01e45d852cf95188","p":"c93ec5e1a66eb4cb","s":"58c02a93486e","t":"Додаткові роги","c":["qud-gender: pl"]}
+{"k":"d36e8509bbc8b3e4eaf6","p":"9f6ffaaaf122dd81","s":"2b720aa7041f","t":"багаторогі"}
+{"k":"5d95f8b8b59203a8b85e","p":"92b7e6df8e7bf03e","s":"f3fc0cc1d0f6","t":"Астральність","c":["qud-gender: f"]}
+{"k":"93e91fb5d33cc0a9e382","p":"08f214eb1791afab","s":"650da09213a7","t":"астральні"}
+{"k":"0f98d14a3131a6580121","p":"89bd509fbf4e0ced","s":"51d78c678d13","t":"Декарбонізатор","c":["qud-gender: m"]}
+{"k":"b3115ca8840bcd7a0f65","p":"46ab0e8303c68bab","s":"7d80cb71d80a","t":"ті, хто добуває вуглець"}
+{"k":"2171c6bc90f122ce2ca9","p":"1e173ccf41db5557","s":"13e61bfc5080","t":"Скам’янювальний погляд","c":["qud-gender: m"]}
+{"k":"83bfd5ea090497642fdf","p":"20fce7c0170077f7","s":"32d4c55cbbbf","t":"ті, хто поглядом обертає на камінь"}
+{"k":"6f6d2a604ed91bf26dbf","p":"cdbf64d065e79475","s":"6fd294ae5045","t":"Кранґлювальний погляд","c":["qud-gender: m","перевірити: crungle — вигадане слово; передано транскрипцією як дієприкметник («кранґлювати»), за зразком «Скам’янювальний погляд»"]}
+{"k":"4eb266ef939dc130e4e9","p":"2515a4430b2617a7","s":"db9f944a8c34","t":"ті, хто поглядом навіює сни"}
+{"k":"e826fa656e99b60acbe2","p":"b25c04dc7f4a3d12","s":"1e8d3b2474a4","t":"Джерело рідини","c":["qud-gender: n"]}
+{"k":"c2e5b4e83f0aac7d17d4","p":"1e61d50c50cf56a9","s":"8c665222f2d0","t":"ті, з кого сочиться рідина"}
+{"k":"591ddde69c0aa94e1110","p":"d68ebec94bc4914e","s":"de89cec2eece","t":"Ірисдуальний промінь","c":["qud-gender: m","перевірити: Irisdual — гра слів (iris/iridescent + dual/residual); лишено латинізмом «ірисдуальний»"]}
+{"k":"b10c8a8f33d59b4ee76d","p":"9dd05a94b26db76b","s":"44551c3f2b0f","t":"ті, хто линяє променями"}
+{"k":"832ff3451e15a3bd46bd","p":"fb90cbf796b3b27d","s":"2df6e112643f","t":"Трюмний сфінктер","c":["qud-gender: m"]}
+{"k":"2a7d123a14b7a4e4cc36","p":"54649f70787cce12","s":"eb3c72701544","t":"трюмносфінктерні"}
+{"k":"1b01bf2985f62523dc3c","p":"dbfd4317f7721777","s":"6cfc12d09f1f","t":"Кристалічність","c":["qud-gender: f"]}
+{"k":"f81da3c25e9cd1865d10","p":"1af71d3c0d313063","s":"ee381951e1a3","t":"кристалічні"}
+{"k":"6cd5c6feb18d5024efe8","p":"6c44a4196ba18b6c","s":"fa52183e29a3","t":"Аура страху","c":["qud-gender: f"]}
+{"k":"ad4dc82796391bd028fa","p":"40dd02d2e9e5542a","s":"de5daa3c703f","t":"ті, від кого віє жахом"}
+{"k":"1ffd1f35fb40c7c5a098","p":"5395504a4128117b","s":"87f9a844a83c","t":"Риття нір","c":["qud-gender: n"]}
+{"k":"7627da10bd6997fe9710","p":"4cd839b11be5cdc1","s":"b356604597f7","t":"ті, хто риє нори під землею"}
+{"k":"06dc2aeab325b658db57","p":"d9b13179f0ee1b3d","s":"147b96a61836","t":"Рідиноплюй","c":["qud-gender: m"]}
+{"k":"177aaeb52cbf63eca44a","p":"b116cf35d1e5971d","s":"e44b2191dc96","t":"рідиноплюї"}
+{"k":"3f4affaae80d782ecac9","p":"21f219ea59043dd5","s":"e25627395969","t":"Крижаний ультрапромінь","c":["qud-gender: m"]}
+{"k":"4b3ddc75d34461982da7","p":"cd58e26646a90b21","s":"2d1ada8a6417","t":"морозорукі"}
+{"k":"b5fd1ab57c82e022a6dc","p":"0d572de11119600b","s":"b688e571b141","t":"Захисні хроматофори","c":["qud-gender: pl"]}
+{"k":"a524885490da38bbd6f9","p":"1532f933310c3fb7","s":"0b071b29bf99","t":"ті, хто мерехтить"}
+{"k":"4f2b980070d492a35607","p":"6e287c6708a8e808","s":"d9b751682237","t":"Вогняний подих","c":["qud-gender: m"]}
+{"k":"9e6e75a8316199946098","p":"c5f319385604fc99","s":"0b65f1ec3b6c","t":"вогнедишні"}
+{"k":"0fb7e9588c7e89488756","p":"389b2d7328141fd0","s":"aca9350f0edc","t":"Крижаний подих","c":["qud-gender: m"]}
+{"k":"d295d30f26140893614d","p":"d683c22790ccde9a","s":"f39f2f79beef","t":"ті, хто дихає льодом"}
+{"k":"6a9f855d7acf820c1806","p":"f0494c971591c9e4","s":"fe8e00639376","t":"Подих нормальності","c":["qud-gender: m"]}
+{"k":"6acab55c79fb6d68035a","p":"398e331ceba73a0d","s":"366b4b357ba4","t":"ті, хто дихає нормальністю"}
+{"k":"ff23a738995aacd10b32","p":"c1fe4c4989edcfb6","s":"dd32b6fbefca","t":"Їдкий подих","c":["qud-gender: m"]}
+{"k":"568821d2da6ff5a8ade4","p":"556e8c44e58ae78c","s":"dcdb7e58926d","t":"ті, чий подих їдкий"}
+{"k":"41eb409041ba6030cc56","p":"5197e342878bc516","s":"64df85403d6d","t":"Дурманний подих","c":["qud-gender: m"]}
+{"k":"22781e23cd0b27d0b86a","p":"c06238c25d5d3467","s":"a7f0e6473066","t":"ті, чий подих дурманить"}
+{"k":"074a2dd8c15b32d3584b","p":"c3916b5b37c9bca5","s":"72343444215c","t":"Приголомшливий подих","c":["qud-gender: m"]}
+{"k":"e9d2ae744d3d39f8f1a2","p":"3acb25625a9e6579","s":"661bb417a3f4","t":"ті, чий подих приголомшує"}
+{"k":"e4232f4fbc9d7f7f021e","p":"47564019c01d7e9a","s":"34039539b510","t":"Отруйний подих","c":["qud-gender: m"]}
+{"k":"a6a23f635cd1b8908295","p":"13d3186c5e39eb5f","s":"764d235b7ad5","t":"ті, чий подих отруйний"}
+{"k":"fa47e6b1dc9cc4e7c5ac","p":"a8da6e61d69973f8","s":"d422e84d12af","t":"Сонний подих","c":["qud-gender: m"]}
+{"k":"ef7f2375df25fe5281bf","p":"033f3e17d818bca7","s":"c4915c53ce98","t":"ті, чий подих заколисує"}
+{"k":"846385fa350963aca4d6","p":"0cc77c20e6ae0761","s":"009bbf9762c9","t":"Подих сорому","c":["qud-gender: m"]}
+{"k":"ebc09cb01da7c26de2ab","p":"ab7ee8d715fee0e8","s":"b00effc80f2d","t":"ті, чий подих соромить"}
+{"k":"7d9ef4bfc5a37ab3912a","p":"b025c3474ea51d31","s":"cfcb1aa51576","t":"Викид плазми","c":["qud-gender: m","назва має збігатися з тегом GasGenerationName відповідного газу (PhysicalPhenomena)"]}
+{"k":"0b41e76f4942cbf2bdfa","p":"fb3b5600ef943b40","s":"9d820d3deb4e","t":"ті, хто випускає плазму"}
+{"k":"cb63b6d6a748eb90ca6f","p":"d3b2d62e5fae3c08","s":"d695ee5b6a59","t":"<p>Ви випускаєте навколо себе хмару: <stat Name=\"GasName\" />.</p>"}
+{"k":"b224101826c91aaad406","p":"0af1b6fa9b0855ca","s":"5eeded89eb6a","t":"<p>Виділяє газ протягом <stat Name=\"Duration\" /></p>\n<switch Name=\"LevelMatch\">\n<case Value=\"raise\"><p>{{rules|Збільшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n<case Value=\"lower\"><p>{{rules|Зменшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n</switch>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
+{"k":"f5addc58e5076461a16d","p":"4c814c51ce7bfc86","s":"1c7fbdfe92ab","t":"Виділення отруйного газу","c":["qud-gender: n","назва має збігатися з тегом GasGenerationName відповідного газу (PhysicalPhenomena)"]}
+{"k":"8d7c660ecb837a2eaf8b","p":"337b6ea3c3f5956d","s":"eb94939c9cf5","t":"ті, хто виділяє отруйний газ"}
+{"k":"8c79cb16062309624cc2","p":"21918d64630a7e37","s":"d695ee5b6a59","t":"<p>Ви випускаєте навколо себе хмару: <stat Name=\"GasName\" />.</p>"}
+{"k":"4d2440ce9137cb228a0e","p":"dfbee184e53c7710","s":"5eeded89eb6a","t":"<p>Виділяє газ протягом <stat Name=\"Duration\" /></p>\n<switch Name=\"LevelMatch\">\n<case Value=\"raise\"><p>{{rules|Збільшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n<case Value=\"lower\"><p>{{rules|Зменшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n</switch>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
+{"k":"a577ee32968f804a2d54","p":"bf45ddfd8e1610b5","s":"4374352c5c7b","t":"Виділення дефоліанту","c":["qud-gender: n","назва має збігатися з тегом GasGenerationName відповідного газу (PhysicalPhenomena)"]}
+{"k":"5734ff308a6f11f03531","p":"5ef1dd202ff33eaf","s":"b14811f281ea","t":"ті, хто виділяє дефоліант"}
+{"k":"78c35ef6e0eea1376269","p":"09c7aff774cc0b84","s":"d695ee5b6a59","t":"<p>Ви випускаєте навколо себе хмару: <stat Name=\"GasName\" />.</p>"}
+{"k":"fe68d69cc412d32dca2d","p":"6db774de56800bc4","s":"5eeded89eb6a","t":"<p>Виділяє газ протягом <stat Name=\"Duration\" /></p>\n<switch Name=\"LevelMatch\">\n<case Value=\"raise\"><p>{{rules|Збільшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n<case Value=\"lower\"><p>{{rules|Зменшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n</switch>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
+{"k":"4011ca72b4c34eb0f017","p":"8fa003cdb7448d4a","s":"376e8c1933d8","t":"Виділення фунгіциду","c":["qud-gender: n","назва має збігатися з тегом GasGenerationName відповідного газу (PhysicalPhenomena)"]}
+{"k":"e2727dbd5d2433588bf2","p":"0dbd127a0eff3e41","s":"fc91a6f69da9","t":"ті, хто виділяє фунгіцид"}
+{"k":"d5383aa65ced1c0ba149","p":"120bc787a20b8b0a","s":"d695ee5b6a59","t":"<p>Ви випускаєте навколо себе хмару: <stat Name=\"GasName\" />.</p>"}
+{"k":"6a46d1289f3e06b611be","p":"163dad04d4dd4a4b","s":"5eeded89eb6a","t":"<p>Виділяє газ протягом <stat Name=\"Duration\" /></p>\n<switch Name=\"LevelMatch\">\n<case Value=\"raise\"><p>{{rules|Збільшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n<case Value=\"lower\"><p>{{rules|Зменшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n</switch>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
+{"k":"3d3fa8eeda1929c0afb6","p":"d5cd54c9d9364350","s":"e754b226db01","t":"Виділення газу сум’яття","c":["qud-gender: n","назва має збігатися з тегом GasGenerationName відповідного газу (PhysicalPhenomena)"]}
+{"k":"d701fef309cbe2b40aef","p":"1c21b0d3aa98aab5","s":"84f7a252ef36","t":"ті, хто виділяє газ сум’яття"}
+{"k":"81b1253c7283ffc875cf","p":"636bb3a7bfb80644","s":"d695ee5b6a59","t":"<p>Ви випускаєте навколо себе хмару: <stat Name=\"GasName\" />.</p>"}
+{"k":"d48ceb637fe70258eb75","p":"b4addd0fd50c31e2","s":"5eeded89eb6a","t":"<p>Виділяє газ протягом <stat Name=\"Duration\" /></p>\n<switch Name=\"LevelMatch\">\n<case Value=\"raise\"><p>{{rules|Збільшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n<case Value=\"lower\"><p>{{rules|Зменшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n</switch>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
+{"k":"3f6d070786dcf8338677","p":"21b3fb5f170c75b7","s":"8df2f84a90f6","t":"Виділення газу нормальності","c":["qud-gender: n","назва має збігатися з тегом GasGenerationName відповідного газу (PhysicalPhenomena)"]}
+{"k":"69ed531d90061d1058ab","p":"26520cd657116508","s":"633f05097776","t":"ті, хто виділяє газ нормальності"}
+{"k":"677191a826ad4274a52a","p":"06c820bf8374bfd9","s":"d695ee5b6a59","t":"<p>Ви випускаєте навколо себе хмару: <stat Name=\"GasName\" />.</p>"}
+{"k":"2342695aeabccb5d6a50","p":"034923e57017b1ea","s":"5eeded89eb6a","t":"<p>Виділяє газ протягом <stat Name=\"Duration\" /></p>\n<switch Name=\"LevelMatch\">\n<case Value=\"raise\"><p>{{rules|Збільшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n<case Value=\"lower\"><p>{{rules|Зменшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n</switch>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
+{"k":"11c55f2f7b8225e8ee25","p":"09ae30a05dcd7452","s":"e16aab696f57","t":"Виділення блискітного пилу","c":["qud-gender: n","назва має збігатися з тегом GasGenerationName відповідного газу (PhysicalPhenomena)"]}
+{"k":"737b19d59e69ae5870ba","p":"ce5c692aee4dd6a1","s":"cb747e6ffd00","t":"ті, хто виділяє блискітний пил"}
+{"k":"112433acadff134bab7d","p":"c1168cf52944fda5","s":"d695ee5b6a59","t":"<p>Ви випускаєте навколо себе хмару: <stat Name=\"GasName\" />.</p>"}
+{"k":"3d1350efefa6874cd2ca","p":"ba3deff62df108eb","s":"5eeded89eb6a","t":"<p>Виділяє газ протягом <stat Name=\"Duration\" /></p>\n<switch Name=\"LevelMatch\">\n<case Value=\"raise\"><p>{{rules|Збільшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n<case Value=\"lower\"><p>{{rules|Зменшено: <stat Name=\"LevelEffectDescription\" />}}</p></case>\n</switch>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
+{"k":"49fc3607067357164091","p":"c89c63d2d22da006","s":"d53895c6eb78","t":"Невидимість","c":["qud-gender: f"]}
+{"k":"643822dbfc3da105b2b4","p":"50722b7bb216c30a","s":"b854b81474ae","t":"невидимі"}
+{"k":"1b02eb62adf5d0d5c3c9","p":"5edbbf9fdfbf1a3e","s":"bf81ccde5ef2","t":"Перехоплення","c":["qud-gender: n"]}
+{"k":"388494567635c90da06f","p":"b8bda467cb13669b","s":"2148c2c84a79","t":"перехоплювачі"}
+{"k":"6b5e374fd69397ecea3d","p":"15c42b1b041a9bae","s":"4a3a6ccff4e1","t":"Зсув лей-ліній","c":["qud-gender: m"]}
+{"k":"fd265e60b34e7878556d","p":"826c6144ad1bb257","s":"1416a5c7f943","t":"ті, хто зсуває простір-час"}
+{"k":"028564edb40a53d9badc","p":"b90236ef4e83d1ad","s":"d2daea010038","t":"Квантова фуга","c":["qud-gender: f"]}
+{"k":"c570b714ff38ca45affc","p":"518900173bd664aa","s":"344238ea2974","t":"квантові втікачі"}
+{"k":"40776ed695db159a51f4","p":"83412b116af0aa2c","s":"e40c76151cda","t":"Віддзеркалення сорому","c":["qud-gender: n"]}
+{"k":"625031743fe4d2943dd8","p":"85994b5e04700d01","s":"01e99680c623","t":"ті, хто віддзеркалює сором"}
+{"k":"151dd71b5151e49c7026","p":"de307de64da36bbc","s":"006064c44bfb","t":"<p>Ви віддзеркалюєте ганебний лик істот поблизу.</p>"}
+{"k":"7bc9a7cd20bc04bca58d","p":"eb2e93b12284f729","s":"722eca43ed15","t":"Відштовхувальна сила","c":["qud-gender: f"]}
+{"k":"67cac0d8a92190b20c27","p":"91d8dc4ed9d4fa40","s":"1b86d337f955","t":"ті, хто відштовхує"}
+{"k":"fb5d67ea9512ff0dcb8b","p":"8ff1d7c247cd1a86","s":"dc47c8725694","t":"<p>Ви викликаєте довкола відштовхувальну силу, що відкидає ворогів.</p>"}
+{"k":"d0e32b43e5003cc1a49b","p":"4edee77b108c46ed","s":"9eef535fc38a","t":"<statline Name=\"Area\" DisplayName=\"Площа\" />\n<switch Name=\"LevelMatch\">\n<case Value=\"true\"><p>Істот відкидає від центру вибуху.</p></case>\n<default><p>{{rules|Сильніше відкидання}}</p></default>\n</switch>\n<statline Name=\"Cooldown\" DisplayName=\"Перезаряджання\" />"}
