@@ -311,6 +311,21 @@ def cmd_worksheet(files: dict[str, str], po_name: str, out: pathlib.Path | None,
     return out
 
 
+def cmd_check_worksheet(paths: list[pathlib.Path]) -> int:
+    """Print the errors and warnings of filled-in worksheets. Returns the number of errors."""
+    total = 0
+    for path in paths:
+        _, rows = batch.read(path)
+        report = batch.check_rows(rows)
+        for level, issues in (("ERROR", report.errors), ("warning", report.warnings)):
+            for k, ctx, message in issues:
+                print(f"  {level} {ctx} [{k}]: {message}")
+        print(f"{path.name}: {len(rows) - report.missing} filled, {report.missing} empty, "
+              f"{len(report.errors)} error(s), {len(report.warnings)} warning(s)")
+        total += len(report.errors)
+    return total
+
+
 def cmd_apply(files: dict[str, str], paths: list[pathlib.Path], po_dir: pathlib.Path = PO_DIR,
               store_dir: pathlib.Path = STORE_DIR) -> int:
     """Worksheets → local catalogs → store. Returns the number of problems."""

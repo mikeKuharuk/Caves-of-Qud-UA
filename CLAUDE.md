@@ -67,13 +67,21 @@ py tools/qud.py validate    # 0 помилок перед кожним комі�
 py tools/qud.py build       # → mod/Language/*.uk.xml (генеровані, руками не редагувати)
 py tools/qud.py stats       # прогрес
 py tools/qud.py worksheet Skills.po --out work/batch/Skills.jsonl   # неперекладене → пакет JSONL
+py tools/qud.py check-worksheet work/batch/Skills.uk.jsonl          # перевірити пакет, не чіпаючи PO
 py tools/qud.py apply work/batch/Skills.uk.jsonl                    # заповнений пакет → PO
-py -m unittest discover -s tools/tests   # 67 тестів, зокрема на реальних даних гри
+py -m unittest discover -s tools/tests   # 70 тестів, зокрема на реальних даних гри
 ```
 
 - Пакети (`work/batch/`, не в git) — зручний спосіб перекладати великими порціями:
   - `apply` відмовляє на помилках розмітки й на одиницях, яких уже немає в PO;
-  - рядок пакета може мати `"comment"` (коментар перекладача) і `"fuzzy": true`.
+  - рядок пакета може мати `"comment"` (коментар перекладача; кілька — через `\n`) і
+    `"fuzzy": true`.
+- Великі обсяги перекладають паралельні субагенти за брифом `docs/translator-brief.md`:
+  - кожен пише лише свої `work/batch/<пакет>_uk*.py` і перевіряє їх
+    `work/batch/merge_uk.py <пакет>`;
+  - координатор застосовує пакети, робить вибіркову вичитку, `validate` і коміт;
+  - локальні скрипти: `make_chunks.py` (порції з підказкою `name_uk`), `make_names.py` (унікальні
+    назви й розкладання їх назад по файлах).
 - Свідоме відхилення, яке `validate` показує як попередження (наприклад, прибрана англійська
   `|pluralize`), позначай коментарем перекладача `qud-ok: <код> — причина`. Помилки так не
   приймаються.

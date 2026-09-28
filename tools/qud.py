@@ -7,6 +7,9 @@
   py tools/qud.py validate [--errors-only]     markup and typography checks
   py tools/qud.py stats                        progress per file
   py tools/qud.py import FILE.uk.xml ...       fill translations from existing translated XML
+  py tools/qud.py worksheet PO [--ctx RE]      untranslated units → work/batch/*.jsonl
+  py tools/qud.py check-worksheet FILE ...     check a filled-in worksheet (no PO access)
+  py tools/qud.py apply FILE ...               filled-in worksheets → PO catalogs
 
 translations/uk/*.jsonl (in git) holds only our Ukrainian text; the English lives in the local
 PO working copies, rebuilt from the installed game. The English string tables default to the
@@ -52,8 +55,12 @@ def main(argv=None) -> int:
     p_ws.add_argument("--out", type=pathlib.Path)
     p_ap = with_source(sub.add_parser("apply", help="apply filled-in worksheets"))
     p_ap.add_argument("worksheets", nargs="+", type=pathlib.Path)
+    p_cw = sub.add_parser("check-worksheet", help="check filled-in worksheets without applying them")
+    p_cw.add_argument("worksheets", nargs="+", type=pathlib.Path)
 
     a = ap.parse_args(argv)
+    if a.cmd == "check-worksheet":   # needs no game files and never touches the catalogs
+        return 1 if commands.cmd_check_worksheet(a.worksheets) else 0
     files, desc = sources.load(a.source, a.tag)
     print(f"source: {desc}")
     if a.cmd == "sync":

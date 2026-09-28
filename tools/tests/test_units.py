@@ -70,6 +70,18 @@ class Extract(unittest.TestCase):
         keyed = us[("object[Ctesiphus]/tag[StaticHateReason]@Value", f"Joppa,friend,{M}defending their village")]
         self.assertTrue(keyed.compound)
 
+    def test_tags_that_are_keys_are_not_units(self):
+        # the English article logic reads IndefiniteArticle/DefiniteArticle; PronounSet names a set
+        src = OBJECTS.replace('<xtagGrammar', f'<tag Name="IndefiniteArticle" Value="{M}a" />\n'
+                              f'    <tag Name="PronounSet" Value="{M}she/her" />\n    <xtagGrammar')
+        us = by_key(units.extract(src, "Creatures.example.xml"))
+        self.assertFalse([k for k in us if "IndefiniteArticle" in k[0] or "PronounSet" in k[0]])
+        xml, _ = units.build(src, "Creatures.example.xml",
+                             {("object[Ctesiphus]/part[Render]@DisplayName", "Ctesiphus"): "Ктесіф"})
+        # objects merge attribute by attribute, so the untouched tags stay the base game's
+        names = {t.get("Name") for t in ET.fromstring(xml).iter("tag")}
+        self.assertFalse(names & {"IndefiniteArticle", "PronounSet"})
+
     def test_strings(self):
         us = units.extract(STRINGS, "Strings.example.xml")
         keys = [u.key for u in us]

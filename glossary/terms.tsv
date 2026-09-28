@@ -226,3 +226,104 @@ esper	еспер	m	concept	proposed	Esper (морфотип) → Еспер
 psychic aether	психічний етер	m	concept	proposed	
 spacetime	простір-час	m	concept	proposed	spacetime vortex → просторово-часовий вир
 Mutations / Defects	мутації / вади	pl	concept	proposed	Physical Defects → Фізичні вади
+crysteel	кристалосталь	f	component	proposed	кристалосталевий; crystal + steel
+fullerite	фулерит	m	component	proposed	фулеритовий
+steel	сталь	f	component	proposed	сталевий
+iron	залізо	n	component	proposed	залізний
+bronze	бронза	f	component	proposed	бронзовий
+copper / silver / gold	мідь / срібло / золото		component	proposed	мідний / срібний / золотий
+leather	шкіра	f	component	proposed	шкіряний
+wooden	дерев’яний		component	proposed	wood → дерево
+stone	камінь	m	component	proposed	кам’яний
+clay	глина	f	component	proposed	глиняний
+glass	скло	n	component	proposed	скляний
+crystal / crystalline	кристал / кристалічний	m	component	proposed	
+gemstone	самоцвіт	m	component	proposed	
+marble	мармур	m	component	proposed	мармуровий
+metal	метал	m	component	proposed	металевий
+graphene	графен	m	component	proposed	графеновий
+plastifer	пластифер	m	component	proposed	пластиферовий
+elastyne	еластин	m	component	proposed	еластиновий
+palladium	паладій	m	component	proposed	паладієвий
+shale	сланець	m	component	proposed	сланцевий
+resin	смола	f	component	proposed	смоляний
+wax	віск	m	component	proposed	восковий
+bone	кістка	f	component	proposed	кістяний
+fulcrete	фулкрет	m	component	proposed	фулкретовий
+agate / topaz / jasper / amethyst / emerald / peridot	агат / топаз / яшма / аметист / смарагд / перидот		component	proposed	
+sapphire / ruby / white opal / black opal	сапфір / рубін / білий опал / чорний опал		component	proposed	
+coral	корал	m	component	proposed	кораловий
+mechanical	механічний		component	proposed	
+holographic	голографічний		component	proposed	
+giant	велетенський		component	proposed	giant beetle → велетенський жук
+elder (creature variant)	старший		component	proposed	elder flamebeard → старший вогнебород
+great	великий		component	proposed	
+flawless	бездоганний		component	proposed	
+gilded / carved / ornate	позолочений / різьблений / оздоблений		component	proposed	
+two-handed	дворучний		component	proposed	
+luminous	світний		component	proposed	
+gelatinous	драглистий		component	proposed	
+congealed	застиглий		component	proposed	
+raw / cured	сирий / в’ялений		component	proposed	raw X meat → сире м’ясо X (родовий)
+sacred	священний		component	proposed	
+imperial	імперський		component	proposed	
+corpse	труп	m	item	proposed	X corpse → труп X-а (родовий відмінок назви істоти)
+sign	табличка	f	item	proposed	
+plaque	дошка	f	item	proposed	
+grenade	граната	f	item	proposed	
+golem	голем	m	species	proposed	X golem → голем-X
+wall / door / gate	стіна / двері / брама		item	proposed	двері — pl
+stairs (up / down)	сходи (вгору / вниз)	pl	item	proposed	
+shrine	святиня	f	item	proposed	shrine to X → святиня X-а
+dais	поміст	m	item	proposed	
+statue / sculpture / figurine / relief	статуя / скульптура / статуетка / рельєф		item	proposed	
+sarcophagus / reliquary	саркофаг / релікварій	m	item	proposed	
+chair / table / bed / sofa	крісло / стіл / ліжко / канапа		item	proposed	
+bookshelf	книжкова полиця	f	item	proposed	
+oven / workbench	піч / верстак		item	proposed	
+console / mainframe / panel / hatch	консоль / мейнфрейм / панель / люк		item	proposed	
+vase / vessel / pitcher / pot / bottle	ваза / посудина / глек / горщик / пляшка		item	proposed	
+torch / sconce	смолоскип / настінний світильник		item	proposed	
+turret	турель	f	item	proposed	
+hologram / projector	голограма / проєктор		item	proposed	проєктор — правопис 2019
+injector	ін’єктор	m	item	proposed	
+recoiler	відкидач	m	item	proposed	Joppa recoiler → відкидач до Джоппи
+data disk	диск даних	m	item	proposed	
+skillsoft	навичкософт	m	item	proposed	
+token / nugget / key	жетон / самородок / ключ	m	item	proposed	
+sword / long sword	меч / довгий меч	m	item	proposed	
+axe / battle axe	сокира / бойова сокира	f	item	proposed	
+dagger / knife	кинджал / ніж	m	item	proposed	
+mace / hammer / warhammer	булава / молот / бойовий молот		item	proposed	
+halberd / spear	алебарда / спис		item	proposed	
+rifle / pistol / cannon	гвинтівка / пістолет / гармата		item	proposed	
+bow / arrow	лук / стріла		item	proposed	
+laser / beam	лазер / промінь	m	item	proposed	laser rifle → лазерна гвинтівка
+armor / plate armor / mail	броня / латний обладунок / кольчуга		item	proposed	
+vest / cloak / mask	жилет / плащ / маска		item	proposed	
+gloves / gauntlets	рукавиці / латні рукавиці	pl	item	proposed	
+boots / slippers / sneakers	чоботи / капці / кросівки	pl	item	proposed	
+bracelet / ring / helmet / hat / cap	браслет / перстень / шолом / капелюх / шапочка	m	item	proposed	
+cherub	херувим	m	species	proposed	X cherub → херувим-X (херувим-павіан)
+ape / baboon	мавпа / павіан		species	proposed	
+bear / boar / dog / cat / pig / goat	ведмідь / вепр / пес / кіт / свиня / коза		species	proposed	
+frog / snail / slug	жаба / равлик / слимак		species	proposed	
+beetle / spider / ant / tick / leech	жук / павук / мураха / кліщ / п’явка		species	proposed	
+bat / worm / crab / croc / tortoise	кажан / черв’як / краб / крокодил / черепаха		species	proposed	
+urchin	їжак	m	species	proposed	морський їжак; як у здібності «вивергає їжаків»
+jell	желе	n	species	proposed	не відмінюється: black jell → чорне желе
+weep (honey weep)	плакун	m	species	proposed	honey weep → медовий плакун
+pseudopod	псевдопод	m	species	proposed	
+-beard (flamebeard, sleetbeard…)	-бород	m	species	proposed	flamebeard → вогнебород; sleetbeard → крупобород; tartbeard → терпобород
+-mensch (cragmensch, glittermensch)	-люд	m	species	proposed	cragmensch → скелелюд; glittermensch → блисколюд
+wight	упир	m	species	proposed	gyre wight → упир Коловороту
+voider	пустотник	m	species	proposed	
+barkbiter	корогриз	m	species	proposed	
+mimic	мімік	m	species	proposed	
+gland	залоза	f	item	proposed	voider gland → залоза пустотника
+claw / fangs / fist / bite	кіготь / ікла / кулак / укус		species	proposed	природна зброя
+tail / horn / hoof / mandibles / tongue	хвіст / ріг / копито / жвала / язик		species	proposed	
+jerky	в’ялене м’ясо	n	item	proposed	X jerky → в’ялене м’ясо X-а
+sap	сік	m	item	proposed	life sap → сік життя
+Mk I / Mk II / Mk III	Mk I / Mk II / Mk III		component	proposed	позначку моделі лишаємо латиною
+Agolgot / Bethsaida / Rermadon / Shug'ruith / Qas / Qon	Аголгот / Бетсаїда / Рермадон / Шуґ’руїт / Кас / Кон		character	proposed	ґірші

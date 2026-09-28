@@ -54,6 +54,23 @@ class Batch(unittest.TestCase):
         self.assertTrue(e.fuzzy)
         self.assertEqual(e.translator_comments, ["перевірити в грі"])
 
+    def test_rows_carry_the_unit_kind(self):
+        self.assertEqual(self.row("option[ID=A]@Values")["flags"], ["qud-compound"])
+        self.assertNotIn("flags", self.row("option[ID=A]@DisplayText"))
+
+    def test_check_rows_without_the_catalog(self):
+        # translators (people or subagents) check a filled worksheet without touching the PO files
+        good = dict(self.row("option[ID=A]@Values"), uk=f"Modern|{M}Сучасний,Classic|{M}Класичний")
+        broken = dict(self.row("option[ID=B]@DisplayText"), uk="{{W|Гучність")
+        drifted = dict(self.row("option[ID=A]@DisplayText"), uk="Музика =x=")
+        accepted = dict(drifted, comment="qud-gender: f\nqud-ok: placeholder — навмисно")   # several comments
+        empty = self.row("option[ID=B]@Category")
+        report = batch.check_rows([good, broken, drifted, accepted, empty])
+        self.assertEqual(report.missing, 1)
+        self.assertEqual({k for k, _, _ in report.errors}, {broken["k"]})
+        self.assertEqual({k for k, _, _ in report.warnings}, {drifted["k"]})
+        self.assertEqual(len(report.warnings), 1)   # the same drift with qud-ok is silent
+
     def test_roundtrip_through_files(self):
         with tempfile.TemporaryDirectory() as d:
             p = pathlib.Path(d) / "w.jsonl"

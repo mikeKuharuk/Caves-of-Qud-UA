@@ -46,6 +46,10 @@ EXCLUDED_ATTRS = {
     ("part", "BaseHands"), ("part", "Category"),
 }
 EXCLUDED_VALUES = {"true", "false"}
+# <tag|stag|property Name="X" Value="▶…">: values that are keys or English grammar, not text.
+# The English article logic reads the articles (Translator.IndefiniteArticle); PronounSet names
+# a pronoun set (GameObject.GetPropertyOrTag("PronounSet")).
+EXCLUDED_TAG_NAMES = {"IndefiniteArticle", "DefiniteArticle", "PronounSet"}
 
 # Roots whose loader merges attribute by attribute (verified: ObjectBlueprintXMLChildNode.Merge),
 # so a translated file may contain just the translated attributes. Every other loader is treated
@@ -120,8 +124,9 @@ def strip_marks(value: str) -> str:
     return value.replace(MARK, "")
 
 
-def excluded(tag: str, attr: str, value: str) -> bool:
-    return (tag, attr) in EXCLUDED_ATTRS or strip_marks(value).strip() in EXCLUDED_VALUES
+def excluded(tag: str, attr: str, value: str, name: str | None = None) -> bool:
+    return ((tag, attr) in EXCLUDED_ATTRS or strip_marks(value).strip() in EXCLUDED_VALUES
+            or (tag in ("tag", "stag", "property") and attr == "Value" and name in EXCLUDED_TAG_NAMES))
 
 
 def parse_schema(xml_text: str) -> dict[str, tuple[str, ...]]:
@@ -240,7 +245,7 @@ class ExampleFile:
                 return
             here = "/".join(path)
             for attr, value in el.attrib.items():
-                if is_unit(value) and not excluded(el.tag, attr, value):
+                if is_unit(value) and not excluded(el.tag, attr, value, el.get("Name")):
                     msgid, compound = _attr_msgid(value)
                     if strip_marks(msgid):   # "▶" alone: nothing to translate (" " is a real value)
                         out.append(Unit(self.name, f"{here}@{attr}" if here else f"@{attr}", msgid, "attr",
@@ -302,7 +307,7 @@ class ExampleFile:
                     attrs.append((attr, value))
                     continue
                 msgid, compound = _attr_msgid(value)
-                t = None if excluded(el.tag, attr, value) else translations.get(
+                t = None if excluded(el.tag, attr, value, el.get("Name")) else translations.get(
                     (f"{here}@{attr}" if here else f"@{attr}", msgid))
                 if t is not None:
                     own = True
@@ -404,7 +409,7 @@ class ExampleFile:
         def walk(ex_el, tr_el, path):
             here = "/".join(path)
             for attr, value in ex_el.attrib.items():
-                if is_unit(value) and not excluded(ex_el.tag, attr, value):
+                if is_unit(value) and not excluded(ex_el.tag, attr, value, ex_el.get("Name")):
                     msgid, compound = _attr_msgid(value)
                     if not compound and tr_el.get(attr) is not None:
                         keep((f"{here}@{attr}" if here else f"@{attr}", msgid), tr_el.get(attr), msgid)

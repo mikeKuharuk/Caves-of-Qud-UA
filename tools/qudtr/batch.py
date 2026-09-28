@@ -11,11 +11,38 @@ carry "fuzzy": true to mark a doubtful translation, and "comment" for a translat
 """
 from __future__ import annotations
 
+import dataclasses
 import json
 import pathlib
 import re
 
 from . import checks, po, store
+
+KIND_FLAGS = ("qud-compound", "qud-template")   # the checks depend on them
+
+
+@dataclasses.dataclass
+class Report:
+    missing: int = 0                                           # rows with no translation yet
+    errors: list = dataclasses.field(default_factory=list)     # (k, ctx, message)
+    warnings: list = dataclasses.field(default_factory=list)
+
+
+def check_rows(rows: list[dict]) -> Report:
+    """Check filled-in worksheet rows the way validate would, without the PO catalog: a translator
+    can check their work while the catalog belongs to whoever applies it. "qud-ok" comments count."""
+    report = Report()
+    for r in rows:
+        uk = r.get("uk") or ""
+        if not uk:
+            report.missing += 1
+            continue
+        e = po.Entry(msgid=r["en"], msgstr=uk, msgctxt=r.get("ctx"), flags=list(r.get("flags", [])),
+                     translator_comments=r["comment"].split("\n") if r.get("comment") else [])
+        for i in checks.check_entry(e):
+            (report.errors if i.severity == "error" else report.warnings).append(
+                (r["k"], r.get("ctx"), f"{i.code}: {i.message}"))
+    return report
 
 
 def make_worksheet(cat: po.Catalog, po_name: str, ctx_pattern: str | None = None,
@@ -28,6 +55,9 @@ def make_worksheet(cat: po.Catalog, po_name: str, ctx_pattern: str | None = None
         if rx and not rx.search(e.msgctxt or ""):
             continue
         row = {"k": store.keys(e.msgctxt, e.msgid)[0], "ctx": e.msgctxt, "en": e.msgid, "uk": e.msgstr}
+        flags = [f for f in e.flags if f in KIND_FLAGS]
+        if flags:
+            row["flags"] = flags
         if e.extracted_comments:
             row["note"] = " ".join(e.extracted_comments)
         if e.previous_msgid is not None:
@@ -72,6 +102,6 @@ def apply_rows(cat: po.Catalog, rows: list[dict]) -> tuple[int, list[str]]:
         e.msgstr = uk
         e.fuzzy = bool(r.get("fuzzy"))
         if r.get("comment"):
-            e.translator_comments = [r["comment"]]
+            e.translator_comments = r["comment"].split("\n")
         applied += 1
     return applied, problems
