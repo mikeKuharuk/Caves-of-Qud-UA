@@ -512,3 +512,19 @@ Many Eyes (galgal)	Багатоокий	m	character	proposed	ґалґал із �
 Keresh	Кереш	m	character	proposed	статуя оленя в Бей Лаху; гліфи К, Р, Ш
 saving throw / save	рятівний кидок	m	mechanic	proposed	+5 до рятівних кидків проти скування
 eulogy (Memorial)	надгробне слово	n	concept	proposed	до померлого — на «ти»
+BR (Before Resheph)	д. Р. (до Решефа)		concept	proposed	у парі з AR → п. Р.
+Compute Power (CP)	обчислювальна потужність (ОП)	f	stat	proposed	
+lbs. (weight)	фунт.		ui	proposed	=current= / =max= фунт.
+directions N/S/E/W	Пн/Пд/Сх/Зх		ui	proposed	NW → ПнЗх тощо; U/D → Вгору/Вниз
+Badly Wounded / Wounded / Injured / Fine / Perfect	Тяжко поранено / Поранено / Легко поранено / У нормі / Без подряпин		ui	proposed	неорганічне: Сильно пошкоджено / Пошкоджено / Злегка пошкоджено / У нормі / Бездоганно
+checkpoint / retire character	контрольна точка / відправити персонажа на спочинок		ui	proposed	
+typed confirmation words	QUIT / ABANDON / RETIRE / END GAME		ui	ok	лишаються латиницею: Popup.AskString обмежує довжину введення
+Paperdoll	Манекен	m	ui	proposed	
+Resheph, the Above	Решеф Вишній	m	character	proposed	the Coiled Lamb of Baetyls → Скручене Ягня Бетилів
+steward (Otho)	управитель	m	title	proposed	кличний «управителю»
+nestling (Barathrum to the player)	пташенятко	n	concept	proposed	середній рід не видає статі гравця
+Seraph	Серафим	m	concept	proposed	мн. серафими
+Folk Clock	Годинник Народів	m	concept	proposed	
+Ereshkigal	Ерешкігаль	f	character	proposed	мейнфрейм Піщаної Брами; род. Ерешкігалі
+Spindlegrounds	Угіддя Веретена	pl	location	proposed	
+starshiib	зорешиїб	m	creature	proposed	гра слів із зорельотом
