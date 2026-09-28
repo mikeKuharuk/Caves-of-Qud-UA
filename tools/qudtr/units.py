@@ -16,6 +16,11 @@ without keys are positional; the 2nd, 3rd… sibling with the same segment gets 
 A value with '▶' markers *inside* it is a compound value (alternatives separated by '~', keyed
 lists such as `key|▶display,…`, `Faction::▶text`). Its msgid keeps every marker and the
 translation must keep them in the same places; the build strips them.
+
+A template (`<description>`, `<leveltext>`, `<template>` with child elements such as `<p>`,
+`<stat/>`, `<statline/>`, `<switch>`) is one unit: its msgid is the inner XML with the markers
+removed, and the translation is inner XML with the same tags. The game replaces the whole template
+with the translated one (Templates.LoadTemplateFromExternal clears the old nodes).
 """
 from __future__ import annotations
 
@@ -48,6 +53,15 @@ EXCLUDED_VALUES = {"true", "false"}
 # defined again, and naming lists carry Load="Replace".
 SPARSE_ROOTS = {"objects"}
 
+# Elements the game declares as LanguageXml.TemplateElement (2.0.212.31: MutationFactory
+# description/leveltext, ActivatedAbilities description, Templates template). A test checks
+# that no other ▶-marked element in the real files has child elements.
+TEMPLATE_TAGS = frozenset({"description", "leveltext", "template"})
+TEMPLATE_NOTE = ("XML template: translate the text and the DisplayName/Unit attributes; keep every "
+                 "tag and its other attributes (Name, Value…) as they are. A <stat/> may move within "
+                 "its sentence.")
+MARKED_ATTR = re.compile('(=")' + MARK)
+
 BUILD_RE = re.compile(r"\b(\d+\.\d+\.\d+\.\d+)\b")
 SCHEMA_TAG = re.compile(r"<([A-Za-z_][\w.-]*)((?:\s+[\w:.-]+=\"[^\"]*\")*)\s*/?>")
 SCHEMA_ATTR = re.compile(r"([\w:.-]+)=\"([^\"]*)\"")
@@ -59,7 +73,7 @@ class Unit:
     file: str                 # example file name, e.g. "Creatures.example.xml"
     msgctxt: str | None
     msgid: str
-    kind: str                 # "string" | "attr" | "text"
+    kind: str                 # "string" | "attr" | "text" | "template"
     compound: bool = False
     note: str | None = None   # extracted comment for translators
 
@@ -142,6 +156,18 @@ def _has_text_unit(el: ET.Element) -> bool:
     return is_unit(el.text) and bool((el.text or "").strip())
 
 
+def is_template(el: ET.Element) -> bool:
+    """A ▶-marked template element with child elements: its inner XML is one unit."""
+    return el.tag in TEMPLATE_TAGS and len(el) > 0 and is_unit(el.text)
+
+
+def inner_xml(el: ET.Element) -> str:
+    """An element's content as XML text, markers removed, unindented like game text."""
+    parts = [_esc_text(strip_marks(el.text or ""))]
+    parts += [ET.tostring(child, encoding="unicode") for child in el]   # each with its tail
+    return unindent(MARKED_ATTR.sub(r"\1", "".join(parts)))
+
+
 def _compound_note(msgid: str) -> str:
     return ("Compound value: translate only the parts that follow each ▶, keep every ▶ and "
             "everything else (keys, separators) as is.")
@@ -219,6 +245,9 @@ class ExampleFile:
                     if strip_marks(msgid):   # "▶" alone: nothing to translate (" " is a real value)
                         out.append(Unit(self.name, f"{here}@{attr}" if here else f"@{attr}", msgid, "attr",
                                         compound, _compound_note(msgid) if compound else None))
+            if is_template(el) and path:
+                out.append(Unit(self.name, here, inner_xml(el), "template", note=TEMPLATE_NOTE))
+                return   # nothing inside a template is a unit of its own
             if _has_text_unit(el) and path:
                 msgid, compound = _text_msgid(el.text)
                 if strip_marks(msgid):
@@ -280,6 +309,13 @@ class ExampleFile:
                     attrs.append((attr, strip_marks(t) if compound else t))
                 else:
                     attrs.append((attr, strip_marks(value)))
+            if is_template(el) and path:
+                msgid = inner_xml(el)
+                t = translations.get((here, msgid))
+                if t is None and not complete:
+                    return None
+                attr_s = "".join(f' {k}="{_esc_attr(v)}"' for k, v in attrs)
+                return f"{indent}<{el.tag}{attr_s}>{msgid if t is None else t}</{el.tag}>"
             text = None
             if _has_text_unit(el) and path:
                 msgid, compound = _text_msgid(el.text)
@@ -372,6 +408,11 @@ class ExampleFile:
                     msgid, compound = _attr_msgid(value)
                     if not compound and tr_el.get(attr) is not None:
                         keep((f"{here}@{attr}" if here else f"@{attr}", msgid), tr_el.get(attr), msgid)
+            if is_template(ex_el) and path:
+                msgid, value = inner_xml(ex_el), inner_xml(tr_el)
+                if value:
+                    keep((here, msgid), value, msgid)
+                return
             if _has_text_unit(ex_el) and path and (tr_el.text or "").strip():
                 msgid, compound = _text_msgid(ex_el.text)
                 if not compound:

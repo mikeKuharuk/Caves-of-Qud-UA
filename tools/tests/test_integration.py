@@ -9,6 +9,7 @@ import collections
 import pathlib
 import sys
 import unittest
+import xml.etree.ElementTree as ET
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
@@ -53,6 +54,20 @@ class RealData(unittest.TestCase):
             for u in units.extract(text, name):
                 if not u.compound:
                     self.assertNotIn(units.MARK, u.msgid, f"{name}: {u.msgctxt}")
+
+    def test_only_known_template_elements_have_markup_inside(self):
+        # A ▶-marked element with child elements that is not a template would lose its children
+        # in the build. If Freehold adds another TemplateElement, TEMPLATE_TAGS must learn it.
+        templates = 0
+        for name, text in FILES.items():
+            for el in units.ExampleFile(text, name).root.iter():
+                if len(el) and units.is_unit(el.text) and (el.text or "").strip():
+                    self.assertIn(el.tag, units.TEMPLATE_TAGS, f"{name}: <{el.tag}>")
+            for u in units.extract(text, name):
+                if u.kind == "template":
+                    templates += 1
+                    ET.fromstring(f"<t>{u.msgid}</t>")   # the msgid itself is well-formed XML
+        self.assertGreater(templates, 300)
 
     def test_excluded_keys_are_not_units(self):
         for name, text in FILES.items():

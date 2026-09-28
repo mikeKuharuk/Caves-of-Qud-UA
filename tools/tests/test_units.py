@@ -193,5 +193,76 @@ class Build(unittest.TestCase):
         self.assertEqual(part.get("DisplayName"), 'A & B <"c">\nd')
 
 
+# <description>, <leveltext> and <template> are LanguageXml.TemplateElement: the whole inner XML
+# is one translatable text, and the game replaces the template with the translated one
+# (Templates.LoadTemplateFromExternal clears the old nodes).
+MUTATIONS = f"""<?xml version="1.0" encoding="utf-8"?>
+<!--
+Caves of Qud - Generated Localizable XML 2.0.212.31
+
+<mutations>
+  <category Name="Key" DisplayName="DisplayText">
+    <mutation Name="Key" DisplayName="DisplayText">
+      <description>
+      <leveltext>
+-->
+<mutations Lang="example" Encoding="utf-8">
+  <category Name="Physical" DisplayName="{M}Physical">
+    <mutation Name="Adrenal Control" DisplayName="{M}Adrenal Control">
+      <description>{M}
+                    <p>You regulate your body's release of adrenaline &amp; more.</p>
+                </description>
+      <leveltext>{M}
+                    <p>You gain +<stat Name="QuicknessBonus" /> quickness and +<stat Name="MutationBonus" Unit="{M}rank" />.</p>
+                    <br />
+                    <statline Name="Cooldown" DisplayName="{M}Cooldown" />
+                </leveltext>
+    </mutation>
+    <mutation Name="Clairvoyance" DisplayName="{M}Clairvoyance">
+      <description>{M}You briefly gain vision of a nearby area.</description>
+      <leveltext></leveltext>
+    </mutation>
+  </category>
+</mutations>
+"""
+LEVELTEXT = ("category[Physical]/mutation[Adrenal Control]/leveltext",
+             '<p>You gain +<stat Name="QuicknessBonus" /> quickness and +<stat Name="MutationBonus" Unit="rank" />.</p>\n'
+             '<br />\n<statline Name="Cooldown" DisplayName="Cooldown" />')
+LEVELTEXT_UK = ('<p>Ви отримуєте +<stat Name="QuicknessBonus" /> до швидкості й +<stat Name="MutationBonus" Unit="ранг" />.</p>\n'
+                '<br />\n<statline Name="Cooldown" DisplayName="Перезаряджання" />')
+
+
+class Templates(unittest.TestCase):
+    def test_inner_xml_is_one_unit_without_markers(self):
+        us = by_key(units.extract(MUTATIONS, "Mutations.example.xml"))
+        self.assertEqual(us[LEVELTEXT].kind, "template")
+        desc = ("category[Physical]/mutation[Adrenal Control]/description",
+                "<p>You regulate your body's release of adrenaline &amp; more.</p>")
+        self.assertEqual(us[desc].kind, "template")
+        # nothing inside a template is a unit of its own
+        self.assertFalse([k for k in us if "statline" in k[0] or "@Unit" in k[0]])
+        # a template without child elements stays a plain text unit; an empty one is no unit
+        plain = ("category[Physical]/mutation[Clairvoyance]/description", "You briefly gain vision of a nearby area.")
+        self.assertEqual(us[plain].kind, "text")
+        self.assertFalse([k for k in us if k[0].endswith("Clairvoyance]/leveltext")])
+
+    def test_build_writes_the_translated_markup(self):
+        xml, count = units.build(MUTATIONS, "Mutations.example.xml", {LEVELTEXT: LEVELTEXT_UK})
+        self.assertEqual(count, 1)
+        mutation = ET.fromstring(xml).find("category/mutation")
+        level = mutation.find("leveltext")
+        self.assertEqual([c.tag for c in level], ["p", "br", "statline"])
+        self.assertEqual(level.find("statline").get("DisplayName"), "Перезаряджання")
+        self.assertEqual(level.find("p/stat[@Name='MutationBonus']").get("Unit"), "ранг")
+        # the untranslated description of the same (complete) entry is restated in English
+        self.assertEqual(mutation.find("description/p").text, "You regulate your body's release of adrenaline & more.")
+        self.assertNotIn(M, xml)
+
+    def test_import_reads_the_template_back(self):
+        xml, _ = units.build(MUTATIONS, "Mutations.example.xml", {LEVELTEXT: LEVELTEXT_UK})
+        back = units.ExampleFile(MUTATIONS, "Mutations.example.xml").read_translation(xml)
+        self.assertEqual(back[LEVELTEXT], LEVELTEXT_UK)
+
+
 if __name__ == "__main__":
     unittest.main()

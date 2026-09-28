@@ -65,7 +65,7 @@ def apply_rows(cat: po.Catalog, rows: list[dict]) -> tuple[int, list[str]]:
         if e is None:
             problems.append(f"unknown unit {r['k']} ({r.get('ctx')}): run sync, or the worksheet is stale")
             continue
-        errors = [i for i in checks.check(e.msgid, uk, compound="qud-compound" in e.flags) if i.severity == "error"]
+        errors = [i for i in checks.check_entry(e, uk) if i.severity == "error"]
         if errors:
             problems.append(f"{e.msgctxt}: " + "; ".join(f"{i.code}: {i.message}" for i in errors))
             continue

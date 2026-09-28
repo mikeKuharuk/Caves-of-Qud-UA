@@ -98,5 +98,38 @@ class Checks(unittest.TestCase):
         self.assertEqual(checks.check("anything", ""), [])
 
 
+SRC_T = ('<p>You gain +<stat Name="Bonus" /> quickness &amp; <stat Name="Rank" Unit="rank" />.</p>\n<br />\n'
+         '<statline Name="Cooldown" DisplayName="Cooldown" />')
+
+
+def tcodes(msgstr, severity=None):
+    return {i.code for i in checks.check(SRC_T, msgstr, template=True) if severity in (None, i.severity)}
+
+
+class TemplateChecks(unittest.TestCase):
+    def test_good_translation_passes(self):
+        # stats may move inside the sentence; DisplayName and Unit are translated; &amp; is text, not a color code
+        dst = ('<p>Ви отримуєте <stat Name="Rank" Unit="ранг" /> &amp; +<stat Name="Bonus" /> до швидкості.</p>\n<br />\n'
+               '<statline Name="Cooldown" DisplayName="Перезаряджання" />')
+        self.assertEqual(checks.check(SRC_T, dst, template=True), [])
+
+    def test_broken_xml_is_an_error(self):
+        self.assertIn("template-xml", tcodes('<p>Ви отримуєте +<stat Name="Bonus" /> до швидкості.</p', severity="error"))
+        self.assertIn("template-xml", tcodes('<p>А & Б</p><br /><statline Name="Cooldown" />', severity="error"))
+
+    def test_lost_or_changed_tags_are_errors(self):
+        no_stat = '<p>Ви отримуєте до швидкості <stat Name="Rank" Unit="ранг" />.</p><br /><statline Name="Cooldown" DisplayName="П" />'
+        renamed = no_stat.replace("до швидкості", '+<stat Name="Bonuz" /> до швидкості')
+        no_br = SRC_T.replace("<br />", "")
+        for dst in (no_stat, renamed, no_br):
+            self.assertIn("template-structure", tcodes(dst, severity="error"), dst)
+
+    def test_reordered_blocks_warn(self):
+        dst = ('<statline Name="Cooldown" DisplayName="Перезаряджання" />\n<br />\n'
+               '<p>Ви отримуєте +<stat Name="Bonus" /> &amp; <stat Name="Rank" Unit="ранг" />.</p>')
+        self.assertIn("template-order", tcodes(dst, severity="warning"))
+        self.assertNotIn("template-structure", tcodes(dst))
+
+
 if __name__ == "__main__":
     unittest.main()

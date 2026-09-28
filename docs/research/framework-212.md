@@ -60,6 +60,30 @@ MarketingVersion 1.1.x, «1.1.0 Lang Beta» у кутку екрана). Код:
   порядком слів.
 - Якщо переклад не знайдено, повертається ID, тобто англійський текст.
 
+### Шаблони: `description`, `leveltext`, `template` **[перевірено в коді]**
+
+- Схеми оголошують їх як `LanguageXml.TemplateElement`:
+  - `MutationFactory`: `description` і `leveltext` мутацій, зокрема прихованих;
+  - `ActivatedAbilities`: `description` здібностей;
+  - `Templates`: `template` (`EffectsDetails`).
+- Вміст — розмітка шаблону: `<p>`, `<br />`, `<stat Name Unit Filters/>`,
+  `<statline Name DisplayName Unit/>`, `<saveline/>`, `<switch>/<case>/<default>`,
+  `<gametext>` зі `=змінними=`.
+- Генератор прикладів ставить `▶` на початок усього вмісту, а також в атрибути `DisplayName` і
+  `Unit` усередині (`TemplateElement.AddTriangles`).
+- Коли елемент трапляється знову, наприклад у нашому файлі, `Templates.LoadTemplateFromExternal`
+  **очищає** вузли шаблону й бере нові. Отже, переклад — це весь внутрішній XML, а не окремі
+  атрибути.
+- Пробіли між блоками на верхньому рівні ігноруються, всередині `<p>` — ні
+  (`ParseXMLTemplateNodes(ignoreWhitespace)`).
+- Одиниця біля числа (`Unit`, типові — `statDefaultUnit` у `Templates`: `Cooldown` і `Duration`
+  → «round») виводиться рядком `XML stat / statline node - Unit pluralization template` =
+  `=unit|value.pluralize=`.
+  - `Grammar.Pluralize` суто англійський, без виклику провайдера: кирилична одиниця отримала б
+    англійське закінчення множини.
+  - Поки немає українського `pluralize` (етап 5), цей рядок перекладаємо як `=unit=`, а одиниці —
+    скороченнями, яким не потрібна множина: «ход.», «°», «кл.».
+
 ### Шрифти **[перевірено в коді]**
 
 - `<lang Code DisplayName FontFamily>`: мова може задати сімейство шрифту (`LanguageData.FontFamily`).

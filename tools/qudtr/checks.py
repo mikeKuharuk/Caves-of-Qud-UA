@@ -12,6 +12,7 @@ import collections
 import dataclasses
 import pathlib
 import re
+import xml.etree.ElementTree as ET
 
 from .units import MARK
 
@@ -75,6 +76,22 @@ def placeholder_key(token: str) -> str:
     return "|".join([".".join(parts), *kept])
 
 
+# Inside a template (<p>, <stat/>, <statline/>, <switch>…) only these attributes are text.
+TEMPLATE_TEXT_ATTRS = frozenset({"DisplayName", "Unit"})
+
+
+def _signature(el: ET.Element) -> tuple:
+    return el.tag, tuple(sorted((k, v) for k, v in el.attrib.items() if k not in TEMPLATE_TEXT_ATTRS))
+
+
+def _template_text(root: ET.Element) -> str:
+    """The text a template shows: its text nodes and translatable attributes, entities resolved.
+    Whitespace around the blocks is not text: the game ignores it at the top level."""
+    texts = ["".join(root.itertext()).strip()]
+    texts += [el.get(a) for el in root.iter() for a in sorted(TEMPLATE_TEXT_ATTRS) if el.get(a)]
+    return "\n".join(texts)
+
+
 def _strip_markup(s: str) -> str:
     s = PLACEHOLDER.sub(" ", s)
     s = SHADER_OPEN.sub(" ", s)
@@ -83,7 +100,13 @@ def _strip_markup(s: str) -> str:
     return s
 
 
-def check(msgid: str, msgstr: str, compound: bool = False) -> list[Issue]:
+def check_entry(entry, msgstr: str | None = None) -> list[Issue]:
+    """check() for a PO entry, the unit kind taken from its flags (qud-compound, qud-template)."""
+    return check(entry.msgid, entry.msgstr if msgstr is None else msgstr,
+                 compound="qud-compound" in entry.flags, template="qud-template" in entry.flags)
+
+
+def check(msgid: str, msgstr: str, compound: bool = False, template: bool = False) -> list[Issue]:
     issues: list[Issue] = []
     if not msgstr:
         return issues
@@ -93,6 +116,23 @@ def check(msgid: str, msgstr: str, compound: bool = False) -> list[Issue]:
 
     def warn(code, msg):
         issues.append(Issue("warning", code, msg))
+
+    # XML templates: the tags are the game's; the checks below then look at the text only
+    if template:
+        src = ET.fromstring(f"<t>{msgid}</t>")
+        try:
+            dst = ET.fromstring(f"<t>{msgstr}</t>")
+        except ET.ParseError as e:
+            err("template-xml", f"not well-formed XML ({e}); write & as &amp; and < as &lt;")
+            return issues
+        src_sig = collections.Counter(map(_signature, src.iter()))
+        dst_sig = collections.Counter(map(_signature, dst.iter()))
+        if src_sig != dst_sig:
+            err("template-structure", f"tags differ: missing {sorted((src_sig - dst_sig).elements())}, "
+                f"extra {sorted((dst_sig - src_sig).elements())}")
+        elif [_signature(c) for c in src] != [_signature(c) for c in dst]:
+            warn("template-order", "the blocks (<p>, <br />, <statline>…) are in a different order")
+        msgid, msgstr = _template_text(src), _template_text(dst)
 
     # ▶ markers
     n_src, n_dst = msgid.count(MARK), msgstr.count(MARK)

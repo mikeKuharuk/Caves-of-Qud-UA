@@ -21,6 +21,13 @@ STORE_DIR = REPO / "translations" / "uk"
 OUT_DIR = REPO / "mod" / "Language"
 BATCH_DIR = REPO / "work" / "batch"
 WORD = re.compile(r"\w+")
+TAG = re.compile(r"<[^>]*>")
+
+
+def _words(e: po.Entry) -> int:
+    """English words of a unit; the tags of an XML template are not words."""
+    return len(WORD.findall(TAG.sub(" ", e.msgid) if "qud-template" in e.flags else e.msgid))
+
 
 # Attributes whose translation must be the same wherever the English is the same, because the
 # game groups things by this text (the options screen groups options by Category).
@@ -90,6 +97,8 @@ def sync_file(xml_text: str, name: str, old: po.Catalog | None) -> tuple[po.Cata
         e.extracted_comments = [u.note] if u.note else []
         if u.compound and "qud-compound" not in e.flags:
             e.flags.append("qud-compound")
+        if u.kind == "template" and "qud-template" not in e.flags:
+            e.flags.append("qud-template")
         entries.append(e)
 
     obsolete = []
@@ -249,7 +258,7 @@ def cmd_validate(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir
         for e in cat.entries:
             if e.obsolete or not e.msgstr:
                 continue
-            for issue in checks.check(e.msgid, e.msgstr, compound="qud-compound" in e.flags):
+            for issue in checks.check_entry(e):
                 if issue.severity == "error":
                     errors += 1
                 else:
@@ -331,8 +340,8 @@ def cmd_stats(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
         live = [e for e in cat.entries if not e.obsolete]
         done = [e for e in live if e.translated]
         fuzzy = [e for e in live if e.msgstr and e.fuzzy]
-        words = sum(len(WORD.findall(e.msgid)) for e in live)
-        done_words = sum(len(WORD.findall(e.msgid)) for e in done)
+        words = sum(map(_words, live))
+        done_words = sum(map(_words, done))
         rows.append((units.po_name(name), len(live), len(done), len(fuzzy), words, done_words))
     print(f"{'file':34} {'units':>7} {'done':>7} {'fuzzy':>6} {'words':>8} {'done%':>6}")
     t = [0, 0, 0, 0, 0]
