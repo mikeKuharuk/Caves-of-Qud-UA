@@ -10,11 +10,14 @@ from __future__ import annotations
 
 import collections
 import dataclasses
+import pathlib
 import re
 
 from .units import MARK
 
 PLACEHOLDER = re.compile(r"=([A-Za-z_][^=\s]*)=")
+REPLACERS = pathlib.Path(__file__).with_name("replacers.tsv")  # tools/analysis/replacers.py
+CASE_POSTPROCESSORS = frozenset({"capitalize", "initUpper", "initLower", "lower", "upper", "title", "capEachLine"})
 SHADER_OPEN = re.compile(r"\{\{([^{}|]*)\|")
 COLOR = re.compile(r"(?<!&)&([A-Za-z])|\^([A-Za-z])")
 COMMAND = re.compile(r"~(?:Cmd[\w:/]+|UI:[\w:/]+)")
@@ -30,6 +33,46 @@ class Issue:
     severity: str   # "error" | "warning"
     code: str
     message: str
+
+
+def _load_capitalizable(path: pathlib.Path = REPLACERS) -> dict[str, frozenset[str]]:
+    """Keys the game also registers with an upper-case first letter, by kind (replacer/post)."""
+    keys: dict[str, set[str]] = {"replacer": set(), "post": set()}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line and not line.startswith("#"):
+            kind, key, cap, _method = line.split("\t")
+            if cap == "1":
+                keys[kind].add(key)
+    return {k: frozenset(v) for k, v in keys.items()}
+
+
+CAPITALIZABLE = _load_capitalizable()
+
+
+def _fold(name: str, kind: str) -> str:
+    low = name[:1].lower() + name[1:]
+    return low if name != low and low in CAPITALIZABLE[kind] else name
+
+
+def placeholder_key(token: str) -> str:
+    """A =placeholder= with the capitalization changes the game accepts folded away.
+
+    =stat.StatDisplayName= and =stat.statDisplayName|capitalize= are the same variable as
+    =stat.statDisplayName=: the first uses the upper-case key registered for replacers with
+    Capitalization = true, the second adds a post-processor that only changes letter case.
+    Capitalizing any other key is kept as a difference: the game would not resolve it.
+    """
+    head, *posts = token.split("|")
+    parts = []
+    for segment in head.split("."):
+        name, sep, params = segment.partition(":")
+        parts.append(_fold(name, "replacer") + sep + params)
+    kept = []
+    for post in posts:
+        name, sep, params = post.partition(":")
+        if name not in CASE_POSTPROCESSORS:
+            kept.append(_fold(name, "post") + sep + params)
+    return "|".join([".".join(parts), *kept])
 
 
 def _strip_markup(s: str) -> str:
@@ -80,8 +123,8 @@ def check(msgid: str, msgstr: str, compound: bool = False) -> list[Issue]:
         warn("shader", f"shader usage differs: {dict(src_sh)} → {dict(dst_sh)}")
 
     # =placeholders=
-    src_ph = collections.Counter(PLACEHOLDER.findall(msgid))
-    dst_ph = collections.Counter(PLACEHOLDER.findall(msgstr))
+    src_ph = collections.Counter(map(placeholder_key, PLACEHOLDER.findall(msgid)))
+    dst_ph = collections.Counter(map(placeholder_key, PLACEHOLDER.findall(msgstr)))
     missing = src_ph - dst_ph
     extra = dst_ph - src_ph
     if missing:

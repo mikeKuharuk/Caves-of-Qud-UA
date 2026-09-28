@@ -38,6 +38,24 @@ class Checks(unittest.TestCase):
         src = "=pronouns.subjective==verb:'re:afterpronoun= here"
         self.assertEqual(sorted(checks.PLACEHOLDER.findall(src)), ["pronouns.subjective", "verb:'re:afterpronoun"])
 
+    def test_capitalized_forms_the_game_registers_are_the_same_placeholder(self):
+        # Ukrainian word order often moves a variable to the start of a sentence.
+        src = "=glyph:ChargenBullet= minimum =min= =stat.statDisplayName="
+        for dst in ("=glyph:ChargenBullet= =stat.StatDisplayName=: щонайменше =min=",       # upper-case key
+                    "=glyph:ChargenBullet= =stat.statDisplayName|capitalize=: щонайменше =min="):  # case-only post-processor
+            self.assertNotIn("placeholder", codes(src, dst), dst)
+        self.assertNotIn("placeholder", codes("=subject.T= hits you.", "=subject.t= б’є вас."))
+
+    def test_capitalizing_a_key_without_an_upper_case_form_warns(self):
+        # dayOfYear has no Capitalization: =now.DayOfYear= would not resolve in the game
+        self.assertIn("placeholder", codes("Day =now.dayOfYear=.", "=now.DayOfYear=-й день.", severity="warning"))
+
+    def test_replacer_list_is_generated_from_the_game(self):
+        self.assertIn("statDisplayName", checks.CAPITALIZABLE["replacer"])
+        self.assertIn("t", checks.CAPITALIZABLE["replacer"])
+        self.assertNotIn("dayOfYear", checks.CAPITALIZABLE["replacer"])
+        self.assertIn("article", checks.CAPITALIZABLE["post"])
+
     def test_command_tokens(self):
         self.assertIn("command", codes("Press ~CmdLook.", "Натисніть ~CmdLok.", severity="error"))
         self.assertNotIn("command", codes("Press ~CmdLook.", "Натисніть ~CmdLook."))
