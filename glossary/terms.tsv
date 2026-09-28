@@ -327,3 +327,34 @@ jerky	в’ялене м’ясо	n	item	proposed	X jerky → в’ялене м
 sap	сік	m	item	proposed	life sap → сік життя
 Mk I / Mk II / Mk III	Mk I / Mk II / Mk III		component	proposed	позначку моделі лишаємо латиною
 Agolgot / Bethsaida / Rermadon / Shug'ruith / Qas / Qon	Аголгот / Бетсаїда / Рермадон / Шуґ’руїт / Кас / Кон		character	proposed	ґірші
+ooze	слизняк	m	species	proposed	фракція oozes → слизняки
+equines	коні	pl	faction	proposed	як у стартовій локації «+50 до репутації серед коней»
+newly sentient beings	новосвідомі істоти	pl	faction	proposed	
+pariahs	парії	pl	faction	proposed	
+mysterious strangers	загадкові чужинці	pl	faction	proposed	
+Naphtaali	Нафтаалі		faction	proposed	Naphtaali tribe → плем’я Нафтаалі; не відмінюється
+svardym	свардим	m	species	proposed	мн. свардими
+Girsh (faction)	ґірші	pl	faction	proposed	один — Ґірш
+apprentice / journeyfriend / disciple / meyvn	учень / підмайстер / послідовник / мейвн	m	title	proposed	ранги баратрумитів
+dromad merchant	купець-дромад	m	title	proposed	мн. купці-дромади
+the modern world	сучасний світ	m	concept	proposed	інтерес тамплієрів Путус
+plagues of the Gyre	пошесті Коловороту	pl	concept	proposed	
+mover	самохід	m	item	proposed	магнітний паланкін на рейках; mover rail → рейка самохода, mover stop → зупинка самохода
+Stiltgrounds	Угіддя Стовпа	pl	place	proposed	
+Tomb of =sultan:N=	Гробниця султана =sultan:N=	f	place	proposed	ім’я з змінної лишається в називному
+sky above X	небо над X (орудний)	n	place	proposed	небо над Джоппою
+subterranean X	підземний X		place	proposed	
+Darkunder	Підморок	m	place	proposed	
+Cryobarrio	Кріоквартал	m	place	proposed	
+Arrivarium	Прибутарій	m	place	proposed	
+Swilling Vast	Хлюпотлива Широчінь	f	place	proposed	
+Great Sea	Велике Море	n	place	proposed	
+Liminal Way	Пороговий Шлях	m	place	proposed	Knights Liminal → Лицарі Порогу; Limen → Поріг
+Northwise moors	Північні вересовища	pl	place	proposed	
+salt desert / salt river	соляна пустеля / солона річка		biome	proposed	
+outskirts	околиці	pl	place	proposed	
+esh (white esh)	еш	m	species	proposed	болотний птах; мн. еші; з івриту (D4.4)
+Brightsheol	Світлошеол	m	place	proposed	
+Great Salt Sea	Велике Соляне Море	n	place	proposed	
+River Opal / River Yonth	річка Опал / річка Йонт	f	place	proposed	Opal’s Duskwaters → Сутінкові води Опалу
+Eyn Rogel	Ейн-Роґель	m	place	proposed	
