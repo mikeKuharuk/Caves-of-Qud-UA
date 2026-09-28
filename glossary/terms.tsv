@@ -431,3 +431,22 @@ Infiltrate	Проникнення	n	mutation	proposed	носії — «лазу�
 Fire Breath	Вогняний подих	m	mutation	proposed	носії — «вогнедишні»
 Quantum Fugue	Квантова фуга	f	mutation	proposed	
 phased	у фазовому зсуві		effect	proposed	ефект Phased
+Inventory & Equipment (tab)	Інвентар і спорядження	m	ui	proposed	вкладка аркуша персонажа
+equip / equipped	спорядити / споряджений		ui	proposed	«Спорядіть бойову сокиру»
+tooltip	підказка	f	ui	proposed	
+Look view / look	режим огляду / оглянути	m	ui	proposed	
+ability bar / hotbar	панель здібностей	f	ui	proposed	
+bump attack	атака зіткненням	f	mechanic	proposed	атакувати, ступивши на клітинку істоти
+points of interest	цікаві місця	pl	ui	proposed	
+rest until healed	відпочити до одужання		ui	proposed	
+world map / local map	мапа світу / локальна мапа	f	ui	proposed	
+message log	журнал повідомлень	m	ui	proposed	
+hitpoints (HP)	очки здоров’я (ОЗ)	pl	stat	proposed	
+permadeath	остаточна смерть	f	mechanic	proposed	
+date: On the =day= of =month=	=day= =month=		pattern	proposed	«30-го Кісу Укс»; порядковий числівник «30-го» — етап 5
+AR (After Resheph)	п. Р. (після Решефа)		concept	proposed	«=year= AR» → «=year= п. Р.»
+Nivvun Ut / Iyur Ut / Simmun Ut / Tuum Ut / Ubu Ut / Uulu Ut	Ніввун Ут / Іюр Ут / Сіммун Ут / Туум Ут / Убу Ут / Уулу Ут	m	calendar	proposed	місяці; Ut → Ут
+Ut yara Ux / Tishru i Ux / Tishru ii Ux / Kisu Ux / Tebet Ux / Shwut Ux / Uru Ux	Ут яра Укс / Тішру i Укс / Тішру ii Укс / Кісу Укс / Тебет Укс / Швут Укс / Уру Укс	m	calendar	proposed	місяці; Ux → Укс; i/ii — латинські цифри
+Beetle Moon Zenith / Waxing / Waning Beetle Moon	Зеніт Жукового Місяця / Висхідний / Спадний Жуковий Місяць	m	calendar	proposed	пори доби
+Harvest Dawn / Waxing / High / Waning Salt Sun	Жнивний світанок / Висхідне / Високе / Спадне Соляне Сонце		calendar	proposed	пори доби
+Hindsun / Jeweled Dusk / Zero Hour	Надвечір’я / Самоцвітні сутінки / Нульова година		calendar	proposed	пори доби
