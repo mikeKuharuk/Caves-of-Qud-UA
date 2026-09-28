@@ -6,9 +6,9 @@
 ## Що це за проєкт
 
 Український переклад Caves of Qud як мод для офіційного фреймворку локалізації (гілка Steam
-`lang-experimental`, збірки 2.0.212+). Рішення й причини — `docs/decisions.md`, план і відкриті
-питання — `docs/plan.md`. Перш ніж щось робити, прочитай `docs/plan.md` і потрібні файли з
-`docs/research/`.
+`lang-experimental`, збірки 2.0.212+). Рішення й причини — `docs/decisions.md`, план і питання —
+`docs/plan.md`. Перш ніж щось робити, прочитай `docs/plan.md` і потрібні файли з
+`docs/research/`. Головний технічний документ — `docs/research/framework-212.md`.
 
 ## Робоча дисципліна
 
@@ -23,33 +23,47 @@
 ## Git
 
 - У **цьому** репозиторії Claude може комітити й пушити (рішення D2). Коміти — завершені логічні
-  кроки з ясними повідомленнями.
-- Створення репозиторію на GitHub і будь-які публічні дії (Workshop, пости) — лише після згоди
-  Mike.
+  кроки з ясними повідомленнями. Remote: `https://github.com/mikeKuharuk/Caves-of-Qud-UA`.
+- Інші публічні дії (Workshop, пости, листи Freehold) — лише після згоди Mike.
 - **Ніколи не комітити** код гри, її дані чи їхні великі фрагменти: `work/decompiled/`,
-  `work/example-language/`, копії `StreamingAssets`. Це авторське право Freehold. Переклад у
-  `mod/Language/*.uk.xml` — наш текст, його комітимо.
+  `work/example-language/`, `work/logs/`, копії `StreamingAssets`. Це авторське право Freehold.
+  Переклад — наш текст, його комітимо.
 
 ## Шляхи
 
 | Що | Де |
 |---|---|
 | Гра | `D:\Steam\steamapps\common\Caves of Qud` (або `$env:QUD_GAME_DIR`) |
-| Дані гри | `CoQ_Data\StreamingAssets\Base\` (на 212+ там є `ExampleLanguage\`) |
+| Дані гри | `CoQ_Data\StreamingAssets\Base\` (таблиці рядків — `ExampleLanguage\`) |
 | Код гри | `CoQ_Data\Managed\Assembly-CSharp.dll` |
-| Моди, логи | `%USERPROFILE%\AppData\LocalLow\Freehold Games\CavesOfQud\` (`Mods\`, `Player.log`, `build_log.txt`) |
-| Декомпільований код | `work/decompiled/Assembly-CSharp/` (2.0.211.56). Для 212 — окрема тека |
+| Моди, логи, опції | `%USERPROFILE%\AppData\LocalLow\Freehold Games\CavesOfQud\` (`Mods\`, `Player.log`, `build_log.txt`, `Local\PlayerOptions.json`) |
+| Декомпільований код | `work/decompiled/<версія>/Assembly-CSharp/` (є `2.0.211.56` і `2.0.212.31`) |
 | Таблиці рядків по збірках | `work/example-language/` (git-дзеркало gnarf, теги `212.x`) |
+| Збережені логи гри | `work/logs/` |
 
 Декомпіляція (ilspycmd встановлено глобально):
-`ilspycmd -p -o work/decompiled/<назва> -r "<Managed>" "<Managed>\Assembly-CSharp.dll"`
+`ilspycmd -p -o work/decompiled/<версія>/Assembly-CSharp -r "<Managed>" "<Managed>\Assembly-CSharp.dll"`
 
-Розгорнути мод у гру для тестів: `powershell -File tools/deploy.ps1` (скасувати: `-Remove`).
+## Тестування в грі
+
+- `powershell -File tools/deploy.ps1` підключає `mod/` до гри через junction (`-Remove` прибирає).
+- Запускати **лише через Steam**: `Start-Process steam://rungameid/333640`. Computer-use
+  `open_application` запускає **другу** копію гри напряму — так не робити. Вікно гри
+  розгортає `SetForegroundWindow`. У request_access застосунок називається `CoQ.exe`.
+- Через computer-use гра не отримує клавішу Escape. Виходити назад кнопкою «[Esc] Back» або
+  правою кнопкою миші. Закривати гру — `CloseMainWindow()`: вона виходить одразу, без
+  підтвердження.
+- Корисні опції (Debug → «Show Debug (Translation) options», потрібні «Show advanced options»):
+  «Log string table lookup misses…» (промахи → `Player.log` → `py tools/misses.py`) і «Enable
+  extra strings xml loading checks». Для швидкої нової гри є «Show quickstart option during
+  character creation».
+- Зміна мови й зміна файлів перекладу вимагають перезапуску гри.
 
 ## Правила перекладу (попередні, до появи `docs/style-guide.md`)
 
-- Кожен файл перекладу: корінь з `Lang="uk" Encoding="utf-8"`, ім'я `*.uk.xml`, лежить у
-  `mod/Language/`.
+- До гравця звертаємося на «ви», з малої літери (D3). Власні назви — за D4.
+- Кожен файл перекладу має корінь з `Lang="uk" Encoding="utf-8"`, називається `*.uk.xml` і
+  лежить у `mod/Language/`. Джерело правди — PO (D5), XML генерується.
 - Не перекладати й не змінювати:
   - `=змінні=`: їх можна переставляти в реченні;
   - ідентифікатори шейдерів `{{id|…}}`: перекладається лише текст праворуч від `|`;
@@ -60,6 +74,7 @@
     `ArmsOnEquip`, `Category`, назви слотів тіла й кольорів.
 - У таблицях рядків `ID` — англійський оригінал. Його не змінювати: перекладається лише вміст
   елемента або `Value`.
-- Префікс `▶` у перекладі прибирати.
+- Жорсткі переноси рядків з англійського оригіналу не копіювати. Абзаци переносить UI; наші
+  рядки іншої довжини, і ламані переноси виглядають погано (перевірено в довідці).
 - Нічого не вигадувати про гру: незрозумілий термін чи контекст шукати в
   `work/example-language`, декомпільованому коді або вікі, а не вгадувати.

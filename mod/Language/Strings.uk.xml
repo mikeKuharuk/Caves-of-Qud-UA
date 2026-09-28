@@ -7,6 +7,7 @@
   <string Context="MainMenu Main" ID="Options">Налаштування</string>
   <string Context="MainMenu Main" ID="Mods">Моди</string>
   <string Context="MainMenu Other" ID="Redeem Code">Ввести код</string>
+  <string Context="MainMenu Other" ID="Modding Toolkit">Інструменти моддингу</string>
   <string Context="MainMenu Other" ID="Credits">Автори</string>
   <string Context="MainMenu Other" ID="Help">Довідка</string>
   <string Context="MainMenu Language" ID="Language (=currentLanguage=)">Мова (=currentLanguage=)</string>
