@@ -28,6 +28,10 @@
 - **Ніколи не комітити** код гри, її дані чи їхні великі фрагменти: `work/decompiled/`,
   `work/example-language/`, `work/logs/`, копії `StreamingAssets`. Це авторське право Freehold.
   Переклад — наш текст, його комітимо.
+- `translations/uk/*.po` містять як `msgid` **весь англійський текст** таблиць рядків (той самий,
+  що Freehold публікують для перекладачів у gnarf/caves-of-qud-example-language), а репозиторій
+  публічний. Поки Mike не вирішить питання Q4 (ліцензія / лист Freehold), PO **не комітити й
+  не пушити**: вони лежать лише локально.
 
 ## Шляхи
 
@@ -43,6 +47,22 @@
 
 Декомпіляція (ilspycmd встановлено глобально):
 `ilspycmd -p -o work/decompiled/<версія>/Assembly-CSharp -r "<Managed>" "<Managed>\Assembly-CSharp.dll"`
+
+## Робочий цикл перекладу
+
+```bash
+py tools/qud.py sync        # англійські таблиці рядків (з гри) → translations/uk/*.po
+py tools/qud.py validate    # 0 помилок перед кожним комітом
+py tools/qud.py build       # PO → mod/Language/*.uk.xml (генеровані, руками не редагувати)
+py tools/qud.py stats       # прогрес
+py -m unittest discover -s tools/tests   # 44 тести, зокрема на реальних даних гри
+```
+
+- Перекладаєш у `translations/uk/*.po`: заповнюєш `msgstr`.
+- Пропозиція, яку Mike ще не підтвердив: чернетки Claude позначати `fuzzy`, доки Mike їх не
+  вичитає. Fuzzy не потрапляє в збірку, а для тесту в грі є `build --include-fuzzy`.
+- `mod/Language/Languages.xml` — єдиний рукописний файл у `mod/Language/`.
+- Стиль — `docs/style-guide.md`.
 
 ## Тестування в грі
 
