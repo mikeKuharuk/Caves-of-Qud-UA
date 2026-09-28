@@ -68,14 +68,17 @@ py tools/qud.py build       # → mod/Language/*.uk.xml (генеровані, �
 py tools/qud.py stats       # прогрес
 py tools/qud.py worksheet Skills.po --out work/batch/Skills.jsonl   # неперекладене → пакет JSONL
 py tools/qud.py apply work/batch/Skills.uk.jsonl                    # заповнений пакет → PO
-py -m unittest discover -s tools/tests   # 65 тестів, зокрема на реальних даних гри
+py -m unittest discover -s tools/tests   # 66 тестів, зокрема на реальних даних гри
 ```
 
-- Пакети (`work/batch/`, не в git) — зручний спосіб перекладати великими порціями: `apply`
-  відмовляє на помилках розмітки й на одиницях, яких уже немає в PO.
+- Пакети (`work/batch/`, не в git) — зручний спосіб перекладати великими порціями:
+  - `apply` відмовляє на помилках розмітки й на одиницях, яких уже немає в PO;
+  - рядок пакета може мати `"comment"` (коментар перекладача) і `"fuzzy": true`.
+- Свідоме відхилення, яке `validate` показує як попередження (наприклад, прибрана англійська
+  `|pluralize`), позначай коментарем перекладача `qud-ok: <код> — причина`. Помилки так не
+  приймаються.
 - Після оновлення гри: декомпілювати нову збірку й перегенерувати список ключів змінних для
   `validate`: `py tools/analysis/replacers.py work/decompiled/<версія>/Assembly-CSharp`.
-
 - Перекладаєш у `work/po/uk/*.po`: заповнюєш `msgstr`. Потім `save` і коміт `translations/`.
 - Переклади Claude йдуть одразу в збірку, без `fuzzy` (D8). Mike вичитує в грі й у PO.
 - Після `git pull` чужих змін: `sync --from-store`.

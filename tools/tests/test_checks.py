@@ -5,7 +5,7 @@ import unittest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-from qudtr import checks  # noqa: E402
+from qudtr import checks, po  # noqa: E402
 from qudtr.units import MARK as M  # noqa: E402
 
 
@@ -96,6 +96,17 @@ class Checks(unittest.TestCase):
 
     def test_empty_translation_is_not_checked(self):
         self.assertEqual(checks.check("anything", ""), [])
+
+    def test_acknowledged_warnings(self):
+        # "qud-ok: <code>" in a translator comment accepts a deliberate deviation; errors stay
+        e = po.Entry(msgid="=unit|value.pluralize=", msgstr="=unit=")
+        self.assertEqual({i.code for i in checks.check_entry(e)}, {"placeholder"})
+        e.translator_comments = ["qud-ok: placeholder — англійська множина псує кирилицю"]
+        self.assertEqual(checks.check_entry(e), [])
+        e.msgstr = "=unit= {{W|"
+        issues = checks.check_entry(e)
+        self.assertIn("braces", {i.code for i in issues})
+        self.assertEqual({i.severity for i in issues}, {"error"})
 
 
 SRC_T = ('<p>You gain +<stat Name="Bonus" /> quickness &amp; <stat Name="Rank" Unit="rank" />.</p>\n<br />\n'

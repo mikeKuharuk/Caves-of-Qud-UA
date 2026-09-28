@@ -92,7 +92,7 @@ Argent Fathers	Срібні Отці	pl	concept	proposed
 meyvn	мейвн	m	title	proposed	ідиш «мейвн» — знавець
 galgal	ґалґал	m	concept	ok	івритське запозичення, лишаємо (D4.4)
 matz	мац	m	concept	ok	івритське запозичення, лишаємо (D4.4)
-nostrum	нострум	m	item	proposed	
+nostrum	знахарське зілля	n	item	proposed	Nostrums (навичка) → Знахарські зілля; назва тоніка ubernostrum → убернострум
 Argyve	Арґайв	m	character	proposed	
 Mehmet	Мехмет	m	character	proposed	
 Elder Irudad	старійшина Ірудад	m	character	proposed	
@@ -174,3 +174,55 @@ croccasins	крокасини	pl	item	proposed	croc + moccasins → крокод
 carbide hand bones	карбідові кістки кистей	pl	item	proposed	
 neck-ring	шийне кільце	n	item	proposed	blood-stained neck-ring → закривавлене шийне кільце
 Issachari	іссахарі	pl	faction	proposed	від біблійного Іссахар (D4.2)
+Acrobatics	Акробатика	f	skill	proposed	
+Axe	Сокира	f	skill	proposed	клас зброї
+Bow and Rifle	Лук і гвинтівка	m	skill	proposed	
+Cudgel	Кийок	m	skill	proposed	клас дробильної зброї
+Customs and Folklore	Звичаї й фольклор	pl	skill	proposed	
+Single Weapon Fighting	Бій однією зброєю	m	skill	proposed	
+Multiweapon Fighting	Бій з кількох рук	m	skill	proposed	Proficiency/Expertise/Mastery → Упевнений/Вправний/Майстерний бій з кількох рук
+Endurance	Загартованість	f	skill	proposed	не «Витривалість»: так уже називається характеристика Toughness
+Physic	Знахарство	n	skill	proposed	Nostrums → Знахарські зілля
+Heavy Weapon	Важка зброя	f	skill	proposed	
+Long Blade	Довгий клинок	m	skill	proposed	клас зброї
+Short Blade	Короткий клинок	m	skill	proposed	клас зброї
+Persuasion	Переконання	n	skill	proposed	
+Pistol	Пістолет	m	skill	proposed	
+Self-discipline	Самодисципліна	f	skill	proposed	
+Shield	Щит	m	skill	proposed	
+Tactics	Тактика	f	skill	proposed	
+Nonlinearity	Нелінійність	f	skill	proposed	
+Proficiency / Expertise / Mastery	володіння / вправність / майстерність		skill	proposed	Axe Proficiency → Володіння сокирою; Weapon Mastery → Майстерність зі зброєю
+Charge	Розгін	m	skill	proposed	розганятися; charging → з розгону
+Lunge	Випад	m	skill	proposed	
+Juke	Фінт	m	skill	proposed	
+Sprint	Спринт	m	skill	proposed	бігти спринтом
+stance (aggressive / defensive / dueling)	стійка (агресивна / захисна / дуельна)	f	skill	proposed	
+Wilderness Lore	Знання краю	n	skill	proposed	Wilderness Lore: Jungles → Знання краю: джунглі
+cooldown	перезаряджання	n	mechanic	proposed	Activated; cooldown 30 → Активна; перезаряджання 30
+activated ability	активна здібність	f	mechanic	proposed	
+penetration / penetration roll	пробиття / кидок пробиття	n	mechanic	proposed	penetrate → пробити (броню)
+to-hit	влучність	f	mechanic	proposed	+2 to hit → +2 до влучності
+critical hit	критичне влучання	n	mechanic	proposed	
+save (Toughness save, difficulty 35)	кидок (кидок Витривалості, складність 35)	m	mechanic	proposed	mental save → ментальний кидок захисту
+modifier (Str modifier)	модифікатор (модифікатор Сили)	m	mechanic	proposed	
+daze / dazed	оглушити / оглушений		mechanic	proposed	
+stun / stunned	приголомшити / приголомшений		mechanic	proposed	
+bleeding	кровотеча	f	mechanic	proposed	
+confused / terrified	у сум’ятті / нажаханий		mechanic	proposed	
+prone / knock prone	збити з ніг		mechanic	proposed	
+primary hand / offhand	основна рука / друга рука	f	mechanic	proposed	
+melee / ranged	ближній бій / бій здалеку	m	mechanic	proposed	missile weapon → метальна чи стрілецька зброя
+natural weapon	природна зброя	f	mechanic	proposed	short-blade class natural weapon → природна зброя класу «короткий клинок»
+round / turn	хід	m	mechanic	proposed	у шаблонах біля числа поки «ход.» (Unit), див. style-guide
+square (distance)	клітинка	f	mechanic	proposed	біля числа поки «кл.»
+negative status effect / debuff	негативний ефект	m	mechanic	proposed	
+hunger / thirst / famished	голод / спрага / виснаження від голоду		mechanic	proposed	
+campfire	багаття	n	item	proposed	
+schematic	схема	f	item	proposed	low/medium/high-tier → низького/середнього/високого рівня
+buckler	баклер	m	item	proposed	
+mutation rank	ранг мутації	m	mechanic	proposed	
+esper	еспер	m	concept	proposed	Esper (морфотип) → Еспер
+psychic aether	психічний етер	m	concept	proposed	
+spacetime	простір-час	m	concept	proposed	spacetime vortex → просторово-часовий вир
+Mutations / Defects	мутації / вади	pl	concept	proposed	Physical Defects → Фізичні вади

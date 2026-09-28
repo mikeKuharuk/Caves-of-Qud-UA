@@ -100,10 +100,20 @@ def _strip_markup(s: str) -> str:
     return s
 
 
+ACKNOWLEDGE = re.compile(r"^qud-ok:\s*([\w-]+(?:\s*,\s*[\w-]+)*)")
+
+
 def check_entry(entry, msgstr: str | None = None) -> list[Issue]:
-    """check() for a PO entry, the unit kind taken from its flags (qud-compound, qud-template)."""
-    return check(entry.msgid, entry.msgstr if msgstr is None else msgstr,
-                 compound="qud-compound" in entry.flags, template="qud-template" in entry.flags)
+    """check() for a PO entry, the unit kind taken from its flags (qud-compound, qud-template).
+
+    A translator comment "qud-ok: code[, code] — why" accepts those warnings for this entry: a
+    deliberate deviation, reviewed once, should not stay noise. Errors cannot be accepted.
+    """
+    accepted = {code.strip() for c in entry.translator_comments if (m := ACKNOWLEDGE.match(c))
+                for code in m.group(1).split(",")}
+    issues = check(entry.msgid, entry.msgstr if msgstr is None else msgstr,
+                   compound="qud-compound" in entry.flags, template="qud-template" in entry.flags)
+    return [i for i in issues if i.severity == "error" or i.code not in accepted]
 
 
 def check(msgid: str, msgstr: str, compound: bool = False, template: bool = False) -> list[Issue]:
