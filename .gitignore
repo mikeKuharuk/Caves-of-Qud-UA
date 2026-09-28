@@ -1,6 +1,14 @@
-# Local-only material: decompiled game code, copies of game data, build output.
-# Game code and data are Freehold Games' copyright and must never be committed.
+# Local-only material: decompiled game code, copies of game data, the PO working copies (they
+# carry the game's English text), logs. Freehold Games' code and text must never be committed.
 /work/
+
+# Generated from translations/ by `py tools/qud.py build`; shipped in releases, not in git
+# (string IDs and untranslated fallbacks in these files are the game's English text).
+/mod/Language/*.xml
+!/mod/Language/Languages.xml
+
+# Guard: PO files hold the English msgids and belong in work/po/, never in translations/.
+/translations/**/*.po
 
 # Build output
 /dist/

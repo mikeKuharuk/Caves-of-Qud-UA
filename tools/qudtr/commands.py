@@ -1,4 +1,10 @@
-"""The sync / build / validate / stats / import commands."""
+"""The sync / save / build / validate / stats / import commands.
+
+Two places hold translations:
+* translations/uk/*.jsonl — the store, committed to git: our text only, no English (store.py);
+* work/po/uk/*.po — the local working copy with the English msgids, rebuilt from the installed
+  game plus the store. Translators edit these; `save` (or `sync`) writes edits to the store.
+"""
 from __future__ import annotations
 
 import collections
@@ -7,12 +13,17 @@ import pathlib
 import re
 import xml.etree.ElementTree as ET
 
-from . import checks, po, units
+from . import checks, po, store, units
 from .sources import REPO
 
-PO_DIR = REPO / "translations" / "uk"
+PO_DIR = REPO / "work" / "po" / "uk"
+STORE_DIR = REPO / "translations" / "uk"
 OUT_DIR = REPO / "mod" / "Language"
 WORD = re.compile(r"\w+")
+
+
+def store_name(example_name: str) -> str:
+    return example_name.removesuffix(".example.xml") + ".jsonl"
 
 
 def _header(build: str | None, name: str) -> dict[str, str]:
@@ -31,7 +42,7 @@ def _header(build: str | None, name: str) -> dict[str, str]:
 
 
 # --------------------------------------------------------------------------------------------
-# sync
+# sync of one catalog against one example file (English side)
 
 def sync_file(xml_text: str, name: str, old: po.Catalog | None) -> tuple[po.Catalog, collections.Counter]:
     """Bring a catalog in line with one example file. Returns (catalog, counts)."""
@@ -87,7 +98,8 @@ def sync_file(xml_text: str, name: str, old: po.Catalog | None) -> tuple[po.Cata
 
     cat = po.Catalog(headers=_header(units.game_build(xml_text), name),
                      header_comments=[f"Ukrainian translation of Caves of Qud — {name}",
-                                      "Source of truth for mod/Language/" + units.output_name(name) + "; run tools/qud.py build."],
+                                      "Local working copy (not in git). Edit msgstr here, then run "
+                                      "`py tools/qud.py save` to update translations/uk/."],
                      entries=entries + obsolete)
     return cat, stats
 
@@ -103,23 +115,77 @@ def _fuzzy_candidate(u: units.Unit, candidates: list[po.Entry], current_keys: se
     return best if difflib.SequenceMatcher(None, best.msgid, u.msgid).ratio() >= 0.5 else None
 
 
-def cmd_sync(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, dry_run: bool = False) -> collections.Counter:
-    po_dir.mkdir(parents=True, exist_ok=True)
+# --------------------------------------------------------------------------------------------
+# working copy <-> store
+
+def load_catalog(xml_text: str, name: str, po_dir: pathlib.Path = PO_DIR,
+                 store_dir: pathlib.Path = STORE_DIR) -> tuple[po.Catalog, list[dict]]:
+    """The local catalog for an example file, rebuilt from the store when there is none yet.
+    Returns (catalog, store orphans)."""
+    path = po_dir / units.po_name(name)
+    _, records = store.load(store_dir / store_name(name))
+    if path.exists():
+        cat = po.load(path)
+        ks = {store.keys(e.msgctxt, e.msgid)[0] for e in cat.entries}
+        return cat, [r for r in records if r["k"] not in ks]
+    cat, _ = sync_file(xml_text, name, None)
+    orphans, _ = store.apply(cat, records)
+    return cat, orphans
+
+
+def cmd_sync(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR,
+             prefer_store: bool = False, quiet: bool = False) -> collections.Counter:
+    """English string tables + store (+ local catalogs) → updated local catalogs and store."""
     total = collections.Counter()
     for name, text in sorted(files.items()):
         path = po_dir / units.po_name(name)
-        old = po.load(path) if path.exists() else None
-        cat, stats = sync_file(text, name, old)
+        spath = store_dir / store_name(name)
+        _, records = store.load(spath)
+        # first align the local catalog with the current English (it knows the old English, so
+        # changed units become fuzzy with the previous msgid), then fill it from the store
+        cat, stats = sync_file(text, name, po.load(path) if path.exists() else None)
+        orphans, applied = store.apply(cat, records, prefer_store)
+        stats.update(applied)
         total.update(stats)
-        changed = stats["new"] or stats["fuzzy"] or stats["obsoleted"] or not path.exists()
-        if changed or not dry_run:
-            print(f"{units.po_name(name):40} kept {stats['kept']:6}  new {stats['new']:6}  "
-                  f"fuzzy {stats['fuzzy']:5}  obsoleted {stats['obsoleted']:5}")
-        if not dry_run:
-            new_text = po.dumps(cat)
-            if not path.exists() or path.read_text(encoding="utf-8") != new_text:
-                path.write_text(new_text, encoding="utf-8", newline="\n")
+        if not quiet and (stats["new"] or stats["fuzzy"] or stats["obsoleted"] or stats["from-store"]
+                          or stats["local-wins"] or stats["moved"]):
+            print(f"{units.po_name(name):34} kept {stats['kept']:6} new {stats['new']:6} fuzzy {stats['fuzzy']:4} "
+                  f"obsoleted {stats['obsoleted']:4} from store {stats['from-store']:4} local wins {stats['local-wins']:3}")
+        _write_po(path, cat)
+        store.dump(spath, store.export(cat, orphans),
+                   {"source": name, "build": units.game_build(text), "lang": "uk"})
     return total
+
+
+def cmd_save(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR) -> int:
+    """Local catalogs → store (after editing in Poedit). Returns the number of records written."""
+    n = 0
+    for name, text in sorted(files.items()):
+        path = po_dir / units.po_name(name)
+        if not path.exists():
+            continue
+        cat = po.load(path)
+        spath = store_dir / store_name(name)
+        header, records = store.load(spath)
+        ks = {store.keys(e.msgctxt, e.msgid)[0] for e in cat.entries}
+        recs = store.export(cat, [r for r in records if r["k"] not in ks])
+        store.dump(spath, recs, {"source": name, "build": cat.headers.get("X-Qud-Build"), "lang": "uk"})
+        n += len(recs)
+    return n
+
+
+def unsaved(cat: po.Catalog, store_dir: pathlib.Path, name: str) -> int:
+    """Translations in the local catalog that the store does not have (yet)."""
+    _, records = store.load(store_dir / store_name(name))
+    have = {(r["k"], r["t"], bool(r.get("f"))) for r in records}
+    return sum(1 for r in store.export(cat) if (r["k"], r["t"], bool(r.get("f"))) not in have)
+
+
+def _write_po(path: pathlib.Path, cat: po.Catalog) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    text = po.dumps(cat)
+    if not path.exists() or path.read_text(encoding="utf-8") != text:
+        path.write_text(text, encoding="utf-8", newline="\n")
 
 
 # --------------------------------------------------------------------------------------------
@@ -130,26 +196,25 @@ def translations_of(cat: po.Catalog, include_fuzzy: bool = False) -> dict:
             if not e.obsolete and e.msgstr and (include_fuzzy or not e.fuzzy)}
 
 
-def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, out_dir: pathlib.Path = OUT_DIR,
-              include_fuzzy: bool = False, force: bool = False) -> int:
+def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR,
+              out_dir: pathlib.Path = OUT_DIR, include_fuzzy: bool = False, force: bool = False) -> int:
     """Write mod/Language/*.uk.xml. Returns the number of problems (0 = fine)."""
     problems = 0
     out_dir.mkdir(parents=True, exist_ok=True)
     for name, text in sorted(files.items()):
-        path = po_dir / units.po_name(name)
         out = out_dir / units.output_name(name)
-        if not path.exists():
-            continue
-        cat = po.load(path)
+        cat, _ = load_catalog(text, name, po_dir, store_dir)
         src_build = units.game_build(text)
         po_build = cat.headers.get("X-Qud-Build")
         if src_build and po_build and src_build != po_build:
-            print(f"warning: {path.name} was synced against {po_build}, the source is {src_build}; run sync")
+            print(f"warning: {units.po_name(name)} was synced against {po_build}, the game has {src_build}; run sync")
         trans = translations_of(cat, include_fuzzy)
         xml, count = units.build(text, name, trans, source_note=f"Game build {src_build}.")
-        unused = len(trans) - count
-        if unused > 0:
-            print(f"warning: {path.name}: {unused} translated entries have no place in the source; run sync")
+        if len(trans) > count:
+            print(f"warning: {units.po_name(name)}: {len(trans) - count} translated entries have no place in the game; run sync")
+        n_unsaved = unsaved(cat, store_dir, name)
+        if n_unsaved:
+            print(f"warning: {units.po_name(name)}: {n_unsaved} translation(s) not saved to translations/uk; run save")
         existing_generated = out.exists() and units.GENERATED_MARKER in out.read_text(encoding="utf-8")[:300]
         if out.exists() and not existing_generated and not force:
             print(f"error: {out} exists and was not generated by this tool; import it first or use --force")
@@ -170,10 +235,12 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, out_dir: pat
 # --------------------------------------------------------------------------------------------
 # validate
 
-def cmd_validate(po_dir: pathlib.Path = PO_DIR, show_warnings: bool = True) -> tuple[int, int]:
+def cmd_validate(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR,
+                 show_warnings: bool = True) -> tuple[int, int]:
     errors = warnings = 0
-    for path in sorted(po_dir.glob("*.po")):
-        cat = po.load(path)
+    for name, text in sorted(files.items()):
+        cat, _ = load_catalog(text, name, po_dir, store_dir)
+        pname = units.po_name(name)
         for e in cat.entries:
             if e.obsolete or not e.msgstr:
                 continue
@@ -186,8 +253,12 @@ def cmd_validate(po_dir: pathlib.Path = PO_DIR, show_warnings: bool = True) -> t
                         continue
                 where = e.msgctxt if e.msgctxt is not None else "(no context)"
                 fuzzy = " [fuzzy]" if e.fuzzy else ""
-                print(f"{issue.severity}: {path.name}: {where}{fuzzy}: {issue.code}: {issue.message}\n"
+                print(f"{issue.severity}: {pname}: {where}{fuzzy}: {issue.code}: {issue.message}\n"
                       f"    en: {e.msgid[:120]!r}\n    uk: {e.msgstr[:120]!r}")
+        n_unsaved = unsaved(cat, store_dir, name)
+        if n_unsaved:
+            warnings += 1
+            print(f"warning: {pname}: {n_unsaved} translation(s) not saved to translations/uk; run save")
     print(f"{errors} error(s), {warnings} warning(s)")
     return errors, warnings
 
@@ -195,16 +266,16 @@ def cmd_validate(po_dir: pathlib.Path = PO_DIR, show_warnings: bool = True) -> t
 # --------------------------------------------------------------------------------------------
 # stats
 
-def cmd_stats(po_dir: pathlib.Path = PO_DIR) -> None:
+def cmd_stats(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR) -> None:
     rows = []
-    for path in sorted(po_dir.glob("*.po")):
-        cat = po.load(path)
+    for name, text in sorted(files.items()):
+        cat, _ = load_catalog(text, name, po_dir, store_dir)
         live = [e for e in cat.entries if not e.obsolete]
         done = [e for e in live if e.translated]
         fuzzy = [e for e in live if e.msgstr and e.fuzzy]
         words = sum(len(WORD.findall(e.msgid)) for e in live)
         done_words = sum(len(WORD.findall(e.msgid)) for e in done)
-        rows.append((path.name, len(live), len(done), len(fuzzy), words, done_words))
+        rows.append((units.po_name(name), len(live), len(done), len(fuzzy), words, done_words))
     print(f"{'file':34} {'units':>7} {'done':>7} {'fuzzy':>6} {'words':>8} {'done%':>6}")
     t = [0, 0, 0, 0, 0]
     for name, n, d, f, w, dw in rows:
@@ -222,29 +293,27 @@ def import_translation(example_xml: str, name: str, translated_xml: str, skip_id
 
 
 def cmd_import(files: dict[str, str], translated: list[pathlib.Path], po_dir: pathlib.Path = PO_DIR,
-               overwrite: bool = False) -> int:
-    """Fill PO entries from existing *.uk.xml files. Returns the number of imported strings."""
+               store_dir: pathlib.Path = STORE_DIR, overwrite: bool = False) -> int:
+    """Fill local catalogs (and the store) from existing *.uk.xml files. Returns the count imported."""
     total = 0
     for tpath in translated:
-        stem = tpath.name.removesuffix(".uk.xml")
-        name = stem + ".example.xml"
+        name = tpath.name.removesuffix(".uk.xml") + ".example.xml"
         if name not in files:
             print(f"skip {tpath.name}: no {name} in the source")
             continue
         found = import_translation(files[name], name, tpath.read_text(encoding="utf-8-sig"))
-        path = po_dir / units.po_name(name)
-        cat, _ = sync_file(files[name], name, po.load(path) if path.exists() else None)
+        cat, orphans = load_catalog(files[name], name, po_dir, store_dir)
+        cat, _ = sync_file(files[name], name, cat)
         n = 0
         for e in cat.entries:
-            if e.obsolete or e.key not in found:
-                continue
-            if e.msgstr and not overwrite:
+            if e.obsolete or e.key not in found or (e.msgstr and not overwrite):
                 continue
             e.msgstr = found[e.key]
             e.fuzzy = False
             n += 1
-        po_dir.mkdir(parents=True, exist_ok=True)
-        path.write_text(po.dumps(cat), encoding="utf-8", newline="\n")
+        _write_po(po_dir / units.po_name(name), cat)
+        store.dump(store_dir / store_name(name), store.export(cat, orphans),
+                   {"source": name, "build": units.game_build(files[name]), "lang": "uk"})
         print(f"{tpath.name:40} imported {n} of {len(found)} found")
         total += n
     return total

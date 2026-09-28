@@ -3,8 +3,11 @@
 Неофіційний український переклад [Caves of Qud](https://store.steampowered.com/app/333640/Caves_of_Qud/)
 (Freehold Games, видавець Kitfox Games).
 
-> **Статус: інфраструктура.** Доказ концепції перевірено в грі (гілка `lang-experimental`
-> 2.0.212.31), конвеєр PO → XML готовий, перекладено 16 рядків із ~24,7 тис.
+> **Статус: інфраструктура.**
+> - Доказ концепції перевірено в грі (гілка `lang-experimental` 2.0.212.31).
+> - Конвеєр перекладу готовий.
+> - Перекладено 16 рядків із ~24,7 тис.
+>
 > План — у [`docs/plan.md`](docs/plan.md).
 
 ## Як це працюватиме
@@ -17,28 +20,45 @@
 Встановлення (коли з'явиться перший реліз):
 
 1. Steam → Caves of Qud → Властивості → Бета-версії → `lang-experimental`.
-2. Скопіювати теку `mod/` у `%USERPROFILE%\AppData\LocalLow\Freehold Games\CavesOfQud\Mods\CavesOfQudUA`.
+2. Розпакувати реліз у `%USERPROFILE%\AppData\LocalLow\Freehold Games\CavesOfQud\Mods\CavesOfQudUA`.
 3. У грі увімкнути «Allow scripting mods», вибрати мову «Українська» в меню мов (лівий нижній кут
    титульного екрана) і **почати нову гру**: збереження фіксують текст у момент створення
    об'єктів.
+
+## Для перекладачів
+
+Потрібні встановлена гра на `lang-experimental` і Python 3.10+ (лише стандартна бібліотека).
+
+```bash
+py tools/qud.py sync       # робочі PO з англійським оригіналом → work/po/uk/*.po
+# редагуємо work/po/uk/*.po (Poedit або будь-який редактор)
+py tools/qud.py save       # наш текст → translations/uk/*.jsonl (це й комітимо)
+py tools/qud.py validate
+py tools/qud.py build      # → mod/Language/*.uk.xml
+powershell -File tools/deploy.ps1   # підключити mod/ до гри
+```
+
+Стиль і правила — [`docs/style-guide.md`](docs/style-guide.md).
 
 ## Структура репозиторію
 
 | Шлях | Що там |
 |---|---|
-| `translations/uk/*.po` | **Переклад** (джерело правди): по PO-файлу на кожну таблицю рядків гри |
-| `mod/` | Сам мод: `manifest.json`, `Language/` (`Languages.xml` + згенеровані `*.uk.xml`, пізніше C#) |
+| `translations/uk/*.jsonl` | **Переклад**: лише український текст, одиниці позначені хешами (див. `NOTICE.md`) |
+| `mod/` | Сам мод: `manifest.json`, `Language/Languages.xml`. `*.uk.xml` генеруються й у git не йдуть |
 | `docs/plan.md` | Етапи роботи й відкриті питання |
 | `docs/decisions.md` | Журнал рішень |
 | `docs/style-guide.md` | Стиль перекладу й робочий цикл |
 | `docs/research/` | Дослідження: офіційний фреймворк, інші переклади, як гра працює з текстом |
-| `tools/qud.py` | `sync` / `build` / `validate` / `stats` / `import` (модулі в `tools/qudtr/`, тести в `tools/tests/`) |
+| `tools/qud.py` | `sync` / `save` / `build` / `validate` / `stats` / `import` (модулі в `tools/qudtr/`, тести в `tools/tests/`) |
 | `tools/deploy.ps1` | Підключає `mod/` до теки модів гри через junction (для розробки) |
 | `tools/misses.py` | Збирає з `Player.log` рядки, для яких гра не знайшла перекладу |
 | `tools/analysis/` | Скрипти, що міряють обсяг тексту й зміни між збірками |
-| `work/` | Лише локально, не в git: декомпільований код гри, дзеркало таблиць рядків |
+| `work/` | Лише локально, не в git: робочі PO, декомпільований код гри, дзеркало таблиць рядків |
 
 ## Права
 
-Caves of Qud і весь оригінальний текст гри належать Freehold Games. Це некомерційний фанатський
-переклад. Код гри та її дані в репозиторій не потрапляють (`work/` у `.gitignore`).
+Caves of Qud і весь оригінальний вміст гри належать **Freehold Games**. Це неофіційний
+некомерційний фанатський переклад. Код репозиторію поширюється за MIT (`LICENSE`), текст
+перекладу — ні. Подробиці — у [`NOTICE.md`](NOTICE.md). У репозиторії немає файлів гри,
+декомпільованого коду й англійського тексту гри.

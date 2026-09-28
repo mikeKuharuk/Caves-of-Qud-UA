@@ -1,13 +1,16 @@
 """Translation workflow for Caves of Qud (Ukrainian).
 
-  py tools/qud.py sync     [--source DIR | --tag 212.31]   ExampleLanguage → translations/uk/*.po
-  py tools/qud.py build    [--source DIR | --tag 212.31]   translations/uk/*.po → mod/Language/*.uk.xml
-  py tools/qud.py validate [--errors-only]                 markup and typography checks
-  py tools/qud.py stats                                    progress per file
-  py tools/qud.py import FILE.uk.xml ... [--source ...]    fill PO from existing translated XML
+  py tools/qud.py sync     [--from-store] [--source DIR | --tag 212.31]
+        game string tables + translations/uk/*.jsonl → work/po/uk/*.po (and back to the store)
+  py tools/qud.py save     work/po/uk/*.po → translations/uk/*.jsonl (after editing the PO files)
+  py tools/qud.py build    [--include-fuzzy]   → mod/Language/*.uk.xml
+  py tools/qud.py validate [--errors-only]     markup and typography checks
+  py tools/qud.py stats                        progress per file
+  py tools/qud.py import FILE.uk.xml ...       fill translations from existing translated XML
 
-The source of the English string tables defaults to the installed game's
-CoQ_Data/StreamingAssets/Base/ExampleLanguage (set QUD_GAME_DIR to override).
+translations/uk/*.jsonl (in git) holds only our Ukrainian text; the English lives in the local
+PO working copies, rebuilt from the installed game. The English string tables default to the
+installed game's CoQ_Data/StreamingAssets/Base/ExampleLanguage (set QUD_GAME_DIR to override).
 """
 import argparse
 import pathlib
@@ -28,39 +31,41 @@ def main(argv=None) -> int:
         g.add_argument("--tag", help="tag of the work/example-language mirror, e.g. 212.31")
         return p
 
-    p_sync = with_source(sub.add_parser("sync", help="update PO catalogs from the English string tables"))
-    p_sync.add_argument("--dry-run", action="store_true")
+    p_sync = with_source(sub.add_parser("sync", help="update the local PO catalogs and the store"))
+    p_sync.add_argument("--from-store", action="store_true",
+                        help="on conflicts take the store's translation (e.g. after pulling others' work)")
+    with_source(sub.add_parser("save", help="write edits from the local PO catalogs to the store"))
     p_build = with_source(sub.add_parser("build", help="generate mod/Language/*.uk.xml"))
-    p_build.add_argument("--include-fuzzy", action="store_true", help="also use fuzzy translations (for testing)")
+    p_build.add_argument("--include-fuzzy", action="store_true", help="also use fuzzy translations")
     p_build.add_argument("--force", action="store_true", help="overwrite hand-written output files")
-    p_val = sub.add_parser("validate", help="check translations")
+    p_val = with_source(sub.add_parser("validate", help="check translations"))
     p_val.add_argument("--errors-only", action="store_true")
-    sub.add_parser("stats", help="translation progress")
-    p_imp = with_source(sub.add_parser("import", help="import existing *.uk.xml into PO"))
+    with_source(sub.add_parser("stats", help="translation progress"))
+    p_imp = with_source(sub.add_parser("import", help="import existing *.uk.xml"))
     p_imp.add_argument("files", nargs="+", type=pathlib.Path)
     p_imp.add_argument("--overwrite", action="store_true")
 
     a = ap.parse_args(argv)
+    files, desc = sources.load(a.source, a.tag)
+    print(f"source: {desc}")
     if a.cmd == "sync":
-        files, desc = sources.load(a.source, a.tag)
-        print(f"source: {desc}")
-        total = commands.cmd_sync(files, dry_run=a.dry_run)
-        print(f"total: kept {total['kept']}, revived {total['revived']}, new {total['new']}, "
-              f"fuzzy {total['fuzzy']}, obsoleted {total['obsoleted']}, duplicates skipped {total['duplicate']}")
+        t = commands.cmd_sync(files, prefer_store=a.from_store)
+        print(f"total: kept {t['kept']}, revived {t['revived']}, new {t['new']}, fuzzy {t['fuzzy']}, "
+              f"obsoleted {t['obsoleted']}, from store {t['from-store']}, moved {t['moved']}, "
+              f"local wins {t['local-wins']}, store orphans {t['orphans']}")
+        return 0
+    if a.cmd == "save":
+        print(f"saved {commands.cmd_save(files)} translation record(s)")
         return 0
     if a.cmd == "build":
-        files, desc = sources.load(a.source, a.tag)
-        print(f"source: {desc}")
         return 1 if commands.cmd_build(files, include_fuzzy=a.include_fuzzy, force=a.force) else 0
     if a.cmd == "validate":
-        errors, _ = commands.cmd_validate(show_warnings=not a.errors_only)
+        errors, _ = commands.cmd_validate(files, show_warnings=not a.errors_only)
         return 1 if errors else 0
     if a.cmd == "stats":
-        commands.cmd_stats()
+        commands.cmd_stats(files)
         return 0
     if a.cmd == "import":
-        files, desc = sources.load(a.source, a.tag)
-        print(f"source: {desc}")
         commands.cmd_import(files, a.files, overwrite=a.overwrite)
         return 0
     return 2
