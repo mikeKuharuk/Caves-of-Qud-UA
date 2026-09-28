@@ -13,13 +13,18 @@ import pathlib
 import re
 import xml.etree.ElementTree as ET
 
-from . import checks, po, store, units
+from . import batch, checks, po, store, units
 from .sources import REPO
 
 PO_DIR = REPO / "work" / "po" / "uk"
 STORE_DIR = REPO / "translations" / "uk"
 OUT_DIR = REPO / "mod" / "Language"
+BATCH_DIR = REPO / "work" / "batch"
 WORD = re.compile(r"\w+")
+
+# Attributes whose translation must be the same wherever the English is the same, because the
+# game groups things by this text (the options screen groups options by Category).
+CONSISTENT = {("Options.po", "@Category"), ("Mods.po", "@TinkerCategory")}
 
 
 def store_name(example_name: str) -> str:
@@ -255,12 +260,65 @@ def cmd_validate(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir
                 fuzzy = " [fuzzy]" if e.fuzzy else ""
                 print(f"{issue.severity}: {pname}: {where}{fuzzy}: {issue.code}: {issue.message}\n"
                       f"    en: {e.msgid[:120]!r}\n    uk: {e.msgstr[:120]!r}")
+        for po_file, suffix in CONSISTENT:
+            if po_file != pname:
+                continue
+            seen: dict[str, set] = collections.defaultdict(set)
+            for e in cat.entries:
+                if not e.obsolete and e.msgstr and (e.msgctxt or "").endswith(suffix):
+                    seen[e.msgid].add(e.msgstr)
+            for en, uks in sorted(seen.items()):
+                if len(uks) > 1:
+                    errors += 1
+                    print(f"error: {pname}: {suffix} {en!r} is translated in different ways {sorted(uks)}; "
+                          f"the game groups by this text")
         n_unsaved = unsaved(cat, store_dir, name)
         if n_unsaved:
             warnings += 1
             print(f"warning: {pname}: {n_unsaved} translation(s) not saved to translations/uk; run save")
     print(f"{errors} error(s), {warnings} warning(s)")
     return errors, warnings
+
+
+# --------------------------------------------------------------------------------------------
+# worksheets
+
+def _example_for_po(files: dict[str, str], po_name: str) -> str:
+    name = po_name.removesuffix(".po") + ".example.xml"
+    if name not in files:
+        raise SystemExit(f"no {name} in the source")
+    return name
+
+
+def cmd_worksheet(files: dict[str, str], po_name: str, out: pathlib.Path | None, ctx: str | None = None,
+                  include_translated: bool = False, limit: int | None = None,
+                  po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR) -> pathlib.Path:
+    name = _example_for_po(files, po_name)
+    cat, _ = load_catalog(files[name], name, po_dir, store_dir)
+    rows = batch.make_worksheet(cat, po_name, ctx, include_translated, limit)
+    out = out or BATCH_DIR / (po_name.removesuffix(".po") + ".jsonl")
+    batch.write(out, rows)
+    print(f"{out}: {len(rows) - 1} unit(s)")
+    return out
+
+
+def cmd_apply(files: dict[str, str], paths: list[pathlib.Path], po_dir: pathlib.Path = PO_DIR,
+              store_dir: pathlib.Path = STORE_DIR) -> int:
+    """Worksheets → local catalogs → store. Returns the number of problems."""
+    problems_total = 0
+    for path in paths:
+        header, rows = batch.read(path)
+        name = _example_for_po(files, header["po"])
+        cat, orphans = load_catalog(files[name], name, po_dir, store_dir)
+        applied, problems = batch.apply_rows(cat, rows)
+        for p in problems:
+            print(f"error: {path.name}: {p}")
+        problems_total += len(problems)
+        _write_po(po_dir / units.po_name(name), cat)
+        store.dump(store_dir / store_name(name), store.export(cat, orphans),
+                   {"source": name, "build": units.game_build(files[name]), "lang": "uk"})
+        print(f"{path.name}: applied {applied}, problems {len(problems)}")
+    return problems_total
 
 
 # --------------------------------------------------------------------------------------------

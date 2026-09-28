@@ -1,0 +1,109 @@
+en	uk	gender	category	status	note
+Qud	Куд	m	place	proposed	q → к (як Qatar → Катар). Родовий: Куду. Назву гри «Caves of Qud» не перекладаємо
+Joppa	Джоппа	f	place	ok	рішення Mike (D9). Родовий: Джоппи, місцевий: у Джоппі
+Moghra'yi	Мограї	f	place	proposed	Велика Соляна Пустеля. Родовий: Мограї
+Great Salt Desert	Велика Соляна Пустеля	f	place	proposed
+salt marsh	солончаки	pl	biome	proposed	як назва краю — Солончаки
+jungle	джунглі	pl	biome	proposed
+Red Rock	Червона Скеля	f	place	proposed	описова назва — перекладаємо (D4.3)
+Grit Gate	Піщана Брама	f	place	ask	Варіанти: Піщана Брама, Жорствяна Брама, Ґріт-Ґейт
+Six Day Stilt	Шестиденний Стовп	m	place	ask	the Stilt → Стовп. Варіанти: Шестиденний Стовп, Стовп Шести Днів
+Stilt	Стовп	m	place	proposed	див. Six Day Stilt
+Bethesda Susa	Бетесда-Суза	f	place	proposed
+Golgotha	Голгофа	f	place	proposed	усталена біблійна форма (D4.2)
+Kyakukya	Кякукя	f	place	proposed
+Bey Lah	Бей Лах	m	place	proposed
+Omonporch	Омонпорч	m	place	proposed
+Ezra	Ездра	f	place	proposed	біблійна форма імені (D4.2)
+Yd Freehold	Вільноземелля Ід	n	place	ask	Варіанти: Вільноземелля Ід, Ід-Фріголд
+Tomb of the Eaters	Гробниця Пожирачів	f	place	proposed
+the Spindle	Веретено	n	place	proposed
+Chavvah, the Tree of Life	Хавва, Древо Життя	f	place	proposed	Chavvah = Єва (івр.), лишаємо транскрипцію
+Tree of Life	Древо Життя	n	concept	proposed
+North Sheva	Північна Шева	f	place	proposed
+Moon Stair	Місячні Сходи	pl	place	proposed
+Rainbow Wood	Райдужний Ліс	m	place	proposed
+Asphalt Mines	Асфальтові Копальні	pl	place	proposed
+Palladium Reef	Паладієвий Риф	m	place	proposed
+Starfarer's Quay	Причал Зореплавців	m	place	proposed
+Northern Ark	Північний Ковчег	m	place	proposed
+Thin World	Тонкий Світ	m	place	proposed
+Eyn Roj	Ейн-Родж	m	place	proposed
+Lake Hinnom	озеро Гінном	n	place	proposed
+River Svy	річка Сві	f	place	proposed
+Temple of the Rock	Храм Скелі	m	place	proposed
+Tzimtzlum	Цимцлум	m	place	proposed
+Pale Sea	Бліде Море	n	place	proposed
+Rust Wells	Іржаві Колодязі	pl	place	proposed
+Barathrum	Баратрум	m	character	ok	приклад з D4
+Barathrumites	баратрумити	pl	faction	proposed
+Mechanimists	механімісти	pl	faction	proposed
+Putus Templar	тамплієри Путус	pl	faction	proposed
+Consortium of Phyta	Консорціум Фіти	m	faction	proposed
+Seekers of the Sightless Way	Шукачі Незрячого Шляху	pl	faction	proposed
+Children of Mamon	Діти Мамона	pl	faction	proposed
+Mamon Souldrinker	Мамон Душепий	m	character	proposed
+Cult of the Coiled Lamb	Культ Скрученого Ягняти	m	faction	proposed
+Daughters of Exile	Дочки Вигнання	pl	faction	proposed
+Fellowship of Wardens	Товариство Вартових	n	faction	proposed
+Knights Liminal	Лицарі Порогу	pl	faction	proposed
+Quetzal Council	Рада Кецаля	f	faction	proposed
+Farmers' Guild	Гільдія фермерів	f	faction	proposed
+Merchants' Guild	Гільдія торговців	f	faction	proposed
+water barons	водяні барони	pl	faction	proposed
+villagers of Joppa	селяни Джоппи	pl	faction	proposed	за D9 (Джоппа)
+hindren	гіндрени	pl	species	ask	Варіанти: гіндрени (транскрипція), ланичі (від hind — лань)
+Hindriarch	гіндріарх	m	title	proposed
+mopango	мопанго	pl	species	proposed	не відмінюється
+goatfolk	козлолюди	pl	species	proposed
+snapjaw	пащеклац	m	species	ok	варіант Mike (D9). Родовий: пащеклаца; мн.: пащеклаци, пащеклаців
+girshling	ґіршлінг	m	species	proposed	Girsh → Ґірш
+Girsh	Ґірш	m	species	proposed
+slynth	слінт	m	species	proposed
+dromad	дромад	m	species	proposed
+baetyl	бетил	m	object	proposed	священний камінь
+salthopper	солестриб	m	species	proposed
+glowfish	світлорибка	f	species	proposed
+qudzu	кудзу	f	species	proposed	гра слів: kudzu + Qud
+True Kin	Чистокровні	pl	genotype	ok	рішення Mike (D9). Одна особа: чистокровний/чистокровна
+Mutated Human	Мутована людина	f	genotype	proposed
+dram	драм	m	currency	ok	рішення Mike (D9). 1 драм, 2 драми, 5 драмів
+water ritual	ритуал води	m	concept	proposed
+fresh water	прісна вода	f	item	proposed
+watervine	водолоза	f	species	proposed	описовий неологізм — перекладаємо (D4.3)
+chrome	хром	m	material	proposed
+metachrome	метахром	m	material	proposed
+zetachrome	зетахром	m	material	proposed
+carbide	карбід	m	material	proposed
+tonic	тонік	m	item	proposed
+artifact	артефакт	m	item	proposed
+scrap	брухт	m	item	proposed
+bits	біти	pl	item	proposed	тінкерські компоненти
+energy cell	енергоелемент	m	item	proposed
+sultan	султан	m	title	proposed
+Resheph	Решеф	m	character	ok	приклад з D4
+Shekhinah	Шехіна	f	concept	ok	приклад з D4
+the Gyre	Коловорот	m	concept	ask	Варіанти: Коловорот, Вир, Ґайр
+Eaters	Пожирачі	pl	faction	proposed
+Beetle Moon	Жуковий Місяць	m	concept	proposed
+High Salt Sun	Високе Соляне Сонце	n	concept	proposed
+Great Machine	Велика Машина	f	concept	proposed
+Argent Fathers	Срібні Отці	pl	concept	proposed
+meyvn	мейвн	m	title	proposed	ідиш «мейвн» — знавець
+galgal	ґалґал	m	concept	ok	івритське запозичення, лишаємо (D4.4)
+matz	мац	m	concept	ok	івритське запозичення, лишаємо (D4.4)
+nostrum	нострум	m	item	proposed
+Argyve	Арґайв	m	character	proposed
+Mehmet	Мехмет	m	character	proposed
+Elder Irudad	старійшина Ірудад	m	character	proposed
+Tam	Там	m	character	proposed	торговець-дромад у Джоппі
+Ctesiphus	Ктесіф	m	character	proposed	кіт у Джоппі
+Otho	Ото	m	character	proposed
+Q Girl	Кью-дівчина	f	character	proposed
+Sparafucile	Спарафучіле	m	character	proposed
+Pax Klanq	Пакс Кланк	m	character	proposed
+Asphodel	Асфодель	f	character	proposed	займенник xe
+Lulihart	Лулігарт	m	character	proposed	займенник they
+Neek	Нік	m	character	proposed	займенник they
+Nima Ruda	Німа Руда	f	character	proposed
+Warden	вартовий	m	title	proposed	жіночий рід — вартова

@@ -1,0 +1,77 @@
+"""Worksheets for translating in batches.
+
+A worksheet is a JSON Lines file under work/batch/ (not in git: it carries the English):
+
+  {"po": "Options.po"}                                              <- header
+  {"k": "<unit hash>", "ctx": "option[ID=X]@DisplayText", "en": "Main volume", "uk": ""}
+
+`worksheet` writes one from a local PO catalog; after the "uk" fields are filled in, `apply`
+puts them into the catalog (and the store). Lines with an empty "uk" are skipped; a line may
+carry "fuzzy": true to mark a doubtful translation, and "comment" for a translator comment.
+"""
+from __future__ import annotations
+
+import json
+import pathlib
+import re
+
+from . import checks, po, store
+
+
+def make_worksheet(cat: po.Catalog, po_name: str, ctx_pattern: str | None = None,
+                   include_translated: bool = False, limit: int | None = None) -> list[dict]:
+    rx = re.compile(ctx_pattern) if ctx_pattern else None
+    rows = []
+    for e in cat.entries:
+        if e.obsolete or (e.msgstr and not include_translated and not e.fuzzy):
+            continue
+        if rx and not rx.search(e.msgctxt or ""):
+            continue
+        row = {"k": store.keys(e.msgctxt, e.msgid)[0], "ctx": e.msgctxt, "en": e.msgid, "uk": e.msgstr}
+        if e.extracted_comments:
+            row["note"] = " ".join(e.extracted_comments)
+        if e.previous_msgid is not None:
+            row["previous_en"] = e.previous_msgid
+        rows.append(row)
+        if limit and len(rows) >= limit:
+            break
+    return [{"po": po_name}] + rows
+
+
+def write(path: pathlib.Path, rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        for r in rows:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+
+
+def read(path: pathlib.Path) -> tuple[dict, list[dict]]:
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if not rows or "po" not in rows[0]:
+        raise ValueError(f"{path}: the first line must be a header with the PO name")
+    return rows[0], rows[1:]
+
+
+def apply_rows(cat: po.Catalog, rows: list[dict]) -> tuple[int, list[str]]:
+    """Put worksheet translations into the catalog. Returns (applied, problems)."""
+    by_k = {store.keys(e.msgctxt, e.msgid)[0]: e for e in cat.entries if not e.obsolete}
+    applied = 0
+    problems = []
+    for r in rows:
+        uk = r.get("uk") or ""
+        if not uk:
+            continue
+        e = by_k.get(r["k"])
+        if e is None:
+            problems.append(f"unknown unit {r['k']} ({r.get('ctx')}): run sync, or the worksheet is stale")
+            continue
+        errors = [i for i in checks.check(e.msgid, uk, compound="qud-compound" in e.flags) if i.severity == "error"]
+        if errors:
+            problems.append(f"{e.msgctxt}: " + "; ".join(f"{i.code}: {i.message}" for i in errors))
+            continue
+        e.msgstr = uk
+        e.fuzzy = bool(r.get("fuzzy"))
+        if r.get("comment"):
+            e.translator_comments = [r["comment"]]
+        applied += 1
+    return applied, problems

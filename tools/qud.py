@@ -44,6 +44,14 @@ def main(argv=None) -> int:
     p_imp = with_source(sub.add_parser("import", help="import existing *.uk.xml"))
     p_imp.add_argument("files", nargs="+", type=pathlib.Path)
     p_imp.add_argument("--overwrite", action="store_true")
+    p_ws = with_source(sub.add_parser("worksheet", help="write a JSONL worksheet of units to translate"))
+    p_ws.add_argument("po", help="catalog name, e.g. Options.po")
+    p_ws.add_argument("--ctx", help="regex on the unit key (msgctxt)")
+    p_ws.add_argument("--all", action="store_true", help="include already translated units")
+    p_ws.add_argument("--limit", type=int)
+    p_ws.add_argument("--out", type=pathlib.Path)
+    p_ap = with_source(sub.add_parser("apply", help="apply filled-in worksheets"))
+    p_ap.add_argument("worksheets", nargs="+", type=pathlib.Path)
 
     a = ap.parse_args(argv)
     files, desc = sources.load(a.source, a.tag)
@@ -68,6 +76,11 @@ def main(argv=None) -> int:
     if a.cmd == "import":
         commands.cmd_import(files, a.files, overwrite=a.overwrite)
         return 0
+    if a.cmd == "worksheet":
+        commands.cmd_worksheet(files, a.po, a.out, a.ctx, a.all, a.limit)
+        return 0
+    if a.cmd == "apply":
+        return 1 if commands.cmd_apply(files, a.worksheets) else 0
     return 2
 
 

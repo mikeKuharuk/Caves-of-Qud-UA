@@ -16,6 +16,8 @@
   - Англійський текст потрібен лише локально: інструменти беруть його з копії гри, яка є в
     кожного, хто працює з перекладом.
   - Невеликі цитати в документації й тестах ілюструють технічні питання.
+  - Глосарій (`glossary/terms.tsv`) — список окремих назв і термінів гри з українськими
+    відповідниками, а не текст гри.
 - Готові файли моду (`mod/Language/*.uk.xml`) генеруються й поширюються лише як сам мод. Формат
   локалізації Freehold вимагає, щоб у них були англійські ідентифікатори рядків (для таблиць
   рядків ідентифікатор — це англійський текст). Англійською лишаються й неперекладені частини
@@ -40,6 +42,8 @@
   - The English text is only needed locally; the tools read it from each contributor's own copy
     of the game.
   - Short quotations in the documentation and tests illustrate technical points.
+  - The glossary (`glossary/terms.tsv`) lists individual names and terms from the game with their
+    Ukrainian equivalents, not the game's text.
 - The built mod files (`mod/Language/*.uk.xml`) are generated and distributed only as the mod
   itself. Freehold's localization format requires them to contain English string IDs (for string
   tables the ID is the English text). Untranslated parts of entries that the game replaces as a
