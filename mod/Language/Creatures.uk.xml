@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Доказ концепції (етап 1): злиття blueprint-а. Назва тестова, остаточну визначить глосарій. -->
+<objects Lang="uk" Encoding="utf-8">
+  <object Name="Ctesiphus" Load="Merge">
+    <part Name="Render" DisplayName="Ктесіф" />
+  </object>
+</objects>

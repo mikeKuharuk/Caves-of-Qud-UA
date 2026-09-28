@@ -1,0 +1,22 @@
+# Local-only material: decompiled game code, copies of game data, build output.
+# Game code and data are Freehold Games' copyright and must never be committed.
+/work/
+
+# Build output
+/dist/
+bin/
+obj/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editors / OS
+.vs/
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+.DS_Store

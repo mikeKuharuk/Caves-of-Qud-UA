@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Доказ концепції (етап 1): головне меню і вибір мови. Переклади попередні. -->
+<strings Lang="uk" Encoding="utf-8">
+  <string Context="MainMenu Main" ID="New Game">Нова гра</string>
+  <string Context="MainMenu Main" ID="Continue">Продовжити</string>
+  <string Context="MainMenu Main" ID="Records">Рекорди</string>
+  <string Context="MainMenu Main" ID="Options">Налаштування</string>
+  <string Context="MainMenu Main" ID="Mods">Моди</string>
+  <string Context="MainMenu Other" ID="Redeem Code">Ввести код</string>
+  <string Context="MainMenu Other" ID="Credits">Автори</string>
+  <string Context="MainMenu Other" ID="Help">Довідка</string>
+  <string Context="MainMenu Language" ID="Language (=currentLanguage=)">Мова (=currentLanguage=)</string>
+  <string Context="MainMenu Language Select Popup" ID="Select Language">Вибір мови</string>
+  <string Context="MainMenu Language Select Popup Intro" ID="Note: Playing a saved game in a language other than that game's original language will result in partial and incomplete translations.&#xA;&#xA;Changing language requires restart." Value="Увага: якщо продовжити збережену гру іншою мовою, ніж та, якою її почали, переклад буде частковим і неповним.&#xA;&#xA;Після зміни мови гра перезапуститься." />
+  <string Context="MainMenu Quit Popup" ID="Are you sure you want to quit?">Справді вийти з гри?</string>
+</strings>
