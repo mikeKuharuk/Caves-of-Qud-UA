@@ -1,0 +1,296 @@
+{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "HiddenObjects.example.xml"}
+{"k":"e24a019a0b3a6493c59b","p":"32b464eac561c7d0","s":"b4afb6e86937","t":"{{M|Егалкодон}}","c":["qud-gender: m"]}
+{"k":"a58da24b03f56790944c","p":"a679cccd30afe8e1","s":"93be816da907","t":"{{M|Зоретворений}}","c":["qud-gender: m","звертання перед іменем ґірша («Зоретворений Егалкодон»); займенники qe/qem — перевірити рід"]}
+{"k":"7946b9cbef1346d6820b","p":"ecbb86acf4b451eb","s":"8b01767c3a50","t":"зорослідне копито","c":["qud-gender: n","природна зброя нефала; starprint → зорослід"]}
+{"k":"9a0f775d4feaaf702e2a","p":"f8b2c8002af0131a","s":"2c164d90efa1","t":"призмовий ґіршлінг","c":["qud-gender: m"]}
+{"k":"e73c1800e4bb1dc34c9c","p":"c648dbc290c722c5","s":"fa71b13579dd","t":"призмові ясла","c":["qud-gender: pl","cresh (crèche) → ясла (як «ясла ґіршлінгів» у Names-2)"]}
+{"k":"cdde225a9feaeb5e4963","p":"2983824ad6f015ed","s":"f82483be20a1","t":"коло світла в акорді {{ehalcodon|Егалкодона}}","c":["qud-gender: n","Ehalcodon → Егалкодон"]}
+{"k":"d69f7cccb76aa0f4cdcd","p":"293ebb04fe567eb0","s":"01b82865206e","t":"святиня Великої Машини","c":["qud-gender: f"]}
+{"k":"b77e51046cdbc5dc5592","p":"6db7789b1745f029","s":"e2215ff7ba3f","t":"завислий глобус","c":["qud-gender: m"]}
+{"k":"062d078b16d3c8d6279e","p":"76f51f077f0a08a4","s":"978559c040f6","t":"якірна опора","c":["qud-gender: f","кріпить трос Веретена до землі"]}
+{"k":"911844e2985bd83367ca","p":"e7a217c095e2d134","s":"7a80af7a7c76","t":"графенова стрічка","c":["qud-gender: f"]}
+{"k":"a11e30a78749c2317320","p":"c99c34c68239fe1e","s":"7a80af7a7c76","t":"графенова стрічка","c":["qud-gender: f"]}
+{"k":"c885f8508a4290b96dc2","p":"2943df98a13e21b6","s":"7a80af7a7c76","t":"графенова стрічка","c":["qud-gender: f"]}
+{"k":"bad7703ac1a68d1612e9","p":"7d92e2d0ae8fc5fe","s":"7a80af7a7c76","t":"графенова стрічка","c":["qud-gender: f"]}
+{"k":"d9dfab47ea626a1feeb8","p":"08d91f74fa25bc56","s":"7a80af7a7c76","t":"графенова стрічка","c":["qud-gender: f"]}
+{"k":"cc5a7663303b951767cf","p":"aa7bb1efdd217583","s":"7a80af7a7c76","t":"графенова стрічка","c":["qud-gender: f"]}
+{"k":"e88d47e248d2e1ea8dab","p":"830765b9e8a301f8","s":"4b4a88f0e8a8","t":"самоцвітний космос","c":["qud-gender: m"]}
+{"k":"91e4856250990d055426","p":"52a85fcc1a4479fb","s":"c6239c9f1c94","t":"блакитний мармуровий світ","c":["qud-gender: m"]}
+{"k":"d6bee37192fc02907073","p":"43d53d80f16a9a08","s":"4b8a2fb86cfe","t":"атмосферне гало","c":["qud-gender: n"]}
+{"k":"f4816abafe5a845f80df","p":"c9340313df2b387c","s":"8ae727c19656","t":"позасонячні гриби","c":["qud-gender: pl"]}
+{"k":"65a974965db26bc2fb8a","p":"a04e2aa6b91d1700","s":"8a07147b2075","t":"сонячна стрічка","c":["qud-gender: f"]}
+{"k":"80019a274407369c18b7","p":"a6ea3104b7adad36","s":"ffba81869738","t":"трос Веретена","c":["qud-gender: m","tether → трос (як у ZoneTerrain)"]}
+{"k":"0706b4f6f12aaad8fd64","p":"c904330763d8c4b5","s":"b66d356fefbf","t":"міст на південь","c":["qud-gender: m"]}
+{"k":"516633fa52e5bbf994fe","p":"09d5572b7d543a5a","s":"899b484d7cab","t":"поверхневий ярус","c":["qud-gender: m","stratum → ярус"]}
+{"k":"5373b9c9bd58f4f37314","p":"f8a72881cd88db84","s":"1b209be230b4","t":"надярус","c":["qud-gender: m","stratum → ярус: superstratum → надярус, understratum → підярус"]}
+{"k":"e56ceb0bcd7d4fef0f8f","p":"136e0f48abbf9b1c","s":"0fe9b24bcdfd","t":"підярус","c":["qud-gender: m","stratum → ярус"]}
+{"k":"7cd6980088cdd3abe401","p":"9c143fac2418762a","s":"f381f1819315","t":"розтрощений ярус","c":["qud-gender: m","stratum (шар міста в Північній Шеві) → ярус"]}
+{"k":"823e0fa057c829d83d67","p":"8da6eac551aab1cc","s":"2ae4ad4f7e43","t":"підріг","c":["qud-gender: m","як scrying horn → провидчий ріг"]}
+{"k":"43ab2a7ec3b5f9cf199f","p":"860d2b901ded3e3b","s":"a835f90cc15f","t":"рейка самохода","c":["qud-gender: f"]}
+{"k":"0a4ca9d66f02b3fc926a","p":"4e0f90748e889083","s":"cddc39eb02c0","t":"зупинка самохода","c":["qud-gender: f"]}
+{"k":"96858856b502bad4b1ac","p":"b291f4546d531eda","s":"e269df740a46","t":"зруйнована зупинка самохода","c":["qud-gender: f","mover stop → зупинка самохода (глосарій)"]}
+{"k":"06b88c3da6b3ac3aa894","p":"baa1fe275d66cc58","s":"08ac6f6c4f70","t":"Прибутарій","c":["qud-gender: m"]}
+{"k":"e68a91fefdcaa2b19b82","p":"16dacf7b3ebe4892","s":"9a594b74bca7","t":"Земна Брама","c":["qud-gender: f","як у Worlds"]}
+{"k":"67ca173c05c0044f532b","p":"ea4ffc4554e68fa1","s":"9a594b74bca7","t":"Земна Брама","c":["qud-gender: f","як у Worlds"]}
+{"k":"1d966ece6387ca881594","p":"a09faea4c691dbcd","s":"d4e5354fabee","t":"Точка Тіферет","c":["qud-gender: f","як у Worlds"]}
+{"k":"2cfa9aedc96376874d52","p":"578e68af42b181d4","s":"8a4779a5d92e","t":"Північний Ковчег","c":["qud-gender: m"]}
+{"k":"18b69b46a791cce5e6b2","p":"3224dc0cf4d233a9","s":"d676d8efe378","t":"Причал Зореплавців","c":["qud-gender: m","глосарій"]}
+{"k":"8a2cdaf7bd841c1ad586","p":"61ebc3c238d24384","s":"1afbcc1a3fc8","t":"Храм Зоряної Орхідеї","c":["qud-gender: m","як у Worlds"]}
+{"k":"f08bd267579cfb369c94","p":"05282b3e9dc857c0","s":"b11bb583d477","t":"храм Великої Машини","c":["qud-gender: m"]}
+{"k":"5abb1061e68dbc06e948","p":"c68a6c30d2c50b19","s":"3400de618402","t":"щогла з темної матерії","c":["qud-gender: f"]}
+{"k":"796e6bc4843bdf99912e","p":"68d9ab6ef9b1f026","s":"caadf6c7e98a","t":"стоянка зорельотів","c":["qud-gender: f","starship → зореліт; moor → стоянка"]}
+{"k":"96d4ca1e3f460d6bceee","p":"d148040daa749c66","s":"a45e383ea9bc","t":"оглядовий люнет","c":["qud-gender: m","lune — півмісяцеве вікно/чаша, тут барабан ворожильної рідини"]}
+{"k":"2d94699b258efd931799","p":"54ecca78caaefd23","s":"a45e383ea9bc","t":"оглядовий люнет","c":["qud-gender: m","lune — півмісяцеве вікно/чаша, тут барабан ворожильної рідини"]}
+{"k":"6667151aae03f3f8c913","p":"35508e2f8e1e0725","s":"104dd8a8c9db","t":"королівство Кор","c":["qud-gender: n"]}
+{"k":"c4cbdb7d9b4b74209ab8","p":"84e0365ccb42b25e","s":"9b87e83f7af4","t":"порошинковий ліс","c":["qud-gender: m"]}
+{"k":"c66d7f9b0da88ee6eb75","p":"78909cf486175a59","s":"127a6bd8e183","t":"озеро Авалон","c":["qud-gender: n"]}
+{"k":"6133a655195eac6d61b0","p":"11f76d246d493357","s":"ca6920d6d8a2","t":"скляний купол","c":["qud-gender: m"]}
+{"k":"54eb54cb66df5b7fcbc0","p":"b2216ea48263167b","s":"1b4153794f7d","t":"насіннєве сховище","c":["qud-gender: n"]}
+{"k":"5125e38532e0234be034","p":"c25b235dc6b822f4","s":"cf4b66612508","t":"Консульство Трикутника","c":["qud-gender: n","Triangulum → Трикутник (сузір’я)"]}
+{"k":"fca3cfd16e4cf41bbc08","p":"a8d5e6e6ef04ad1c","s":"cf4b66612508","t":"Консульство Трикутника","c":["qud-gender: n","Triangulum → Трикутник (сузір’я)"]}
+{"k":"b9b74fa8c3d2d9172b5a","p":"dafdb263bd843148","s":"b59e0009b0a5","t":"егрегор Джаю","c":["qud-gender: m","Jy → Джай (y в кінці складу — [ай]); родовий Джаю"]}
+{"k":"4248f7a6c09653641c94","p":"4196dbf8110d8462","s":"b59e0009b0a5","t":"егрегор Джаю","c":["qud-gender: m","Jy → Джай (y в кінці складу — [ай]); родовий Джаю"]}
+{"k":"5d718c70c6f523fae535","p":"2ababd0befd9d6d0","s":"b59e0009b0a5","t":"егрегор Джаю","c":["qud-gender: m","Jy → Джай (y в кінці складу — [ай]); родовий Джаю"]}
+{"k":"7abdb7f45e48bf552903","p":"8c4d36eb03b356ed","s":"cccf25b7fd46","t":"ріг-тарілка","c":["qud-gender: m","параболічна тарілка з рупором"]}
+{"k":"8e8509bd5e14d961a671","p":"59b70a0ce4185dfc","s":"e7eed4f6806c","t":"тераріум","c":["qud-gender: m"]}
+{"k":"00b38501b65b8719579e","p":"459d929512f763c4","s":"050d92980eed","t":"розбитий тераріум","c":["qud-gender: m"]}
+{"k":"06d3d50b77f5d54d16e2","p":"bf5cde55af2443a8","s":"8597c8670160","t":"ультрафіолетова агротераса","c":["qud-gender: f","farming shelf — терасовані поля"]}
+{"k":"e7572ddc04a67d6903f2","p":"982964e7c051b4e7","s":"e9156b02ede0","t":"Північний Форум","c":["qud-gender: m"]}
+{"k":"7dd342189d1fff2ffc07","p":"4705815983d52ae7","s":"509b81d97d35","t":"дача шеш","c":["qud-gender: f","шеш (шеш-каним) — івр., не відмінюється"]}
+{"k":"6f6134808f4123d35730","p":"58506d2b2fd449ad","s":"e9aa963d04ee","t":"дача шева","c":["qud-gender: f","шева — назва місцини (пор. Північна Шева), тут не відмінюємо"]}
+{"k":"16b28ef9d99c2ea5560b","p":"b5265b03da967da3","s":"f156ec33dcf6","t":"нижня медина","c":["qud-gender: f"]}
+{"k":"2d9248c182dcd0446dfa","p":"77036ad7549e904a","s":"1d39f54d6bfe","t":"верхня медина","c":["qud-gender: f"]}
+{"k":"fe31a96c072fbc4c9c64","p":"15386531ef11257f","s":"d7c560ed894e","t":"базар Самеха","c":["qud-gender: m","Samech — івр. літера самех"]}
+{"k":"46f86d7bc3869c3abc06","p":"ab54332d59032331","s":"2a183f62ec56","t":"чужосвітнє сховище","c":["qud-gender: n"]}
+{"k":"3412e460e509244e1859","p":"9f6988de1fb3e997","s":"b80ec77463fb","t":"провидчий ріг","c":["qud-gender: m","телескоп Пожирачів; scrying → провидчий"]}
+{"k":"b37fbca3ce0bd6a88c8a","p":"6be51bf0abe88773","s":"66c64931fcd4","t":"силове ядро","c":["qud-gender: n"]}
+{"k":"82273695e2a0e03ff28f","p":"326785951630525b","s":"66c64931fcd4","t":"силове ядро","c":["qud-gender: n"]}
+{"k":"5b16d549f74cd9888d5a","p":"a0d42a9dae446a16","s":"7c34f48e8eaf","t":"силовий бар’єр","c":["qud-gender: m"]}
+{"k":"9daed4d08b6ab961c35a","p":"0179b3050ff55962","s":"6eb39732e3ce","t":"плинний замок","c":["qud-gender: m","стабілізатор орбіти Північної Шеви; fluent → плинний"]}
+{"k":"510723e98df8ef2952d6","p":"f04c9779345af856","s":"24a6f7e37976","t":"фазовий гвинт","c":["qud-gender: m"]}
+{"k":"1c3a83f9bb90c463f170","p":"11ceda2d3a6060b2","s":"0f08954fcf9b","t":"колопредковий монумент","c":["qud-gender: m","circumcestral (circum + ancestral) → колопредковий"]}
+{"k":"5d567e8cf0246e44781b","p":"066ccb6069ff19e8","s":"cdf01c313fec","t":"священний каркас","c":["qud-gender: m","truss (трикутна рама для святого колофона) → каркас; «ферма» читалася б як «farm»"]}
+{"k":"50cdcf313f4c05a43530","p":"8cc5b3680b2c425f","s":"d80ee1cfcc36","t":"зависла жаровня","c":["qud-gender: f","brazier → жаровня"]}
+{"k":"0f8eb89ae8d78f1ed94e","p":"785f5bfc21d741e7","s":"424c09e09f73","t":"хромовий чибур","c":["qud-gender: m","chibur — вигадане слово, транскрипція"]}
+{"k":"0f394a1c694c3744b318","p":"6c5d2ad883a39c81","s":"b1eba3d7117c","t":"декоративна труба","c":["qud-gender: f"]}
+{"k":"90f7e6f377103cc044b1","p":"a6b90c914c969532","s":"0b6f395ca14a","t":"табличка","c":["qud-gender: f"]}
+{"k":"b2bc73ecdab8e144327d","p":"b3a3ea74d377107e","s":"0b6f395ca14a","t":"табличка","c":["qud-gender: f"]}
+{"k":"74326b7e9cf47b934b65","p":"4f69a59d15fc1606","s":"0b6f395ca14a","t":"табличка","c":["qud-gender: f"]}
+{"k":"f6ec6042c3e6596d6ed5","p":"5808c3e4b2bd57bb","s":"73d45fe8f2ed","t":"стіна станції","c":["qud-gender: f"]}
+{"k":"25606313b911a34bb617","p":"a82737a732d77427","s":"cc1dd4901d6c","t":"космічний вакуум","c":["qud-gender: m"]}
+{"k":"d04926bddffe95e55274","p":"d75060093ae211e6","s":"bf0fa70d464a","t":"скло на межі вакууму","c":["qud-gender: n"]}
+{"k":"30c055ea2829321108da","p":"14fca9f47c07a83b","s":"437bcc4073b8","t":"світлова рейка","c":["qud-gender: f"]}
+{"k":"3c229f0aae520b798326","p":"bd0e36ddb56ef957","s":"1f5b154fe66d","t":"шунтер-звідки","c":["qud-gender: m","перевірити: пістолет-генератор істинно випадкового (from shunter); дивне «from» збережено як «звідки»"]}
+{"k":"ac6d831e133545139a29","p":"dde385fbced3137e","s":"29ee88938578","t":"{{o|вимикальний промінь}}","c":["qud-gender: m"]}
+{"k":"8a838eca4d2662519b0d","p":"cc0ca1c3993428da","s":"ce491badd9eb","t":"ґімелет","c":["qud-gender: m"]}
+{"k":"55aaeaf87c6a67be139f","p":"f4376fd4720d9a6b","s":"12725f79a619","t":"зависла посудина","c":["qud-gender: f","X in suspense → завислий X (як «зависла жаровня» у Names-1)"]}
+{"k":"53cdbc3a0d4b11ce161e","p":"2ecad4d2a7a304f6","s":"12725f79a619","t":"зависла посудина","c":["qud-gender: f","X in suspense → завислий X (як «зависла жаровня» у Names-1)"]}
+{"k":"96465829e206e4457fa1","p":"56fbfbe464a20bd9","s":"74f472e42469","t":"вигинистий ґяус","c":["qud-gender: m","gjaus — вигадане слово, транскрипція"]}
+{"k":"2c732161dd620ed400d0","p":"90498487a75a7286","s":"d8f8603ecab7","t":"тінь місяця й сонця","c":["qud-gender: f","shade — тінисте дерево з зоряним листям"]}
+{"k":"9f09895cbfd0a8a99d84","p":"f3f8bab34cb279b8","s":"9a594b74bca7","t":"Земна Брама","c":["qud-gender: f","як у Worlds"]}
+{"k":"b8bc84c18989e87398a0","p":"dc8762c04310ebcd","s":"9a594b74bca7","t":"Земна Брама","c":["qud-gender: f","як у Worlds"]}
+{"k":"ddf71de6f034927e7816","p":"7c632a3edddb3c25","s":"285caabcca35","t":"співочий дзвін","c":["qud-gender: m"]}
+{"k":"753930c9a276309d1992","p":"3fc864864bf1cdd1","s":"d8d333cb11df","t":"синьозміщений хром","c":["qud-gender: m","blueshift → синє зміщення"]}
+{"k":"e9480d8c53d8f4ccb1ba","p":"8a9dec85dd7224a7","s":"47f2e6844eb3","t":"силова рейка","c":["qud-gender: f","рейка самохода"]}
+{"k":"80515b01936174ad2809","p":"b89f29f200886290","s":"b7c28d08e49b","t":"екліптика самоходів","c":["qud-gender: f"]}
+{"k":"b1fdac550ca384246822","p":"beb6d48f79badf84","s":"5d6e0eecd323","t":"уламки","c":["qud-gender: pl"]}
+{"k":"acfd6e14e858fc555fa5","p":"5120e592e96510bd","s":"90508bd098e8","t":"завислий кальян","c":["qud-gender: m"]}
+{"k":"884f2af34ea5d2c95f17","p":"ac775fbd95e03d80","s":"ff5c2cf0f1ec","t":"самохід","c":["qud-gender: m"]}
+{"k":"b5848391473a0773c714","p":"3ebd315a1f7d2595","s":"06eb0344896c","t":"вихідний портал","c":["qud-gender: m"]}
+{"k":"e59123e838b488e2ea9b","p":"1027283a37113636","s":"4ff79002fb38","t":"бетил-пілот","c":["qud-gender: m","бетил, що веде самохід"]}
+{"k":"5956fc4d3e4614f301ce","p":"65cba45b7211bd01","s":"920881648643","t":"луска із зоряної бронзи","c":["qud-gender: f","стіна самохода"]}
+{"k":"3b369ed80142518345a1","p":"959eacec7b64d251","s":"47e9e29d7406","t":"широке крісло","c":["qud-gender: n"]}
+{"k":"a1ee1cdc5a85b1a60afd","p":"6aa0139d873ea0f2","s":"d32ce7bf0277","t":"канапа","c":["qud-gender: f"]}
+{"k":"adba92adc5946cb5a403","p":"1504ae1b1d06983a","s":"a50627b65728","t":"золоте кадило","c":["qud-gender: n"]}
+{"k":"b0538ded9ddb403ec7cf","p":"99b9ab28a1f3927b","s":"5a1d0fa1794e","t":"ритуальні дзвоники","c":["qud-gender: pl"]}
+{"k":"d48e8970c8f72c65067e","p":"a08b55d054c0663b","s":"5d6e0eecd323","t":"уламки","c":["qud-gender: pl"]}
+{"k":"4bd3a3c8159f8edef125","p":"65d799accc663eef","s":"a4a846383d43","t":"ворота доку","c":["qud-gender: pl","двері доку на зорельоті"]}
+{"k":"d16b2516d6b1d0e16955","p":"93f7204a8db1c046","s":"a4a846383d43","t":"ворота доку","c":["qud-gender: pl","двері доку на зорельоті"]}
+{"k":"4f31650846c67f94067e","p":"5a92fadfe23273b1","s":"a23031329a50","t":"платформа зорельота","c":["qud-gender: f"]}
+{"k":"6f1d73b3e9d21a71ee0c","p":"f8af7fea8e4e555b","s":"a23031329a50","t":"платформа зорельота","c":["qud-gender: f"]}
+{"k":"2760cc6bdf2e751492af","p":"d6525ebab061e906","s":"dfc1c99ab200","t":"кристалосталеві плити доку","c":["qud-gender: pl"]}
+{"k":"9ec4ada11104d702a1c3","p":"056f4baae247a413","s":"7809e543a59d","t":"вугрова трава","c":["qud-gender: f"]}
+{"k":"b8c3c52476ac8a06e1d2","p":"1bb8bb0c0baa1fb2","s":"71f1def3f0fb","t":"колесо Кв","c":["qud-gender: n"]}
+{"k":"3bc23b8c6df240f01f44","p":"f33c4a25e6539f11","s":"74843589bc36","t":"геометрична перебірка","c":["qud-gender: f"]}
+{"k":"2499962f4b58137eccd1","p":"09afdcaec30dc6a3","s":"6b6b85aed8ad","t":"внутрішня обшивка","c":["qud-gender: f","interior — торцеві стіни зорельоту й нутра голема"]}
+{"k":"a6ce57dbcd670a16b346","p":"42e971f5a1382e94","s":"6b6b85aed8ad","t":"внутрішня обшивка","c":["qud-gender: f","interior — торцеві стіни зорельоту й нутра голема"]}
+{"k":"1abd98cf0ca57fedceac","p":"e41781ac7cdcdbf2","s":"6b6b85aed8ad","t":"внутрішня обшивка","c":["qud-gender: f","interior — торцеві стіни зорельоту й нутра голема"]}
+{"k":"2c7ef1130624c6b47d14","p":"489d2d42a9ca4977","s":"10d7e82c9987","t":"спальне дупло","c":["qud-gender: n","hollow, вирізьблене в дерев’яній перегородці зорельота"]}
+{"k":"f334b666f9530107827f","p":"31118950fe735da6","s":"10d7e82c9987","t":"спальне дупло","c":["qud-gender: n","hollow, вирізьблене в дерев’яній перегородці зорельота"]}
+{"k":"8e0af15f50b9375350bd","p":"0c16e83a3760cfdf","s":"8942c2d1a3fb","t":"вбудована книжкова полиця","c":["qud-gender: f"]}
+{"k":"957d2703a7a48bd1ef75","p":"90889fb6430a6ca5","s":"8942c2d1a3fb","t":"вбудована книжкова полиця","c":["qud-gender: f"]}
+{"k":"f159566c6cd8fc93562f","p":"38ceea73a4db70e5","s":"91a393bd279c","t":"дубовий стіл","c":["qud-gender: m"]}
+{"k":"d9d84e35284ac06dbc6c","p":"35052af58e359e13","s":"243ae64b4121","t":"дубове крісло","c":["qud-gender: n"]}
+{"k":"c32fa869415ae53f9dbe","p":"8f28c843dfee27e7","s":"11cfe22c5d06","t":"консоль пілота","c":["qud-gender: f","пара до copilot/passenger console → консоль другого пілота / пасажира"]}
+{"k":"bf2c9e3555691c5e6b92","p":"1212a0f6c300443e","s":"6fb849c06214","t":"консоль другого пілота","c":["qud-gender: f"]}
+{"k":"01d55187c00e3bdd4fef","p":"2a67408630378c79","s":"386f1ae16c2d","t":"вихідний люк","c":["qud-gender: m"]}
+{"k":"6f0c9245354755ab39ab","p":"eac7998201f2d81c","s":"0bd48ce7290c","t":"крісло пілота","c":["qud-gender: n"]}
+{"k":"c2689fc0e7577f71968a","p":"7ca112d9fef890d2","s":"cb2d2200de47","t":"крісло другого пілота","c":["qud-gender: n"]}
+{"k":"33908a4945be73524d7f","p":"3695130bbed19fea","s":"ad2a3731cbfe","t":"пасажирське крісло","c":["qud-gender: n"]}
+{"k":"6e23c4466c7e212eb7d0","p":"f7fd1fe63e2bf17c","s":"180f79141820","t":"деревоподібна скульптура Трикутника","c":["qud-gender: f"]}
+{"k":"f3da8804c807773c2cd0","p":"decc4e6af8e03394","s":"d5f96a6f845c","t":"енергетичний гедрон","c":["qud-gender: m","hedron → гедрон (силове ядро зорельота)"]}
+{"k":"3dcbdeacc8c50e0c541c","p":"0e9744145c02de4d","s":"f409b473bc4b","t":"панель стану","c":["qud-gender: f"]}
+{"k":"889b55ee2302f1e7b96d","p":"e7f08bc5ae3114c4","s":"eac95858138e","t":"вантажний ящик","c":["qud-gender: m"]}
+{"k":"834deabe7948f558b1a1","p":"164d5d9d7a7d09a4","s":"72c62faafffa","t":"пілястра","c":["qud-gender: f"]}
+{"k":"796c098f0fa5771d7e3d","p":"dc859cf4e090bd75","s":"b5270d410ebd","t":"стрічки зв’язку","c":["qud-gender: pl"]}
+{"k":"ba454b50f725a354e603","p":"372f607aef01b555","s":"e775ba23729d","t":"кристалофольгові зябра","c":["qud-gender: pl","crysfoil — фольга з кристалосталі"]}
+{"k":"01bc98a0e66b4cd39b62","p":"64e22194a065726a","s":"870f4a6cd3e6","t":"уражені кристалофольгові зябра","c":["qud-gender: pl"]}
+{"k":"27109d68b05283f1bf93","p":"6d4d390cba7e1c76","s":"11cfe22c5d06","t":"консоль пілота","c":["qud-gender: f","пара до copilot/passenger console → консоль другого пілота / пасажира"]}
+{"k":"9d0436b607a70741dfd2","p":"41b05ddf5a2f0b3e","s":"11cfe22c5d06","t":"консоль пілота","c":["qud-gender: f","пара до copilot/passenger console → консоль другого пілота / пасажира"]}
+{"k":"4fa55aeb93cfda7e2c8d","p":"c021fd33be92250d","s":"11cfe22c5d06","t":"консоль пілота","c":["qud-gender: f","пара до copilot/passenger console → консоль другого пілота / пасажира"]}
+{"k":"509068ebb18115d139dc","p":"0f81e314c56f80dd","s":"11cfe22c5d06","t":"консоль пілота","c":["qud-gender: f","пара до copilot/passenger console → консоль другого пілота / пасажира"]}
+{"k":"e21c1cde135a53013b91","p":"97f91fae8d9e2392","s":"ea4dba028ead","t":"пасажирська консоль","c":["qud-gender: f"]}
+{"k":"a1dafe3712ee7d9a463f","p":"f636f4cfa08c5cd8","s":"386f1ae16c2d","t":"вихідний люк","c":["qud-gender: m"]}
+{"k":"9af0a251c4f08531e775","p":"1843666f93bda53c","s":"0bd48ce7290c","t":"крісло пілота","c":["qud-gender: n"]}
+{"k":"761ec9b11e1d79f93e12","p":"2b4c36d85c3be167","s":"ad2a3731cbfe","t":"пасажирське крісло","c":["qud-gender: n"]}
+{"k":"55180a9669d2bb5ec4db","p":"e02b21f53a406a52","s":"8335726b5977","t":"ярусна каріатида","c":["qud-gender: f","stratum → ярус"]}
+{"k":"ef7806f78b052eb95756","p":"68c2e4b17f091fd7","s":"c428468cf029","t":"фрактальна шафа","c":["qud-gender: f","шафа-кабінет рідкостей"]}
+{"k":"efad21f865377ad69387","p":"3ce694b5515b085b","s":"3d2573808453","t":"дивнорідинне ядро","c":["qud-gender: n","strangefluid → дивна рідина"]}
+{"k":"80579cc21c20cf91c7ea","p":"0d78e846d0d8be1f","s":"54ddf7dded24","t":"зволожувальний бонг","c":["qud-gender: m"]}
+{"k":"caa79d0ebd5176e24542","p":"95d2cfbe5add9401","s":"dd3612ba7b61","t":"декоративна мохова капсула","c":["qud-gender: f"]}
+{"k":"8b20a64c84a472566569","p":"81cad57a25d358c5","s":"39431c01d765","t":"теплий зазирач","c":["qud-gender: m","скульптура-око, що роззирається; peeker → зазирач"]}
+{"k":"070b0d486b2cd835e37f","p":"11f0db781ecd6738","s":"0348f3e1434d","t":"голографічна зоряна карта","c":["qud-gender: f"]}
+{"k":"35b55b2935d6ea16422b","p":"1fb48bcab157942c","s":"0348f3e1434d","t":"голографічна зоряна карта","c":["qud-gender: f"]}
+{"k":"c3e1e7d50f8a3013adb1","p":"8bb79e1165bf2405","s":"0348f3e1434d","t":"голографічна зоряна карта","c":["qud-gender: f"]}
+{"k":"35a18a69768769a082fa","p":"62baf5e271c5a58e","s":"99c7038a3cfd","t":"кристалосталеве плетиво","c":["qud-gender: n"]}
+{"k":"4d35ce2d5bf1e769f86c","p":"19c833a96cd83464","s":"1d7a24e46613","t":"гіперпровідний лабіринтит","c":["qud-gender: m"]}
+{"k":"6f12fcfa55689f2ceac1","p":"06b1d3bd56e9b02c","s":"ad5befa5b19a","t":"шпалера з червоного ецу","c":["qud-gender: f","etz (івр. «дерево») → ец, транскрипцією (D4.4)"]}
+{"k":"39a0d8306b3351361c38","p":"6f0ee65de7c4ffb3","s":"2455403a1186","t":"процесор вакуумного потоку","c":["qud-gender: m"]}
+{"k":"0ae04a1eb994ade3edfb","p":"2f36534dec54420a","s":"8d9f21db3204","t":"тор пам’яті","c":["qud-gender: m"]}
+{"k":"227811636da826c2cfd0","p":"2703b66588adec4b","s":"43b08e7e68ca","t":"панель стану мейнфрейму","c":["qud-gender: f"]}
+{"k":"03a47794b5d40cfb7aa0","p":"21477c4d8e757708","s":"92c73b4635df","t":"монітор мейнфрейму","c":["qud-gender: m"]}
+{"k":"14fd070b08b9c7a277e9","p":"5dcf94449e33c40e","s":"8d2027895740","t":"фотонний накопичувач","c":["qud-gender: m","drive — накопичувач даних (голограми на пластинах), не двигун"]}
+{"k":"3745ce5088f6b57dbc81","p":"ebe9ee4e2b199e38","s":"452480469ff8","t":"вентиляційний отвір нормальності","c":["qud-gender: m"]}
+{"k":"c03692d61261995fda94","p":"86c3273a85c723b4","s":"f2a2f267b8e9","t":"семплер справжньої випадковості","c":["qud-gender: m"]}
+{"k":"6c76a860f2c9bf93c74b","p":"3026ccbc11405c62","s":"90555d2e36bb","t":"проєктор голограм","c":["qud-gender: m"]}
+{"k":"c8716296cb93ad18ccfa","p":"20b0d8e16eae8751","s":"90555d2e36bb","t":"проєктор голограм","c":["qud-gender: m"]}
+{"k":"8e3a3a202214a9a6d883","p":"7d6c1315763d6108","s":"deaaba5b0573","t":"світлова сцена","c":["qud-gender: f"]}
+{"k":"3db7f6d1e5d6790b6777","p":"00db654e58f4a598","s":"3a1ba1467258","t":"голограма","c":["qud-gender: f"]}
+{"k":"66160a5f37e43ae620ea","p":"d7f913699a2809f1","s":"81c9011487af","t":"голограма Баратрума","c":["qud-gender: f"]}
+{"k":"e0e41f12776acc4ecc9c","p":"228876b49e1ad276","s":"d9fd84652e9d","t":"голограма мейнфрейму-архонта","c":["qud-gender: f"]}
+{"k":"80043163b27a42ed08ad","p":"57f389a2e433638b","s":"bdf47ae6ed52","t":"голограма Ревеки","c":["qud-gender: f"]}
+{"k":"ff35ddb6dd33dbaf8779","p":"5adcfdb4c0057424","s":"a48d326e8d04","t":"голограма Решефа, Вишнього","c":["qud-gender: f"]}
+{"k":"5e1fc957fabda7ab4979","p":"12db2c662fceaaf7","s":"beea58ab8251","t":"недетерміноване ядро","c":["qud-gender: n"]}
+{"k":"109330a85725faf42b2f","p":"a2c3e10469ba9739","s":"e343bdc26f89","t":"шейд","c":["qud-gender: m","sheyd (івр. «демон», мн. shedim) → шейд"]}
+{"k":"5afe2eee638da6beae30","p":"3bb007ba6044c5df","s":"277c8f97c638","t":"{{K|діамантовий}} кіготь","c":["qud-gender: m"]}
+{"k":"3e5145225afde83633c6","p":"c72d26aa67d1bae0","s":"73004da870e1","t":"вирізьблена з дерева книжкова полиця","c":["qud-gender: f"]}
+{"k":"73fab75f165c39969e96","p":"d3194bd5d268be11","s":"371008f8cfc2","t":"вирізьблене з дерева ліжко","c":["qud-gender: n"]}
+{"k":"5dd55f7f5128eafddf72","p":"75c51c84ce66c970","s":"aa246ece0c2b","t":"вирізьблене з дерева крісло","c":["qud-gender: n"]}
+{"k":"78362e4d6d9a7962fa2c","p":"6c6285cb4cfde26f","s":"5170d9abd8ef","t":"вирізьблена з дерева шафа для одягу","c":["qud-gender: f","clothespress → шафа для одягу"]}
+{"k":"17d041290c7e047142f2","p":"82d41c92087d6566","s":"60ab5b3d015c","t":"вирізьблений з дерева стіл","c":["qud-gender: m"]}
+{"k":"585194bb303dde5bce76","p":"6d1ca05e2eafa120","s":"2af070e28998","t":"порошинкова лампа","c":["qud-gender: f"]}
+{"k":"aca2bf546706dadc6c9c","p":"383554b7dc31e133","s":"b502b68e5dd1","t":"вуаль корської чаклунки","c":["qud-gender: f"]}
+{"k":"aee7ba2ff828d4200b38","p":"7ed77f18833e5651","s":"84e1cdfa43a4","t":"сукня корської чаклунки","c":["qud-gender: f","Qor → Кор, Qorish → корський (kingdom of Qor у Names-2)"]}
+{"k":"3772c81833558aed18f0","p":"8733f78fcd2bc284","s":"e21b0cdb55e3","t":"вапняк зоряної орхідеї","c":["qud-gender: m"]}
+{"k":"e86ab6ed53231968fc1b","p":"68006893e819dbbf","s":"0ee4907e4c2e","t":"сопло зорельота","c":["qud-gender: n"]}
+{"k":"b8dd4a7cc969466f94ad","p":"31ba57d0618d6278","s":"0ee4907e4c2e","t":"сопло зорельота","c":["qud-gender: n"]}
+{"k":"ee85ae315fea2dad39f7","p":"0894081054578236","s":"54a88b62b393","t":"присвятна дошка храму","c":["qud-gender: f","plaque → дошка"]}
+{"k":"a07c1910ea2de946a9e9","p":"721694ff85a585bf","s":"35444b26f141","t":"храмовий проєктор","c":["qud-gender: m"]}
+{"k":"780b2f8c721324c44062","p":"a93bd67f19984b54","s":"2dc10480f10f","t":"храмова брама","c":["qud-gender: f"]}
+{"k":"eb1e64d463a2776a7483","p":"8f50db7a0be80918","s":"7a89d9268302","t":"моторні краби","c":["qud-gender: pl","краби-паразити зоряних двигунів"]}
+{"k":"44dcf00df52dcc202944","p":"a25510f88bf6dbe8","s":"a66d6a0e5a1b","t":"лілія зоряної орхідеї","c":["qud-gender: f","star orchid → зоряна орхідея (як Храм Зоряної Орхідеї)"]}
+{"k":"a7a590c785691f7e1ebf","p":"80afd00292fc8556","s":"158b6a7c24c8","t":"нігті Джаю","c":["qud-gender: pl"]}
+{"k":"1cdf8c632a22ac190daa","p":"363f81fbaf114f95","s":"f6cc1efd3570","t":"кільце моху","c":["qud-gender: n"]}
+{"k":"c5b58236bb6844980fce","p":"d3809e25906053c9","s":"b135b2d7b00b","t":"{{zetachrome|Мовлені Іони в Серці Ковалентності}}","c":["qud-gender: pl","ім’я дерева-прибульця; у грі Gender plural, тому ім’я в множині"]}
+{"k":"6607aa73121402699945","p":"429dcfe821056bdd","s":"ebc8f071cdeb","t":"статуя гравця","c":["qud-gender: f"]}
+{"k":"ca16964614d1f343d558","p":"3c91c596366db173","s":"f861b658caa2","t":"кам’яний анкх","c":["qud-gender: m"]}
+{"k":"889263ad290162c6946d","p":"9f6fa2fe3f6a0eac","s":"a907781e8f2f","t":"склиста куля","c":["qud-gender: f"]}
+{"k":"3d1a0c57c2b0c3e0cedb","p":"3d006481c5a1cece","s":"0b0aca7d522a","t":"слінт-зрошувач","c":["qud-gender: m"]}
+{"k":"c9bb4c5b74406e8943ad","p":"4084ba24b480e305","s":"14bad7700819","t":"слінт-ключечернець","c":["qud-gender: m","wrenchmonk (гайковий ключ + монах) → ключечернець"]}
+{"k":"72b75fbd02e4f486f3d9","p":"eb13857ba3b75996","s":"572a02609b22","t":"слінт-розвідник","c":["qud-gender: m"]}
+{"k":"d42afafaaaf35edbfca5","p":"d92f63b51bc9f6a8","s":"b29d25b45db0","t":"слінт-сидрогуб","c":["qud-gender: m","cidermouth → сидрогуб"]}
+{"k":"f357879e439a33d7286a","p":"42dd432187c27804","s":"2e162ca1fe75","t":"слінт-вигнанець","c":["qud-gender: m"]}
+{"k":"a61bc58bdaa2801b0556","p":"12a474f20bc0c037","s":"92b3583b5f48","t":"слінт-сопілкар","c":["qud-gender: m"]}
+{"k":"2fa3b6876f1626d53bc0","p":"57fd5e56bfb86dc1","s":"52186423fdb9","t":"слінт-кантор","c":["qud-gender: m","slynth X → слінт-X"]}
+{"k":"18a605cac1df1921d5e2","p":"d7984cf7f37efbcc","s":"0e517e2394e2","t":"слінт-друг","c":["qud-gender: m"]}
+{"k":"5c05cdb2e4da259ecc4e","p":"d6fc64cdb6feba8d","s":"0ade40bf4bb0","t":"кристалічний слінт","c":["qud-gender: m"]}
+{"k":"6586ee125dfc56008ea5","p":"a2ed86493d13dceb","s":"c525eb1b6fe8","t":"слінт-селянин","c":["qud-gender: m"]}
+{"k":"2ab97d12815adeadb9c9","p":"d351a8c94bcea984","s":"fb5ab6eceb7e","t":"ткацький верстат Нахама","c":["qud-gender: m"]}
+{"k":"0bb8f146adb1a9ff7ed3","p":"24de661c6ce8ec05","s":"a3fc45d2ce13","t":"конвеєр Каха","c":["qud-gender: m"]}
+{"k":"92e28ed8cb3e4e3f3471","p":"7b63c6587f6ee9d9","s":"419657892d33","t":"повітродув Ва’ама","c":["qud-gender: m"]}
+{"k":"c458d28009daf0deaa8a","p":"8b50b501c4174761","s":"5bbc1650feb5","t":"розп’яття Дагаші","c":["qud-gender: n"]}
+{"k":"a5c04f9c2330a1b30c32","p":"1231caf455481732","s":"9647ea7000b0","t":"{{B|сапфірова}} статуетка Кришталевого Лиха","c":["qud-gender: f","Crystal Woe — Тау-Колишня"]}
+{"k":"8351274dd8710d4bcde1","p":"12bdddacfddc8d91","s":"eccdb8dbda78","t":"{{B|сапфірова}} статуетка Мандрівного Самоцвіту","c":["qud-gender: f","Wandering Jewel — Мандрівна Тау; jewel → самоцвіт"]}
+{"k":"77566a4913daaea11002","p":"8ef47f70249f2c60","s":"29180aa0dcae","t":"{{B|сапфірова}} статуетка Розбиття Снів","c":["qud-gender: f","Dreamshatter — мертва Тау в мить, коли розсипається"]}
+{"k":"b32cc916ff1410ec12ad","p":"3fd5e9d009902aee","s":"80f6641812da","t":"божок-ґірш","c":["qud-gender: m"]}
+{"k":"cec463d026a43beb7f84","p":"3a01bc50158edb2c","s":"80f6641812da","t":"божок-ґірш","c":["qud-gender: m"]}
+{"k":"ff04015c2b7a3dcd2034","p":"259b6ba5fafbbcb7","s":"ec749ef753c5","t":"блазень Коловороту","c":["qud-gender: m"]}
+{"k":"d4a4a829a3b546dcde32","p":"9549634d84ecd9f6","s":"d285cc27c4a9","t":"ведмежий медальйон","c":["qud-gender: m"]}
+{"k":"53126dd15afe18f9260d","p":"7514e27268f54ea6","s":"522f26279a01","t":"голограма чужосвітця","c":["qud-gender: f"]}
+{"k":"9d2593fba289f0683a0d","p":"83e49cca5597d4bc","s":"55113be4b497","t":"{{r|амарантовий пил}}","c":["qud-gender: m"]}
+{"k":"ae5381e6db4e082155c0","p":"bf89cfb98c9b61a4","s":"075f35ff3cc2","t":"{{W|Повість про любов у Бей Лаху}}","c":["qud-gender: f"]}
+{"k":"dcb03bf654f97e8feb05","p":"4299a8c73e7dc547","s":"88c9401781ed","t":"{{W|Повість про страх у Бей Лаху}}","c":["qud-gender: f"]}
+{"k":"7ca7b0a593e061ef7853","p":"4cc986dd93cc6afc","s":"921c8db2d3cc","t":"куду =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"09c0deaafd71c042cfce","p":"90022ed48e8c39af","s":"d7ab4360d739","t":"мавпа =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"457156d4962aa8206e1c","p":"c24f45e6782301e3","s":"61d57e91f504","t":"скорпіон =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"9dc40852e35fec4d4921","p":"23798f17a27729c2","s":"74794463c94e","t":"павіан-=creatureRegionNoun=","c":["qud-gender: m","=creatureRegionNoun= — прикладка через дефіс (павіан-болотяник)"]}
+{"k":"98af841aa0e27e57b59b","p":"acb68056905c944d","s":"46d8556de39f","t":"бетил =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"b2b99dc0e31bc10a9b6d","p":"3db5ebe944ea983f","s":"0a4a1bbf14e6","t":"уршиїб-=creatureRegionNoun=","c":["qud-gender: m","urshiib → уршиїб (як у розмовах Conv-A1: «Здебільшого уршиїби»); =creatureRegionNoun= — прикладка через дефіс"]}
+{"k":"82b4523dd8bf5ba4d79e","p":"dad1cffc414d12b6","s":"0f269503abfa","t":"ведмідь =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"950c742c64f9f105a640","p":"45032997343eba9a","s":"6ddf3bf6ba29","t":"моа =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"d1e945f70b4d46dc18e4","p":"c6f5761bdb6e51ef","s":"dd7ec54748c8","t":"людожер =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"74c2ae12557fbe195755","p":"3bf10fb02ca52764","s":"848aba0efa0f","t":"кіт =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"3cc36739afa3712f2ddb","p":"daca130577d4c3ee","s":"de37c30af133","t":"дзвоник =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»); chime → дзвоник (як «дзвоник Тау» у квестах)"]}
+{"k":"63f972fb48b2adbdbbf1","p":"186e3c605e81f250","s":"0290e3b6586f","t":"=creatureRegionNoun= Консорціуму","c":["qud-gender: m"]}
+{"k":"060c48ff2b6600522001","p":"b5f16cf2bf50cace","s":"dc9720779467","t":"краб =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"3b657b8c81365ec7d766","p":"38c6f9d2f98d03c6","s":"874f1b83ade1","t":"скелелюд-=creatureRegionNoun=","c":["qud-gender: m"]}
+{"k":"194c778bb3fcb5c486fc","p":"f463b89d05d3c849","s":"b028495f0797","t":"дочка =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"4e9119cc396c19864bb8","p":"033d35a0729a455f","s":"0f5dd0612406","t":"пес =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"7f5360db70862e255dc3","p":"351024a92233c534","s":"c7a125fdc343","t":"дромад-=creatureRegionNoun=","c":["qud-gender: m"]}
+{"k":"88e3fac65ee1c4901db6","p":"b503e1133b4a155e","s":"f6dcd7bb0888","t":"зебра =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"992b70b0a166e168e450","p":"3ea903f0063de72f","s":"1f4ecd7cb179","t":"фермер =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"eb969b3dd958e968b137","p":"f38309cb1cc63af9","s":"edef67120a15","t":"вартовий =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"92f1fc7e132ccf7bfbcf","p":"e6cdf5e016fb5919","s":"623439ce0cbd","t":"риба =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"fbd23a79647a720667d0","p":"2482f1b6e50e2b78","s":"ef04e5f9ca36","t":"=creatureRegionNoun= у цвіту","c":["qud-gender: m","«у цвіту» замість прикметника: рід =creatureRegionNoun= невідомий"]}
+{"k":"d645e87209be477a49ea","p":"50f608e962e38d25","s":"368ab17a490d","t":"жаба =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"63a7654890f392500110","p":"6556e75425410f71","s":"024e33d8f404","t":"гриб =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"5a3a62886a78c273934b","p":"8e5a1e375f4b8adf","s":"b87b817323c5","t":"ґіршлінг =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"0caaac7436b477121996","p":"3ef6ed9465dc12af","s":"cd6c18793882","t":"козлолюд-=creatureRegionNoun=","c":["qud-gender: m","як «павіан-=creatureRegionNoun=», «пащеклац-=creatureRegionNoun=» в інших частинах"]}
+{"k":"e7f6699140030edc19aa","p":"9867a07b722b8ea5","s":"c425fa13a267","t":"коза =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"70e89f4c26bdcd2b1e3d","p":"e451c1d58dde2a55","s":"7dffc5a95f5c","t":"=creatureRegionNoun= Коловороту","c":["qud-gender: m","=creatureRegionNoun= — англ. іменник із HistorySpice (marshdweller…)"]}
+{"k":"50b7afe3052874e34094","p":"d62384c43270ef3d","s":"71f610dd6cc8","t":"відлюдник =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"99bd61260c6d4e60ec6c","p":"7ce2c82bfe3a3377","s":"dea81112fae2","t":"=creatureRegionNoun= ентропії","c":["qud-gender: m","«ентропії» замість прикметника: рід =creatureRegionNoun= невідомий"]}
+{"k":"9509c68fd7047e721780","p":"3ca539f001025ea2","s":"1e79337d9dac","t":"гіндрен-=creatureRegionNoun=","c":["qud-gender: m"]}
+{"k":"60ac67d265aa5a254b64","p":"55303e1d66293114","s":"acbeb98222e5","t":"муха =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"a0ea23196b3152973657","p":"bcffc7d98b9ebd44","s":"50ef67dd7b87","t":"іссахарі-=creatureRegionNoun=","c":["qud-gender: m"]}
+{"k":"4f16c4ef378029091eac","p":"5bdfb7836739864f","s":"6b87f3487237","t":"механіміст-=creatureRegionNoun=","c":["qud-gender: m"]}
+{"k":"879ea9506b77943b4f4e","p":"864db4e7ed7d0dd7","s":"720718610a3f","t":"торговець =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"0f7d0d1c39d111da2c96","p":"ce96dab690f70d05","s":"70b4fbb824a0","t":"молюск =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"06b23a01a0083f6769f9","p":"908fdda44e633a05","s":"f847c59cf137","t":"мопанго-=creatureRegionNoun=","c":["qud-gender: m"]}
+{"k":"a3f53ab90aa48b8195bb","p":"9c7d6e815292baa8","s":"9decc859abb8","t":"загадковий чужинець-=creatureRegionNoun=","c":["qud-gender: m","фракція Strangers — «загадкові чужинці»; прикметник узгоджено з «чужинець», не зі змінною"]}
+{"k":"6d7f1f01572b47f6e790","p":"7fcf19431eec94e5","s":"c93e097873ee","t":"нафтаалі-=creatureRegionNoun=","c":["qud-gender: m"]}
+{"k":"b21557eb9efdef120ef3","p":"33ecea9c18bb3b51","s":"78be8324f9ac","t":"слизняк =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"40dd3af7e4eb6e97d697","p":"ed7bebd07e359184","s":"1996461f0162","t":"тамплієр-=creatureRegionNoun=","c":["qud-gender: m","=creatureRegionNoun= — прикладка через дефіс"]}
+{"k":"a1c9c20db3d2b5635ed6","p":"a622b0a4a52b977b","s":"193ed70f7bf6","t":"корінь =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"6ceaf9ee4cb816274940","p":"773473b79c74ab5c","s":"242211dda1b0","t":"пащеклац-=creatureRegionNoun=","c":["qud-gender: m","=creatureRegionNoun= — прикладка через дефіс (як «павіан-=creatureRegionNoun=»)"]}
+{"k":"3330eaa51a67fd1f18bd","p":"b0220082739dca22","s":"cf03c5087ecc","t":"механізм-=creatureRegionNoun=","c":["qud-gender: m","machine (роботи): вид спереду, як «павіан-=creatureRegionNoun="]}
+{"k":"fb78e06dafa9cc2fd1a9","p":"1488cdecf095099c","s":"6630e0ab6710","t":"кактус =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"b7981b7fca5202605d09","p":"d58d54b01ffec7b1","s":"68a93561e9a1","t":"свардим-=creatureRegionNoun=","c":["qud-gender: m","=creatureRegionNoun= — прикладка через дефіс"]}
+{"k":"6a1fa87f7d790f0b9e65","p":"6df53c7fc79bcd69","s":"e7b9f690dab3","t":"свиня =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"2ebdf3299efa04c2eab5","p":"79ff5c1ab9dc17c6","s":"318165f416b1","t":"черепаха =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"aa97787d1b49e95c1f64","p":"a1c2eeb58291e7d8","s":"65806ee2f1f7","t":"=creatureRegionNoun= з тінистою кроною","c":["qud-gender: m","без прикметника перед змінною: рід =creatureRegionNoun= невідомий (як «=creatureRegionNoun= у цвіту»)"]}
+{"k":"e4128efef530584a9731","p":"7cf49cb41a58134e","s":"4f5a31adf606","t":"троль-=creatureRegionNoun=","c":["qud-gender: m","=creatureRegionNoun= — прикладка через дефіс"]}
+{"k":"769a52a47d1636b098cf","p":"b7fb1f42df952e45","s":"32db9746e7ee","t":"ящірка =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"7cb16da0a066638a4ea0","p":"d19d6247527703c2","s":"695fc4b868f5","t":"=creatureRegionNoun= у колючках","c":["qud-gender: m","без прикметника перед змінною (як «=creatureRegionNoun= у цвіту»)"]}
+{"k":"0110820fbd7817ee2ca3","p":"cb3da4f2ff4a4bb0","s":"1e635ea613b0","t":"лоза =creatureRegionAdjective=","c":["qud-gender: f","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"9c8c40ff2f5fbce41bc7","p":"c141daa44e756b0b","s":"fd0aa1b4fc9a","t":"барон =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"9ba55f96a5696d4d8f11","p":"9686231c7371f6d1","s":"6dddecb89398","t":"кажан =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"3f5070fe252510b4f399","p":"3744b74b760f0e57","s":"b1fd717ab0b3","t":"черв’як =creatureRegionAdjective=","c":["qud-gender: m","=creatureRegionAdjective= стоїть після іменника без узгодження: слова з HistorySpice (marsh, canyon, hill…) при перекладі давати родовим відмінком іменника («мавпа боліт», «кіт ущелин»)"]}
+{"k":"7c01ef069879ede2544c","p":"f90eef16be693e2c","s":"9876c851a2d4","t":"=creatureRegionNoun= Незрячого Шляху","c":["qud-gender: m","=creatureRegionNoun= — англ. іменник із HistorySpice (marshdweller…)"]}
+{"k":"ffef124299656888e223","p":"9375bee581e4b607","s":"f38e7099f49d","t":"=creatureRegionNoun=, парія свого народу","c":["qud-gender: m","qud-ok: placeholder — =subject.possessive= (his/her/their) замінено зворотним «свого», що не залежить від роду"]}
+{"k":"92eeaeec54eb859356e3","p":"027ee3c9a984ef2a","s":"9212e9c844fc","t":"копито","c":["qud-gender: n"]}
+{"k":"8fbdac1ac5b6857850b4","p":"4feb6f5956b18176","s":"68c08239210d","t":"ікла","c":["qud-gender: pl"]}
+{"k":"bc7a7d5db5b8312f8bf2","p":"daf24900efc3cd26","s":"06deac5b8d4a","t":"кіготь","c":["qud-gender: m"]}
+{"k":"a548438f06011f99624d","p":"7f78af74c96f231f","s":"06deac5b8d4a","t":"кіготь","c":["qud-gender: m"]}
+{"k":"518c366bd8fce3040c78","p":"f554477d185c889b","s":"3d373af663e0","t":"лопата","c":["qud-gender: f","природна зброя (як «херувимська лопата»)"]}
+{"k":"5f9f4b9ecd959d37a149","p":"5d546554062881a6","s":"4d803cfdbe28","t":"дзьобання","c":["qud-gender: n"]}
+{"k":"3e838ed318d908b32e76","p":"c19f5cec8db01b1b","s":"708d27173c03","t":"{{Y|призмове вістря}}","c":["qud-gender: n","природна зброя"]}
+{"k":"9ab38895f3aeb7eeccf7","p":"1d012af59438412c","s":"57488311859b","t":"маточка","c":["qud-gender: f","природна зброя; pistil → маточка (як «херувимська маточка»)"]}
+{"k":"dcf2233fd4cb96428314","p":"3ff53e5264955256","s":"001a708ac740","t":"наріст","c":["qud-gender: m"]}
+{"k":"fb8106c9d06a893f3d96","p":"b70a2d821c9f57ed","s":"58c70ca90814","t":"роги","c":["qud-gender: pl"]}
+{"k":"5cd7f2aa8a7f0b9d1f1e","p":"d8e3ce5c42ed2050","s":"c141cacc70a1","t":"м’язиста нога","c":["qud-gender: f","нога молюска"]}
+{"k":"ec56a5af6e5855845eaa","p":"fa68e85060b03716","s":"916f635e2519","t":"псевдопод","c":["qud-gender: m"]}
+{"k":"c4ed91dc1a50489f82e7","p":"cba2a5e16412ad9f","s":"88ce6d7491c9","t":"задушливі обійми","c":["qud-gender: pl","як «херувимські задушливі обійми»"]}
+{"k":"407278e47b740e200848","p":"e09582baa672cc51","s":"7d7473fca76f","t":"колючки","c":["qud-gender: pl","spines → колючки (як «херувимські колючки»)"]}
+{"k":"fb1e692d22021f485464","p":"3e095f5590061ca6","s":"14ea6507645c","t":"кора","c":["qud-gender: f","природна зброя (кора з колючками)"]}
+{"k":"885e655a9b659f426b5c","p":"6d5f76a4276696fc","s":"6e32e578b339","t":"чавильні кільця","c":["qud-gender: pl","bands (природна зброя черв’яків) → кільця"]}

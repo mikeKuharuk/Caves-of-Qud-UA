@@ -324,7 +324,7 @@ gland	залоза	f	item	proposed	voider gland → залоза пустотн�
 claw / fangs / fist / bite	кіготь / ікла / кулак / укус		species	proposed	природна зброя
 tail / horn / hoof / mandibles / tongue	хвіст / ріг / копито / жвала / язик		species	proposed	
 jerky	в’ялене м’ясо	n	item	proposed	X jerky → в’ялене м’ясо X-а
-sap	сік	m	item	proposed	life sap → сік життя
+sap	сік	m	item	proposed	рідина: sap weep → соковий плакун. Але X sap (кажани, що висмоктують показник) → X-пий: життєпий, егопий, силопий, волепий
 Mk I / Mk II / Mk III	Mk I / Mk II / Mk III		component	proposed	позначку моделі лишаємо латиною
 Agolgot / Bethsaida / Rermadon / Shug'ruith / Qas / Qon	Аголгот / Бетсаїда / Рермадон / Шуґ’руїт / Кас / Кон		character	proposed	ґірші
 ooze	слизняк	m	species	proposed	фракція oozes → слизняки
@@ -358,7 +358,7 @@ Brightsheol	Світлошеол	m	place	proposed
 Great Salt Sea	Велике Соляне Море	n	place	proposed	
 River Opal / River Yonth	річка Опал / річка Йонт	f	place	proposed	Opal’s Duskwaters → Сутінкові води Опалу
 Eyn Rogel	Ейн-Роґель	m	place	proposed	
-Indrix	Індрікс	f	character	proposed	механічна коза, вартова; Warden Indrix → вартова Індрікс
+Indrix	Індрікс	m	character	proposed	козлолюд, механічний (оживлює призма), Gender=male; Warden Indrix → вартовий Індрікс; «Оживити Індрікса»
 Eskhind / Kindrish / Neelahind / Keh	Ескгінд / Кіндріш / Нілагінд / Ке	f	character	proposed	Бей Лах; Kindrish — реліквія (Кіндріш)
 Thah	Та		character	proposed	слінт
 Tau / Dyvvrach	Тау / Дивврах		character	proposed	Хавва
@@ -400,7 +400,6 @@ droid scrambler	глушник дроїдів	m	item	proposed
 urshiib	уршиїб	m	creature	proposed	мн. уршиїби; голчасті ведмеді-альбіноси
 knickknack	дрібничка	f	item	proposed	Арґайв; також trinket у репліках
 bauble	цяцька	f	item	proposed	дрібничка механіміста-прочанина
-vinereaper	лозоріз	m	item	proposed	інструмент фермерів Джоппи
 lilypad-folk	люди-латаття	pl	concept	proposed	Ірудад про слінтів
 matz meal	мацове борошно	n	item	proposed	
 pipe milk	трубне молоко	n	concept	proposed	упирі Коловороту
@@ -450,3 +449,42 @@ Ut yara Ux / Tishru i Ux / Tishru ii Ux / Kisu Ux / Tebet Ux / Shwut Ux / Uru Ux
 Beetle Moon Zenith / Waxing / Waning Beetle Moon	Зеніт Жукового Місяця / Висхідний / Спадний Жуковий Місяць	m	calendar	proposed	пори доби
 Harvest Dawn / Waxing / High / Waning Salt Sun	Жнивний світанок / Висхідне / Високе / Спадне Соляне Сонце		calendar	proposed	пори доби
 Hindsun / Jeweled Dusk / Zero Hour	Надвечір’я / Самоцвітні сутінки / Нульова година		calendar	proposed	пори доби
+cell (battery)	енергоелемент	m	item	proposed	chem cell → хімічний енергоелемент; «хімічного елемента» не вживати
+folded carbide	кований карбід	m	material	proposed	carbide-folding hammer → {{B|карбідо}}кувальний молот
+chain (armor / weapon)	кольчужний / ланцюговий		material	proposed	chain gauntlets → кольчужні рукавиці; chaingun → кулемет
+X-beard (creature)	X-бород	m	pattern	proposed	gallbeard → жовчобород, mazebeard → плутобород, nullbeard → нулебород
+X gland paste	паста із залози X	f	pattern	proposed	
+X injector (tonic)	ін’єктор X	m	pattern	proposed	salve → мазь, skulk → скрадання, rubbergum → гумоклей, hulk honey → богатирський мед
+X Face (relic)	Лик X	m	pattern	proposed	Earth Face → Лик Землі
+Mk I / Mk II	Mk I / Mk II		pattern	proposed	з великої M, латиницею
+species + role (creature)	вид-роль		pattern	proposed	пащеклац-мисливець, козлолюд-шаман, гіндрен-розвідник; для людей — роль спереду: аптекар-людина
+Knight Templar	лицар-тамплієр	m	title	proposed	ранги з малої: лицар-тамплієр-стрілець, лицар-тамплієр-хоружий
+zealot / convert (Mechanimist)	ревнитель / навернений механіміст	m	title	proposed	
+newfather / grand newfather	новобатько / новодід	m	title	proposed	
+dawnglider	світанкокрил	m	creature	proposed	Names-1
+hoarshroom	морозогриб	m	plant	proposed	
+lagroot	гальмокорінь	m	plant	proposed	mashed lag → товчене гальмо
+yondercane	далекотростина	f	plant	proposed	yonder- → далеко-
+starapple / urberry	зіркояблуко / праягода	n	plant	proposed	
+madpole	скаженоголовок	m	creature	proposed	
+knollworm	горбочерв’як	m	creature	proposed	
+slumberling / dreamcrungle	дрімайло / снокрунгль		creature	proposed	
+glow- (glowcrow, glowpad…)	світло-		pattern	proposed	світловорона, світлолист, світлокірка
+jelly (creature)	медуза	f	creature	proposed	jell (їжа) → желе
+cresh / conservator	ясла / зберігач		concept	proposed	
+the Sunderlies	Розколля	n	location	proposed	книги й назви
+Baccata Yewtarch	Тисарх Бакката	m	character	proposed	автор «Крізь Мограї»
+Stithening	Затвердіння	n	concept	proposed	книги
+cherrydotter	вишнекрапка	f	creature	proposed	книги
+canter / voidcanter / the Cant	співець / пустоспівець / Спів	m	concept	proposed	Elder Cant → Прадавній Спів
+the Coven (of stars)	Сонм	m	concept	proposed	що ув’язнив Птоха
+Ptoh	Птох	m	character	proposed	займенник It → «Воно»
+sketty / tuyuldar	скеті / туюлдар		concept	proposed	скеті невідмінюване
+fiefdom / freehold	феод / вільноземелля		concept	proposed	
+Wrathchild empire	імперія Дітей Гніву	f	concept	proposed	
+Sacred Joining	Священне Єднання	n	concept	proposed	
+Agate Severance Star	Агат Северанс Стар	f	character	proposed	шеф-кухарка, невідмінюване
+Qas / Qon	Кас / Кон	f	character	proposed	ґірші, жінки: не відмінюються («упир Коловороту Кон»)
+Murmurs	Шепоти	pl	concept	proposed	The Murmurs' Prayer → Молитва Шепотів
+book volume (Vol. I)	т. I		pattern	proposed	«Крізь Мограї, т. I: Розколля»
+vinereaper	лозосерп	m	item	proposed	інструмент фермерів Джоппи; назва предмета (Names-2/3), так само в розмовах
