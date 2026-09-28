@@ -132,8 +132,15 @@ class TemplateChecks(unittest.TestCase):
         no_stat = '<p>Ви отримуєте до швидкості <stat Name="Rank" Unit="ранг" />.</p><br /><statline Name="Cooldown" DisplayName="П" />'
         renamed = no_stat.replace("до швидкості", '+<stat Name="Bonuz" /> до швидкості')
         no_br = SRC_T.replace("<br />", "")
-        for dst in (no_stat, renamed, no_br):
+        for dst in (renamed, no_br):
             self.assertIn("template-structure", tcodes(dst, severity="error"), dst)
+
+    def test_a_dropped_stat_is_a_warning(self):
+        # English-only stats such as an article (<stat Name="MineAn" />) have no place in Ukrainian;
+        # dropping one is reviewed with qud-ok. Anything else that changes the tags stays an error.
+        no_stat = '<p>Ви отримуєте до швидкості <stat Name="Rank" Unit="ранг" />.</p><br /><statline Name="Cooldown" DisplayName="П" />'
+        self.assertEqual(tcodes(no_stat), {"template-stat-dropped"})
+        self.assertEqual(tcodes(no_stat, severity="error"), set())
 
     def test_reordered_blocks_warn(self):
         dst = ('<statline Name="Cooldown" DisplayName="Перезаряджання" />\n<br />\n'

@@ -137,9 +137,13 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
             return issues
         src_sig = collections.Counter(map(_signature, src.iter()))
         dst_sig = collections.Counter(map(_signature, dst.iter()))
-        if src_sig != dst_sig:
-            err("template-structure", f"tags differ: missing {sorted((src_sig - dst_sig).elements())}, "
-                f"extra {sorted((dst_sig - src_sig).elements())}")
+        missing, extra = src_sig - dst_sig, dst_sig - src_sig
+        if extra or any(tag != "stat" for tag, _ in missing):
+            err("template-structure", f"tags differ: missing {sorted(missing.elements())}, "
+                f"extra {sorted(extra.elements())}")
+        elif missing:
+            # an English-only value such as an article (<stat Name="MineAn" />): review with qud-ok
+            warn("template-stat-dropped", f"<stat> left out: {sorted(dict(a).get('Name', '?') for _, a in missing.elements())}")
         elif [_signature(c) for c in src] != [_signature(c) for c in dst]:
             warn("template-order", "the blocks (<p>, <br />, <statline>…) are in a different order")
         msgid, msgstr = _template_text(src), _template_text(dst)
