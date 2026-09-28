@@ -82,7 +82,7 @@ bits	біти	pl	item	proposed	тінкерські компоненти
 energy cell	енергоелемент	m	item	proposed	
 sultan	султан	m	title	proposed	
 Resheph	Решеф	m	character	ok	приклад з D4
-Shekhinah	Шехіна	f	concept	ok	приклад з D4
+Shekhinah	Шехіна	m	concept	ok	приклад з D4; у Qud — Отець механімістів (He): «Славний Шехіна», «Шехіна-Отець», «О славний Шехіно!»
 the Gyre	Коловорот	m	concept	ask	Варіанти: Коловорот, Вир, Ґайр
 Eaters	Пожирачі	pl	faction	proposed	
 Beetle Moon	Жуковий Місяць	m	concept	proposed	
@@ -488,3 +488,27 @@ Qas / Qon	Кас / Кон	f	character	proposed	ґірші, жінки: не ві
 Murmurs	Шепоти	pl	concept	proposed	The Murmurs' Prayer → Молитва Шепотів
 book volume (Vol. I)	т. I		pattern	proposed	«Крізь Мограї, т. I: Розколля»
 vinereaper	лозосерп	m	item	proposed	інструмент фермерів Джоппи; назва предмета (Names-2/3), так само в розмовах
+Grand-Doe	Велика Лань	f	title	proposed	Ке для фаундренів; Books, Conv-C1/C2
+hindriarchy	гіндріархат	m	concept	proposed	
+Hindriarch (of a woman)	гіндріарх	m	title	proposed	титул відмінюється як ч. р. («гіндріарха Ке»), узгоджені слова — ж. р. («нова гіндріарх»)
+kendren	кендрен	m	concept	proposed	звертання гіндренів до чужинця; кличний «кендрене»
+faundren	фаундрен	m	creature	proposed	малі гіндрени; ж. — фаундренка; мн. фаундрени
+Eselhind	Еселгінд	f	character	proposed	старійшина Еселгінд
+lack-salt	прісняк	m	concept	proposed	зневажливе в іссахарі про чужинців; кличний «прісняче»
+Sons and Daughters	Сини й Дочки	pl	faction	proposed	самоназва тамплієрів Путус
+Carbide Chefs	Карбідні кухарі	pl	faction	proposed	
+Kitchen Heptagon	Кухонний Семикутник	m	concept	proposed	
+One rose is fair; five is death	Одна троянда — краса, а п’ять — смерть		formula	proposed	приказка про вартову Естер
+Hemlock Cones	Шишлок Хвойс	m	character	proposed	пародійний рослинний детектив
+Willow Shakesprig / Macoun	Вербільям Шекспаросток / «Макун»	m	character	proposed	п’єса-цитата
+Edification	Спорудження	n	concept	proposed	Піснеспіви Хромові; рельєф Спорудження
+foaminator	пінатор	m	item	proposed	латунний пінатор
+aether	ефір	m	concept	proposed	не «етер»
+the Tomb	Гробниця	f	location	proposed	Гробниця Пожирачів
+Hegemonic Fruit	«Гегемонічний Фрукт»	m	faction	proposed	корпорація; Spray-a-Brain → «Мізки-в-Балончику»
+Annals of Qud / Quantivists	Літописи Куду / квантивісти	pl	concept	proposed	
+Very Old Bird	Дуже Старий Птах	m	character	proposed	
+Many Eyes (galgal)	Багатоокий	m	character	proposed	ґалґал із Вільноземелля Ід
+Keresh	Кереш	m	character	proposed	статуя оленя в Бей Лаху; гліфи К, Р, Ш
+saving throw / save	рятівний кидок	m	mechanic	proposed	+5 до рятівних кидків проти скування
+eulogy (Memorial)	надгробне слово	n	concept	proposed	до померлого — на «ти»
