@@ -53,6 +53,17 @@ static class Tests
         Eq("Plural", UkrainianForms.FromGameGender("some generated", false, true).ToString(), "a pseudo-plural gender");
         Eq("Feminine", UkrainianForms.FromLetter("f").ToString(), "qud-gender letter");
 
+        var table = new Dictionary<string, string[]> { ["іржавий"] = new[] { "іржава", "іржаве", "іржаві" },
+                                                       ["вкритий рідиною"] = new[] { "вкрита рідиною", "вкрите рідиною", "вкриті рідиною" } };
+        Func<string, string[]> lookup = w => table.TryGetValue(w, out var f) ? f : null;
+        Eq("іржава", UkrainianForms.AgreeAdjective("іржавий", UkGender.Feminine, lookup), "feminine adjective");
+        Eq("{{K|іржаве}}", UkrainianForms.AgreeAdjective("{{K|іржавий}}", UkGender.Neuter, lookup), "inside markup");
+        Eq("&rіржаві", UkrainianForms.AgreeAdjective("&rіржавий", UkGender.Plural, lookup), "after a colour code");
+        Eq("іржавий", UkrainianForms.AgreeAdjective("іржавий", UkGender.Masculine, lookup), "masculine stays");
+        Eq("вкрита рідиною", UkrainianForms.AgreeAdjective("вкритий рідиною", UkGender.Feminine, lookup), "a phrase");
+        Eq("{{c|фазоспряжений}}", UkrainianForms.AgreeAdjective("{{c|фазоспряжений}}", UkGender.Feminine, lookup), "not in the table");
+        Eq("іржавий", UkrainianForms.StripMarkup("{{K|іржавий}}"), "strip markup");
+
         Eq("Упав", UkrainianForms.Capitalize("упав"), "capitalize");
         Eq("{{W|Упав}}", UkrainianForms.Capitalize("{{W|упав}}"), "capitalize inside markup");
         Eq("’Ять", UkrainianForms.Capitalize("’ять"), "capitalize skips punctuation");

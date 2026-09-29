@@ -89,6 +89,13 @@ class Checks(unittest.TestCase):
         # a bare English verb goes when Ukrainian grammar does the job
         self.assertEqual(codes("=subject.T= =verb:hit= you.", "=subject.Name= =subject.v:б’є:б’єте= вас."), set())
 
+    def test_adjective_forms_note(self):
+        e = po.Entry(msgid="{{K|rusted}}", msgstr="{{K|іржавий}}", translator_comments=["uk-forms: іржава|іржаве|іржаві"])
+        self.assertEqual(checks.check_entry(e), [])
+        self.assertEqual(checks.plain_text(e.msgstr), "іржавий")
+        e.translator_comments = ["uk-forms: іржава|іржаве"]
+        self.assertEqual({i.code for i in checks.check_entry(e)}, {"uk-forms"})
+
     def test_code_markers_stay(self):
         # PostProcessors.CrypticMachine replaces a line containing *READOUT* with machine gibberish
         self.assertIn("code-marker", codes("*READOUT*", "*ЗЧИТУВАННЯ*", severity="error"))

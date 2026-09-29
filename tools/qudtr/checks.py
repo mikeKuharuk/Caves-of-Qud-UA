@@ -165,7 +165,31 @@ def check_entry(entry, msgstr: str | None = None) -> list[Issue]:
     issues = check(entry.msgid, entry.msgstr if msgstr is None else msgstr,
                    compound="qud-compound" in entry.flags, template="qud-template" in entry.flags,
                    spice="qud-spice" in entry.flags)
+    for c in entry.translator_comments:
+        if c.startswith("uk-forms"):
+            problem = uk_forms_problem(c)
+            if problem:
+                issues.append(Issue("error", "uk-forms", problem))
     return [i for i in issues if i.severity == "error" or i.code not in accepted]
+
+
+# "uk-forms: іржава|іржаве|іржаві": the feminine, neuter and plural of an adjective translated in the masculine,
+# for the adjectives the game puts before a name (mod/Grammar/UkrainianDescriptionBuilder)
+UK_FORMS = re.compile(r"^uk-forms:\s*(.+)$")
+
+
+def uk_forms_problem(comment: str) -> str | None:
+    m = UK_FORMS.match(comment)
+    forms = [f.strip() for f in m.group(1).split("|")] if m else []
+    if len(forms) != 3 or not all(forms):
+        return f"{comment!r}: write «uk-forms: жіночий|середній|множина», three non-empty forms"
+    return None
+
+
+def plain_text(s: str) -> str:
+    """The text without {{shader|…}} markup and colour codes, as AdjectiveForms keys it."""
+    s = re.sub(r"\{\{[^{}|]*\|", "", s).replace("}}", "")
+    return COLOR.sub("", s)
 
 
 SPICE_REFERENCE = re.compile(r"<[^<>]*>")

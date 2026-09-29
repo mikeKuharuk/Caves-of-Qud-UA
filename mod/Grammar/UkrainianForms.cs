@@ -102,6 +102,43 @@ namespace CavesOfQudUA.Grammar
             return null;
         }
 
+        /// <summary>
+        /// An adjective agreed with a gender. text is the adjective as translated, in the masculine and possibly
+        /// inside markup ({{K|іржавий}}); forms looks up the masculine plain text and gives [feminine, neuter,
+        /// plural], or null when the adjective does not change (an indeclinable word, or not in the table).
+        /// </summary>
+        public static string AgreeAdjective(string text, UkGender gender, System.Func<string, string[]> forms)
+        {
+            if (string.IsNullOrEmpty(text) || gender == UkGender.Masculine || forms == null) return text;
+            string plain = StripMarkup(text).Trim();
+            string[] f = plain.Length == 0 ? null : forms(plain);
+            if (f == null || f.Length < 3) return text;
+            string form = gender == UkGender.Feminine ? f[0] : gender == UkGender.Neuter ? f[1] : f[2];
+            if (string.IsNullOrEmpty(form)) return text;
+            int at = text.IndexOf(plain, System.StringComparison.Ordinal);
+            return at < 0 ? text : text.Substring(0, at) + form + text.Substring(at + plain.Length);
+        }
+
+        /// <summary>The text without Qud's {{shader|…}} markup and &amp;X / ^X colour codes.</summary>
+        public static string StripMarkup(string text)
+        {
+            var sb = new System.Text.StringBuilder(text.Length);
+            for (int i = 0; i < text.Length; i++)
+            {
+                char c = text[i];
+                if (c == '{' && i + 1 < text.Length && text[i + 1] == '{')
+                {
+                    int bar = text.IndexOf('|', i);
+                    int close = text.IndexOf("}}", i, System.StringComparison.Ordinal);
+                    if (bar > 0 && (close < 0 || bar < close)) { i = bar; continue; }
+                }
+                if (c == '}' && i + 1 < text.Length && text[i + 1] == '}') { i++; continue; }
+                if ((c == '&' || c == '^') && i + 1 < text.Length && char.IsLetter(text[i + 1]) && text[i + 1] < 128) { i++; continue; }
+                sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
         /// <summary>Upper-cases the first letter, leaving markup such as {{W|…}} alone.</summary>
         public static string Capitalize(string text)
         {

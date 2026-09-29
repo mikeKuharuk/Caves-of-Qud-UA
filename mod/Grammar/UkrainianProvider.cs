@@ -38,6 +38,13 @@ namespace CavesOfQudUA.Grammar
             info.SetValue(null, merged.ToArray());
         }
 
+        /// <summary>Names whose adjectives agree with the object's gender (UkrainianDescriptionBuilder).</summary>
+        public override XRL.World.DescriptionBuilder CreateDescriptionBuilder(int Cutoff = int.MaxValue, bool BaseOnly = false)
+        {
+            // TranslatorBase ignores Cutoff here too
+            return new UkrainianDescriptionBuilder(int.MaxValue, BaseOnly);
+        }
+
         /// <summary>Ukrainian has no articles.</summary>
         public override string DefiniteArticle(DefiniteArticleParams Params)
         {
