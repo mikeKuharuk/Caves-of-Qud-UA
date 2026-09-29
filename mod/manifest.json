@@ -6,6 +6,13 @@
   "Author": "Mike Kuharuk",
   "Tags": "Localization",
   "Directories": [
-    { "Path": "/Language/", "Build": ">=2.0.212" }
+    {
+      "Path": "/Language/",
+      "Build": ">=2.0.212"
+    },
+    {
+      "Path": "/Grammar/",
+      "Build": ">=2.0.212"
+    }
   ]
 }

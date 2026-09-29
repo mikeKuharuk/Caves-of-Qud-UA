@@ -62,6 +62,17 @@ class Checks(unittest.TestCase):
         self.assertNotIn("dayOfYear", checks.CAPITALIZABLE["replacer"])
         self.assertIn("article", checks.CAPITALIZABLE["post"])
 
+    def test_ukrainian_grammar_replaces_english_grammar(self):
+        src = "=subject.Does:hit= =object.t= for =turns.things:turn=."
+        good = "=subject.Name= =subject.v:б’є:б’єте= =object.name= на =turns= =turns.plural:хід:ходи:ходів=."
+        self.assertEqual(checks.check(src, good), [])
+        # losing the subject altogether is still reported
+        self.assertIn("placeholder", codes(src, "Щось =subject.v:б’є:б’єте= =object.name= на =turns= =turns.plural:хід:ходи:ходів=.".replace("=subject.v:б’є:б’єте=", "б’є"), severity="warning"))
+        # a malformed Ukrainian variable is an error: it would print a wrong form
+        self.assertIn("uk-grammar", codes(src, good.replace("=subject.v:б’є:б’єте=", "=subject.v:б’є="), severity="error"))
+        self.assertIn("uk-grammar", codes(src, good.replace(":хід:ходи:ходів", ":хід:ходи"), severity="error"))
+        self.assertNotIn("uk-grammar", codes("=subject.T= fell.", "=subject.Name= =subject.g:упав:упала:упало:упали=."))
+
     def test_code_markers_stay(self):
         # PostProcessors.CrypticMachine replaces a line containing *READOUT* with machine gibberish
         self.assertIn("code-marker", codes("*READOUT*", "*ЗЧИТУВАННЯ*", severity="error"))

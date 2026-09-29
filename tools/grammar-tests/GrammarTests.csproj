@@ -1,0 +1,18 @@
+<!--
+  Tests for the game-independent part of mod/Grammar. Run from the repository root:
+    dotnet run (with the option project set to tools/grammar-tests)
+  A plain console runner, so it needs no NuGet packages; exit code 1 on a failure.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../mod/Grammar/UkrainianForms.cs" />
+    <Compile Include="Tests.cs" />
+  </ItemGroup>
+</Project>

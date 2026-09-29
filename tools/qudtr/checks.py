@@ -80,6 +80,33 @@ def placeholder_key(token: str) -> str:
     return "|".join([".".join(parts), *kept])
 
 
+# =X.v:<3 од.>:<2 мн.>[:<3 мн.>]=, =X.g:<ч.>:<ж.>[:<с.>[:<мн.>]]=, =N.plural:<1>:<2–4>:<5+>= (mod/Grammar)
+UK_GRAMMAR = re.compile(r"^(?:[A-Za-z_][\w]*\.)+(v|V|g|G|plural)(?::|$)")
+UK_GRAMMAR_FORMS = {"v": (2, 3), "g": (2, 4), "plural": (3, 3)}
+# English grammar the game computes for an object: a translation may drop it for Ukrainian grammar
+EN_GRAMMAR = re.compile(
+    r"^(?:[A-Za-z_]\w*\.)+(?:does|doesly|did|didly|verb|t|a|an|the|it|its|is|are|has|have|was|were|itis|itdoes|"
+    r"this|name's|t's|indefinite|definite|subjective|objective|possessive|reflexive|substantivepossessive|"
+    r"pronouns|poss|aForNPCSubject|isplural|ifplural|things|pluralize|cardinal)\b", re.I)
+
+
+def placeholder_root(key: str) -> str:
+    """The object a placeholder is about: =subject.Does:hit= → subject."""
+    return re.split(r"[.:|#]", key, maxsplit=1)[0]
+
+
+def uk_grammar_problem(key: str) -> str | None:
+    """What is wrong with one of the mod's Ukrainian grammar variables, or None."""
+    head = key.split("|", 1)[0]
+    name = UK_GRAMMAR.match(head).group(1)
+    forms = head.split(":")[1:]
+    lo, hi = UK_GRAMMAR_FORMS[name.lower()]
+    if not lo <= len(forms) <= hi or not all(forms):
+        want = str(lo) if lo == hi else f"{lo}–{hi}"
+        return f"={key}= needs {want} non-empty forms, has {len(forms)}"
+    return None
+
+
 def _balance(s: str) -> int:
     """How many {{ a text leaves open."""
     return s.count("{{") - s.count("}}")
@@ -188,6 +215,20 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
     dst_ph = collections.Counter(map(placeholder_key, PLACEHOLDER.findall(msgstr)))
     missing = src_ph - dst_ph
     extra = dst_ph - src_ph
+    # the mod's Ukrainian grammar (docs/grammar.md) replaces English grammar: its variables are new, and an English
+    # one such as =subject.Does:hit= may go as long as the translation still names the same object
+    for key in [k for k in extra if UK_GRAMMAR.match(k)]:
+        problem = uk_grammar_problem(key)
+        if problem:
+            err("uk-grammar", problem)
+        del extra[key]
+    # =subject.Does:hit= → =subject.Name= … : plain variables of an object whose English grammar was replaced
+    replaced = {placeholder_root(k) for k in missing if EN_GRAMMAR.match(k)}
+    for key in [k for k in extra if placeholder_root(k) in replaced]:
+        del extra[key]
+    dst_roots = {placeholder_root(k) for k in dst_ph}
+    for key in [k for k in missing if EN_GRAMMAR.match(k) and placeholder_root(k) in dst_roots]:
+        del missing[key]
     if missing:
         warn("placeholder", f"placeholder(s) missing: {sorted(missing)}")
     if extra:
