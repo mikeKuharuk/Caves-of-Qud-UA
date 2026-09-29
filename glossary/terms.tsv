@@ -6,8 +6,8 @@ Great Salt Desert	Велика Соляна Пустеля	f	place	proposed
 salt marsh	солончаки	pl	biome	proposed	як назва краю — Солончаки
 jungle	джунглі	pl	biome	proposed	
 Red Rock	Червона Скеля	f	place	proposed	описова назва — перекладаємо (D4.3)
-Grit Gate	Піщана Брама	f	place	ask	Варіанти: Піщана Брама, Жорствяна Брама, Ґріт-Ґейт
-Six Day Stilt	Шестиденний Стовп	m	place	ask	the Stilt → Стовп. Варіанти: Шестиденний Стовп, Стовп Шести Днів
+Grit Gate	Ґріт-Ґейт	m	place	ok	рішення Mike (2026-09-29). Відмінюється як назва поселення: до Ґріт-Ґейта, у Ґріт-Ґейті, над Ґріт-Ґейтом
+Six Day Stilt	Стовп Шести Днів	m	place	ok	рішення Mike (2026-09-29). Відмінюється лише «Стовп»: до Стовпа Шести Днів. the Stilt → Стовп
 Stilt	Стовп	m	place	proposed	див. Six Day Stilt
 Bethesda Susa	Бетесда-Суза	f	place	proposed	
 Golgotha	Голгофа	f	place	proposed	усталена біблійна форма (D4.2)
@@ -390,7 +390,7 @@ pest-vanquisher	переможець шкідників	m	title	proposed	Мех�
 The Shallows (time of day)	Мілини	pl	concept	proposed	пора доби перед світанком (Calendar TimeOfDay)
 Canticle	Піснеспів	m	concept	proposed	A Canticle for Barathrum → Піснеспів для Баратрума
 Kasaphescence	Касафесценція	f	concept	proposed	механімістська «сира» сила, з якої викувано хром
-Sacred Well	Священний Колодязь	m	location	proposed	у Шестиденному Стовпі
+Sacred Well	Священний Колодязь	m	location	proposed	у Стовпі Шести Днів
 Bel	Бел	m	character	proposed	«Bel shield you» → «Хай Бел вас боронить»
 the Cloaca	Клоака	f	location	proposed	печера Аголгота
 bilge hose	трюмний шланг	m	concept	proposed	Аголгот
@@ -438,7 +438,7 @@ ability bar / hotbar	панель здібностей	f	ui	proposed
 bump attack	атака зіткненням	f	mechanic	proposed	атакувати, ступивши на клітинку істоти
 points of interest	цікаві місця	pl	ui	proposed	
 rest until healed	відпочити до одужання		ui	proposed	
-world map / local map	мапа світу / локальна мапа	f	ui	proposed	
+world map / local map	мапа світу / локальна мапа	f	ui	ok	рішення Mike (2026-09-29): map → мапа, не «карта»; star chart → зоряна мапа
 message log	журнал повідомлень	m	ui	proposed	
 hitpoints (HP)	очки здоров’я (ОЗ)	pl	stat	proposed	
 permadeath	остаточна смерть	f	mechanic	proposed	
@@ -525,7 +525,7 @@ steward (Otho)	управитель	m	title	proposed	кличний «управ
 nestling (Barathrum to the player)	пташенятко	n	concept	proposed	середній рід не видає статі гравця
 Seraph	Серафим	m	concept	proposed	мн. серафими
 Folk Clock	Годинник Народів	m	concept	proposed	
-Ereshkigal	Ерешкігаль	f	character	proposed	мейнфрейм Піщаної Брами; род. Ерешкігалі
+Ereshkigal	Ерешкігаль	f	character	proposed	мейнфрейм Ґріт-Ґейта; род. Ерешкігалі
 Spindlegrounds	Угіддя Веретена	pl	location	proposed	
 starshiib	зорешиїб	m	creature	proposed	гра слів із зорельотом
 uuflax	ууфлакс	m	material	proposed	прикм. ууфлаксовий
@@ -533,3 +533,6 @@ psychic glimmer	психічне мерехтіння	n	stat	proposed	«+10 до
 brinecutter	солеріз	m	item	proposed	мн. солерізи
 dogthorn	собачий терен	m	plant	proposed	як у ZoneTerrain
 moon time	місячний час	m	concept	proposed	«в такт місячному часу»
+sunslag	сонцешлак	m	liquid	ok	рішення Mike (2026-09-29). Род. сонцешлаку; прикм. сонцешлаковий
+thoughtstuff	думкоматерія	f	concept	ok	рішення Mike (2026-09-29). Род. думкоматерії
+thoughtsoft	думкотканина	f	concept	proposed	інше слово, ніж thoughtstuff; як у Walls (Chavvah Taproot)
