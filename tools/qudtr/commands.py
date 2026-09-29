@@ -327,8 +327,45 @@ def cmd_validate(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir
         if n_unsaved:
             warnings += 1
             print(f"warning: {pname}: {n_unsaved} translation(s) not saved to translations/uk; run save")
+    errors += check_spice_paths(files, po_dir, store_dir)
     print(f"{errors} error(s), {warnings} warning(s)")
     return errors, warnings
+
+
+def check_spice_paths(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
+                      store_dir: pathlib.Path = STORE_DIR) -> int:
+    """Every HistorySpice reference a translation adds must lead to a list: the English spice with our overlay
+    (translations/uk/HistorySpice.extra.json) merged in. The overlay may only add keys. Returns the errors."""
+    from . import spice
+    source = next((t for n, t in files.items() if units.is_spice(n)), None)
+    if source is None:
+        return 0
+    english = spice.load(source)["spice"]
+    parts = spice.load_overlay_parts()
+    overlay = spice.load_overlay()
+    errors = 0
+    for clash in spice.overlay_clashes(parts):
+        errors += 1
+        print(f"error: HistorySpice.extra: {clash}: two files define the same key")
+    for path in spice.overlay_conflicts(english, overlay):
+        errors += 1
+        print(f"error: HistorySpice.extra: spice.{path} exists in the English spice; translate it in HistorySpice.po")
+    tree = spice.merge(english, overlay)
+    for path, value in spice.leaves(overlay):
+        for ref in spice.unresolved(value, tree, path[0]):
+            errors += 1
+            print(f"error: HistorySpice.extra: spice.{'.'.join(path)}: reference leads nowhere: {ref}")
+    for name, text in sorted(files.items()):
+        cat, _ = load_catalog(text, name, po_dir, store_dir)
+        for e in cat.entries:
+            if e.obsolete or not e.msgstr or ("spice" not in e.msgstr and "=^:" not in e.msgstr):
+                continue
+            branch = e.msgctxt.split(".")[1] if units.is_spice(name) and e.msgctxt else None
+            new = set(spice.unresolved(e.msgstr, tree, branch)) - set(spice.unresolved(e.msgid, tree, branch))
+            for ref in sorted(new):
+                errors += 1
+                print(f"error: {units.po_name(name)}: {e.msgctxt}: spice-path: reference leads nowhere: {ref}")
+    return errors
 
 
 # --------------------------------------------------------------------------------------------

@@ -102,22 +102,144 @@ def _translate(node, path: tuple[str, ...], translations: dict, counter: list):
     return node
 
 
+def overlay_dir(lang: str = "uk"):
+    """Our own additions to the spice: lists Ukrainian needs and English does not have, such as an adjective list
+    in the feminine (docs/history.md). Only new keys; the English ones are translated through HistorySpice.po.
+    One file per translator (translations/uk/HistorySpice.extra/*.json), so parallel work does not collide."""
+    from .sources import REPO
+    return REPO / "translations" / lang / "HistorySpice.extra"
+
+
+def overlay_files(lang: str = "uk") -> list:
+    d = overlay_dir(lang)
+    return sorted(d.glob("*.json")) if d.exists() else []
+
+
+def overlay_clashes(parts: dict[str, dict], path: tuple[str, ...] = ()) -> list[str]:
+    """Key paths that two overlay files both define as a value (they would silently shadow each other)."""
+    out, seen = [], {}
+    for name, tree in parts.items():
+        for p, _ in leaves_paths(tree):
+            if p in seen and seen[p] != name:
+                out.append(f"spice.{'.'.join(p)} in {seen[p]} and {name}")
+            seen.setdefault(p, name)
+    return out
+
+
+def leaves_paths(node, path: tuple[str, ...] = ()):
+    """(path, value) for every list or string value of a spice tree, lists counted as one value."""
+    if isinstance(node, dict):
+        for k, v in node.items():
+            yield from leaves_paths(v, path + (k,))
+    else:
+        yield path, node
+
+
+def load_overlay_parts(lang: str = "uk") -> dict[str, dict]:
+    return {p.name: json.loads(p.read_text(encoding="utf-8"))["spice"] for p in overlay_files(lang)}
+
+
+def load_overlay(lang: str = "uk") -> dict:
+    tree: dict = {}
+    for part in load_overlay_parts(lang).values():
+        tree = merge(tree, part)
+    return tree
+
+
+def overlay_conflicts(spice_root: dict, overlay: dict, path: tuple[str, ...] = ()) -> list[str]:
+    """Overlay keys that already exist in the English spice as a list or a value: they belong in HistorySpice.po."""
+    out = []
+    for k, v in overlay.items():
+        here = spice_root.get(k) if isinstance(spice_root, dict) else None
+        if here is None:
+            continue
+        if isinstance(v, dict) and isinstance(here, dict):
+            out += overlay_conflicts(here, v, path + (k,))
+        else:
+            out.append(".".join(path + (k,)))
+    return out
+
+
+def merge(base: dict, extra: dict) -> dict:
+    """base with the overlay's new keys added, recursively (the overlay never replaces a value)."""
+    out = dict(base)
+    for k, v in extra.items():
+        if k in out and isinstance(out[k], dict) and isinstance(v, dict):
+            out[k] = merge(out[k], v)
+        elif k not in out:
+            out[k] = copy.deepcopy(v)
+    return out
+
+
 def build(text: str, name: str, translations: dict, lang: str = "uk", source_note: str = "") -> tuple[str | None, int]:
-    """The mod file: {"lang", "spice": {"<branch>=": translated branch}} for branches with a translation."""
+    """The mod file: {"lang", "spice": {"<branch>=": translated branch}} for branches with a translation or an
+    addition from the overlay."""
     from .units import GENERATED_MARKER
     spice = load(text)["spice"]
+    overlay = load_overlay(lang)
     out, total = {}, 0
     for branch, node in spice.items():
         counter = [0]
         translated = _translate(copy.deepcopy(node), (branch,), translations, counter)
+        if branch in overlay and isinstance(translated, dict):
+            translated = merge(translated, overlay[branch])
+            counter[0] += 1
         if counter[0]:
             out[branch + "="] = translated
             total += counter[0]
+    for branch, node in overlay.items():  # branches English does not have at all
+        if branch not in spice:
+            out[branch + "="] = copy.deepcopy(node)
     if not out:
         return None, 0
-    doc = {"_comment": f"{GENERATED_MARKER} from translations/{lang}/HistorySpice.jsonl. {source_note}".strip(),
+    doc = {"_comment": f"{GENERATED_MARKER} from translations/{lang}/HistorySpice.jsonl and HistorySpice.extra/. "
+                       f"{source_note}".strip(),
            "lang": lang, "spice": out}
     return json.dumps(doc, ensure_ascii=False, indent=1) + "\n", total
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Do the references lead somewhere?
+
+SPICE_REF = re.compile(r"=spice:([^=|\s]+)|<spice\.([^<>|\s]+)>|=spice\.set:([^:=\s]+):|=\^:([^=|\s]+)")
+MODIFIERS = {"capitalize", "pluralize", "article", "title", "lower", "upper"}
+
+
+def ref_segments(path: str) -> list[str]:
+    """«commonPhrases.remember.!random» → [commonPhrases, remember]; variable segments become '*'."""
+    segs = []
+    for seg in path.split("."):
+        if seg.startswith("!") or seg in MODIFIERS:
+            break
+        segs.append("*" if seg.startswith("$") or "@" in seg or "[" in seg else seg)
+    return segs
+
+
+def resolves(tree, segs: list[str]) -> bool:
+    if not segs:
+        return True
+    head, rest = segs[0], segs[1:]
+    if isinstance(tree, dict):
+        if head == "*":
+            return any(resolves(v, rest) for v in tree.values())
+        return head in tree and resolves(tree[head], rest)
+    # a list or a value: deeper segments are the engine's selectors (entity properties and the like)
+    return True
+
+
+def unresolved(text: str, tree: dict, branch: str | None = None) -> list[str]:
+    """References in one string that lead nowhere in tree (the English spice with the overlay merged in)."""
+    bad = []
+    for m in SPICE_REF.finditer(text):
+        path = next(g for g in m.groups() if g)
+        if m.group(4):
+            if branch is None:
+                continue
+            path = branch + "." + path
+        segs = ref_segments(path)
+        if segs and segs[0] != "*" and not resolves(tree, segs):
+            bad.append(path)
+    return bad
 
 
 def references(value: str) -> list[str]:
