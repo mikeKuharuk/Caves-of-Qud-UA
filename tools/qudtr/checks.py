@@ -2,7 +2,8 @@
 
 Severity:
   error   — breaks the game or the build (unbalanced {{ }}, leftover ▶, changed keys in compound
-            values, a shader name that does not exist in the source, lost ~Cmd key tokens)
+            values, a shader name that does not exist in the source, lost ~Cmd key tokens, a
+            translated marker the code looks for, such as *READOUT*)
   warning — probably wrong, but can be deliberate (a =placeholder= dropped or added, different
             color codes, whitespace at the ends, mixed Latin/Cyrillic inside a word, apostrophe)
 """
@@ -23,6 +24,9 @@ SHADER_OPEN = re.compile(r"\{\{([^{}|]*)\|")
 COLOR = re.compile(r"(?<!&)&([A-Za-z])|\^([A-Za-z])")
 COMMAND = re.compile(r"~(?:Cmd[\w:/]+|UI:[\w:/]+)")
 KEYED_PAIR = re.compile(r"(?:^|,)([^,|]*)\|" + MARK)
+# Markers the game's code looks for in the text itself: a translated marker silently stops working.
+# PostProcessors.CrypticMachine turns a line containing *READOUT* into machine gibberish.
+CODE_MARKERS = ("*READOUT*",)
 CYR = "а-яА-ЯіїєґІЇЄҐ"
 MIXED_WORD = re.compile(rf"\b(?=\w*[A-Za-z])(?=\w*[{CYR}])\w+\b")
 APOSTROPHE_IN_WORD = re.compile(rf"(?<=[{CYR}])(['\u02BC`])(?=[{CYR}])")
@@ -188,6 +192,10 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
         warn("placeholder", f"placeholder(s) missing: {sorted(missing)}")
     if extra:
         warn("placeholder", f"placeholder(s) not in the source: {sorted(extra)}")
+
+    for marker in CODE_MARKERS:
+        if msgid.count(marker) != msgstr.count(marker):
+            err("code-marker", f"keep {marker} as it is: the game's code looks for it in the text")
 
     # ~Cmd key tokens (help text); '~' alternatives in dialogue are compared by count
     src_cmd = collections.Counter(COMMAND.findall(msgid))

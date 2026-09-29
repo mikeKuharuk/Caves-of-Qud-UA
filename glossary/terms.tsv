@@ -538,3 +538,24 @@ thoughtstuff	думкоматерія	f	concept	ok	рішення Mike (2026-09-
 thoughtsoft	думкотканина	f	concept	proposed	інше слово, ніж thoughtstuff; як у Walls (Chavvah Taproot)
 coterie	гурт	m	concept	ok	рішення Mike (2026-09-29): скрізь, не «громадка»
 ey / em / eir	воно / його / його	n	grammar	ok	займенники мопанго (D11): лише де без них не обійтися; інакше без займенників і родових форм
+chime (Chavvah's beings)	дзвоник	m	species	proposed	розмови Хавви (Conv-D1/D3); звук — дзвін, knell/toll — подзвін
+chimeling	дзвонятко	n	species	proposed	розмови Хавви (Conv-D1/D3); род. дзвонятка
+Twofirm / the Soft	Двотвердь / М’якоть	f	concept	proposed	розмови Хавви (Conv-D1/D3); softthing → м’якоть
+-then / -else	-тоді / -інакше		concept	proposed	розмови Хавви (Conv-D1/D3); як у квесті «Якщо, тоді, інакше»; -elseing → -інакшення, -elser → -інакшувач
+gyredream	сон Коловороту	m	concept	proposed	розмови Хавви (Conv-D1/D3); gyre tide → приплив Коловороту
+sefirot / sephirot	сефіри	pl	concept	proposed	розмови Хавви (Conv-D1/D3)
+Self / Selves / One-selves	Самість / Самості / Односамості	f	concept	proposed	розмови Хавви (Conv-D1/D3)
+the bright and now	ясне й тепер	n	concept	proposed	розмови Хавви (Conv-D1/D3); гра з «тут і тепер»
+rootclimber / stardimmer / utensil	коренелаз / зорегас / знаряддя		address	proposed	розмови Хавви (Conv-D1/D3): як Хавва й Аойґ звуть гравця
+glowfolk	світлолюди	pl	species	proposed	розмови Хавви (Conv-D1/D3): слінти
+bodystuff / beingstuff / lifestuff	тіломатерія / буттєматерія / життєматерія	f	concept	proposed	за зразком думкоматерії (D10)
+kriah / shiva	крія / шива	f	concept	proposed	юдейська жалоба; шива з малої, щоб не сплутати з індуїстським богом
+the Lovers (Tzedech and Tikva)	Закохані	pl	character	proposed	розмови Хавви (Conv-D1/D3)
+covenant	завіт	m	concept	proposed	розмова з Решефом (Conv-D1); фінали гри: «Завіт укладено»
+Gemara / Automata Sophia	Гемара / Автомата Софія	f	concept	proposed	розмова з Решефом (Conv-D1); відмінюється лише «Софія»
+egregore / noosphere	егрегор / ноосфера		concept	proposed	розмова з Решефом (Conv-D1)
+one-wise	одиничне єство	n	concept	proposed	розмова з Решефом (Conv-D1); середній рід, щоб відповідь гравця була без роду
+world-archon	архонт світу	m	concept	proposed	розмова з Решефом (Conv-D1)
+Crystal Stair	Кришталеві Сходи	pl	place	proposed	розмова з Решефом (Conv-D1)
+Live and quaff	Живіть і пийте вдосталь		formula	proposed	розмова з Решефом (Conv-D1); варіант «Живіть і пийте»
+*READOUT*	*READOUT*		code	proposed	не перекладати: PostProcessors.CrypticMachine шукає маркер (перевіряє validate)

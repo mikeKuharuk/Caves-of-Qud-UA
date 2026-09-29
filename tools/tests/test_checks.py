@@ -62,6 +62,11 @@ class Checks(unittest.TestCase):
         self.assertNotIn("dayOfYear", checks.CAPITALIZABLE["replacer"])
         self.assertIn("article", checks.CAPITALIZABLE["post"])
 
+    def test_code_markers_stay(self):
+        # PostProcessors.CrypticMachine replaces a line containing *READOUT* with machine gibberish
+        self.assertIn("code-marker", codes("*READOUT*", "*ЗЧИТУВАННЯ*", severity="error"))
+        self.assertNotIn("code-marker", codes("*READOUT*\n\n*READOUT*", "*READOUT*\n\n*READOUT*"))
+
     def test_command_tokens(self):
         self.assertIn("command", codes("Press ~CmdLook.", "Натисніть ~CmdLok.", severity="error"))
         self.assertNotIn("command", codes("Press ~CmdLook.", "Натисніть ~CmdLook."))
