@@ -43,6 +43,17 @@ namespace CavesOfQudUA.Grammar
         }
 
         /// <summary>
+        /// ByGender, except that the player addressed as «ви» takes a fifth form when one is given: pronouns and
+        /// possessives differ for the player («вас», «ваш») from the plural («їх», «їхній»).
+        /// </summary>
+        public static string ByGenderOrPlayer(bool secondPersonPlayer, UkGender gender, string[] forms)
+        {
+            if (secondPersonPlayer)
+                return forms != null && forms.Length > 4 ? forms[4] : ByGender(UkGender.Plural, forms);
+            return ByGender(gender, forms);
+        }
+
+        /// <summary>
         /// A present or future verb, from forms given as 3rd person singular:2nd person plural:3rd person plural.
         /// The player is always «ви» (D3), so the player takes the 2nd person plural; a plural subject takes the
         /// 3rd person plural when it is given.

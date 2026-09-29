@@ -144,8 +144,13 @@ def strip_marks(value: str) -> str:
     return value.replace(MARK, "")
 
 
+# syllables of the name generator: "true" there is a syllable of Templar Mecha names, not a boolean
+NAME_PARTS = {"prefix", "infix", "postfix"}
+
+
 def excluded(tag: str, attr: str, value: str, name: str | None = None) -> bool:
-    return ((tag, attr) in EXCLUDED_ATTRS or strip_marks(value).strip() in EXCLUDED_VALUES
+    boolean = strip_marks(value).strip() in EXCLUDED_VALUES and tag not in NAME_PARTS
+    return ((tag, attr) in EXCLUDED_ATTRS or boolean
             or (tag in ("tag", "stag", "property") and attr == "Value" and name in EXCLUDED_TAG_NAMES))
 
 

@@ -80,19 +80,38 @@ def placeholder_key(token: str) -> str:
     return "|".join([".".join(parts), *kept])
 
 
-# =X.v:<3 од.>:<2 мн.>[:<3 мн.>]=, =X.g:<ч.>:<ж.>[:<с.>[:<мн.>]]=, =N.plural:<1>:<2–4>:<5+>= (mod/Grammar)
+# =X.v:<3 од.>:<2 мн.>[:<3 мн.>]=, =X.g:<ч.>:<ж.>[:<с.>[:<мн.>[:<гравець>]]]=, =N.plural:<1>:<2–4>:<5+>= (mod/Grammar)
 UK_GRAMMAR = re.compile(r"^(?:[A-Za-z_][\w]*\.)+(v|V|g|G|plural)(?::|$)")
-UK_GRAMMAR_FORMS = {"v": (2, 3), "g": (2, 4), "plural": (3, 3)}
+UK_GRAMMAR_FORMS = {"v": (2, 3), "g": (2, 5), "plural": (3, 3)}
+# the same, with forms that may contain spaces: the game accepts them, PLACEHOLDER does not see them
+UK_GRAMMAR_SPACED = re.compile(r"=((?:[A-Za-z_]\w*\.)+(?:v|V|g|G|plural):[^=\n]*\s[^=\n]*)=")
 # English grammar the game computes for an object: a translation may drop it for Ukrainian grammar
 EN_GRAMMAR = re.compile(
-    r"^(?:[A-Za-z_]\w*\.)+(?:does|doesly|did|didly|verb|t|a|an|the|it|its|is|are|has|have|was|were|itis|itdoes|"
-    r"this|name's|t's|indefinite|definite|subjective|objective|possessive|reflexive|substantivepossessive|"
-    r"pronouns|poss|aForNPCSubject|isplural|ifplural|things|pluralize|cardinal)\b", re.I)
+    r"^(?:[A-Za-z_]\w*\.)+(?:does|doesly|did|didly|verb|ternaryVerb|t|a|an|the|it|its|is|are|has|have|was|were|itis|"
+    r"itdoes|this|thisCreature|name's|t's|indefinite|definite|subjective|objective|possessive|reflexive|"
+    r"substantivepossessive|pronouns|poss|aForNPCSubject|isplural|ifplural|things|pluralize|pluralName|cardinal|"
+    r"they|them|their|theirs|themselves|itself|indicativeProximal|indicativeDistal|descriptiveCategory|one|"
+    r"nounIfBareIndicative)\b", re.I)
+# the same without an object: =verb:hit=, =does:see= refer to the template's subject
+EN_GRAMMAR_BARE = re.compile(r"^(?:verb|does|Does|did|Did|ternaryVerb)(?::|$)")
+# English-only post-processors a translation drops: =item.name|pluralize= → =item.name=
+EN_POSTS = {"pluralize", "article", "indefiniteArticle", "definiteArticle", "a", "an", "the"}
+# replacers whose parameters are words to translate: =partial.if:some:all=, =already.sign:+:-=
+TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
 
 
 def placeholder_root(key: str) -> str:
     """The object a placeholder is about: =subject.Does:hit= → subject."""
     return re.split(r"[.:|#]", key, maxsplit=1)[0]
+
+
+def comparable(key: str) -> str:
+    """A placeholder as the check compares it: English post-processors and translatable parameters left out."""
+    head, *posts = key.split("|")
+    m = TEXT_PARAMS.match(head)
+    if m:
+        head = m.group(1)
+    return "|".join([head] + [p for p in posts if p.split(":", 1)[0] not in EN_POSTS])
 
 
 def uk_grammar_problem(key: str) -> str | None:
@@ -101,7 +120,7 @@ def uk_grammar_problem(key: str) -> str | None:
     name = UK_GRAMMAR.match(head).group(1)
     forms = head.split(":")[1:]
     lo, hi = UK_GRAMMAR_FORMS[name.lower()]
-    if not lo <= len(forms) <= hi or not all(forms):
+    if not lo <= len(forms) <= hi or not all(f.strip() for f in forms):
         want = str(lo) if lo == hi else f"{lo}–{hi}"
         return f"={key}= needs {want} non-empty forms, has {len(forms)}"
     return None
@@ -225,8 +244,8 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
         warn("shader", f"shader usage differs: {dict(src_sh)} → {dict(dst_sh)}")
 
     # =placeholders=
-    src_ph = collections.Counter(map(placeholder_key, PLACEHOLDER.findall(msgid)))
-    dst_ph = collections.Counter(map(placeholder_key, PLACEHOLDER.findall(msgstr)))
+    src_ph = collections.Counter(comparable(placeholder_key(k)) for k in PLACEHOLDER.findall(msgid))
+    dst_ph = collections.Counter(comparable(placeholder_key(k)) for k in PLACEHOLDER.findall(msgstr))
     missing = src_ph - dst_ph
     extra = dst_ph - src_ph
     # the mod's Ukrainian grammar (docs/grammar.md) replaces English grammar: its variables are new, and an English
@@ -236,13 +255,22 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
         if problem:
             err("uk-grammar", problem)
         del extra[key]
+    spaced = UK_GRAMMAR_SPACED.findall(msgstr)
+    for key in spaced:
+        problem = uk_grammar_problem(key)
+        if problem:
+            err("uk-grammar", problem)
+    uses_uk_grammar = spaced or any(UK_GRAMMAR.match(k) for k in dst_ph)
     # =subject.Does:hit= → =subject.Name= … : plain variables of an object whose English grammar was replaced
     replaced = {placeholder_root(k) for k in missing if EN_GRAMMAR.match(k)}
     for key in [k for k in extra if placeholder_root(k) in replaced]:
         del extra[key]
-    dst_roots = {placeholder_root(k) for k in dst_ph}
+    dst_roots = {placeholder_root(k) for k in dst_ph} | {placeholder_root(k) for k in spaced}
     for key in [k for k in missing if EN_GRAMMAR.match(k) and placeholder_root(k) in dst_roots]:
         del missing[key]
+    if uses_uk_grammar:
+        for key in [k for k in missing if EN_GRAMMAR_BARE.match(k)]:
+            del missing[key]
     if missing:
         warn("placeholder", f"placeholder(s) missing: {sorted(missing)}")
     if extra:

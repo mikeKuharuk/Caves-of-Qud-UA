@@ -70,6 +70,14 @@ class Extract(unittest.TestCase):
         keyed = us[("object[Ctesiphus]/tag[StaticHateReason]@Value", f"Joppa,friend,{M}defending their village")]
         self.assertTrue(keyed.compound)
 
+    def test_true_is_a_syllable_in_the_name_generator(self):
+        # "true"/"false" are booleans elsewhere (Proper="▶true" above), but a Templar Mecha name starts with "true"
+        naming = (f'<?xml version="1.0" encoding="utf-8"?>\n<namestyles Lang="example" Encoding="utf-8">\n'
+                  f'  <namestyle Name="Templar Mecha 1"><prefixes><prefix Name="{M}true" /><prefix Name="{M}ne" />'
+                  f'</prefixes></namestyle>\n</namestyles>\n')
+        us = [u.msgid for u in units.extract(naming, "Naming.example.xml")]
+        self.assertIn("true", us)
+
     def test_tags_that_are_keys_are_not_units(self):
         # the English article logic reads IndefiniteArticle/DefiniteArticle; PronounSet names a set;
         # the code compares TinkerCategory and DisplayCharacter with English values it holds

@@ -7,6 +7,7 @@ in the game's real data, not just in the hand-written fixtures.
 """
 import collections
 import pathlib
+import re
 import sys
 import unittest
 import xml.etree.ElementTree as ET
@@ -74,7 +75,8 @@ class RealData(unittest.TestCase):
             for u in units.extract(text, name):
                 if u.kind == "attr":
                     self.assertNotIn(attr_of(u), units.EXCLUDED_ATTRS, f"{name}: {u.msgctxt}")
-                    self.assertNotIn(u.msgid.strip(), units.EXCLUDED_VALUES, f"{name}: {u.msgctxt}")
+                    if not re.search(r"/(prefix|infix|postfix)(#\d+)?@Name$", u.msgctxt or ""):  # syllables, not booleans
+                        self.assertNotIn(u.msgid.strip(), units.EXCLUDED_VALUES, f"{name}: {u.msgctxt}")
 
     def test_build_then_import_roundtrip(self):
         for name, text in FILES.items():

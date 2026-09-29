@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using XRL.World;
+using XRL.World.Text;
 
 namespace CavesOfQudUA.Grammar
 {
@@ -7,10 +8,19 @@ namespace CavesOfQudUA.Grammar
     public static class UkrainianGender
     {
         /// <summary>
+        /// The player addressed as «ви». The game switches this off for texts that tell of the player in the third
+        /// person (murals, gospels: Grammar.AllowSecondPerson), and then the player agrees like any named character.
+        /// </summary>
+        public static bool IsSecondPerson(GameObject obj)
+        {
+            return obj != null && obj.IsPlayer() && XRL.Language.Grammar.AllowSecondPerson;
+        }
+
+        /// <summary>
         /// The agreement class of an object.
         /// <list type="number">
-        /// <item>The player is «ви», so the plural.</item>
-        /// <item>A named character agrees with their own gender («Мір’ям пішла»).</item>
+        /// <item>The player addressed as «ви»: the plural.</item>
+        /// <item>A named character agrees with their own gender («Мір’ям пішла»), the player in the third person too.</item>
         /// <item>Anything else agrees with the grammatical gender of its Ukrainian name: a female snapjaw is still
         /// «пащеклац», so «пащеклац упав».</item>
         /// <item>Without either, the masculine.</item>
@@ -19,31 +29,42 @@ namespace CavesOfQudUA.Grammar
         public static UkGender Of(GameObject obj)
         {
             if (obj == null) return UkGender.Masculine;
-            if (obj.IsPlayer()) return UkGender.Plural;
+            if (IsSecondPerson(obj)) return UkGender.Plural;
             UkGender? personal = Personal(obj);
             UkGender? noun = Noun(obj.GetBlueprint(false));
-            if (obj.HasProperName) return personal ?? noun ?? UkGender.Masculine;
+            if (obj.HasProperName || obj.IsPlayer()) return personal ?? noun ?? UkGender.Masculine;
             return noun ?? personal ?? UkGender.Masculine;
+        }
+
+        /// <summary>A noun the game passes with its own pronouns (a body part, an effect, a random official).</summary>
+        public static UkGender Of(GenderedNoun noun)
+        {
+            return FromPronouns(noun.Pronouns) ?? UkGender.Masculine;
         }
 
         static UkGender? Personal(GameObject obj)
         {
             IPronounProvider pronouns = obj.GetPronounProvider();
-            if (pronouns != null && !(pronouns is Gender))
+            if (pronouns != null && !(pronouns is Gender)) return FromPronouns(pronouns);
+            return FromPronouns(obj.GetGender());
+        }
+
+        /// <summary>
+        /// Genders go by their name (UkrainianForms.FromGameGender). An explicit pronoun set follows its subjective
+        /// pronoun; a neopronoun set such as xe/xem takes the neuter, as D11 and D12 decided.
+        /// </summary>
+        static UkGender? FromPronouns(IPronounProvider pronouns)
+        {
+            if (pronouns == null) return null;
+            if (pronouns is Gender gender) return UkrainianForms.FromGameGender(gender.Name, gender.Plural, gender.PseudoPlural);
+            switch (pronouns.Subjective)
             {
-                // an explicit pronoun set such as xe/xem: the neuter where a gendered form is unavoidable, as D11 decided
-                // for the mopango's ey/em; the ordinary sets follow their subjective pronoun
-                switch (pronouns.Subjective)
-                {
-                    case "he": return UkGender.Masculine;
-                    case "she": return UkGender.Feminine;
-                    case "they": return UkGender.Plural;
-                    case "it": return null;
-                }
-                return pronouns.Plural ? UkGender.Plural : UkGender.Neuter;
+                case "he": return UkGender.Masculine;
+                case "she": return UkGender.Feminine;
+                case "they": return UkGender.Plural;
+                case "it": return null;
             }
-            Gender gender = obj.GetGender();
-            return gender == null ? (UkGender?)null : UkrainianForms.FromGameGender(gender.Name, gender.Plural, gender.PseudoPlural);
+            return pronouns.Plural ? UkGender.Plural : UkGender.Neuter;
         }
 
         static UkGender? Noun(GameObjectBlueprint blueprint)

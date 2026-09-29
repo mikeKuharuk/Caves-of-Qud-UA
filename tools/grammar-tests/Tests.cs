@@ -33,6 +33,12 @@ static class Tests
         Eq("готовий", UkrainianForms.ByGender(UkGender.Neuter, new[] { "готовий", "готова" }), "a missing neuter takes the masculine");
         Eq("готова", UkrainianForms.ByGender(UkGender.Plural, new[] { "готовий", "готова" }), "a missing plural takes the last form");
 
+        string[] him = { "його", "її", "його", "їх", "вас" };
+        Eq("вас", UkrainianForms.ByGenderOrPlayer(true, UkGender.Masculine, him), "the player's own fifth form");
+        Eq("їх", UkrainianForms.ByGenderOrPlayer(false, UkGender.Plural, him), "a plural object is not the player");
+        Eq("її", UkrainianForms.ByGenderOrPlayer(false, UkGender.Feminine, him), "feminine");
+        Eq("упали", UkrainianForms.ByGenderOrPlayer(true, UkGender.Masculine, fell), "no fifth form: the player takes the plural");
+
         string[] hits = { "б’є", "б’єте", "б’ють" };
         Eq("б’єте", UkrainianForms.ByPerson(true, false, hits), "the player is «ви»");
         Eq("б’є", UkrainianForms.ByPerson(false, false, hits), "3rd person singular");

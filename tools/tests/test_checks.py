@@ -73,6 +73,22 @@ class Checks(unittest.TestCase):
         self.assertIn("uk-grammar", codes(src, good.replace(":хід:ходи:ходів", ":хід:ходи"), severity="error"))
         self.assertNotIn("uk-grammar", codes("=subject.T= fell.", "=subject.Name= =subject.g:упав:упала:упало:упали=."))
 
+    def test_grammar_feedback_of_the_first_packages(self):
+        # a fifth form for the player is allowed in g
+        self.assertNotIn("uk-grammar", codes("=object.t=", "=object.g:його:її:його:їх:вас="))
+        self.assertIn("uk-grammar", codes("=object.t=", "=object.g:його:її:його:їх:вас:ще=", severity="error"))
+        # forms with a space are still checked
+        self.assertIn("uk-grammar", codes("=subject.T= fell.", "=subject.Name= =subject.g:упав на землю=.", severity="error"))
+        self.assertNotIn("uk-grammar", codes("=subject.T= fell.", "=subject.Name= =subject.g:упав додолу:упала додолу=."))
+        # pronoun variables go when the object stays named
+        self.assertEqual(codes("=subject.T= drops =subject.their= sword.", "=subject.Name= =subject.v:кидає:кидаєте= свій меч."), set())
+        # an English post-processor may go
+        self.assertEqual(codes("=count= =item.name|pluralize=", "=count= =item.name="), set())
+        # the words inside =x.if:…= are text
+        self.assertEqual(codes("=partial.if:some:all= of it", "=partial.if:частину:усе= з нього"), set())
+        # a bare English verb goes when Ukrainian grammar does the job
+        self.assertEqual(codes("=subject.T= =verb:hit= you.", "=subject.Name= =subject.v:б’є:б’єте= вас."), set())
+
     def test_code_markers_stay(self):
         # PostProcessors.CrypticMachine replaces a line containing *READOUT* with machine gibberish
         self.assertIn("code-marker", codes("*READOUT*", "*ЗЧИТУВАННЯ*", severity="error"))
