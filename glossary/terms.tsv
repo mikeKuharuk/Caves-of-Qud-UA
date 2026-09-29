@@ -15,7 +15,7 @@ Kyakukya	Кякукя	f	place	proposed
 Bey Lah	Бей Лах	m	place	proposed	
 Omonporch	Омонпорч	m	place	proposed	
 Ezra	Ездра	f	place	proposed	біблійна форма імені (D4.2)
-Yd Freehold	Вільноземелля Ід	n	place	ask	Варіанти: Вільноземелля Ід, Ід-Фріголд
+Yd Freehold	Вільноземелля Ід	n	place	ok	рішення Mike (D12, 2026-09-29)
 Tomb of the Eaters	Гробниця Пожирачів	f	place	proposed	
 the Spindle	Веретено	n	place	proposed	
 Chavvah, the Tree of Life	Хавва, Древо Життя	f	place	proposed	Chavvah = Єва (івр.), лишаємо транскрипцію
@@ -52,7 +52,7 @@ Farmers' Guild	Гільдія фермерів	f	faction	proposed
 Merchants' Guild	Гільдія торговців	f	faction	proposed	
 water barons	водяні барони	pl	faction	proposed	
 villagers of Joppa	селяни Джоппи	pl	faction	proposed	за D9 (Джоппа)
-hindren	гіндрени	pl	species	ask	Варіанти: гіндрени (транскрипція), ланичі (від hind — лань)
+hindren	гіндрени	pl	species	ok	рішення Mike (D12, 2026-09-29)
 Hindriarch	гіндріарх	m	title	proposed	
 mopango	мопанго	pl	species	proposed	не відмінюється
 goatfolk	козлолюди	pl	species	proposed	
@@ -83,7 +83,7 @@ energy cell	енергоелемент	m	item	proposed
 sultan	султан	m	title	proposed	
 Resheph	Решеф	m	character	ok	приклад з D4
 Shekhinah	Шехіна	m	concept	ok	приклад з D4; у Qud — Отець механімістів (He): «Славний Шехіна», «Шехіна-Отець», «О славний Шехіно!»
-the Gyre	Коловорот	m	concept	ask	Варіанти: Коловорот, Вир, Ґайр
+the Gyre	Коловорот	m	concept	ok	рішення Mike (D12, 2026-09-29)
 Eaters	Пожирачі	pl	faction	proposed	
 Beetle Moon	Жуковий Місяць	m	concept	proposed	
 High Salt Sun	Високе Соляне Сонце	n	concept	proposed	
@@ -559,3 +559,4 @@ world-archon	архонт світу	m	concept	proposed	розмова з Реш
 Crystal Stair	Кришталеві Сходи	pl	place	proposed	розмова з Решефом (Conv-D1)
 Live and quaff	Живіть і пийте вдосталь		formula	proposed	розмова з Решефом (Conv-D1); варіант «Живіть і пийте»
 *READOUT*	*READOUT*		code	proposed	не перекладати: PostProcessors.CrypticMachine шукає маркер (перевіряє validate)
+Tau-No-Longer / Aoyg-No-Longer	Вже-не-Тау / Вже-не-Аойґ		character	ok	рішення Mike (D12); не відмінюються; «=name=-No-Longer» → «Вже-не-=name=»
