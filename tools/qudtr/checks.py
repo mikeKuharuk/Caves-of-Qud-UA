@@ -76,6 +76,11 @@ def placeholder_key(token: str) -> str:
     return "|".join([".".join(parts), *kept])
 
 
+def _balance(s: str) -> int:
+    """How many {{ a text leaves open."""
+    return s.count("{{") - s.count("}}")
+
+
 def _signature(el: ET.Element) -> tuple:
     return el.tag, tuple(sorted((k, v) for k, v in el.attrib.items() if k not in TEMPLATE_TEXT_ATTRS))
 
@@ -161,9 +166,11 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
         if src_keys and src_keys != dst_keys:
             err("compound-key", f"keys of key|▶value pairs changed: {src_keys} → {dst_keys}")
 
-    # {{shader|text}}
-    if msgstr.count("{{") != msgstr.count("}}"):
-        err("braces", f"unbalanced markup: {msgstr.count('{{')} '{{{{' vs {msgstr.count('}}')} '}}}}'")
+    # {{shader|text}}. A fragment may leave markup open on purpose (the preacher's prefix «{{W|'» is
+    # closed by the postfix the code adds), so the translation must keep the source's balance.
+    if _balance(msgstr) != _balance(msgid):
+        err("braces", f"unbalanced markup: {msgstr.count('{{')} '{{{{' vs {msgstr.count('}}')} '}}}}'"
+                      + (f" (the source leaves {_balance(msgid)} open)" if _balance(msgid) else ""))
     src_sh = collections.Counter(SHADER_OPEN.findall(msgid))
     dst_sh = collections.Counter(SHADER_OPEN.findall(msgstr))
     unknown = [s for s in dst_sh if s not in src_sh]

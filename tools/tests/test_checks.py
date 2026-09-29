@@ -25,6 +25,12 @@ class Checks(unittest.TestCase):
     def test_unbalanced_braces(self):
         self.assertIn("braces", codes("{{W|x}}", "{{W|ікс}", severity="error"))
 
+    def test_markup_left_open_as_in_the_source(self):
+        # the preacher's prefix: the code appends the closing «'}}»
+        src = "The preacher says, {{W|'"
+        self.assertNotIn("braces", codes(src, "Проповідник каже: {{W|'", severity="error"))
+        self.assertIn("braces", codes(src, "Проповідник каже: '", severity="error"))
+
     def test_unknown_shader_name(self):
         # Cyrillic 'о' inside the shader name is a classic typo
         self.assertIn("shader", codes("{{emote|*purrs*}}", "{{emоte|*муркоче*}}", severity="error"))
