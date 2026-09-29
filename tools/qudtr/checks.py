@@ -144,11 +144,16 @@ def check_entry(entry, msgstr: str | None = None) -> list[Issue]:
     accepted = {code.strip() for c in entry.translator_comments if (m := ACKNOWLEDGE.match(c))
                 for code in m.group(1).split(",")}
     issues = check(entry.msgid, entry.msgstr if msgstr is None else msgstr,
-                   compound="qud-compound" in entry.flags, template="qud-template" in entry.flags)
+                   compound="qud-compound" in entry.flags, template="qud-template" in entry.flags,
+                   spice="qud-spice" in entry.flags)
     return [i for i in issues if i.severity == "error" or i.code not in accepted]
 
 
-def check(msgid: str, msgstr: str, compound: bool = False, template: bool = False) -> list[Issue]:
+SPICE_REFERENCE = re.compile(r"<[^<>]*>")
+
+
+def check(msgid: str, msgstr: str, compound: bool = False, template: bool = False,
+          spice: bool = False) -> list[Issue]:
     issues: list[Issue] = []
     if not msgstr:
         return issues
@@ -158,6 +163,15 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
 
     def warn(code, msg):
         issues.append(Issue("warning", code, msg))
+
+    # HistorySpice fragments pull in other fragments by <spice.x.y> / <entity.name>: a changed or lost one
+    # breaks the generated sentence (the =…= variables are checked below like everywhere else)
+    if spice:
+        src_ref = collections.Counter(SPICE_REFERENCE.findall(msgid))
+        dst_ref = collections.Counter(SPICE_REFERENCE.findall(msgstr))
+        if src_ref != dst_ref:
+            err("spice-reference", f"references differ: {sorted((src_ref - dst_ref).elements())} missing, "
+                f"{sorted((dst_ref - src_ref).elements())} extra")
 
     # XML templates: the tags are the game's; the checks below then look at the text only
     if template:

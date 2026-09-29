@@ -97,13 +97,25 @@ class Unit:
 # --------------------------------------------------------------------------------------------
 # Small helpers
 
+def base_name(example_name: str) -> str:
+    """'Strings.Conversations.example.xml' -> 'Strings.Conversations'; 'HistorySpice.jsonc' -> 'HistorySpice'"""
+    return example_name.removesuffix(".example.xml").removesuffix(".jsonc")
+
+
+def is_spice(example_name: str) -> bool:
+    return example_name.endswith(".jsonc")
+
+
 def po_name(example_name: str) -> str:
     """'Strings.Conversations.example.xml' -> 'Strings.Conversations.po'"""
-    return example_name.removesuffix(".example.xml") + ".po"
+    return base_name(example_name) + ".po"
 
 
 def output_name(example_name: str, lang: str = "uk") -> str:
-    return example_name.removesuffix(".example.xml") + f".{lang}.xml"
+    if is_spice(example_name):
+        # HistoricSpice.Init merges mod files whose name starts with "historyspice."
+        return f"{base_name(example_name).lower()}.{lang}.json"
+    return base_name(example_name) + f".{lang}.xml"
 
 
 def game_build(xml_text: str) -> str | None:
@@ -456,9 +468,24 @@ class ExampleFile:
 # Function-style API
 
 def extract(xml_text: str, name: str) -> list[Unit]:
+    if is_spice(name):
+        from . import spice
+        return spice.extract(xml_text, name)
     return ExampleFile(xml_text, name).units()
 
 
 def build(xml_text: str, name: str, translations: dict, lang: str = "uk",
           source_note: str = "") -> tuple[str | None, int]:
+    if is_spice(name):
+        from . import spice
+        return spice.build(xml_text, name, translations, lang, source_note)
     return ExampleFile(xml_text, name).build(translations, lang, source_note)
+
+
+def check_output(name: str, text: str) -> None:
+    """Raises if a built file is not well-formed."""
+    if is_spice(name):
+        import json
+        json.loads(text)
+    else:
+        ET.fromstring(text)

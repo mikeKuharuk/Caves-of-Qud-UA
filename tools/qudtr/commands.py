@@ -38,7 +38,7 @@ CONSISTENT = {("Options.po", "@Category"), ("Mods.po", "@TinkerCategory")}
 
 
 def store_name(example_name: str) -> str:
-    return example_name.removesuffix(".example.xml") + ".jsonl"
+    return units.base_name(example_name) + ".jsonl"
 
 
 def _header(build: str | None, name: str) -> dict[str, str]:
@@ -102,6 +102,8 @@ def sync_file(xml_text: str, name: str, old: po.Catalog | None) -> tuple[po.Cata
             e.flags.append("qud-compound")
         if u.kind == "template" and "qud-template" not in e.flags:
             e.flags.append("qud-template")
+        if u.kind == "spice" and "qud-spice" not in e.flags:
+            e.flags.append("qud-spice")
         entries.append(e)
 
     obsolete = []
@@ -242,7 +244,7 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
                 out.unlink()
                 print(f"{out.name:40} removed (nothing translated)")
             continue
-        ET.fromstring(xml)  # the output must be well-formed
+        units.check_output(name, xml)  # the output must be well-formed
         if not out.exists() or out.read_text(encoding="utf-8") != xml:
             out.write_text(xml, encoding="utf-8", newline="\n")
         print(f"{out.name:40} {count:6} translated")

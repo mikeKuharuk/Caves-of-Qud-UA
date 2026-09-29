@@ -35,4 +35,9 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
     if tag:
         return from_tag(tag), f"mirror tag {tag}"
     path = pathlib.Path(source) if source else GAME_EXAMPLE_DIR
-    return from_dir(path), str(path)
+    files = from_dir(path)
+    # HistorySpice has no example file; it lives next to ExampleLanguage in the game's Base folder
+    spice = path.parent / "HistorySpice.jsonc"
+    if spice.exists():
+        files[spice.name] = spice.read_text(encoding="utf-8-sig")
+    return files, str(path)
