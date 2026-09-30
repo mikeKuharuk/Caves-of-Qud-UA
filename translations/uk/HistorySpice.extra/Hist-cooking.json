@@ -1,0 +1,607 @@
+{
+ "spice": {
+  "cooking": {
+   "uk": {
+    "puff": ["подих", "клубочок", "повний ніс", "нюх"]
+   },
+   "recipeNames": {
+    "uk": {
+     "faKey": {
+      "none": "none", "fried": "fried", "breaded": "breaded", "roast": "roast", "stuffed": "stuffed",
+      "herbed": "herbed", "mashed": "mashed", "herb": "herb", "issachari": "issachari", "naphtaali": "naphtaali",
+      "baked": "baked", "shredded": "shredded", "sliced": "sliced", "chopped": "chopped", "minced": "minced",
+      "crumbled": "crumbled", "diced": "diced", "dried": "dried", "marinated": "marinated", "aged": "aged",
+      "boiled": "boiled", "flaky": "flaky", "glazed": "glazed", "grilled": "grilled", "mild": "mild",
+      "rich": "rich", "sauteed": "sauteed", "savory": "savory", "sizzling": "sizzling", "smothered": "smothered",
+      "thick": "thick", "tossed": "tossed", "velvety": "velvety"
+     },
+     "faPost": {
+      "$fa": "", "none": "", "fried": " з пательні", "breaded": " у паніровці", "roast": " з рожна",
+      "stuffed": " з начинкою", "herbed": " з травами", "mashed": " у вигляді пюре", "herb": " із зеленню",
+      "issachari": " по-іссахарськи", "naphtaali": " по-нафтаалійськи", "baked": " з печі",
+      "shredded": " соломкою", "sliced": " скибками", "chopped": " шматочками", "minced": " дрібною січкою",
+      "crumbled": " крихтами", "diced": " кубиками", "dried": " з сушарки", "marinated": " у маринаді",
+      "aged": " з витримкою", "boiled": " з окропу", "flaky": " пластівцями", "glazed": " у глазурі",
+      "grilled": " на грилі", "mild": " м’якого смаку", "rich": " насиченого смаку",
+      "sauteed": " на вершковому маслі", "savory": " пікантного смаку", "sizzling": " з пилу з жару",
+      "smothered": " під шубою", "thick": " густого замісу", "tossed": " із заправкою",
+      "velvety": " оксамитової текстури"
+     },
+     "foodAdj_post": [
+      "з пательні", "у паніровці", "з рожна", "з начинкою", "з травами", "у вигляді пюре", "із зеленню",
+      "по-іссахарськи", "по-нафтаалійськи", "з печі", "соломкою", "скибками", "шматочками", "дрібною січкою",
+      "крихтами", "кубиками", "з сушарки", "у маринаді", "з витримкою", "з окропу", "пластівцями", "у глазурі",
+      "на грилі", "м’якого смаку", "насиченого смаку", "на вершковому маслі", "пікантного смаку",
+      "з пилу з жару", "під шубою", "густого замісу", "із заправкою", "оксамитової текстури"
+     ],
+     "nnEnd": {"$nn": "о", "1": "о", "2": "ий", "3": "о"},
+     "nnEndSoft": {"$nn": "ьо", "1": "ьо", "2": "ій", "3": "ьо"},
+     "nnNext": {"$nn": "2", "1": "2", "2": "3", "3": "2"},
+     "nnOne": "1",
+     "agr": {"$nn": "", "1": "", "2": "", "3": "почастунок: "},
+     "silkAdj_ins": ["мерехтливим", "ефірним", "примарним"],
+     "silkAdj_loc": ["мерехтливому", "ефірному", "примарному"],
+     "np1_ins": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_ins.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np2_ins": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_ins.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np3_ins": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_ins.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np1_loc": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_loc.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np2_loc": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_loc.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np3_loc": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_loc.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "with12": [
+      "=spice:cooking.recipeNames.uk.np1_z.!random= і =spice:cooking.recipeNames.uk.np2_ins.!random=",
+      "=spice:cooking.recipeNames.uk.np1_u.!random= і =spice:cooking.recipeNames.uk.np2_loc.!random=",
+      "на =spice:cooking.recipeNames.uk.np1_loc.!random= і =spice:cooking.recipeNames.uk.np2_loc.!random=",
+      "=spice:cooking.recipeNames.uk.np1_z.!random= та =spice:cooking.recipeNames.uk.np2_ins.!random=",
+      "=spice:cooking.recipeNames.uk.np1_z.!random= і =spice:cooking.recipeNames.uk.np2_ins.!random=",
+      "=spice:cooking.recipeNames.uk.np1_u.!random= та =spice:cooking.recipeNames.uk.np2_loc.!random=",
+      "під =spice:cooking.recipeNames.uk.np1_ins.!random= і =spice:cooking.recipeNames.uk.np2_ins.!random="
+     ],
+     "with3": [
+      "=spice:cooking.recipeNames.uk.np3_z.!random=",
+      "=spice:cooking.recipeNames.uk.np3_u.!random=",
+      "на =spice:cooking.recipeNames.uk.np3_loc.!random=",
+      "=spice:cooking.recipeNames.uk.np3_z.!random=",
+      "=spice:cooking.recipeNames.uk.np3_z.!random=",
+      "=spice:cooking.recipeNames.uk.np3_u.!random=",
+      "під =spice:cooking.recipeNames.uk.np3_ins.!random="
+     ],
+     "with123": [
+      "=spice:cooking.recipeNames.uk.np1_z.!random=, =spice:cooking.recipeNames.uk.np2_ins.!random= і =spice:cooking.recipeNames.uk.np3_ins.!random=",
+      "=spice:cooking.recipeNames.uk.np1_u.!random=, =spice:cooking.recipeNames.uk.np2_loc.!random= і =spice:cooking.recipeNames.uk.np3_loc.!random=",
+      "на =spice:cooking.recipeNames.uk.np1_loc.!random=, =spice:cooking.recipeNames.uk.np2_loc.!random= і =spice:cooking.recipeNames.uk.np3_loc.!random=",
+      "=spice:cooking.recipeNames.uk.np1_z.!random=, =spice:cooking.recipeNames.uk.np2_ins.!random= та =spice:cooking.recipeNames.uk.np3_ins.!random=",
+      "=spice:cooking.recipeNames.uk.np1_z.!random=, =spice:cooking.recipeNames.uk.np2_ins.!random= і =spice:cooking.recipeNames.uk.np3_ins.!random=",
+      "=spice:cooking.recipeNames.uk.np1_u.!random=, =spice:cooking.recipeNames.uk.np2_loc.!random= та =spice:cooking.recipeNames.uk.np3_loc.!random=",
+      "під =spice:cooking.recipeNames.uk.np1_ins.!random=, =spice:cooking.recipeNames.uk.np2_ins.!random= і =spice:cooking.recipeNames.uk.np3_ins.!random="
+     ],
+     "np1_z": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_z_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_z_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_z_ins.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np1_u": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_u_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_u_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient1.nounPlural_u_loc.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np3_z": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_z_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_z_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_z_ins.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np3_u": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_u_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_u_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_u_loc.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ]
+    },
+    "ingredients": {
+     "Limb": {
+      "nounPlural_ins": ["кінцівкою", "м’ясом", "кінцівкою", "лапою", "відростком"],
+      "nounPlural_loc": ["кінцівці", "м’ясі", "кінцівці", "лапі", "відростку"],
+      "nounPlural_z_ins": ["з кінцівкою", "з м’ясом", "з кінцівкою", "з лапою", "з відростком"],
+      "nounPlural_u_loc": ["у кінцівці", "у м’ясі", "у кінцівці", "у лапі", "у відростку"]
+     },
+     "Face": {
+      "nounPlural_ins": ["обличчям", "м’ясом", "обличчям", "ликом"],
+      "nounPlural_loc": ["обличчі", "м’ясі", "обличчі", "лику"],
+      "nounPlural_z_ins": ["з обличчям", "з м’ясом", "з обличчям", "з ликом"],
+      "nounPlural_u_loc": ["в обличчі", "у м’ясі", "в обличчі", "у лику"]
+     },
+     "Head": {
+      "nounPlural_ins": ["головою", "м’ясом", "головою", "мізками"],
+      "nounPlural_loc": ["голові", "м’ясі", "голові", "мізках"],
+      "nounPlural_z_ins": ["з головою", "з м’ясом", "з головою", "з мізками"],
+      "nounPlural_u_loc": ["у голові", "у м’ясі", "у голові", "у мізках"]
+     },
+     "Jerky": {
+      "nounPlural_ins": ["в’яленим м’ясом", "м’ясом"],
+      "nounPlural_loc": ["в’яленому м’ясі", "м’ясі"],
+      "nounPlural_z_ins": ["з в’яленим м’ясом", "з м’ясом"],
+      "nounPlural_u_loc": ["у в’яленому м’ясі", "у м’ясі"]
+     },
+     "Vinewafer Sheaf": {
+      "nounPlural_ins": ["пластинками", "лозовими пластинками", "прісною водою", "мацом"],
+      "nounPlural_loc": ["пластинках", "лозових пластинках", "прісній воді", "маці"],
+      "nounPlural_z_ins": ["з пластинками", "з лозовими пластинками", "з прісною водою", "з мацом"],
+      "nounPlural_u_loc": ["у пластинках", "у лозових пластинках", "у прісній воді", "у маці"]
+     },
+     "Phase Silk": {
+      "nounPlural_ins": [
+       "=spice:cooking.recipeNames.uk.silkAdj_ins.!random= шовком",
+       "=spice:cooking.recipeNames.uk.silkAdj_ins.!random= волоском"
+      ],
+      "nounPlural_loc": [
+       "=spice:cooking.recipeNames.uk.silkAdj_loc.!random= шовку",
+       "=spice:cooking.recipeNames.uk.silkAdj_loc.!random= волоску"
+      ],
+      "nounPlural_z_ins": [
+       "з =spice:cooking.recipeNames.uk.silkAdj_ins.!random= шовком",
+       "з =spice:cooking.recipeNames.uk.silkAdj_ins.!random= волоском"
+      ],
+      "nounPlural_u_loc": [
+       "у =spice:cooking.recipeNames.uk.silkAdj_loc.!random= шовку",
+       "у =spice:cooking.recipeNames.uk.silkAdj_loc.!random= волоску"
+      ]
+     },
+     "Congealed Shade Oil": {
+      "nounPlural_ins": ["тіньовою олією", "тінню", "тоніком із тіньової олії", "тоніком", "присмерком"],
+      "nounPlural_loc": ["тіньовій олії", "тіні", "тоніку з тіньової олії", "тоніку", "присмерку"],
+      "nounPlural_z_ins": ["з тіньовою олією", "з тінню", "з тоніком із тіньової олії", "з тоніком", "з присмерком"],
+      "nounPlural_u_loc": ["у тіньовій олії", "у тіні", "у тоніку з тіньової олії", "у тоніку", "у присмерку"]
+     },
+     "Congealed Blaze": {
+      "nounPlural_ins": ["полум’ям", "відкритим вогнем", "нагаром", "димом"],
+      "nounPlural_loc": ["полум’ї", "відкритому вогні", "нагарі", "диму"],
+      "nounPlural_z_ins": ["з полум’ям", "з відкритим вогнем", "з нагаром", "з димом"],
+      "nounPlural_u_loc": ["у полум’ї", "у відкритому вогні", "у нагарі", "у диму"]
+     },
+     "Congealed Salve": {
+      "nounPlural_ins": ["бальзамом", "маззю", "припаркою", "знеболювальним"],
+      "nounPlural_loc": ["бальзамі", "мазі", "припарці", "знеболювальному"],
+      "nounPlural_z_ins": ["з бальзамом", "з маззю", "з припаркою", "зі знеболювальним"],
+      "nounPlural_u_loc": ["у бальзамі", "у мазі", "у припарці", "у знеболювальному"]
+     },
+     "Soul Curd": {
+      "nounPlural_ins": ["сиром душі"],
+      "nounPlural_loc": ["сирі душі"],
+      "nounPlural_z_ins": ["із сиром душі"],
+      "nounPlural_u_loc": ["у сирі душі"]
+     },
+     "Drop of Nectar": {
+      "nounPlural_ins": ["нектаром"],
+      "nounPlural_loc": ["нектарі"],
+      "nounPlural_z_ins": ["з нектаром"],
+      "nounPlural_u_loc": ["у нектарі"]
+     },
+     "Congealed Love": {
+      "nounPlural_ins": ["любов’ю", "хіттю"],
+      "nounPlural_loc": ["любові", "хіті"],
+      "nounPlural_z_ins": ["з любов’ю", "з хіттю"],
+      "nounPlural_u_loc": ["у любові", "у хіті"]
+     },
+     "Congealed Hulk Honey": {
+      "nounPlural_ins": ["богатирським медом", "медом"],
+      "nounPlural_loc": ["богатирському меду", "меду"],
+      "nounPlural_z_ins": ["з богатирським медом", "з медом"],
+      "nounPlural_u_loc": ["у богатирському меду", "у меду"]
+     },
+     "Congealed Skulk": {
+      "nounPlural_ins": ["скраданням"],
+      "nounPlural_loc": ["скраданні"],
+      "nounPlural_z_ins": ["зі скраданням"],
+      "nounPlural_u_loc": ["у скраданні"]
+     },
+     "Congealed Rubbergum": {
+      "nounPlural_ins": ["гумоклеєм", "жуйкою"],
+      "nounPlural_loc": ["гумоклеї", "жуйці"],
+      "nounPlural_z_ins": ["з гумоклеєм", "з жуйкою"],
+      "nounPlural_u_loc": ["у гумоклеї", "у жуйці"]
+     },
+     "Crusty Loaf": {
+      "nounPlural_ins": ["хлібом", "грінкою", "паляницею"],
+      "nounPlural_loc": ["хлібі", "грінці", "паляниці"],
+      "nounPlural_z_ins": ["з хлібом", "з грінкою", "з паляницею"],
+      "nounPlural_u_loc": ["у хлібі", "у грінці", "у паляниці"]
+     },
+     "Salthopper Chip": {
+      "nounPlural_ins": ["чипсами", "сіллю"],
+      "nounPlural_loc": ["чипсах", "солі"],
+      "nounPlural_z_ins": ["із чипсами", "із сіллю"],
+      "nounPlural_u_loc": ["у чипсах", "у солі"]
+     },
+     "Ekuemekiyyen Greens": {
+      "nounPlural_ins": ["листям", "зеленню"],
+      "nounPlural_loc": ["листі", "зелені"],
+      "nounPlural_z_ins": ["з листям", "із зеленню"],
+      "nounPlural_u_loc": ["у листі", "у зелені"]
+     },
+     "Food Cube": {
+      "nounPlural_ins": ["кубиком", "кубиком", "кубиком", "таємницею"],
+      "nounPlural_loc": ["кубику", "кубику", "кубику", "таємниці"],
+      "nounPlural_z_ins": ["з кубиком", "з кубиком", "з кубиком", "з таємницею"],
+      "nounPlural_u_loc": ["у кубику", "у кубику", "у кубику", "у таємниці"]
+     },
+     "Starapple Preserves": {
+      "nounPlural_ins": ["яблуками", "зіркояблуками", "варенням", "яблучним варенням", "варенням із зіркояблук"],
+      "nounPlural_loc": ["яблуках", "зіркояблуках", "варенні", "яблучному варенні", "варенні із зіркояблук"],
+      "nounPlural_z_ins": ["з яблуками", "із зіркояблуками", "з варенням", "з яблучним варенням", "з варенням із зіркояблук"],
+      "nounPlural_u_loc": ["в яблуках", "у зіркояблуках", "у варенні", "в яблучному варенні", "у варенні із зіркояблук"]
+     },
+     "Spine Fruit Jam": {
+      "nounPlural_ins": ["колючим плодом", "кропивою", "колючками", "варенням", "варенням з колючих плодів", "тереном"],
+      "nounPlural_loc": ["колючому плоді", "кропиві", "колючках", "варенні", "варенні з колючих плодів", "терені"],
+      "nounPlural_z_ins": ["з колючим плодом", "з кропивою", "з колючками", "з варенням", "з варенням з колючих плодів", "з тереном"],
+      "nounPlural_u_loc": ["у колючому плоді", "у кропиві", "у колючках", "у варенні", "у варенні з колючих плодів", "у терені"]
+     },
+     "Cured Dawnglider Tail": {
+      "nounPlural_ins": ["хвостом світанкокрила", "лускою", "відкритим вогнем", "нагаром", "димом"],
+      "nounPlural_loc": ["хвості світанкокрила", "лусці", "відкритому вогні", "нагарі", "диму"],
+      "nounPlural_z_ins": ["з хвостом світанкокрила", "з лускою", "з відкритим вогнем", "з нагаром", "з димом"],
+      "nounPlural_u_loc": ["у хвості світанкокрила", "у лусці", "у відкритому вогні", "у нагарі", "у диму"]
+     },
+     "Fire Ant Gaster Paste": {
+      "nounPlural_ins": ["пастою з черевця вогняної мурахи", "пастою з черевця", "відкритим вогнем", "нагаром", "димом", "вогняною мурахою"],
+      "nounPlural_loc": ["пасті з черевця вогняної мурахи", "пасті з черевця", "відкритому вогні", "нагарі", "диму", "вогняній мурасі"],
+      "nounPlural_z_ins": [
+       "з пастою з черевця вогняної мурахи", "з пастою з черевця", "з відкритим вогнем", "з нагаром", "з димом",
+       "з вогняною мурахою"
+      ],
+      "nounPlural_u_loc": [
+       "у пасті з черевця вогняної мурахи", "у пасті з черевця", "у відкритому вогні", "у нагарі", "у диму",
+       "у вогняній мурасі"
+      ]
+     },
+     "Freeze-Dried Hoarshrooms": {
+      "nounPlural_ins": ["морозогрибами", "грибами", "порошинками світла", "грибком"],
+      "nounPlural_loc": ["морозогрибах", "грибах", "порошинках світла", "грибку"],
+      "nounPlural_z_ins": ["з морозогрибами", "з грибами", "з порошинками світла", "з грибком"],
+      "nounPlural_u_loc": ["у морозогрибах", "у грибах", "у порошинках світла", "у грибку"]
+     },
+     "Pickled Mushrooms": {
+      "nounPlural_ins": ["маринованими грибами", "грибами", "грибним маринадом", "грибком"],
+      "nounPlural_loc": ["маринованих грибах", "грибах", "грибному маринаді", "грибку"],
+      "nounPlural_z_ins": ["з маринованими грибами", "з грибами", "з грибним маринадом", "з грибком"],
+      "nounPlural_u_loc": ["у маринованих грибах", "у грибах", "у грибному маринаді", "у грибку"]
+     },
+     "Pickles": {
+      "nounPlural_ins": ["соліннями", "огірковим розсолом", "розсолом", "водою"],
+      "nounPlural_loc": ["соліннях", "огірковому розсолі", "розсолі", "воді"],
+      "nounPlural_z_ins": ["із соліннями", "з огірковим розсолом", "з розсолом", "з водою"],
+      "nounPlural_u_loc": ["у соліннях", "в огірковому розсолі", "у розсолі", "у воді"]
+     },
+     "Fermented Yondercane": {
+      "nounPlural_ins": ["далекотростиною", "квашеною далекотростиною", "далекотростиною", "квашеною далекотростиною", "повітрям"],
+      "nounPlural_loc": ["далекотростині", "квашеній далекотростині", "далекотростині", "квашеній далекотростині", "повітрі"],
+      "nounPlural_z_ins": ["з далекотростиною", "з квашеною далекотростиною", "з далекотростиною", "з квашеною далекотростиною", "з повітрям"],
+      "nounPlural_u_loc": ["у далекотростині", "у квашеній далекотростині", "у далекотростині", "у квашеній далекотростині", "у повітрі"]
+     },
+     "Voider Gland Paste": {
+      "nounPlural_ins": ["пастою із залози пустотника", "залозою пустотника", "пустотником", "повітрям"],
+      "nounPlural_loc": ["пасті із залози пустотника", "залозі пустотника", "пустотнику", "повітрі"],
+      "nounPlural_z_ins": ["з пастою із залози пустотника", "із залозою пустотника", "з пустотником", "з повітрям"],
+      "nounPlural_u_loc": ["у пасті із залози пустотника", "у залозі пустотника", "у пустотнику", "у повітрі"]
+     },
+     "Spark Tick Plasma": {
+      "nounPlural_ins": ["плазмою іскрового кліща", "іскрами", "електричним струмом", "плазмою", "електрикою", "блискавкою"],
+      "nounPlural_loc": ["плазмі іскрового кліща", "іскрах", "електричному струмі", "плазмі", "електриці", "блискавці"],
+      "nounPlural_z_ins": ["з плазмою іскрового кліща", "з іскрами", "з електричним струмом", "з плазмою", "з електрикою", "з блискавкою"],
+      "nounPlural_u_loc": ["у плазмі іскрового кліща", "в іскрах", "в електричному струмі", "у плазмі", "в електриці", "у блискавці"]
+     },
+     "Canned Have-It-All": {
+      "nounPlural_ins": ["усім потроху"],
+      "nounPlural_loc": ["усьому потроху"],
+      "nounPlural_z_ins": ["з усім потроху"],
+      "nounPlural_u_loc": ["в усьому потроху"]
+     },
+     "Wild Rice": {
+      "nounPlural_ins": ["диким рисом"],
+      "nounPlural_loc": ["дикому рисі"],
+      "nounPlural_z_ins": ["з диким рисом"],
+      "nounPlural_u_loc": ["у дикому рисі"]
+     },
+     "Dream Smoke": {
+      "nounPlural_ins": ["димом снів", "снами", "мріями"],
+      "nounPlural_loc": ["диму снів", "снах", "мріях"],
+      "nounPlural_z_ins": ["з димом снів", "зі снами", "з мріями"],
+      "nounPlural_u_loc": ["у диму снів", "у снах", "у мріях"]
+     },
+     "Fermented Yuckwheat Stem": {
+      "nounPlural_ins": ["квашеною гидкопшеницею", "гидкопшеницею", "ліками", "гидкопшеницею"],
+      "nounPlural_loc": ["квашеній гидкопшениці", "гидкопшениці", "ліках", "гидкопшениці"],
+      "nounPlural_z_ins": ["з квашеною гидкопшеницею", "з гидкопшеницею", "з ліками", "з гидкопшеницею"],
+      "nounPlural_u_loc": ["у квашеній гидкопшениці", "у гидкопшениці", "у ліках", "у гидкопшениці"]
+     },
+     "Mashed Lag": {
+      "nounPlural_ins": ["гальмокоренем", "гальмом"],
+      "nounPlural_loc": ["гальмокорені", "гальмі"],
+      "nounPlural_z_ins": ["з гальмокоренем", "з гальмом"],
+      "nounPlural_u_loc": ["у гальмокорені", "у гальмі"]
+     },
+     "Dried Lah Petals": {
+      "nounPlural_ins": ["лахом", "пелюстками", "квіткою"],
+      "nounPlural_loc": ["лаху", "пелюстках", "квітці"],
+      "nounPlural_z_ins": ["з лахом", "з пелюстками", "з квіткою"],
+      "nounPlural_u_loc": ["у лаху", "у пелюстках", "у квітці"]
+     },
+     "Dried Vanta Petals": {
+      "nounPlural_ins": ["вантою", "пелюстками", "квіткою"],
+      "nounPlural_loc": ["ванті", "пелюстках", "квітці"],
+      "nounPlural_z_ins": ["з вантою", "з пелюстками", "з квіткою"],
+      "nounPlural_u_loc": ["у ванті", "у пелюстках", "у квітці"]
+     },
+     "Compacted Bone Meal": {
+      "nounPlural_ins": ["кістками", "кістковим борошном"],
+      "nounPlural_loc": ["кістках", "кістковому борошні"],
+      "nounPlural_z_ins": ["з кістками", "з кістковим борошном"],
+      "nounPlural_u_loc": ["у кістках", "у кістковому борошні"]
+     },
+     "Crushed Grave Moss": {
+      "nounPlural_ins": ["могильним мохом", "мохом"],
+      "nounPlural_loc": ["могильному моху", "моху"],
+      "nounPlural_z_ins": ["з могильним мохом", "з мохом"],
+      "nounPlural_u_loc": ["у могильному моху", "у моху"]
+     },
+     "Sun-Dried Banana": {
+      "nounPlural_ins": ["бананами"],
+      "nounPlural_loc": ["бананах"],
+      "nounPlural_z_ins": ["з бананами"],
+      "nounPlural_u_loc": ["у бананах"]
+     },
+     "Psychal Gland Paste": {
+      "nounPlural_ins": ["пастою з психальної залози", "психальною залозою", "спогадами"],
+      "nounPlural_loc": ["пасті з психальної залози", "психальній залозі", "спогадах"],
+      "nounPlural_z_ins": ["з пастою з психальної залози", "з психальною залозою", "зі спогадами"],
+      "nounPlural_u_loc": ["у пасті з психальної залози", "у психальній залозі", "у спогадах"]
+     },
+     "Mirror Dust": {
+      "nounPlural_ins": ["дзеркальним пилом", "пилом"],
+      "nounPlural_loc": ["дзеркальному пилу", "пилу"],
+      "nounPlural_z_ins": ["з дзеркальним пилом", "з пилом"],
+      "nounPlural_u_loc": ["у дзеркальному пилу", "у пилу"]
+     },
+     "Sliced Bop Cheek": {
+      "nounPlural_ins": ["губкою", "губкою-трясучкою", "щокою-трясучкою"],
+      "nounPlural_loc": ["губці", "губці-трясучці", "щоці-трясучці"],
+      "nounPlural_z_ins": ["з губкою", "з губкою-трясучкою", "із щокою-трясучкою"],
+      "nounPlural_u_loc": ["у губці", "у губці-трясучці", "у щоці-трясучці"]
+     },
+     "Fermented Tongue": {
+      "nounPlural_ins": ["язиком", "глоткою"],
+      "nounPlural_loc": ["язику", "глотці"],
+      "nounPlural_z_ins": ["з язиком", "з глоткою"],
+      "nounPlural_u_loc": ["в язику", "у глотці"]
+     },
+     "FireBreatherGlandPaste": {
+      "nounPlural_ins": ["пастою із залози вогнеборода", "відкритим вогнем", "нагаром", "димом", "вогнебородом"],
+      "nounPlural_loc": ["пасті із залози вогнеборода", "відкритому вогні", "нагарі", "диму", "вогнебороді"],
+      "nounPlural_z_ins": ["з пастою із залози вогнеборода", "з відкритим вогнем", "з нагаром", "з димом", "з вогнебородом"],
+      "nounPlural_u_loc": ["у пасті із залози вогнеборода", "у відкритому вогні", "у нагарі", "у диму", "у вогнебороді"]
+     },
+     "ElderFireBreatherGlandPaste": {
+      "nounPlural_ins": ["концентрованою пастою із залози вогнеборода", "відкритим вогнем", "нагаром", "димом", "старшим вогнебородом"],
+      "nounPlural_loc": ["концентрованій пасті із залози вогнеборода", "відкритому вогні", "нагарі", "диму", "старшому вогнебороді"],
+      "nounPlural_z_ins": [
+       "з концентрованою пастою із залози вогнеборода",
+       "з відкритим вогнем",
+       "з нагаром",
+       "з димом",
+       "зі старшим вогнебородом"
+      ],
+      "nounPlural_u_loc": [
+       "у концентрованій пасті із залози вогнеборода",
+       "у відкритому вогні",
+       "у нагарі",
+       "у диму",
+       "у старшому вогнебороді"
+      ]
+     },
+     "IceBreatherGlandPaste": {
+      "nounPlural_ins": ["пастою із залози крупоборода", "льодом", "сльотою", "крупобородом"],
+      "nounPlural_loc": ["пасті із залози крупоборода", "льоду", "сльоті", "крупобороді"],
+      "nounPlural_z_ins": ["з пастою із залози крупоборода", "з льодом", "зі сльотою", "з крупобородом"],
+      "nounPlural_u_loc": ["у пасті із залози крупоборода", "у льоду", "у сльоті", "у крупобороді"]
+     },
+     "ElderIceBreatherGlandPaste": {
+      "nounPlural_ins": ["концентрованою пастою із залози крупоборода", "льодом", "сльотою", "старшим крупобородом"],
+      "nounPlural_loc": ["концентрованій пасті із залози крупоборода", "льоду", "сльоті", "старшому крупобороді"],
+      "nounPlural_z_ins": ["з концентрованою пастою із залози крупоборода", "з льодом", "зі сльотою", "зі старшим крупобородом"],
+      "nounPlural_u_loc": ["у концентрованій пасті із залози крупоборода", "у льоду", "у сльоті", "у старшому крупобороді"]
+     },
+     "CorrosiveBreatherGlandPaste": {
+      "nounPlural_ins": ["кислотою", "пастою із залози терпоборода", "терпобородом"],
+      "nounPlural_loc": ["кислоті", "пасті із залози терпоборода", "терпобороді"],
+      "nounPlural_z_ins": ["з кислотою", "з пастою із залози терпоборода", "з терпобородом"],
+      "nounPlural_u_loc": ["у кислоті", "у пасті із залози терпоборода", "у терпобороді"]
+     },
+     "ElderCorrosiveBreatherGlandPaste": {
+      "nounPlural_ins": ["кислотою", "концентрованою пастою із залози терпоборода", "старшим терпобородом"],
+      "nounPlural_loc": ["кислоті", "концентрованій пасті із залози терпоборода", "старшому терпобороді"],
+      "nounPlural_z_ins": ["з кислотою", "з концентрованою пастою із залози терпоборода", "зі старшим терпобородом"],
+      "nounPlural_u_loc": ["у кислоті", "у концентрованій пасті із залози терпоборода", "у старшому терпобороді"]
+     },
+     "NormalityBreatherGlandPaste": {
+      "nounPlural_ins": ["небуттям", "нічим", "пастою із залози нулеборода", "нулебородом"],
+      "nounPlural_loc": ["небутті", "нічому", "пасті із залози нулеборода", "нулебороді"],
+      "nounPlural_z_ins": ["з небуттям", "з нічим", "з пастою із залози нулеборода", "з нулебородом"],
+      "nounPlural_u_loc": ["у небутті", "у нічому", "у пасті із залози нулеборода", "у нулебороді"]
+     },
+     "ElderNormalityBreatherGlandPaste": {
+      "nounPlural_ins": ["небуттям", "нічим", "концентрованою пастою із залози нулеборода", "старшим нулебородом"],
+      "nounPlural_loc": ["небутті", "нічому", "концентрованій пасті із залози нулеборода", "старшому нулебороді"],
+      "nounPlural_z_ins": ["з небуттям", "з нічим", "з концентрованою пастою із залози нулеборода", "зі старшим нулебородом"],
+      "nounPlural_u_loc": ["у небутті", "у нічому", "у концентрованій пасті із залози нулеборода", "у старшому нулебороді"]
+     },
+     "PoisonBreatherGlandPaste": {
+      "nounPlural_ins": ["отрутою", "пастою із залози жовчоборода", "жовчобородом"],
+      "nounPlural_loc": ["отруті", "пасті із залози жовчоборода", "жовчобороді"],
+      "nounPlural_z_ins": ["з отрутою", "з пастою із залози жовчоборода", "з жовчобородом"],
+      "nounPlural_u_loc": ["в отруті", "у пасті із залози жовчоборода", "у жовчобороді"]
+     },
+     "ElderPoisonBreatherGlandPaste": {
+      "nounPlural_ins": ["отрутою", "концентрованою пастою із залози жовчоборода", "старшим жовчобородом"],
+      "nounPlural_loc": ["отруті", "концентрованій пасті із залози жовчоборода", "старшому жовчобороді"],
+      "nounPlural_z_ins": ["з отрутою", "з концентрованою пастою із залози жовчоборода", "зі старшим жовчобородом"],
+      "nounPlural_u_loc": ["в отруті", "у концентрованій пасті із залози жовчоборода", "у старшому жовчобороді"]
+     },
+     "SleepBreatherGlandPaste": {
+      "nounPlural_ins": ["пастою із залози сноборода", "снобородом"],
+      "nounPlural_loc": ["пасті із залози сноборода", "снобороді"],
+      "nounPlural_z_ins": ["з пастою із залози сноборода", "зі снобородом"],
+      "nounPlural_u_loc": ["у пасті із залози сноборода", "у снобороді"]
+     },
+     "ElderSleepBreatherGlandPaste": {
+      "nounPlural_ins": ["концентрованою пастою із залози сноборода", "старшим снобородом"],
+      "nounPlural_loc": ["концентрованій пасті із залози сноборода", "старшому снобороді"],
+      "nounPlural_z_ins": ["з концентрованою пастою із залози сноборода", "зі старшим снобородом"],
+      "nounPlural_u_loc": ["у концентрованій пасті із залози сноборода", "у старшому снобороді"]
+     },
+     "StunBreatherGlandPaste": {
+      "nounPlural_ins": ["пастою із залози тихоборода", "тихобородом"],
+      "nounPlural_loc": ["пасті із залози тихоборода", "тихобороді"],
+      "nounPlural_z_ins": ["з пастою із залози тихоборода", "з тихобородом"],
+      "nounPlural_u_loc": ["у пасті із залози тихоборода", "у тихобороді"]
+     },
+     "ElderStunBreatherGlandPaste": {
+      "nounPlural_ins": ["концентрованою пастою із залози тихоборода", "старшим тихобородом"],
+      "nounPlural_loc": ["концентрованій пасті із залози тихоборода", "старшому тихобороді"],
+      "nounPlural_z_ins": ["з концентрованою пастою із залози тихоборода", "зі старшим тихобородом"],
+      "nounPlural_u_loc": ["у концентрованій пасті із залози тихоборода", "у старшому тихобороді"]
+     },
+     "ConfusionBreatherGlandPaste": {
+      "nounPlural_ins": ["пастою із залози плутоборода", "плутобородом"],
+      "nounPlural_loc": ["пасті із залози плутоборода", "плутобороді"],
+      "nounPlural_z_ins": ["з пастою із залози плутоборода", "з плутобородом"],
+      "nounPlural_u_loc": ["у пасті із залози плутоборода", "у плутобороді"]
+     },
+     "ElderConfusionBreatherGlandPaste": {
+      "nounPlural_ins": ["концентрованою пастою із залози плутоборода", "старшим плутобородом"],
+      "nounPlural_loc": ["концентрованій пасті із залози плутоборода", "старшому плутобороді"],
+      "nounPlural_z_ins": ["з концентрованою пастою із залози плутоборода", "зі старшим плутобородом"],
+      "nounPlural_u_loc": ["у концентрованій пасті із залози плутоборода", "у старшому плутобороді"]
+     },
+     "cider": {
+      "nounPlural_ins": ["сидром", "прянощами"],
+      "nounPlural_loc": ["сидрі", "прянощах"],
+      "nounPlural_z_ins": ["із сидром", "з прянощами"],
+      "nounPlural_u_loc": ["у сидрі", "у прянощах"]
+     },
+     "convalessence": {
+      "nounPlural_ins": ["одужесенцією", "бальзамом", "еліксиром"],
+      "nounPlural_loc": ["одужесенції", "бальзамі", "еліксирі"],
+      "nounPlural_z_ins": ["з одужесенцією", "з бальзамом", "з еліксиром"],
+      "nounPlural_u_loc": ["в одужесенції", "у бальзамі", "в еліксирі"]
+     },
+     "honey": {
+      "nounPlural_ins": ["медом"],
+      "nounPlural_loc": ["меду"],
+      "nounPlural_z_ins": ["з медом"],
+      "nounPlural_u_loc": ["у меду"]
+     },
+     "salt": {
+      "nounPlural_ins": ["сіллю"],
+      "nounPlural_loc": ["солі"],
+      "nounPlural_z_ins": ["із сіллю"],
+      "nounPlural_u_loc": ["у солі"]
+     },
+     "asphalt": {
+      "nounPlural_ins": ["смолою", "асфальтом", "клеєм"],
+      "nounPlural_loc": ["смолі", "асфальті", "клеї"],
+      "nounPlural_z_ins": ["зі смолою", "з асфальтом", "з клеєм"],
+      "nounPlural_u_loc": ["у смолі", "в асфальті", "у клеї"]
+     },
+     "lava": {
+      "nounPlural_ins": ["лавою", "магмою", "димом"],
+      "nounPlural_loc": ["лаві", "магмі", "диму"],
+      "nounPlural_z_ins": ["з лавою", "з магмою", "з димом"],
+      "nounPlural_u_loc": ["у лаві", "у магмі", "у диму"]
+     },
+     "slime": {
+      "nounPlural_ins": ["слизом"],
+      "nounPlural_loc": ["слизу"],
+      "nounPlural_z_ins": ["зі слизом"],
+      "nounPlural_u_loc": ["у слизу"]
+     },
+     "goo": {
+      "nounPlural_ins": ["драглями"],
+      "nounPlural_loc": ["драглях"],
+      "nounPlural_z_ins": ["з драглями"],
+      "nounPlural_u_loc": ["у драглях"]
+     },
+     "sludge": {
+      "nounPlural_ins": ["мулом"],
+      "nounPlural_loc": ["мулі"],
+      "nounPlural_z_ins": ["з мулом"],
+      "nounPlural_u_loc": ["у мулі"]
+     },
+     "ooze": {
+      "nounPlural_ins": ["тванню"],
+      "nounPlural_loc": ["твані"],
+      "nounPlural_z_ins": ["з тванню"],
+      "nounPlural_u_loc": ["у твані"]
+     },
+     "acid": {
+      "nounPlural_ins": ["кислотою"],
+      "nounPlural_loc": ["кислоті"],
+      "nounPlural_z_ins": ["з кислотою"],
+      "nounPlural_u_loc": ["у кислоті"]
+     },
+     "algae": {
+      "nounPlural_ins": ["водоростями", "ряскою", "ламінарією", "морською травою"],
+      "nounPlural_loc": ["водоростях", "ряссі", "ламінарії", "морській траві"],
+      "nounPlural_z_ins": ["з водоростями", "з ряскою", "з ламінарією", "з морською травою"],
+      "nounPlural_u_loc": ["у водоростях", "у ряссі", "у ламінарії", "у морській траві"]
+     },
+     "neutronflux": {
+      "nounPlural_ins": ["потоком", "нейтронами"],
+      "nounPlural_loc": ["потоці", "нейтронах"],
+      "nounPlural_z_ins": ["з потоком", "з нейтронами"],
+      "nounPlural_u_loc": ["у потоці", "у нейтронах"]
+     },
+     "cloning": {
+      "nounPlural_ins": ["клонувальним зіллям"],
+      "nounPlural_loc": ["клонувальному зіллі"],
+      "nounPlural_z_ins": ["з клонувальним зіллям"],
+      "nounPlural_u_loc": ["у клонувальному зіллі"]
+     },
+     "Starch": {
+      "nounPlural_ins": ["крохмалем"],
+      "nounPlural_loc": ["крохмалі"],
+      "nounPlural_z_ins": ["з крохмалем"],
+      "nounPlural_u_loc": ["у крохмалі"]
+     },
+     "Lignin": {
+      "nounPlural_ins": ["лігніном"],
+      "nounPlural_loc": ["лігніні"],
+      "nounPlural_z_ins": ["з лігніном"],
+      "nounPlural_u_loc": ["у лігніні"]
+     }
+    }
+   }
+  }
+ }
+}

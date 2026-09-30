@@ -81,6 +81,8 @@ COMMENT[k] = "uk-forms: іржава|іржаве|іржаві"    # жіноч�
   розбір чисел — лише після перевірки в грі).
 - `UkrainianReplacers` з `[HasVariableReplacer(Lang = "uk")]`: ключі `v`, `g` (для `GameObject` і
   `GenderedNoun`) і `plural` (для чисел).
+- `UkrainianPostProcessors`: англійські `|article`, `|pluralize`/`|plural`, `|a.to.an` нічого не
+  роблять, `|title` пише з великої лише першу літеру.
 - `UkrainianDescriptionBuilder`: прикметники перед назвою беруть рід об’єкта (таблиця
   `AdjectiveForms.g.cs`, її пише `qud.py build` з нотаток `uk-forms`).
 - Рід об’єкта для `g`:
