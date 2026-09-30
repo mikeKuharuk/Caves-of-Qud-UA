@@ -32,6 +32,17 @@ class Spice(unittest.TestCase):
         ])
         self.assertEqual({u.kind for u in us}, {"spice"})
 
+    def test_identifiers_are_not_units(self):
+        # FoundAsBabe stores a @professions value; =spice:professions.entity@profession.plural= then selects by it
+        sample = """{"spice": {
+          "elements": {"glass": {"@professions": ["glassblower"], "nouns": ["glass"]}},
+          "regions": {"@types": ["city-states"], "Saltmarsh": {"baseColor": ["y", "w"]}},
+          "friendOrFoe": {"_failureredirect": "spice.friendOrFoe.default"}}}"""
+        us = units.extract(sample, "HistorySpice.jsonc")
+        self.assertEqual([(u.msgctxt, u.msgid) for u in us], [("spice.elements.glass.nouns", "glass")])
+        self.assertTrue(spice.is_identifier(("elements", "glass", "@professions")))
+        self.assertFalse(spice.is_identifier(("professions", "glassblower", "singular")))
+
     def test_build_replaces_translated_branches_only(self):
         t = {("spice.commonPhrases.strange", "strange"): "дивний"}
         text, count = spice.build(SAMPLE, "HistorySpice.jsonc", t, overlay={})  # the repo's additions stay out

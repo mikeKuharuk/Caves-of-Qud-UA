@@ -8,6 +8,7 @@ so the translation replaces each top-level branch that has a translated string.
 Units: every string leaf under "spice" with words outside its references (`<spice.x.y>`, `<entity.name>`,
 `=spice:…=`). msgctxt is the dotted key path without array indexes («spice.commonPhrases.strange»), msgid the
 English text, so a unit survives reordering. Object keys are identifiers that references use; they stay.
+So do the values the game reads as identifiers, which are not units (`is_identifier`).
 """
 from __future__ import annotations
 
@@ -61,6 +62,19 @@ def is_text(value: str) -> bool:
     return bool(LETTER.search(REFERENCE.sub(" ", value))) or len(REFERENCE.findall(value)) >= 2
 
 
+# Keys whose values the game reads as identifiers, never shown:
+#   @professions, @types, @mayorTemplate, @siteModifiers…  entity properties and the keys they select
+#                                                           (=spice:professions.entity@profession.plural=,
+#                                                           "SpecialVillagerHeroTemplate_" + @mayorTemplate)
+#   _failureredirect, _staticfailureredirect                a spice path to fall back to
+#   baseColor                                               colour codes (CreatureRegionSpice)
+IDENTIFIER_KEYS = {"baseColor"}
+
+
+def is_identifier(path: tuple[str, ...]) -> bool:
+    return any(k.startswith(("@", "_")) for k in path) or bool(path) and path[-1] in IDENTIFIER_KEYS
+
+
 def leaves(node, path: tuple[str, ...] = ()):
     """(key path without indexes, value) for every string under node."""
     if isinstance(node, dict):
@@ -83,7 +97,7 @@ def extract(text: str, name: str = NAME) -> list:
     out, seen = [], set()
     for path, value in leaves(spice):
         key = (context(path), value)
-        if key in seen or not is_text(value):
+        if key in seen or is_identifier(path) or not is_text(value):
             continue
         seen.add(key)
         out.append(Unit(file=name, msgctxt=key[0], msgid=value, kind="spice"))

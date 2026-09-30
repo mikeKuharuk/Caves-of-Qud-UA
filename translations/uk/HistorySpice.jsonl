@@ -767,18 +767,6 @@
 {"k":"7fe22f513947eb8f9a01","p":"1359f26ea227047b","s":"35af25f5a5fd","t":"опівніч"}
 {"k":"f21f6d0e311899d034c6","p":"1359f26ea227047b","s":"307b1b3807fd","t":"досвіток"}
 {"k":"d2227ba35f2e4909c046","p":"1359f26ea227047b","s":"0edbdffac1b7","t":"присмерк"}
-{"k":"23443e74bde8bdaac607","p":"99f1c31c5510d778","s":"2ba10adba094","t":"anatomicalLocation","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"6369aeb0e849680ea7fa","p":"99f1c31c5510d778","s":"6ec35d10eb3e","t":"2Dshapes","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"a971e1c3b063dcb8ee41","p":"99f1c31c5510d778","s":"f5fc927d9662","t":"3Dshapes","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"637f050ecb3079889562","p":"99f1c31c5510d778","s":"a83e4e65aaf9","t":"typeOfVillage","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"70057b92256d7a7af640","p":"99f1c31c5510d778","s":"6af8efb6e91e","t":"geometricPatterns","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"f6dd931d31aafa53c579","p":"99f1c31c5510d778","s":"8a4ba3186720","t":"ordinal","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"6b90b0af2229ef91ad0e","p":"077a89903e36138d","s":"db3c30d4ca31","t":"basicColors","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"d0247f0ef25a3156a01a","p":"077a89903e36138d","s":"8a4ba3186720","t":"ordinal","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"db6d6cbbc2986f5f316e","p":"077a89903e36138d","s":"2ba10adba094","t":"anatomicalLocation","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"468ef19d5dd60abd2917","p":"077a89903e36138d","s":"6ec35d10eb3e","t":"2Dshapes","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"02a46ef1bfb665014f3d","p":"077a89903e36138d","s":"f5fc927d9662","t":"3Dshapes","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
-{"k":"59f66f4138a0849fa987","p":"077a89903e36138d","s":"a89604ce5744","t":"metals","c":["не перекладати: це назва списку spice, а не текст. Код (Regionalize.cs) кладе її в @siteTopology1/2, і шаблон «QudHistoryFactory Name Chance» бере =spice:entity@siteTopology…= — переклад зламав би назви руїн"]}
 {"k":"0e902bf0ed8596f4a6c9","p":"52ba784c727aa297","s":"b1f51a511f1d","t":"червоний","c":["basicColors вживає лише код: @siteModifiers2 → назви руїн («=X2= =nameRoot=»). Прикметник ч. р. у називному"]}
 {"k":"98deb825bd3816715b24","p":"52ba784c727aa297","s":"16477688c0e0","t":"синій"}
 {"k":"21426e58ec49d0dcc99f","p":"52ba784c727aa297","s":"ba4788b226aa","t":"зелений"}
@@ -2885,7 +2873,6 @@
 {"k":"7ecdd8bcf3f24da0462c","p":"b0050d8331c1dbc5","s":"0d2e361b1f0f","t":"=cult= Безсмертних","c":["=cult= — «культ Ω» (cultForms), рід залежить від слова з commonPhrases.cult, тож англійський прикметник перед ним → родовий множини після нього («культ Ω Чарівних»): узгоджувати не треба"]}
 {"k":"bf7315e929b933c42def","p":"f6447337b953a44e","s":"2d9faa1a1a82","t":"=cult=, Многі","c":["the Many → «Многі» (архаїчна множина)"]}
 {"k":"ea0f3fbea3c890fd258c","p":"f6447337b953a44e","s":"11992b4e40a0","t":"=cult= популярних","c":["=cult= — «культ Ω» (cultForms), рід залежить від слова з commonPhrases.cult, тож англійський прикметник перед ним → родовий множини після нього («культ Ω Чарівних»): узгоджувати не треба; popular — жарт над Temporal Fugue (копії себе): «популярних»"]}
-{"k":"dc702c2ef4e43275e9be","p":"d7dbbbf352c9403f","s":"5fa4b4fef595","t":"spice.extradimensional.cultForms","c":["не перекладати: шлях spice, куди гра переходить, якщо мутації немає в списку (_failureredirect)"]}
 {"k":"8370849f61ca1d5cf891","p":"cac70ede8d0d750a","s":"ca1abf91929d","t":"=rank=-=spice:colors.!random=","c":["PsychicHunterSystem Hunter Naming Position «Ptoh's X»: =rank= — англійська назва птаха з коду (Osprey, Owl…), тож титул частково англійський, доки код не перекладуть; назви з інших списків — у називному, у лапках або після двокрапки"]}
 {"k":"ce6e74d31fc302ea862d","p":"cac70ede8d0d750a","s":"8fa55a0fbd7a","t":"=rank= у психічній фігурі «=spice:2Dshapes.!random=»"}
 {"k":"f581f63f13f66dfe5d38","p":"cac70ede8d0d750a","s":"18f2194c9879","t":"=rank= у психічному тілі «=spice:3Dshapes.!random=»"}
@@ -2929,13 +2916,10 @@
 {"k":"4863ad8ce654406ceef4","p":"4a5f89e66d35cefd","s":"8c00ab9f7902","t":"роками все моє життя зводилося до одного — =activity=","c":["«for years I spent my time X» → «роками все моє життя зводилося до одного — X» (без роду мовця)"]}
 {"k":"3ce5b0be750bcbc236e3","p":"3d44f56a29a51af6","s":"52219e048b96","t":"Роками ми тільки й знали, що =activity=, аж поки не натрапили на це село й не прижилися серед його мешканців.","c":["мовці — «ми»: минулий час множини без роду; =activity= — інфінітив після «тільки й знали, що»"]}
 {"k":"6a343b5f22549554d0ae","p":"85c2158e328831ab","s":"a0c7ec73f6d7","t":"рада","c":["council/senate/parliament.name — «power to an elected X» (NewGovernment Gospel, Hist-sultans): іменник у називному"]}
-{"k":"f5dbc699929fd1db6ed1","p":"82bd3149a2948aba","s":"3cc04a9bfd28","t":"Councilor","c":["не перекладати: @mayorTemplate — ідентифікатор. NewGovernment.cs кладе його в $newMayorTemplate (шлях villages.mayorTemplate.Councilor.name) і в «SpecialVillagerHeroTemplate_» + назва для HeroMaker"]}
 {"k":"d6f494233ff4b43317fe","p":"88398f038bc9db35","s":"16ac612a1261","t":"рада","c":["governor стає властивістю governor і sacredThing села — називний"]}
 {"k":"eb78a2c841e5a65d24e4","p":"50d6dfe3b711e9cc","s":"259864d70a8a","t":"сенат"}
-{"k":"71b0515cbcf9d28fdfa8","p":"84c89d264a91d052","s":"0c3dc028b792","t":"Senator","c":["не перекладати: ідентифікатор (як Councilor)"]}
 {"k":"3ed5c50a9e80d3586b98","p":"4e2363aa1aeca37e","s":"0e5af5c2daec","t":"сенат"}
 {"k":"a63dee398b0cf1d7a7e7","p":"049be0f3addeeb0e","s":"9004161ae599","t":"парламент","c":["в оригіналі описка «parliment»"]}
-{"k":"65306fe80afe1f52ca00","p":"b16c351d415d4b6d","s":"f36500f4bb72","t":"Parliamentarian","c":["не перекладати: ідентифікатор (як Councilor)"]}
 {"k":"eb653c5f5fa8246b3d81","p":"e2f25b3c7066cbaa","s":"7ee162f213ce","t":"парламент"}
 {"k":"8529abdc7e4186463f90","p":"919f1c9e0a51d047","s":"3cc04a9bfd28","t":"радник","c":["NewGovernment Gospel: «The =…name|pluralize|initLower= promised…» — шаблону (Hist-sultans) потрібна множина («радники»); тут називний однини"]}
 {"k":"ac92acf903f49ddd5408","p":"99a08c1b5f788178","s":"0c3dc028b792","t":"сенатор"}
@@ -4617,4 +4601,3 @@
 {"k":"4fbf3040e2b9e18005aa","p":"34ab17a3c92f59a0","s":"e75944d9a1b8","t":"винайдення самого поняття «=spice:nouns.!random=»"}
 {"k":"171143a05047b502a6eb","p":"34ab17a3c92f59a0","s":"e087d38228cc","t":"перемішування того, як сприймаються =spice:objectNouns.!random= і =spice:objectNouns.!random="}
 {"k":"f39fc5c7775f5edaeae7","p":"34ab17a3c92f59a0","s":"5e2718288a57","t":"викривлення кишені простору-часу — тепер там =spice:history.gospels.EarlySultanate.location.!random="}
-{"k":"fda045067c82d117d011","p":"c14525c0047f51c3","s":"c6f8c5d3fd80","t":"spice.friendOrFoe.default","c":["не перекладати: шлях spice, куди гра переходить, якщо ключа фракції немає (_failureredirect)"]}
