@@ -409,10 +409,11 @@ def check_spice_paths(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
 # worksheets
 
 def _example_for_po(files: dict[str, str], po_name: str) -> str:
-    name = po_name.removesuffix(".po") + ".example.xml"
-    if name not in files:
-        raise SystemExit(f"no {name} in the source")
-    return name
+    """The source file of a catalog: 'Items.po' → 'Items.example.xml', 'HistorySpice.po' → 'HistorySpice.jsonc'."""
+    for name in files:
+        if units.po_name(name) == po_name:
+            return name
+    raise SystemExit(f"no source file for {po_name}")
 
 
 def cmd_worksheet(files: dict[str, str], po_name: str, out: pathlib.Path | None, ctx: str | None = None,
