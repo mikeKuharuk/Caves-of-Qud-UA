@@ -389,7 +389,7 @@ def check_spice_paths(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
         print(f"error: HistorySpice.extra: spice.{path} exists in the English spice; translate it in HistorySpice.po")
     tree = spice.merge(english, overlay)
     for path, value in spice.leaves(overlay):
-        for ref in spice.unresolved(value, tree, path[0]):
+        for ref in spice.unresolved(value, tree, spice.relative_base(path)):
             errors += 1
             print(f"error: HistorySpice.extra: spice.{'.'.join(path)}: reference leads nowhere: {ref}")
     for name, text in sorted(files.items()):
@@ -397,8 +397,8 @@ def check_spice_paths(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
         for e in cat.entries:
             if e.obsolete or not e.msgstr or ("spice" not in e.msgstr and "=^:" not in e.msgstr):
                 continue
-            branch = e.msgctxt.split(".")[1] if units.is_spice(name) and e.msgctxt else None
-            new = set(spice.unresolved(e.msgstr, tree, branch)) - set(spice.unresolved(e.msgid, tree, branch))
+            base = spice.relative_base(e.msgctxt) if units.is_spice(name) and e.msgctxt else None
+            new = set(spice.unresolved(e.msgstr, tree, base)) - set(spice.unresolved(e.msgid, tree, base))
             for ref in sorted(new):
                 errors += 1
                 print(f"error: {units.po_name(name)}: {e.msgctxt}: spice-path: reference leads nowhere: {ref}")

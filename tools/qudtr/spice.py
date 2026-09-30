@@ -56,8 +56,9 @@ def load(text: str) -> dict:
 
 
 def is_text(value: str) -> bool:
-    """A value a translator must see: letters left after removing its references."""
-    return bool(LETTER.search(REFERENCE.sub(" ", value)))
+    """A value a translator must see: letters left after removing its references, or two references or more,
+    whose order Ukrainian may need to change («=adjectives= =nouns= =festival=»)."""
+    return bool(LETTER.search(REFERENCE.sub(" ", value))) or len(REFERENCE.findall(value)) >= 2
 
 
 def leaves(node, path: tuple[str, ...] = ()):
@@ -229,15 +230,25 @@ def resolves(tree, segs: list[str]) -> bool:
     return True
 
 
-def unresolved(text: str, tree: dict, branch: str | None = None) -> list[str]:
-    """References in one string that lead nowhere in tree (the English spice with the overlay merged in)."""
+def relative_base(list_path) -> str:
+    """What =^:x= means inside the list at list_path: the list's parent node (HistoricSpice.ParseRelativeLinks
+    appends every key of the stack but the last). list_path is a tuple of keys or a dotted "spice.a.b.c"."""
+    parts = list_path.split(".") if isinstance(list_path, str) else list(list_path)
+    if parts and parts[0] == "spice":
+        parts = parts[1:]
+    return ".".join(parts[:-1])
+
+
+def unresolved(text: str, tree: dict, base: str | None = None) -> list[str]:
+    """References in one string that lead nowhere in tree (the English spice with the overlay merged in). base is
+    the node =^:…= is relative to (relative_base), or None when the string is not inside the spice."""
     bad = []
     for m in SPICE_REF.finditer(text):
         path = next(g for g in m.groups() if g)
         if m.group(4):
-            if branch is None:
+            if base is None:
                 continue
-            path = branch + "." + path
+            path = f"{base}.{path}" if base else path
         segs = ref_segments(path)
         if segs and segs[0] != "*" and not resolves(tree, segs):
             bad.append(path)

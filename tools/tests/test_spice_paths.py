@@ -36,6 +36,15 @@ class Paths(unittest.TestCase):
         self.assertEqual(spice.unresolved("=^:ruins.!random=", self.tree, "commonPhrases"), [])
         self.assertEqual(spice.unresolved("=^:ruinz.!random=", self.tree, "commonPhrases"), ["commonPhrases.ruinz.!random"])
 
+    def test_relative_references_use_the_list_parent(self):
+        # HistoricSpice.ParseRelativeLinks: =^:x= inside elements.glass.adjectives means elements.glass.x
+        self.assertEqual(spice.relative_base("spice.elements.glass.adjectives"), "elements.glass")
+        self.assertEqual(spice.relative_base(("commonPhrases", "historic")), "commonPhrases")
+        self.assertEqual(spice.relative_base(("adjectives",)), "")
+        base = spice.relative_base("spice.elements.glass.adjectives")
+        self.assertEqual(spice.unresolved("=^:nouns.!random=", self.tree, base), [])
+        self.assertEqual(spice.unresolved("=^:salt.!random=", self.tree, base), ["elements.glass.salt.!random"])
+
     def test_two_overlay_files_may_not_define_the_same_key(self):
         parts = {"a.json": {"commonPhrases": {"historic_f": ["x"]}},
                  "b.json": {"commonPhrases": {"historic_f": ["y"], "ruins_gen": ["руїн"]}}}

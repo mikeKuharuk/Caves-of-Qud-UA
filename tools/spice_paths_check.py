@@ -30,15 +30,15 @@ def main(argv: list[str]) -> int:
     tree = spice.merge(english, overlay)
     for path, value in spice.leaves(overlay):
         problems += [f"HistorySpice.extra: spice.{'.'.join(path)}: leads nowhere: {r}"
-                     for r in spice.unresolved(value, tree, path[0])]
+                     for r in spice.unresolved(value, tree, spice.relative_base(path))]
     for name in argv:
         for line in pathlib.Path(name).read_text(encoding="utf-8").splitlines()[1:]:
             r = json.loads(line)
             if not r.get("uk"):
                 continue
             ctx = r.get("ctx") or ""
-            branch = ctx.split(".")[1] if ctx.startswith("spice.") else None
-            new = set(spice.unresolved(r["uk"], tree, branch)) - set(spice.unresolved(r["en"], tree, branch))
+            base = spice.relative_base(ctx) if ctx.startswith("spice.") else None
+            new = set(spice.unresolved(r["uk"], tree, base)) - set(spice.unresolved(r["en"], tree, base))
             problems += [f"{pathlib.Path(name).name}: {ctx}: leads nowhere: {ref}" for ref in sorted(new)]
     for p in problems:
         print(p)

@@ -10,7 +10,7 @@ subject. The map lists, for every list under "spice", each reference with the te
 - the game's code (ExpandString("…<spice.x>…") and literal paths). Text glued in code is English and not in
   any catalog; the map marks those references so the design can plan around them.
 
-References: =spice:PATH=, <spice.PATH>, =^:REL= (relative to the fragment's branch), =spice.set:PATH:$var=,
+References: =spice:PATH=, <spice.PATH>, =^:REL= (relative to the list's parent node), =spice.set:PATH:$var=,
 =spice.entity:PROP=. Path segments that are variables ($element, $terrain) become '*'. Output: one text file per
 top-level branch plus index.txt with counts; work/ is local (the English text stays out of git).
 """
@@ -88,8 +88,9 @@ def main(argv):
     for path_tuple, value in spice.leaves(root):
         for m in REF.finditer(value):
             path = next(g for g in m.groups() if g)
-            if m.group(4):  # =^:x= is relative to the fragment's top-level branch
-                path = path_tuple[0] + "." + path
+            if m.group(4):  # =^:x= is relative to the list's parent node
+                base = spice.relative_base(path_tuple)
+                path = f"{base}.{path}" if base else path
             record(path, "spice." + ".".join(path_tuple), value, m)
     # 3. the game's code
     if CODE_DIR.exists():
