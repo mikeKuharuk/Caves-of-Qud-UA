@@ -1,4 +1,7 @@
 {"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "ZoneTerrain.example.xml"}
+{"k":"2acaceacd4726588deb6","p":"27cde7b9f2556593","s":"c80bf876dd9e","t":"дошка","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"f9c3ebd5ba7183794ed4","p":"7afddd95242b0955","s":"d60384034b77","t":"смуга","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"86ee07295b2c9f709fbe","p":"f84b51418b7e4d49","s":"14ea6507645c","t":"кора","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"1dae1a338d512d7cf674","p":"e5e17415cb6e3b01","s":"89cff6be5c61","t":"мерехтлусковий мангр"}
 {"k":"e961896686fdcf49fb4a","p":"b04a3ab32e60956e","s":"306fd9fc0c26","t":"Світло проривається крізь мокре листя розсипом, а коріння схоже на воскову колонаду, що розтанула в лабіринт і знову застигла."}
 {"k":"69ca774e8128ead7ae7c","p":"8f8ee33be6d31e7f","s":"89cff6be5c61","t":"мерехтлусковий мангр"}
@@ -11,6 +14,9 @@
 {"k":"d701a6154e497f525def","p":"1d6f71134870b249","s":"46d50efb3903","t":"Сплутане гніздо коренів розповзається землею. Кора розщеплена на гострі колючки."}
 {"k":"710703dfb460e868f6c4","p":"ef6e85d7932c6e98","s":"a5869ec70e48","t":"фрактус"}
 {"k":"6764c9010e8cbd02c223","p":"1b6d133f952853fa","s":"cd0e3729ae6f","t":"Особливо колючий клапоть Пеано."}
+{"k":"777dc3f4612b7a43e77e","p":"65a95314af90ea98","s":"d60384034b77","t":"смуга","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"e2e4e2bf3b32a05b6098","p":"0f850745a75b04bc","s":"d60384034b77","t":"смуга","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"af8d3e33c3fa3ef433e4","p":"640111546cfa8de9","s":"142d31ead54f","t":"волокно","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"069024a6879dc3f9bef1","p":"508d2dc55ffce236","s":"0d50ba46fd7a","t":"зіркояблуня"}
 {"k":"75392655853b0a1e5512","p":"9abda1daa484ce6b","s":"effb35f8cc05","t":"Зіркояблука висять на попелястих гілках — соковиті порошинки червоного світла на вибіленій картині."}
 {"k":"2de2c02f8f059c7dc402","p":"7fee56b342370e7d","s":"0d50ba46fd7a","t":"зіркояблуня"}
@@ -19,6 +25,7 @@
 {"k":"3e479a9d014d034a68ff","p":"09032c8a4da5905b","s":"97d4fca3115b","t":"Золоте листя розгортається, коли пустельний вітер вологішає. Шматки кори, складені в крихітні кільця, що перетинаються, обгризли деревоїди."}
 {"k":"5408efeffeaf2d3abcae","p":"145a0a6ded1a06e8","s":"53ae35d7c44c","t":"жахокорінь"}
 {"k":"15afa4cac9dd526b870f","p":"bd1f2c4b07f9feb3","s":"2154acb6dcea","t":"Шкірка лущиться на череві бульби, що гуде глибоким басом, а пагони пульсують тривожним стаккато."}
+{"k":"6ff1eda3d2f0b58ad669","p":"aeb51d8743034332","s":"4084a32b9bba","t":"маса","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
 {"k":"37ac5c2994e56008f45d","p":"b8f353b7a72436dd","s":"8f398886c326","t":"соняшник"}
 {"k":"f1545e5534983b9d70a7","p":"608b4975cc06b51f","s":"b0817d5fa6f7","t":"Яскраві квіточки вибухають навколо темнішого диска з квіточок, закручених спіраллю. Разом вони схожі на крихітне сонце."}
 {"k":"d6888b0865c09f50fe86","p":"eb6b9e54568ff481","s":"fe97f7920ab8","t":"діакаліпт"}
@@ -27,12 +34,20 @@
 {"k":"03ab3c899711f5ceaf7e","p":"7599d2dd43b7399c","s":"1856717717ce","t":"Комахи кружляють і дзижчать довкола чотирьох золотаво-бурих пелюсток, що звисають над товстим стеблом. Коли щось його торкається, квітка шмагає вгору в сновидній люті."}
 {"k":"057342e88de6d016822f","p":"11232d835d50b52f","s":"89c8fa0c2341","t":"гидкопшениця"}
 {"k":"a854e2183baf856eb97e","p":"83841e76fa5cba82","s":"72e04a29c4ad","t":"Коралові пелюстки пробиваються з верхівки хиткого стебла. Металеве чи кістяне копито розчавило його побратимів і розкидало їхні кислотні волокна по ґрунту."}
+{"k":"4516bf21de4c9d90408d","p":"a4ac6e380e005646","s":"19dbaf77a5ec","t":"шнур","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"5e07d710ab694cb19043","p":"5d5aa223f21bb373","s":"9e97f4e75f4d","t":"солома","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"929f61dacc3675b094f9","p":"ee1280983adfc753","s":"1b7e369af28a","t":"водолоза"}
 {"k":"7f3b0fa404c7acd61db4","p":"e08e7b7a6cbc49bd","s":"da01e63c3101","t":"У її борозенках збирається сіль. Замість листя на ній вузлуваті пластинки, набряклі від вологи."}
+{"k":"f4047fc6940302c8200d","p":"fd45b57df4a494a9","s":"9e97f4e75f4d","t":"солома","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"79e7499861597683605f","p":"5f50338a7c16ded0","s":"fe4d55b9ffa5","t":"мотузка","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"2699366c37aa2ad2b307","p":"1f29458e324f3fe6","s":"3958765b23d8","t":"лоза","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"d4cf49f54f276fe39222","p":"95c7f72f894fa905","s":"bb81e1e9eea2","t":"обгризена водолоза"}
 {"k":"a573376ef8960925c6cd","p":"9bc7df2f74283e77","s":"8dcf93d2d5e5","t":"У її борозенках збирається сіль. Замість листя на ній вузлуваті пластинки, набряклі від вологи, і схоже, її наполовину з’їли."}
 {"k":"d5d7f1a035bf8423a900","p":"45b77440ff24b827","s":"6ed9ad0e140c","t":"солестебло"}
 {"k":"25621fd9e9fccef5c5f0","p":"bb09378a83c875ca","s":"18bfcbf949e0","t":"Товсті палі з волокнистого соляного тліну обгороджують ці озерця розсолу. Вони нічиї."}
+{"k":"496541df04edf4b3603c","p":"abcc1d4d038c3280","s":"1e6ed65d77d6","t":"в’язка","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"81ebf2b2f4cacceaeadf","p":"65ba81ad25b3cceb","s":"fe4d55b9ffa5","t":"мотузка","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"ba4dad174c2d063b1a87","p":"e850ad978c8ef000","s":"142d31ead54f","t":"волокно","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"ad8282383a6a84076d0f","p":"5b292fb2abef7873","s":"78deb75f4fdb","t":"дерево-роєтінь"}
 {"k":"3e72b6e9e28e4490351e","p":"ecd94812af491a2a","s":"58a1156b9b16","t":"Туманність лопатастого листя шелестить сухим рипінням і жучиним хрумканням."}
 {"k":"b7f3197ec2e966a5c541","p":"ed519d8ca986e0e1","s":"78deb75f4fdb","t":"дерево-роєтінь"}
@@ -45,10 +60,16 @@
 {"k":"0045d56fe69a4c80c7c5","p":"53538281898af38b","s":"4d7e7386937c","t":"Ситі сонцем віяла листя обвисають на поораному комахами стовбурі у формі розталої зорі."}
 {"k":"3a5901fb8bef6a67115f","p":"84606a4315beb861","s":"b5ad58a2898f","t":"пінотрава"}
 {"k":"a75c0c1e0d6077623ccd","p":"e6a8a8ee9e14e0cc","s":"4c9e35e3ee89","t":"Стебла виблискують спіненою плівкою."}
+{"k":"8e7827036c726a41d434","p":"710047c93a603ddf","s":"9e97f4e75f4d","t":"солома","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"e6a779295c033d2955fc","p":"176ba0f153aa4b5b","s":"d345928b32d5","t":"шпагат","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"dd3d3aaef0943dd8defd","p":"22a2556d69de2930","s":"9e97f4e75f4d","t":"солома","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"2fec36d5f59c551d2c1b","p":"1cc8db6219878889","s":"88c8bbf912fb","t":"могильний мох"}
 {"k":"902d45a0c82a8ef5536d","p":"8685cd50c9e22efa","s":"fd3793e560c8","t":"Він безбарвний і крихкий, хрумтить під ногою. Килимки, у які він збивається, мабуть, повторюють обриси вологих від життя тілесних насипів, з яких колись розцвів, — і з темно-червоною кров’ю розцвіте знову."}
 {"k":"5ef6cdbfc595f1260203","p":"0003d0ed0dbc072a","s":"0c76bc9405e8","t":"тихолоза"}
 {"k":"29fde7a2daea29237bde","p":"2f5bcddbf51b45fb","s":"54be021efab9","t":"Привидні стебла закручені до мальовничої нерухомості, а на їхніх бруньках збирається волога."}
+{"k":"c8a2b01f34d7138193e7","p":"c6b128b000afb8d1","s":"9e97f4e75f4d","t":"солома","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"f4b401d9cf96844a6b4b","p":"258dfd435664f9c0","s":"fe4d55b9ffa5","t":"мотузка","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"68aec5a3eb5306da6da4","p":"db4d6bc61d0d0dea","s":"3958765b23d8","t":"лоза","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"a0a36235d60e92905afa","p":"7baa10c908a0c1e1","s":"8cf0011852ae","t":"німбова колона"}
 {"k":"d211569bbec801ef51f1","p":"6f2dce441b0f0af0","s":"c894143e80c3","t":"Пишні німби з кислотно- і миртово-зеленого листя оперізують дерев’яний мінарет, що тягнеться до неба. Верхівка проривається крізь крони, щоб виграти змагання за сонячне питво."}
 {"k":"f193f8e03a863c6c6245","p":"63288e54d4580dc8","s":"4cbfe85f6ed7","t":"дерево нахаш"}
@@ -65,16 +86,22 @@
 {"k":"5b24e53b4ec883095e1b","p":"fa94dfbea7dd9ec6","s":"cd79835fdb24","t":"Дійсний потенціал мчить кореневищем на хвилях брижів і квантується в дерев’янисті травинки."}
 {"k":"685f752429b36f1069fd","p":"4a57dbd94eba0431","s":"55ce7cada56d","t":"йемпуріс фі"}
 {"k":"eb802bb5af7a873f4e3c","p":"ca3b5d67f8154132","s":"6b0491637042","t":"Бульбашки зелених прилистків вишикувано кільцями ґратчастого росту, що пришвидшується. Темп — чаклунський: щира й невпинна воля рослинного світу вловлена тут у мільйонократному збільшенні."}
+{"k":"00b418f53f7653bb334e","p":"8970c4296bfde750","s":"635231215aee","t":"вайя","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські; frond → «вайя» (лист папороті чи пальми)"]}
+{"k":"4d8b0a3ed202ba5956bc","p":"9884401e72e7c491","s":"4084a32b9bba","t":"маса","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
 {"k":"bad1ee587f04fd99e745","p":"74704658c389de8b","s":"858a305b0f51","t":"{{o|елкатль}}"}
 {"k":"8e845db2b6e90066c3c9","p":"da5e63e57f31cc66","s":"66123f92409e","t":"Сповнений світлого коралу, цей гриб притягує погляд як жоден інший. Куд не знає такого відтінку, тож ви питаєте себе: що за сяйливий дощ пофарбував його плоть? Невже це йота самих Пожирачів, муміфікована в ґрунті Райдужного Лісу?","c":["qud-ok: placeholder — =player.reflexive= замінено на «себе»: українське «себе» однакове для всіх осіб"]}
 {"k":"436e28c56a09a591bfcc","p":"2a9af35e12ff15b8","s":"eaa964218535","t":"ясногриб"}
 {"k":"57837bba4454c8267063","p":"4995c9e74a99b82f","s":"30531afe7fcc","t":"Сяйні гіфи ллють м’яке світло вгору, в округлу шапку цього земляного світильника."}
+{"k":"68a45dc8e5ef303ac00c","p":"ce11e67350da849e","s":"cb8db7f3aeeb","t":"плоть","c":["uk-case: називний однини, як =subject.semantic:HardMaterial:кістка= (Strings: Replacer bone.of.name, VillageBase getAVillageWall bone); flesh гриба → «плоть», як у Creatures (BaseFungus)"]}
 {"k":"9700124460172f5fd91c","p":"7755711ed12dc688","s":"05ca048ea88d","t":"плямистий кошлатник"}
 {"k":"4884c9edc9d60d867238","p":"72c887f4521fc4d9","s":"0e5fef7d3599","t":"Ніжка товста, мов стовбур, а плями на величезній шапці вкриває пудра. Пігмент його шкірки — рідкий барвник із плакуна поблизу."}
 {"k":"b4950e3b751607ba5373","p":"257dc214e99a108c","s":"40ca229896cd","t":"чепурун"}
 {"k":"00c53565e832ffed7f1f","p":"04369402032aed32","s":"297bd1b7be1a","t":"Природа подарувала стрункій похиленій ніжці чепурну шапку зі зборками пластинок на споді. Пігмент його шкірки — рідкий барвник із плакуна поблизу."}
 {"k":"8ae78a720888828aaf8f","p":"21cba043d0ea0122","s":"7141b4b49c11","t":"гіфи арсплайсу"}
 {"k":"103532bd53498628e6e0","p":"29be1dfccc368313","s":"6bea2dde0d46","t":"Відьмині кола з переплетених гібридів трави, коралу й грибів проступають уздовж своєї тіньової мережі й виділяють відтворені розпірки як оболонку."}
+{"k":"302d5ce0f2c569f895e2","p":"53c799f929651a0c","s":"f7786e1f40e8","t":"колонія","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"26ccd102fc6602a1a5a6","p":"132858e4fea74a7a","s":"da9c0f9e5ddf","t":"поліп","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"1d4f006593aff0488124","p":"73750c3a52752ff0","s":"147a8ea18403","t":"вапняк","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"086227475f8606de7a90","p":"39864a21c235722d","s":"234f3177dc06","t":"набрякла цибулина"}
 {"k":"d753f5a9c4a7db9edaaf","p":"665583c7bef6d5be","s":"03b5146ddf98","t":"До щупалець гурту поліпів прилип і нависає зі з’їденої корозією розпірки набряклий клубок плівки. Усередині горить яскравий бульйон із розплавленої вуглецем платинової жижі."}
 {"k":"8c6a66347285fbb78468","p":"61a8cd5f7b0688b6","s":"6ee997550cdb","t":"кораловий поліп"}
@@ -83,12 +110,27 @@
 {"k":"8dadf92a729e3543cd4f","p":"262688bca5c7286f","s":"c91ba9018ce3","t":"Дугові поліпи заселяють циліндричну топологію ґратки й розкреслюють ортогональний квартал у мережі життя."}
 {"k":"1d6a68d09095cb627d76","p":"7444221f6b4487c1","s":"b003f423e4d9","t":"пальчастий корал"}
 {"k":"f6af4987673c5786966b","p":"fbc79063cafeb57e","s":"326c2be5adb4","t":"М’якотілі істоти виділяють звапнілі стіни своїх аркологій у вигляді шпилів, що видираються в повітря. Вони кам’янисті на дотик, а в їхніх порожнинах живе мікрожиття."}
+{"k":"b6ca0139932d4bf8ee52","p":"9a6f83c26c36b336","s":"400b181c8784","t":"палець","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"459a5ce0ada1a1666549","p":"efc349a60b759cc6","s":"da9c0f9e5ddf","t":"поліп","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"42843636fd8fc4c3a1d9","p":"a99bafda73074799","s":"147a8ea18403","t":"вапняк","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"8326f1477e6017f7ffdd","p":"0c136235445e0c9d","s":"400a4020cbda","t":"паладієва розпірка"}
 {"k":"7b6bbb150146343a56d7","p":"919aa28fb4b5b50a","s":"6d02d5028235","t":"Обшивка з кристалічної набивки ластовинням вкриває циліндри, з’єднані під прямим кутом. Крізь неї проступає блиск м’якшого металу — сріблясто-білого паладію, що колись проводив воду й струм цілою величезною аркологічною ґраткою."}
+{"k":"7219fe19fa8975ba2cfc","p":"9c2380a01353ef27","s":"164cf1ca8391","t":"гроно","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"c8d844eed2e1aff398ef","p":"60a1f393690aff9e","s":"e9de08263f4a","t":"кулька","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"07af109a9644f54bdc82","p":"9f5fa7d669a0f291","s":"46248ac68982","t":"губка","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"273a28d7073c331d785d","p":"1d16df361a77018b","s":"118af6301f88","t":"тунельна губка"}
 {"k":"168667b8a134e4939878","p":"22e8d44861693f55","s":"57984a71112c","t":"Пористі скелети зі спонгіну, мов камінь, стирчать під кутами з перевернутих тунельних останців."}
+{"k":"9abc580d4825368e358a","p":"36785663b8d8afdc","s":"94a35fdc30df","t":"тунель","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"bf8c684a144ed4f7db76","p":"b780e6433903dd83","s":"16b974583155","t":"кільце","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"35c65b46932524a627a3","p":"b3c57e7060c213a1","s":"46248ac68982","t":"губка","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"13578ae4c254c923c934","p":"2808716675b3eb4b","s":"905e5a0d4ac1","t":"губка-трясучка"}
 {"k":"d705a486dfb582d9a3e2","p":"b18221d05985b900","s":"32e4d5c4c333","t":"Це шаруваті драглі, виліплені кулею, з порами, щоб фільтрувати й поїдати водорості. І воно трусеться."}
+{"k":"266f666b593f9737e74e","p":"6cbc06265976f0ae","s":"d60384034b77","t":"смуга","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"cd62627ff5e238991bd5","p":"28ab06634c7c4477","s":"3549b2a205e6","t":"щока","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"1874cf91e84fd21ef354","p":"6f81e8aeaa29c452","s":"46248ac68982","t":"губка","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
+{"k":"c396f3cb6cfa7bc2d49b","p":"9123c9249cf71e6c","s":"bb4c8eb92b6e","t":"призма","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"c35e35f738c65011ad01","p":"955e82924c1c0dc9","s":"df3598cd66f1","t":"уламок","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"8973771cd8a61c126c48","p":"e51f9267ff1cc64d","s":"60a0f78b507f","t":"кристал","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"7bad95e204e454233120","p":"2d44308f421d462e","s":"282506a393e8","t":"психальна ритмоскеля"}
 {"k":"fce7cb481d1d496d285c","p":"2805e8b468e96913","s":"9f1db47dc7a8","t":"Сталактитові призми, затинаючись, гудуть стиснутою думкоматерією трильйонів над психічним морем."}
 {"k":"b2c294d42203accb88dd","p":"fbcf2fbdea864006","s":"20c132a22336","t":"кристалічна гілка"}
@@ -147,6 +189,9 @@
 {"k":"edcf524b6e4f250a9df9","p":"5cfc6a6a0805fa04","s":"0653f1d45e5e","t":"мармурові сходинки"}
 {"k":"7c7d5e0707d2e6993c20","p":"d422a8b31e30ef40","s":"b01441a39f8d","t":"Строкаті мармурові прямокутники — сходинки в яму й з ями."}
 {"k":"ba7e6e7d1d12f4d96506","p":"7d4e8d63e0e5057e","s":"386e1e7f9708","t":"первісна трава"}
+{"k":"dc9d59a5929a93338275","p":"4986e96f2508f8ed","s":"9e97f4e75f4d","t":"солома","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
+{"k":"7d3410573938ed5236d2","p":"22b1d05e4f501483","s":"13ffbb2f9bba","t":"стеблина","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
+{"k":"192c3b667b90d00069ff","p":"48b30c017d87f252","s":"f6cc5b085b61","t":"трава","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
 {"k":"0d556271f9cd973e889f","p":"7d11ba5ad92fbc20","s":"e86825763f3c","t":"дивна підлога"}
 {"k":"f4065d6e2e932aa1eed2","p":"0f754aea33a0db4e","s":"ba59aaa816a2","t":"підлога з пінобетону"}
 {"k":"de519103007762f5178d","p":"a07e2a9049f0eb37","s":"4b5e57f6eb2f","t":"павутиння"}

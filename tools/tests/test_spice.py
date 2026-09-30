@@ -34,7 +34,7 @@ class Spice(unittest.TestCase):
 
     def test_build_replaces_translated_branches_only(self):
         t = {("spice.commonPhrases.strange", "strange"): "дивний"}
-        text, count = units.build(SAMPLE, "HistorySpice.jsonc", t)
+        text, count = spice.build(SAMPLE, "HistorySpice.jsonc", t, overlay={})  # the repo's additions stay out
         doc = json.loads(text)
         self.assertEqual(doc["lang"], "uk")
         self.assertEqual(count, 2)  # both copies of "strange"

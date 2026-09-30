@@ -171,12 +171,14 @@ def merge(base: dict, extra: dict) -> dict:
     return out
 
 
-def build(text: str, name: str, translations: dict, lang: str = "uk", source_note: str = "") -> tuple[str | None, int]:
+def build(text: str, name: str, translations: dict, lang: str = "uk", source_note: str = "",
+          overlay: dict | None = None) -> tuple[str | None, int]:
     """The mod file: {"lang", "spice": {"<branch>=": translated branch}} for branches with a translation or an
     addition from the overlay."""
     from .units import GENERATED_MARKER
     spice = load(text)["spice"]
-    overlay = load_overlay(lang)
+    if overlay is None:
+        overlay = load_overlay(lang)
     out, total = {}, 0
     for branch, node in spice.items():
         counter = [0]
