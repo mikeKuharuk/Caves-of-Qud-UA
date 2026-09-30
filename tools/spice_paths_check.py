@@ -5,7 +5,8 @@
 Every =spice:…=, <spice.…>, =^:…= and =spice.set:…= in a translation must lead to a list of the English spice or
 of translations/uk/HistorySpice.extra/*.json (docs/history.md). References the English row already has and that
 lead nowhere are the game's own and are not reported. Also reports additions that would replace an English list
-and two addition files with the same key. Exit code 1 on a problem.
+and two addition files with the same key, and references to English glue ("the", "of" in region names).
+Exit code 1 on a problem.
 """
 from __future__ import annotations
 
@@ -40,6 +41,8 @@ def main(argv: list[str]) -> int:
             base = spice.relative_base(ctx) if ctx.startswith("spice.") else None
             new = set(spice.unresolved(r["uk"], tree, base)) - set(spice.unresolved(r["en"], tree, base))
             problems += [f"{pathlib.Path(name).name}: {ctx}: leads nowhere: {ref}" for ref in sorted(new)]
+            problems += [f"{pathlib.Path(name).name}: {ctx}: English article or preposition, drop it: {ref}"
+                         for ref in spice.glue_references(r["uk"])]
     for p in problems:
         print(p)
     print(f"{len(problems)} problem(s); {len(parts)} addition file(s)")

@@ -69,10 +69,18 @@ def is_text(value: str) -> bool:
 #   _failureredirect, _staticfailureredirect                a spice path to fall back to
 #   baseColor                                               colour codes (CreatureRegionSpice)
 IDENTIFIER_KEYS = {"baseColor"}
+# English articles and prepositions that templates glue into region names
+# ("=…government.entity@government.nameArticle|spaceAfter=" → "the", "of"). Ukrainian templates drop the reference
+# (checked by glue_references), so the values are never shown and are not units either.
+GLUE_KEYS = {"nameArticle", "titleArticle", "of"}
 
 
 def is_identifier(path: tuple[str, ...]) -> bool:
     return any(k.startswith(("@", "_")) for k in path) or bool(path) and path[-1] in IDENTIFIER_KEYS
+
+
+def is_glue(path: tuple[str, ...]) -> bool:
+    return bool(path) and path[-1] in GLUE_KEYS
 
 
 def leaves(node, path: tuple[str, ...] = ()):
@@ -97,7 +105,7 @@ def extract(text: str, name: str = NAME) -> list:
     out, seen = [], set()
     for path, value in leaves(spice):
         key = (context(path), value)
-        if key in seen or is_identifier(path) or not is_text(value):
+        if key in seen or is_identifier(path) or is_glue(path) or not is_text(value):
             continue
         seen.add(key)
         out.append(Unit(file=name, msgctxt=key[0], msgid=value, kind="spice"))
@@ -267,6 +275,17 @@ def unresolved(text: str, tree: dict, base: str | None = None) -> list[str]:
         if segs and segs[0] != "*" and not resolves(tree, segs):
             bad.append(path)
     return bad
+
+
+def glue_references(text: str) -> list[str]:
+    """References in text to English glue (GLUE_KEYS), which a Ukrainian template must not print."""
+    out = []
+    for m in SPICE_REF.finditer(text):
+        path = next(g for g in m.groups() if g)
+        segs = ref_segments(path)
+        if segs and segs[-1] in GLUE_KEYS:
+            out.append(path)
+    return out
 
 
 def references(value: str) -> list[str]:

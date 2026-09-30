@@ -402,6 +402,10 @@ def check_spice_paths(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
             for ref in sorted(new):
                 errors += 1
                 print(f"error: {units.po_name(name)}: {e.msgctxt}: spice-path: reference leads nowhere: {ref}")
+            for ref in spice.glue_references(e.msgstr):
+                errors += 1
+                print(f"error: {units.po_name(name)}: {e.msgctxt}: spice-path: English article or preposition, "
+                      f"drop it: {ref}")
     return errors
 
 

@@ -45,6 +45,12 @@ class Paths(unittest.TestCase):
         self.assertEqual(spice.unresolved("=^:nouns.!random=", self.tree, base), [])
         self.assertEqual(spice.unresolved("=^:salt.!random=", self.tree, base), ["elements.glass.salt.!random"])
 
+    def test_english_glue_is_reported(self):
+        en = "=spice:history.regions.government.entity@government.nameArticle|spaceAfter==functionType|title= =x="
+        self.assertEqual(spice.glue_references(en), ["history.regions.government.entity@government.nameArticle"])
+        self.assertEqual(spice.glue_references("=functionType|title= =governmentType|title= =generatedName|title="), [])
+        self.assertTrue(spice.is_glue(("history", "regions", "government", "city-states", "of")))
+
     def test_two_overlay_files_may_not_define_the_same_key(self):
         parts = {"a.json": {"commonPhrases": {"historic_f": ["x"]}},
                  "b.json": {"commonPhrases": {"historic_f": ["y"], "ruins_gen": ["руїн"]}}}
