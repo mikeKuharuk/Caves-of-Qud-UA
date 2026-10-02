@@ -560,3 +560,33 @@ Crystal Stair	Кришталеві Сходи	pl	place	proposed	розмова �
 Live and quaff	Живіть і пийте вдосталь		formula	proposed	розмова з Решефом (Conv-D1); варіант «Живіть і пийте»
 *READOUT*	*READOUT*		code	proposed	не перекладати: PostProcessors.CrypticMachine шукає маркер (перевіряє validate)
 Tau-No-Longer / Aoyg-No-Longer	Вже-не-Тау / Вже-не-Аойґ		character	ok	рішення Mike (D12); не відмінюються; «=name=-No-Longer» → «Вже-не-=name=»
+mural	фреска	f	concept	proposed	фрески в журналі й на стінах гробниць; «мурал» не вживаємо
+Tomb of Sultans	Гробниця Султанів	f	place	proposed	Hist-regions
+Abram	Аврам	m	person	proposed	біблійна форма (D4)
+harborage	пристанище	n	concept	proposed	Hist-regions
+Become	Становлення	n	concept	proposed	обряд машинного люду (BodyPart Cybernetics Install Gospel)
+troubadour-hero	герой-трубадур	m	concept	proposed	жін.: героїня-трубадурка
+recoming pad	майданчик повернення	m	item	proposed	Hist-regions
+the rotting tongue	гнилий язик	m	concept	proposed	народна назва глотроту (Hist-regions)
+Stiff Leg	Негнучка Нога	f	concept	proposed	народна назва залізноногості (Ironshank)
+ironing leg	нога, що залізніє	f	concept	proposed	народна назва залізноногості (Ironshank)
+univision	однозір	m	concept	proposed	народна назва монохромії (Monochrome)
+greying eye	сиве око	n	concept	proposed	народна назва монохромії (Monochrome)
+autarchy	автархія	f	concept	proposed	тип врядування регіону; усі типи жіночого роду (Hist-regions)
+city-state	міська держава	f	concept	proposed	тип врядування регіону
+precinct	дільниця	f	concept	proposed	тип врядування регіону
+district	волость	f	concept	proposed	тип врядування регіону
+quarter	округа	f	concept	proposed	тип врядування регіону
+province	провінція	f	concept	proposed	тип врядування регіону
+In Memory of	Вічна пам’ять		concept	proposed	напис на гробниці; In Loving Memory of → Світла пам’ять
+Osprey	Скопа	f	creature	proposed	ранг шукачів Птоха (код: PsychicHunterSystem, CodeWords); мн. скопи
+Harrier	Лунь	m	creature	proposed	ранг шукачів Птоха; мн. луні
+Owl	Сова	f	creature	proposed	ранг шукачів Птоха; мн. сови
+Condor	Кондор	m	creature	proposed	ранг шукачів Птоха
+Strix	Стрикс	m	creature	proposed	ранг шукачів Птоха; мн. стрикси
+Eagle	Орел	m	creature	proposed	ранг шукачів Птоха
+Rukh	Рух	m	creature	proposed	ранг шукачів Птоха; у тексті — «птахи Рух»
+implanted	імплантований		concept	proposed	прикметник перед назвою істоти з імплантами
+phase-conjugate	фазоспряжений		item	proposed	модифікація (Mods.po) і прикметник перед назвою
+Evil Twin	Злий двійник	m	concept	proposed	мутація; префікс двійника узгоджується: «Зла Марта»
+transdimensional	міжвимірний		concept	proposed	extradimensional → «з іншого виміру»
