@@ -18,8 +18,6 @@ Creatures.po	6a5d2009414ba232792c	code	дієслово, яке код відм�
 Creatures.po	d494f42d7809d5cd13b2	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Creatures.po	3cd9cb3c97996db61f0f	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Creatures.po	9f75d964cbbfb652412d	keep	цитата Езри Паунда лишається англійською (рішення Mike)
-Foods.po	9507c0e539f5a0d50fb0	code	adjunctNoun: шаблон назви «X of Y» потребує родового відмінка назви; чекає відмінків
-Foods.po	14373d3a8a7097c287d2	code	adjunctNoun: шаблон назви «X of Y» потребує родового відмінка назви; чекає відмінків
 Furniture.po	ecc5d5a3583f1ebc366b	keep	код порівнює прийменник з англійським «in»; у перекладених шаблонах не показується
 Furniture.po	10975bbdfde5bfc3f50b	keep	код порівнює прийменник з англійським «in»; у перекладених шаблонах не показується
 Furniture.po	bce77320f7dce273f566	keep	код порівнює прийменник з англійським «in»; у перекладених шаблонах не показується
@@ -33,8 +31,6 @@ Furniture.po	a98d430ab21ee7adf06d	keep	код порівнює прийменн�
 Furniture.po	5db861d96a47a0eb541b	code	прийменник для англійської склейки IZoneLandmark.Append
 HiddenObjects.po	895ee452c29eda206855	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 HiddenObjects.po	4eba1f466ac855bf359a	keep	клавіша дії — перша літера напису; клавіші лишаються латинськими (D12)
-HiddenObjects.po	badbefa93741b55a6724	code	adjunctNoun: шаблон назви «X of Y» потребує родового відмінка назви; чекає відмінків
-HiddenObjects.po	f1604da220dc0ed420a3	code	adjunctNoun: шаблон назви «X of Y» потребує родового відмінка назви; чекає відмінків
 HiddenObjects.po	78f1d61da9baff978bb8	keep	клавіша дії — перша літера напису; клавіші лишаються латинськими (D12)
 Items.po	96b866e0b8337c96ee1d	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Items.po	a1c7c4f2c0ea262a3feb	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
@@ -353,5 +349,4 @@ Strings.po	586fa86ecb37a42b4d36	code	англійський артикль у в
 Walls.po	798d67a3dccdf216a2ad	keep	заповнювач розробників «sultan_wall»; опис плиток муралу пише код
 Walls.po	77789f702555977913bb	keep	заповнювач розробників «sultan_wall»; опис плиток муралу пише код
 Walls.po	e4ed78619f96fe694304	keep	заповнювач розробників «sultan_wall»; опис плиток муралу пише код
-ZoneTerrain.po	fe8661894033ed2ee1ec	code	adjunctNoun: шаблон назви «X of Y» потребує родового відмінка назви; чекає відмінків
 ZoneTerrain.po	0872df5b4343e8766b6d	keep	перекладені шаблони падіння (StairsDown) його не вживають

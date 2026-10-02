@@ -60,6 +60,7 @@
 {"k":"0045d56fe69a4c80c7c5","p":"53538281898af38b","s":"4d7e7386937c","t":"Ситі сонцем віяла листя обвисають на поораному комахами стовбурі у формі розталої зорі."}
 {"k":"3a5901fb8bef6a67115f","p":"84606a4315beb861","s":"b5ad58a2898f","t":"пінотрава"}
 {"k":"a75c0c1e0d6077623ccd","p":"e6a8a8ee9e14e0cc","s":"4c9e35e3ee89","t":"Стебла виблискують спіненою плівкою."}
+{"k":"fe8661894033ed2ee1ec","p":"abd812a4b7da9b35","s":"74bfa7c8f255","t":"жмут","c":["лічильник «X of Y» (adjunct noun): український шаблон GameObject.GetDisplayName adjunct noun pre показує саму назву, тож слово лише для повноти, як у Items"]}
 {"k":"8e7827036c726a41d434","p":"710047c93a603ddf","s":"9e97f4e75f4d","t":"солома","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
 {"k":"e6a779295c033d2955fc","p":"176ba0f153aa4b5b","s":"d345928b32d5","t":"шпагат","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
 {"k":"dd3d3aaef0943dd8defd","p":"22a2556d69de2930","s":"9e97f4e75f4d","t":"солома","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}
