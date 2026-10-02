@@ -197,6 +197,12 @@
       "f": "=spice:elements.$element.adjectives.!random|uk.f=",
       "n": "=spice:elements.$element.adjectives.!random|uk.n=",
       "pl": "=spice:elements.$element.adjectives.!random|uk.pl="
+     },
+     "adjAny": {
+      "m": "=spice:adjectives.!random=",
+      "f": "=spice:adjectives.!random|uk.f=",
+      "n": "=spice:adjectives.!random|uk.n=",
+      "pl": "=spice:adjectives.!random|uk.pl="
      }
     }
    }
@@ -297,7 +303,7 @@
     "=spice:elements.$element.adjectives_f.!random|capitalize= Примара"
    ],
    "ghost_m": ["Привид", "Дух", "Фантом", "Біс", "Мрець"],
-   "finesse_ins": ["витонченістю", "спритністю", "вправністю", "хитромудрістю", "артистизмом", "моторністю", "доблестю", "вмілістю"],
+   "finesse_ins": ["витонченістю", "спритністю", "вправністю", "хитромудрістю", "артистичністю", "моторністю", "доблестю", "вмілістю"],
    "celebration_loc": ["святкуванні", "радості", "ювілейних гуляннях", "веселощах", "тріумфі"],
    "woe_loc": ["горі", "нещасті", "мороці", "стражданні", "конанні", "смутку", "соромі", "мученні"],
    "might_acc": ["могутність", "силу", "звитягу"],
@@ -362,6 +368,7 @@
    "brokeFaithWith_pl": ["віроломно покинули", "зрадили", "підступно продали", "підвели", "ошукали"],
    "aCurseUpon_voc": ["=spice:commonPhrases.curse.!random= на тебе,", "=spice:commonPhrases.woe.!random= тобі,"],
    "murderedVerb_f": [
+    "заколола на смерть",
     "пропорола заточкою",
     "застрелила",
     "отруїла",

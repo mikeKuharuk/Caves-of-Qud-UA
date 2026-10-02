@@ -80,7 +80,7 @@ artifact	артефакт	m	item	proposed
 scrap	брухт	m	item	proposed	
 bits	біти	pl	item	proposed	тінкерські компоненти
 energy cell	енергоелемент	m	item	proposed	
-sultan	султан	m	title	proposed	
+sultan	султан	m	title	proposed	і для жінок-султанів: «султан» як титул обох статей, без «султанка» (Hist-sultans; на підтвердження)
 Resheph	Решеф	m	character	ok	приклад з D4
 Shekhinah	Шехіна	m	concept	ok	приклад з D4; у Qud — Отець механімістів (He): «Славний Шехіна», «Шехіна-Отець», «О славний Шехіно!»
 the Gyre	Коловорот	m	concept	ok	рішення Mike (D12, 2026-09-29)
@@ -590,3 +590,19 @@ implanted	імплантований		concept	proposed	прикметник пе
 phase-conjugate	фазоспряжений		item	proposed	модифікація (Mods.po) і прикметник перед назвою
 Evil Twin	Злий двійник	m	concept	proposed	мутація; префікс двійника узгоджується: «Зла Марта»
 transdimensional	міжвимірний		concept	proposed	extradimensional → «з іншого виміру»
+mayor	мер	m	concept	proposed	очільник села (Hist-sultans)
+Tinkers' Guild	Гільдія майстрів	f	faction	proposed	Hist-sultans
+quillbear	голчастий ведмідь	m	creature	proposed	Hist-sultans
+stiltfolk	люд Стовпа	m	concept	proposed	мешканці Стовпа Шести Днів
+Spindle Gjaus	Веретено Ґяус	n	place	proposed	Hist-sultans
+Otho's Graveyard	Цвинтар Ото	m	place	proposed	Hist-sultans
+Eskhind the Meek	Ескгінд Смиренна	f	person	proposed	Hist-sultans
+Looking Glass Kendren	Дзеркальний Кендрен	m	person	proposed	Hist-sultans
+Asphodel the Lovely	Асфодель на прізвисько Чарівність	f	person	proposed	Hist-sultans; перевірити рід посади («урядник»)
+Saads of Yish	Саади з Їша	pl	faction	proposed	Hist-sultans
+starbrick	зоряна цегла	f	item	proposed	Hist-sultans
+transit rock	транзитний камінь	m	item	proposed	Hist-sultans
+the Soft	М’якоть	f	concept	proposed	the glowing Soft → сяйлива М’якоть
+gunslinger-sultan	султан-стрілець	m	concept	proposed	Hist-sultans
+god-sultan	бог-султан	m	concept	proposed	Hist-sultans
+dreamstuff	сновидна матерія	f	concept	proposed	Hist-sultans
