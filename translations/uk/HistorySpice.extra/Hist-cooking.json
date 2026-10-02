@@ -34,10 +34,12 @@
       "на грилі", "м’якого смаку", "насиченого смаку", "на вершковому маслі", "пікантного смаку",
       "з пилу з жару", "під шубою", "густого замісу", "із заправкою", "оксамитової текстури"
      ],
-     "nnEnd": {"$nn": "о", "1": "о", "2": "ий", "3": "о"},
-     "nnEndSoft": {"$nn": "ьо", "1": "ьо", "2": "ій", "3": "ьо"},
-     "nnNext": {"$nn": "2", "1": "2", "2": "3", "3": "2"},
+     "nnEnd": {"$nn": "о", "1": "о", "2": "ий", "3": "о", "1L": "о", "2L": "ому", "1I": "о", "2I": "им"},
+     "nnEndSoft": {"$nn": "ьо", "1": "ьо", "2": "ій", "3": "ьо", "1L": "ьо", "2L": "ьому", "1I": "ьо", "2I": "ім"},
+     "nnNext": {"$nn": "2", "1": "2", "2": "3", "3": "2", "1L": "2L", "2L": "1", "1I": "2I", "2I": "1"},
      "nnOne": "1",
+     "nnOneL": "1L",
+     "nnOneI": "1I",
      "agr": {"$nn": "", "1": "", "2": "", "3": "почастунок: "},
      "silkAdj_ins": ["мерехтливим", "ефірним", "примарним"],
      "silkAdj_loc": ["мерехтливому", "ефірному", "примарному"],
@@ -117,6 +119,39 @@
       "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_u_loc.!random=",
       "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_u_loc.!random=",
       "=spice:cooking.recipeNames.ingredients.$ingredient3.nounPlural_u_loc.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np2_z": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_z_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_z_ins.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_z_ins.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "np2_u": [
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_u_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_u_loc.!random=",
+      "=spice:cooking.recipeNames.ingredients.$ingredient2.nounPlural_u_loc.!random= =spice:cooking.recipeNames.uk.foodAdj_post.!random="
+     ],
+     "with1": [
+      "=spice:cooking.recipeNames.uk.np1_z.!random=",
+      "=spice:cooking.recipeNames.uk.np1_u.!random=",
+      "на =spice:cooking.recipeNames.uk.np1_loc.!random=",
+      "=spice:cooking.recipeNames.uk.np1_z.!random=",
+      "=spice:cooking.recipeNames.uk.np1_z.!random=",
+      "=spice:cooking.recipeNames.uk.np1_u.!random=",
+      "під =spice:cooking.recipeNames.uk.np1_ins.!random="
+     ],
+     "with2": [
+      "=spice:cooking.recipeNames.uk.np2_z.!random=",
+      "=spice:cooking.recipeNames.uk.np2_u.!random=",
+      "на =spice:cooking.recipeNames.uk.np2_loc.!random=",
+      "=spice:cooking.recipeNames.uk.np2_z.!random=",
+      "=spice:cooking.recipeNames.uk.np2_z.!random=",
+      "=spice:cooking.recipeNames.uk.np2_u.!random=",
+      "під =spice:cooking.recipeNames.uk.np2_ins.!random="
+     ],
+     "sauce12": [
+      "у =spice.set:cooking.recipeNames.uk.nnOneL:$nn==spice:cooking.recipeNames.ingredients.$ingredient1.noun.!random=-=spice:cooking.recipeNames.ingredients.$ingredient2.noun.!random= соусі",
+      "під =spice.set:cooking.recipeNames.uk.nnOneI:$nn==spice:cooking.recipeNames.ingredients.$ingredient1.noun.!random=-=spice:cooking.recipeNames.ingredients.$ingredient2.noun.!random= соусом",
+      "у =spice.set:cooking.recipeNames.uk.nnOneL:$nn==spice:cooking.recipeNames.ingredients.$ingredient1.noun.!random=-=spice:cooking.recipeNames.ingredients.$ingredient2.noun.!random= маринаді"
      ]
     },
     "ingredients": {

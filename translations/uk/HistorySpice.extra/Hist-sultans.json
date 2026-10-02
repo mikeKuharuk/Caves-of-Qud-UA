@@ -1,0 +1,538 @@
+{
+ "spice": {
+  "history": {
+   "sultan": {
+    "він": {"male": "він", "female": "вона"},
+    "його": {"male": "його", "female": "її"},
+    "нього": {"male": "нього", "female": "неї"},
+    "йому": {"male": "йому", "female": "їй"},
+    "ним": {"male": "ним", "female": "нею"},
+    "ньому": {"male": "ньому", "female": "ній"},
+    "був": {"male": "був", "female": "була"},
+    "мав": {"male": "мав", "female": "мала"},
+    "отримав": {"male": "отримав", "female": "отримала"},
+    "почув": {"male": "почув", "female": "почула"},
+    "дав": {"male": "дав", "female": "дала"},
+    "вчинив": {"male": "вчинив", "female": "вчинила"},
+    "бився": {"male": "бився", "female": "билася"},
+    "орудував": {"male": "орудував", "female": "орудувала"},
+    "найманець": {"male": "найманець", "female": "найманка"},
+    "підняв": {"male": "підняв", "female": "підняла"},
+    "повергнув": {"male": "повергнув", "female": "повергла"},
+    "з’явився": {"male": "з’явився", "female": "з’явилася"},
+    "дістав": {"male": "дістав", "female": "дістала"},
+    "здобув": {"male": "здобув", "female": "здобула"},
+    "втратив": {"male": "втратив", "female": "втратила"},
+    "позбувся": {"male": "позбувся", "female": "позбулася"},
+    "врізався": {"male": "врізався", "female": "врізалася"},
+    "потрапив": {"male": "потрапив", "female": "потрапила"},
+    "убив": {"male": "убив", "female": "убила"},
+    "знемагав": {"male": "знемагав", "female": "знемагала"},
+    "втік": {"male": "втік", "female": "втекла"},
+    "боровся": {"male": "боровся", "female": "боролася"},
+    "повстав": {"male": "повстав", "female": "повстала"},
+    "переміг": {"male": "переміг", "female": "перемогла"},
+    "програв": {"male": "програв", "female": "програла"},
+    "заявив": {"male": "заявив", "female": "заявила"},
+    "скинув": {"male": "скинув", "female": "скинула"},
+    "коронував": {"male": "коронував", "female": "коронувала"},
+    "зазнав": {"male": "зазнав", "female": "зазнала"},
+    "наказав": {"male": "наказав", "female": "наказала"},
+    "почувався": {"male": "почувався", "female": "почувалася"},
+    "зворушений": {"male": "зворушений", "female": "зворушена"},
+    "вступив": {"male": "вступив", "female": "вступила"},
+    "загинув": {"male": "загинув", "female": "загинула"},
+    "мертвий": {"male": "мертвим", "female": "мертвою"},
+    "мусив": {"male": "мусив", "female": "мусила"},
+    "призначив": {"male": "призначив", "female": "призначила"},
+    "живий": {"male": "живий і здоровий", "female": "жива і здорова"},
+    "навідався": {"male": "навідався", "female": "навідалася"},
+    "зустрівся": {"male": "зустрівся", "female": "зустрілася"},
+    "замовив": {"male": "замовив", "female": "замовила"},
+    "доручив": {"male": "доручив", "female": "доручила"},
+    "переконав": {"male": "переконав", "female": "переконала"},
+    "помер": {"male": "помер", "female": "померла"},
+    "склав": {"male": "склав", "female": "склала"},
+    "перейшов": {"male": "перейшов", "female": "перейшла"},
+    "думав": {"male": "думав", "female": "думала"},
+    "носив": {"male": "носив", "female": "носила"},
+    "повів": {"male": "повів", "female": "повела"},
+    "сплюндрував": {"male": "сплюндрував", "female": "сплюндрувала"},
+    "зупинився": {"male": "зупинився", "female": "зупинилася"},
+    "придбав": {"male": "придбав", "female": "придбала"},
+    "пішов": {"male": "пішов", "female": "пішла"},
+    "прокляв": {"male": "прокляв", "female": "прокляла"},
+    "покинув": {"male": "покинув", "female": "покинула"},
+    "відкрив": {"male": "відкрив", "female": "відкрила"},
+    "здружився": {"male": "здружився", "female": "здружилася"},
+    "натрапив": {"male": "натрапив", "female": "натрапила"},
+    "навчив": {"male": "навчив", "female": "навчила"},
+    "віддав": {"male": "віддав", "female": "віддала"},
+    "conquered": {"male": "=spice:commonPhrases.conquered.!random=", "female": "=spice:commonPhrases.conquered_f.!random="},
+    "tamed": {"male": "=spice:commonPhrases.tamed.!random=", "female": "=spice:commonPhrases.tamed_f.!random="},
+    "ravaged": {"male": "=spice:commonPhrases.ravaged.!random=", "female": "=spice:commonPhrases.ravaged_f.!random="},
+    "ascended":{"male": "=spice:commonPhrases.ascended.!random=", "female": "=spice:commonPhrases.ascended_f.!random="},
+    "ascensionReasons_VAR": {"male": "=spice:instancesOf.ascensionReasons_VAR.!random=", "female": "=spice:instancesOf.ascensionReasons_VAR_f.!random="},
+    "backToLife": {"male": "=spice:instancesOf.backToLife.!random=", "female": "=spice:instancesOf.backToLife_f.!random="},
+    "countered": {"male": "=spice:instancesOf.countered.!random=", "female": "=spice:instancesOf.countered_f.!random="},
+    "defied": {"male": "=spice:commonPhrases.defied.!random=", "female": "=spice:commonPhrases.defied_f.!random="},
+    "emerged": {"male": "=spice:commonPhrases.emerged.!random=", "female": "=spice:commonPhrases.emerged_f.!random="},
+    "forged": {"male": "=spice:professions.$profession.forged=", "female": "=spice:professions.$profession.forged_f="},
+    "inspirationsVerbPhrase": {"male": "=spice:elements.$element.inspirationsVerbPhrase.!random=", "female": "=spice:elements.$element.inspirationsVerbPhrase_f.!random="},
+    "inspired": {"male": "=spice:commonPhrases.inspired.!random=", "female": "=spice:commonPhrases.inspired_f.!random="},
+    "killed": {"male": "=spice:commonPhrases.killed.!random=", "female": "=spice:commonPhrases.killed_f.!random="},
+    "liberated": {"male": "=spice:commonPhrases.liberated_past.!random=", "female": "=spice:commonPhrases.liberated_past_f.!random="},
+    "reemerged": {"male": "=spice:instancesOf.reemerged.!random=", "female": "=spice:instancesOf.reemerged_f.!random="},
+    "savior": {"male": "=spice:commonPhrases.savior.!random=", "female": "=spice:commonPhrases.savior_f.!random="},
+    "settled": {"male": "=spice:commonPhrases.settled.!random=", "female": "=spice:commonPhrases.settled_f.!random="},
+    "slaughtered": {"male": "=spice:commonPhrases.slaughtered.!random=", "female": "=spice:commonPhrases.slaughtered_f.!random="},
+    "unseated": {"male": "=spice:instancesOf.unseated.!random=", "female": "=spice:instancesOf.unseated_f.!random="},
+    "vanquished": {"male": "=spice:commonPhrases.vanquished.!random=", "female": "=spice:commonPhrases.vanquished_f.!random="}
+   },
+   "gospels": {
+    "EarlySultanate": {
+     "adjective_gen": ["зір", "космосу", "часу", "часоплину", "простору", "всесвіту", "емпірею", "ефіру", "алгебри", "астралу", "світла", "сузір’їв", "височин"],
+     "vehicle_acc": [
+      "зоряний дирижабль",
+      "зореліт «=spice:3Dshapes.!random|capitalize=»",
+      "=spice:commonPhrases.ship_acc.!random= «=spice:geometricPatterns.!random|capitalize=»"
+     ]
+    },
+    "LateSultanate": {
+     "adjective_gen": ["піску", "солі", "пилу", "землі", "риби", "скла", "низин", "шлаку", "моря", "жужелю"],
+     "vehicle_acc": [
+      "віз «=spice:3Dshapes.!random|capitalize=» із =spice:instancesOf.sandOrSalt_gen.!random=",
+      "=spice:commonPhrases.wagon_acc.!random= «=spice:geometricPatterns.!random|capitalize=»"
+     ]
+    },
+    "EnemyHostName_phrases": {
+     "EarlySultanate": [
+      "=spice:commonPhrases.cult.!random|capitalize= =spice:history.gospels.EarlySultanate.adjective_gen.!random|capitalize=",
+      "=spice:commonPhrases.cult.!random|capitalize= «=spice:history.gospels.EarlySultanate.worshipObject.!random|capitalize= =spice:history.gospels.EarlySultanate.adjective_gen.!random=»"
+     ],
+     "LateSultanate": [
+      "=spice:commonPhrases.cult.!random|capitalize= =spice:history.gospels.LateSultanate.adjective_gen.!random|capitalize=",
+      "=spice:commonPhrases.cult.!random|capitalize= «=spice:history.gospels.LateSultanate.worshipObject.!random|capitalize= =spice:history.gospels.LateSultanate.adjective_gen.!random=»"
+     ]
+    },
+    "RitualName_phrases": {
+     "EarlySultanate": ["=spice:history.gospels.EarlySultanate.worshipObject.!random|capitalize= =spice:history.gospels.EarlySultanate.adjective_gen.!random="],
+     "LateSultanate": ["=spice:history.gospels.LateSultanate.worshipObject.!random|capitalize= =spice:history.gospels.LateSultanate.adjective_gen.!random="]
+    },
+    "ImmoralPractice_phrases": {
+     "EarlySultanate": ["=spice:commonPhrases.worship.!random= святині «=spice:history.gospels.EarlySultanate.worshipObject.!random|capitalize=»"],
+     "LateSultanate": ["=spice:commonPhrases.worship.!random= святині «=spice:history.gospels.LateSultanate.worshipObject.!random|capitalize=»"]
+    },
+    "HumblePractice_phrases": {
+     "EarlySultanate": ["=spice:instancesOf.careFor_inf.!random= чуже добро"],
+     "LateSultanate": ["=spice:instancesOf.careFor_inf.!random= чуже добро"]
+    },
+    "CommittedWrongAgainstSultan_phrases": {
+     "EarlySultanate": [
+      "=spice:commonPhrases.commandeered_pl.!random= =spice:history.sultan.його.entity@gender= =spice:history.gospels.EarlySultanate.vehicle_acc.!random=",
+      "викрали з =spice:history.sultan.його.entity@gender= скарбниці «=spice:history.gospels.EarlySultanate.location.!random|capitalize= =spice:history.gospels.EarlySultanate.adjective_gen.!random=» чимало =spice:elements.entity@elements[random].materials.!random=",
+      "=spice:instancesOf.seceded_pl.!random=, щоб заснувати окрему державу, що звалася «=spice:placeNouns.!random|capitalize=-=spice:history.gospels.EarlySultanate.location.!random|capitalize=»"
+     ],
+     "LateSultanate": [
+      "=spice:commonPhrases.commandeered_pl.!random= =spice:history.sultan.його.entity@gender= =spice:history.gospels.LateSultanate.vehicle_acc.!random=",
+      "викрали з =spice:history.sultan.його.entity@gender= скарбниці «=spice:history.gospels.LateSultanate.location.!random|capitalize= =spice:history.gospels.LateSultanate.adjective_gen.!random=» чимало =spice:elements.entity@elements[random].materials.!random=",
+      "=spice:instancesOf.seceded_pl.!random=, щоб заснувати окрему державу, що звалася =spice:history.regions.government.city-states.name.!random|capitalize= «=spice:placeNouns.!random|capitalize=»"
+     ]
+    }
+   },
+   "regions": {
+    "government": {
+     "city-states": {
+      "name_pl": ["автархії", "республіки", "міські держави", "монархії", "аристократії", "олігархії", "демократії", "теократії"],
+      "name_gen": ["автархії", "республіки", "міської держави", "монархії", "аристократії", "олігархії", "демократії", "теократії"]
+     }
+    }
+   },
+   "relics": {
+    "uk": {
+     "g": {
+      "Axe": ["n", "m", "m", "m"],
+      "ShortBlade": ["m", "n", "f", "n", "m"],
+      "LongBlade": ["m", "m", "f"],
+      "Cudgel": ["f", "m", "m", "m"],
+      "Rifle": ["f", "f", "m", "m"],
+      "Pistol": ["m", "m", "m"],
+      "Head": ["m", "m", "m", "m"],
+      "Face": ["m", "f", "f"],
+      "Body": ["m", "m", "f"],
+      "Arm": ["m", "f", "m"],
+      "Feet": ["pl", "pl", "pl"],
+      "Hands": ["pl", "pl", "pl"],
+      "Floating": ["f", "f"],
+      "Artifact": ["f", "f", "f"],
+      "Curio": ["f", "f", "f"],
+      "Shield": ["m", "f", "m", "m"],
+      "Food": ["m", "m", "n", "f"],
+      "Book": ["m", "m", "m", "m", "m", "m", "m", "m"],
+      "Implant": ["m", "m", "m", "m", "m", "n", "n"]
+     },
+     "type": {
+      "Axe": {"n": ["лезо"], "m": ["топірець", "колун", "тесак"]},
+      "ShortBlade": {"m": ["кортик", "кріс"], "n": ["вістря", "шило"], "f": ["заточка"]},
+      "LongBlade": {"m": ["клинок", "меч"], "f": ["глефа"]},
+      "Cudgel": {"f": ["булава"], "m": ["жезл", "посох", "кийок"]},
+      "Rifle": {"f": ["гвинтівка", "гармата"], "m": ["громобій", "довгоствол"]},
+      "Pistol": {"m": ["пістолет", "ствол", "короткоствол"]},
+      "Head": {"m": ["шолом", "ковпак", "капелюх", "каптур"]},
+      "Face": {"m": ["серпанок"], "f": ["личина", "маска"]},
+      "Body": {"m": ["нагрудник", "жилет"], "f": ["кольчуга"]},
+      "Arm": {"m": ["ланцюг", "обруч"], "f": ["ланка"]},
+      "Feet": {"pl": ["дерев’яники", "шиповки", "кеди"]},
+      "Hands": {"pl": ["мітенки", "муфти", "рукавиці"]},
+      "Floating": {"f": ["куля", "сфера"]},
+      "Artifact": {"f": ["фінтифлюшка", "іграшка", "цяцька"]},
+      "Curio": {"f": ["фінтифлюшка", "іграшка", "цяцька"]},
+      "Shield": {"m": ["заслін", "оберіг", "щит"], "f": ["егіда"]},
+      "Food": {"m": ["хліб", "корм"], "n": ["м’ясо"], "f": ["харч"]},
+      "Book": {"m": ["кодекс", "том", "звід", "атлас", "лексикон", "фоліант", "збірник", "опус"]},
+      "Implant": {"m": ["орган", "хром", "механізм", "виріб", "дріт"], "n": ["становлення", "поліпшення"]}
+     },
+     "adj": {
+      "m": "=spice:elements.$element.adjectives.!random=",
+      "f": "=spice:elements.$element.adjectives.!random|uk.f=",
+      "n": "=spice:elements.$element.adjectives.!random|uk.n=",
+      "pl": "=spice:elements.$element.adjectives.!random|uk.pl="
+     }
+    }
+   }
+  },
+  "temperaments": {
+   "Angry": {
+    "synonym_phrases": ["з великим гнівом", "з великою люттю"]
+   }
+  },
+  "villages": {
+   "government": {
+    "representativeDemocracy": {
+     "council": {"name_dat": "обраній раді"},
+     "parliament": {"name_dat": "обраному парламентові"},
+     "senate": {"name_dat": "обраному сенатові"}
+    }
+   },
+   "mayorTemplate": {
+    "Councilor": {"name_pl": "радники"},
+    "Parliamentarian": {"name_pl": "парламентарі"},
+    "Senator": {"name_pl": "сенатори"}
+   }
+  },
+  "placeNouns_gen": [
+   "=spice:commonPhrases.hearth_gen.!random=",
+   "=spice:commonPhrases.shire_gen.!random=",
+   "=spice:commonPhrases.bodyOfWater_gen.!random=",
+   "=spice:history.regions.government.city-states.name_gen.!random=",
+   "=spice:professions.!random.guildhall_gen=",
+   "=spice:commonPhrases.farm_gen.!random=",
+   "=spice:commonPhrases.shrine_gen.!random="
+  ],
+  "placeNouns_pl": [
+   "=spice:commonPhrases.hearth_pl.!random=",
+   "=spice:commonPhrases.shire_pl.!random=",
+   "=spice:commonPhrases.bodyOfWater_pl.!random=",
+   "=spice:history.regions.government.city-states.name_pl.!random=",
+   "=spice:professions.!random.guildhall_pl=",
+   "=spice:commonPhrases.farm_pl.!random=",
+   "=spice:commonPhrases.shrine_pl.!random="
+  ],
+  "commonPhrases": {
+   "rescued_f": ["врятована", "вихоплена", "повернута", "визволена"],
+   "found_f": ["знайдена", "виявлена"],
+   "wrapped_f": ["загорнута", "обтягнута", "обгорнута", "сповита"],
+   "commandeered_pl": ["реквізували", "викрали", "захопили", "узурпували"],
+   "ship_acc": ["корабель", "судно", "ковчег", "транспортник", "баржу", "дирижабль"],
+   "wagon_acc": ["віз", "кеб", "бричку", "колісницю"],
+   "bygone_f": ["минула", "колишня", "давня", "стара"],
+   "bygone_n": ["минуле", "колишнє", "давнє", "старе"],
+   "hearth_phrases": [
+    "=spice:commonPhrases.bygone_n.!random|capitalize= Вогнище",
+    "=spice:commonPhrases.bygone_f.!random|capitalize= Домівка",
+    "=spice:commonPhrases.bygone.!random|capitalize= Черінь",
+    "=spice:commonPhrases.bygone_n.!random|capitalize= Лігво",
+    "=spice:commonPhrases.bygone.!random|capitalize= Осідок",
+    "=spice:commonPhrases.bygone_n.!random|capitalize= Сідало"
+   ],
+   "hearth_pl": ["вогнища", "домівки", "черені", "лігва", "осідки", "сідала"],
+   "shire_pl": ["краї", "кути", "тини", "борозни", "вогнища", "хутори", "плеса"],
+   "bodyOfWater_pl": ["моря", "океани", "озера", "лагуни", "ставки", "цистерни", "водиці", "солоні води", "прибої"],
+   "farm_pl": ["ферми", "садиби", "обійстя", "десятини", "угіддя", "наділи"],
+   "shrine_pl": ["реліквії", "святині", "вівтарі"],
+   "eminent_nounGen": ["величі", "грози", "помазання", "долі", "пророцтва", "високості", "слави", "розголосу", "шани", "благоговіння"],
+   "scion_phrases": [
+    "=spice:elements.$element.adjectives_n.!random|capitalize= Дитя",
+    "=spice:elements.$element.adjectives_n.!random|capitalize= Ягня",
+    "=spice:elements.$element.adjectives.!random|capitalize= Спадкоємець",
+    "=spice:elements.$element.adjectives.!random|capitalize= Нащадок",
+    "=spice:elements.$element.adjectives_n.!random|capitalize= Насіння",
+    "=spice:elements.$element.adjectives.!random|capitalize= Родич",
+    "=spice:elements.$element.adjectives_n.!random|capitalize= Немовля",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Спадкоємиця",
+    "=spice:elements.$element.adjectives.!random|capitalize= Плід",
+    "=spice:elements.$element.adjectives.!random|capitalize= Паросток"
+   ],
+   "ruins_phrases": [
+    "=spice:elements.$element.adjectives_pl.!random|capitalize= Пустища",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Руїна",
+    "=spice:elements.$element.adjectives.!random|capitalize= Тлін",
+    "=spice:elements.$element.adjectives.!random|capitalize= Розор",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Пустка",
+    "=spice:elements.$element.adjectives_pl.!random|capitalize= Рівнини",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Безплідь",
+    "=spice:elements.$element.adjectives_pl.!random|capitalize= Дюни",
+    "=spice:elements.$element.adjectives_pl.!random|capitalize= Розвалини",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Драговина",
+    "=spice:elements.$element.adjectives_n.!random|capitalize= Болото",
+    "=spice:elements.$element.adjectives_n.!random|capitalize= Вересовище",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Порожнеча",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Трясовина"
+   ],
+   "ghost_phrases": [
+    "=spice:elements.$element.adjectives.!random|capitalize= Привид",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Тінь",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Мара",
+    "=spice:elements.$element.adjectives.!random|capitalize= Біс",
+    "=spice:elements.$element.adjectives_f.!random|capitalize= Примара"
+   ],
+   "ghost_m": ["Привид", "Дух", "Фантом", "Біс", "Мрець"],
+   "finesse_ins": ["витонченістю", "спритністю", "вправністю", "хитромудрістю", "артистизмом", "моторністю", "доблестю", "вмілістю"],
+   "celebration_loc": ["святкуванні", "радості", "ювілейних гуляннях", "веселощах", "тріумфі"],
+   "woe_loc": ["горі", "нещасті", "мороці", "стражданні", "конанні", "смутку", "соромі", "мученні"],
+   "might_acc": ["могутність", "силу", "звитягу"],
+   "foes_gen": ["ворогів", "недругів"],
+   "wisdom_gen": ["мудрості", "знань", "просвітлення"],
+   "humble_gen_pl": ["смиренних", "тихих", "скромних", "лагідних"],
+   "sacred_ins": ["священним", "святим", "божественним", "благословенним", "ангельським", "освяченим", "богоугодним", "чистим", "свяченим", "шанованим"],
+   "pretender_gen": ["самозванця", "претендента", "шукача престолу"],
+   "noble_pl_acc": ["шляхетних", "доброчесних", "достойних"],
+   "prized_f": ["цінна", "дорогоцінна", "плекана", "бережена"],
+   "inspired_f": ["натхненна", "спонукана", "зворушена"],
+   "ascended_f": ["зійшла на престол", "узяла корону", "увінчалася короною", "проголосила себе султаном", "узяла кермо влади", "захопила корону", "захопила позолочений скіпетр"],
+   "killed_f": ["убита", "замордована", "четвертована", "вигнана", "ув’язнена", "запущена на орбіту", "похована глибоко під землею", "замкнена у тісній в’язниці (=spice:elements.entity@elements[random].nouns.!random=)", "засуджена, але помилувана"],
+   "defied_f": ["подолала", "зневажила", "висміяла", "відкинула", "перехитрувала", "знехтувала", "обдурила"],
+   "emerged_f": ["вийшла", "з’явилася", "вихопилася"],
+   "vanquished_f": ["перемогла", "завоювала", "розгромила", "упокорила", "здолала"],
+   "settled_f": ["оселилася", "угніздилася", "зупинилася", "замешкала", "осіла"],
+   "slaughtered_f": ["вирізала", "переслідувала"],
+   "liberated_past": ["визволив", "звільнив", "урятував"],
+   "liberated_past_f": ["визволила", "звільнила", "урятувала"],
+   "savior_f": ["спасителька", "визволителька", "оборониця"],
+   "crowned_past_pl": ["коронували", "проголосили", "оголосили"],
+   "remember_1pl": ["пам’ятаймо", "згадаймо"],
+   "conquered_f": ["завоювала", "приєднала", "відкрила", "підкорила"],
+   "tamed_f": ["приборкала", "угамувала", "упокорила", "приручила", "змусила коритися"],
+   "ravaged_f": ["спустошила", "смерчем пронеслася крізь", "розграбувала", "пограбувала", "сплюндрувала", "обернула на пустку"],
+   "wisdom_phrases": ["свою мудрість", "свої знання", "своє просвітлення"],
+   "scourge_m": ["Бич", "Жах", "Губитель", "Мор", "Плач", "Смуток"],
+   "chastisement_acc": ["кару", "покарання", "осуд"],
+   "abandoned_n": ["покинуте", "залишене", "обезлюднене"],
+   "embraced_pl": ["прийняли", "визнали", "перейняли", "перестали засуджувати"],
+   "supports_2sg": ["підтримуєш", "захищаєш", "поширюєш", "обстоюєш", "вітаєш"],
+   "cult_dat": ["культу", "орденові", "товариству", "церкві", "людові", "виводку", "родині", "рідні", "народові", "кланові", "пастві", "секті", "родові", "кліці", "воїнству"],
+   "society_gen": ["суспільства", "культури", "громадського життя", "суспільного ладу"],
+   "protection_acc": ["захист", "підтримку", "заохочення", "поширення", "плекання"],
+   "hearth_gen": ["вогнища", "домівки", "черені", "лігва", "осідку", "сідала"],
+   "shire_gen": ["краю", "кута", "тину", "борозни", "вогнища", "хутора", "плеса"],
+   "bodyOfWater_gen": ["моря", "океану", "озера", "лагуни", "ставка", "цистерни", "водиці", "солоної води", "прибою"],
+   "farm_gen": ["ферми", "садиби", "обійстя", "десятини", "угіддя", "наділу"],
+   "shrine_gen": ["реліквії", "святині", "вівтаря"]
+  },
+  "instancesOf": {
+   "explosives_acc": ["вибухівку", "імплозивні заряди", "боєприпаси", "нейтронний потік"],
+   "seceded_pl": ["відкололися", "відокремилися", "відгородилися від усіх", "ізолювалися", "усамітнилися", "пішли геть"],
+   "sandOrSalt_gen": ["піску", "солі", "дерну", "суглинку", "ґрунту", "землі"],
+   "careFor_inf": ["дбати про", "доглядати", "мити", "утримувати", "пильнувати", "захищати", "чистити", "шкребти", "лагодити", "ремонтувати", "відновлювати"],
+   "justice_gen": ["справедливості", "любові", "правди", "рівності", "рівноваги", "віри", "благодаті", "чесноти", "честі", "доброчинності"],
+   "commonFolk_gen": ["простолюдинів", "простого люду", "плебеїв", "черні", "юрби", "мас"],
+   "countered_f": [
+    "убила кожного з них, =spice:elements.entity@elements[random].murdermethods.!random=",
+    "провела день у такому занятті, як =spice:elements.entity@elements[random].practices.!random=, а тоді правила далі, ніби нічого й не сталося",
+    "заспокоїла своїх радників, =spice:commonPhrases.calmly.!random= пояснивши, чому має іншу думку"
+   ],
+   "reemerged_f": ["знову з’явилася", "постала знову", "знову вийшла на люди", "повернулася"],
+   "ascensionReasons_VAR_f": ["=var= мала таку прикмету, як =var2=", "так забажала =spice.entity:name=", "=var= мала таку прикмету, як =var2="],
+   "backToLife_f": [
+    "=spice.entity:name= інсценізувала власну смерть, =spice:instancesOf.fakedDeath.!random=",
+    "насправді загинув не сам правитель, а =spice:commonPhrases.sultanClone.!random=",
+    "=spice.entity:name= вижила, бо життя потай урятували =spice:instancesOf.lifeSaveReasons.!random="
+   ],
+   "unseated_f": ["скинула", "вигнала", "усунула від влади", "позбавила престолу", "=spice:instancesOf.murderedVerb_f.!random="],
+   "brokeFaithWith_pl": ["віроломно покинули", "зрадили", "підступно продали", "підвели", "ошукали"],
+   "aCurseUpon_voc": ["=spice:commonPhrases.curse.!random= на тебе,", "=spice:commonPhrases.woe.!random= тобі,"],
+   "murderedVerb_f": [
+    "пропорола заточкою",
+    "застрелила",
+    "отруїла",
+    "зіштовхнула зі скелі",
+    "хитрощами змусила стрибнути в калюжу =spice:instancesOf.deadlyLiquids.!random=",
+    "утопила в озері =spice:instancesOf.deadlyLiquids.!random=",
+    "кинула в калюжу =spice:instancesOf.deadlyLiquids.!random=",
+    "з’їла живцем",
+    "підступно вбила",
+    "зварила собі на поживу",
+    "порубала на дрібні шматки",
+    "залила шаром =spice:instancesOf.deadlyLiquids.!random="
+   ]
+  },
+  "randomGerund_n": ["зведення", "будування", "славлення", "руйнування", "шанування", "відкриття", "відновлення", "розбирання"],
+  "items": {
+   "blessing_m": ["Дар", "Скарб", "Тріумф", "Захват", "Оберіг", "Талан"],
+   "weapons_ins": ["мечем", "сокирою", "молотом", "кинджалом", "гвинтівкою", "пістолетом"]
+  },
+  "professions": {
+   "glassblower": {"singular_gen": "склодува", "plural_gen": "склодувів", "guildhall_gen": "майстерні", "guildhall_loc": "майстерні", "guildhall_acc": "майстерню", "guildhall_pl": "майстерні", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Майстерня", "forged_f": "видула"},
+   "window maker": {"singular_gen": "вітражника", "plural_gen": "вітражників", "guildhall_gen": "майстерні", "guildhall_loc": "майстерні", "guildhall_acc": "майстерню", "guildhall_pl": "майстерні", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Майстерня", "forged_f": "видула"},
+   "scholar": {"singular_gen": "ученого", "plural_gen": "учених", "guildhall_gen": "академії", "guildhall_loc": "академії", "guildhall_acc": "академію", "guildhall_pl": "академії", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Академія", "forged_f": "написала"},
+   "scribe": {"singular_gen": "писаря", "plural_gen": "писарів", "guildhall_gen": "скрипторію", "guildhall_loc": "скрипторії", "guildhall_acc": "скрипторій", "guildhall_pl": "скрипторії", "guildhall_phrase": "=spice:elements.$element.adjectives.!random|capitalize= Скрипторій", "forged_f": "записала"},
+   "philosopher": {"singular_gen": "філософа", "plural_gen": "філософів", "guildhall_gen": "колегії", "guildhall_loc": "колегії", "guildhall_acc": "колегію", "guildhall_pl": "колегії", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Колегія", "forged_f": "сформулювала"},
+   "scientist": {"singular_gen": "науковця", "plural_gen": "науковців", "guildhall_gen": "лабораторії", "guildhall_loc": "лабораторії", "guildhall_acc": "лабораторію", "guildhall_pl": "лабораторії", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Лабораторія", "forged_f": "сформулювала"},
+   "historian": {"singular_gen": "історика", "plural_gen": "істориків", "guildhall_gen": "колегії", "guildhall_loc": "колегії", "guildhall_acc": "колегію", "guildhall_pl": "колегії", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Колегія", "forged_f": "уклала"},
+   "cook": {"singular_gen": "кухаря", "plural_gen": "кухарів", "guildhall_gen": "таверни", "guildhall_loc": "таверні", "guildhall_acc": "таверну", "guildhall_pl": "таверни", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Таверна", "forged_f": "зготувала"},
+   "geologist": {"singular_gen": "геолога", "plural_gen": "геологів", "guildhall_gen": "місця розкопок", "guildhall_loc": "місці розкопок", "guildhall_acc": "місце розкопок", "guildhall_pl": "місця розкопок", "guildhall_phrase": "=spice:elements.$element.adjectives_n.!random|capitalize= Місце Розкопок", "forged_f": "викопала"},
+   "jeweler": {"singular_gen": "ювеліра", "plural_gen": "ювелірів", "guildhall_gen": "майстерні", "guildhall_loc": "майстерні", "guildhall_acc": "майстерню", "guildhall_pl": "майстерні", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Майстерня", "forged_f": "викувала"},
+   "astrologist": {"singular_gen": "астролога", "plural_gen": "астрологів", "guildhall_gen": "обсерваторії", "guildhall_loc": "обсерваторії", "guildhall_acc": "обсерваторію", "guildhall_pl": "обсерваторії", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Обсерваторія", "forged_f": "вигадала"},
+   "astronomer": {"singular_gen": "астронома", "plural_gen": "астрономів", "guildhall_gen": "обсерваторії", "guildhall_loc": "обсерваторії", "guildhall_acc": "обсерваторію", "guildhall_pl": "обсерваторії", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Обсерваторія", "forged_f": "винайшла"},
+   "stargazer": {"singular_gen": "звіздаря", "plural_gen": "звіздарів", "guildhall_gen": "молитовної юрти", "guildhall_loc": "молитовній юрті", "guildhall_acc": "молитовну юрту", "guildhall_pl": "молитовні юрти", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Молитовна Юрта", "forged_f": "пробудила"},
+   "winter eremite": {"singular_gen": "зимового пустельника", "plural_gen": "зимових пустельників", "guildhall_gen": "скиту", "guildhall_loc": "скиті", "guildhall_acc": "скит", "guildhall_pl": "скити", "guildhall_phrase": "=spice:elements.$element.adjectives.!random|capitalize= Скит", "forged_f": "явила"},
+   "soldier": {"singular_gen": "вояка", "plural_gen": "вояків", "guildhall_gen": "форпосту", "guildhall_loc": "форпості", "guildhall_acc": "форпост", "guildhall_pl": "форпости", "guildhall_phrase": "=spice:elements.$element.adjectives.!random|capitalize= Форпост", "forged_f": "здобула грабунком"},
+   "gladiator": {"singular_gen": "гладіатора", "plural_gen": "гладіаторів", "guildhall_gen": "арени", "guildhall_loc": "арені", "guildhall_acc": "арену", "guildhall_pl": "арени", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Арена", "forged_f": "отримала в дар"},
+   "gambler": {"singular_gen": "картяра", "plural_gen": "картярів", "guildhall_gen": "грального притону", "guildhall_loc": "гральному притоні", "guildhall_acc": "гральний притон", "guildhall_pl": "гральні притони", "guildhall_phrase": "=spice:elements.$element.adjectives.!random|capitalize= Гральний Притон", "forged_f": "виграла об заклад"},
+   "tinker": {"singular_gen": "майстра", "plural_gen": "майстрів", "guildhall_gen": "майстерні", "guildhall_loc": "майстерні", "guildhall_acc": "майстерню", "guildhall_pl": "майстерні", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Майстерня", "forged_f": "змайструвала"},
+   "electrician": {"singular_gen": "електрика", "plural_gen": "електриків", "guildhall_gen": "майстерні", "guildhall_loc": "майстерні", "guildhall_acc": "майстерню", "guildhall_pl": "майстерні", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Майстерня", "forged_f": "спаяла"},
+   "explorer": {"singular_gen": "дослідника", "plural_gen": "дослідників", "guildhall_gen": "таверни", "guildhall_loc": "таверні", "guildhall_acc": "таверну", "guildhall_pl": "таверни", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Таверна", "forged_f": "знайшла"},
+   "nomad": {"singular_gen": "кочовика", "plural_gen": "кочовиків", "guildhall_gen": "юрти", "guildhall_loc": "юрті", "guildhall_acc": "юрту", "guildhall_pl": "юрти", "guildhall_phrase": "=spice:elements.$element.adjectives_f.!random|capitalize= Юрта", "forged_f": "знайшла"}
+  },
+  "elements": {
+   "glass": {
+    "adjectives_f": ["глазурована", "вітражна", "прозора", "призматична"],
+    "adjectives_n": ["глазуроване", "вітражне", "прозоре", "призматичне"],
+    "adjectives_pl": ["глазуровані", "вітражні", "прозорі", "призматичні"],
+    "adjectives_gen_pl": ["глазурованих", "вітражних", "прозорих", "призматичних"],
+    "ruinReason_n": "спустошене проливними скляними бурями",
+    "inspirationsVerbPhrase_f": [
+     "побачила у річці власне відображення",
+     "побачила віщий сон про =spice:elements.glass.practices.!random="
+    ]
+   },
+   "jewels": {
+    "adjectives_f": ["самоцвітна", "сяйна", "промениста", "блискуча", "ясна", "іскриста"],
+    "adjectives_n": ["самоцвітне", "сяйне", "променисте", "блискуче", "ясне", "іскристе"],
+    "adjectives_pl": ["самоцвітні", "сяйні", "променисті", "блискучі", "ясні", "іскристі"],
+    "adjectives_gen_pl": ["самоцвітних", "сяйних", "променистих", "блискучих", "ясних", "іскристих"],
+    "ruinReason_n": "наїжачене м’ясоїдними жеодами",
+    "inspirationsVerbPhrase_f": [
+     "натрапила на =spice:elements.jewels.adjectives.!random= скарб: =spice:elements.jewels.nounsPlural.!random=",
+     "побачила віщий сон про =spice:elements.jewels.practices.!random="
+    ]
+   },
+   "stars": {
+    "adjectives_f": ["сяйна", "промениста", "світна", "блискотлива", "розпечена добіла"],
+    "adjectives_n": ["сяйне", "променисте", "світне", "блискотливе", "розпечене добіла"],
+    "adjectives_pl": ["сяйні", "променисті", "світні", "блискотливі", "розпечені добіла"],
+    "adjectives_gen_pl": ["сяйних", "променистих", "світних", "блискотливих", "розпечених добіла"],
+    "ruinReason_n": "спустошене тліючим зоряним пилом",
+    "inspirationsVerbPhrase_f": [
+     "помітила в нічному небі невідомий об’єкт",
+     "побачила, як падає зоря",
+     "натрапила на =spice:elements.stars.adjectives.!random= скарб: =spice:elements.stars.nounsPlural.!random=",
+     "побачила віщий сон про =spice:elements.stars.practices.!random="
+    ]
+   },
+   "time": {
+    "adjectives_f": ["одвічна", "безмежна", "періодична", "ритмічна", "орбітальна"],
+    "adjectives_n": ["одвічне", "безмежне", "періодичне", "ритмічне", "орбітальне"],
+    "adjectives_pl": ["одвічні", "безмежні", "періодичні", "ритмічні", "орбітальні"],
+    "adjectives_gen_pl": ["одвічних", "безмежних", "періодичних", "ритмічних", "орбітальних"],
+    "ruinReason_n": "усіяне блукалими порталами в інші місця й часи",
+    "inspirationsVerbPhrase_f": [
+     "упала в колодязь і прожила сотню життів",
+     "натрапила на річку, що текла назад",
+     "натрапила на =spice:elements.time.adjectives.!random= скарб: =spice:elements.time.nounsPlural.!random=",
+     "побачила віщий сон про =spice:elements.time.practices.!random="
+    ]
+   },
+   "salt": {
+    "adjectives_f": ["просолена", "мерехтлива від солі", "висушена"],
+    "adjectives_n": ["просолене", "мерехтливе від солі", "висушене"],
+    "adjectives_pl": ["просолені", "мерехтливі від солі", "висушені"],
+    "adjectives_gen_pl": ["просолених", "мерехтливих від солі", "висушених"],
+    "ruinReason_n": "висушене до останньої краплі",
+    "inspirationsVerbPhrase_f": [
+     "перетнула мертвий солончак і натрапила на загадковий моноліт",
+     "побачила віщий сон про =spice:elements.salt.practices.!random="
+    ]
+   },
+   "ice": {
+    "adjectives_f": ["студена", "заінеєна", "крижана", "морозна", "льодовикова", "зимова"],
+    "adjectives_n": ["студене", "заінеєне", "крижане", "морозне", "льодовикове", "зимове"],
+    "adjectives_pl": ["студені", "заінеєні", "крижані", "морозні", "льодовикові", "зимові"],
+    "adjectives_gen_pl": ["студених", "заінеєних", "крижаних", "морозних", "льодовикових", "зимових"],
+    "ruinReason_n": "спустошене крижаними вітрами",
+    "inspirationsVerbPhrase_f": [
+     "самотою пройшла мертвою тундрою",
+     "побачила віщий сон про =spice:elements.ice.practices.!random="
+    ]
+   },
+   "scholarship": {
+    "adjectives_f": ["філософська", "прониклива", "допитлива"],
+    "adjectives_n": ["філософське", "проникливе", "допитливе"],
+    "adjectives_pl": ["філософські", "проникливі", "допитливі"],
+    "adjectives_gen_pl": ["філософських", "проникливих", "допитливих"],
+    "ruinReason_n": "завалене спаленими книжками та роз’їденими дисками даних",
+    "inspirationsVerbPhrase_f": [
+     "на самоті розмірковувала про природу речей",
+     "побачила віщий сон про =spice:elements.scholarship.practices.!random="
+    ]
+   },
+   "might": {
+    "adjectives_f": ["могутня", "колосальна", "панівна", "потужна", "владна"],
+    "adjectives_n": ["могутнє", "колосальне", "панівне", "потужне", "владне"],
+    "adjectives_pl": ["могутні", "колосальні", "панівні", "потужні", "владні"],
+    "adjectives_gen_pl": ["могутніх", "колосальних", "панівних", "потужних", "владних"],
+    "ruinReason_n": "завалене потрощеним камінням",
+    "inspirationsVerbPhrase_f": [
+     "устрягла в бійку в таверні",
+     "пройшла полем, усіяним черепами й кістками",
+     "побачила віщий сон про =spice:elements.might.practices.!random="
+    ]
+   },
+   "chance": {
+    "adjectives_f": ["щаслива", "випадкова", "довільна", "доленосна", "неждана", "зачарована", "шулерська", "проклята", "благословенна"],
+    "adjectives_n": ["щасливе", "випадкове", "довільне", "доленосне", "неждане", "зачароване", "шулерське", "прокляте", "благословенне"],
+    "adjectives_pl": ["щасливі", "випадкові", "довільні", "доленосні", "неждані", "зачаровані", "шулерські", "прокляті", "благословенні"],
+    "adjectives_gen_pl": ["щасливих", "випадкових", "довільних", "доленосних", "нежданих", "зачарованих", "шулерських", "проклятих", "благословенних"],
+    "ruinReason_n": "сповнене лихих знамень",
+    "inspirationsVerbPhrase_f": [
+     "упала в розколину й усупереч усьому вижила",
+     "побачила, як підкинута монета десять разів поспіль лягла гербом догори",
+     "побачила віщий сон про =spice:elements.chance.practices.!random="
+    ]
+   },
+   "circuitry": {
+    "adjectives_f": ["аналогова", "цифрова", "логічна", "вольтова", "комп’ютеризована", "електрична", "дротова", "покрита міддю", "звита"],
+    "adjectives_n": ["аналогове", "цифрове", "логічне", "вольтове", "комп’ютеризоване", "електричне", "дротове", "покрите міддю", "звите"],
+    "adjectives_pl": ["аналогові", "цифрові", "логічні", "вольтові", "комп’ютеризовані", "електричні", "дротові", "покриті міддю", "звиті"],
+    "adjectives_gen_pl": ["аналогових", "цифрових", "логічних", "вольтових", "комп’ютеризованих", "електричних", "дротових", "покритих міддю", "звитих"],
+    "ruinReason_n": "пронизане електричними дугами",
+    "inspirationsVerbPhrase_f": [
+     "зустріла комп’ютеризовану версію самої себе",
+     "побачила віщий сон про =spice:elements.circuitry.practices.!random="
+    ]
+   },
+   "travel": {
+    "adjectives_f": ["чужоземна", "незнайома", "дивна", "зношена часом", "бувала", "мандрівна", "блукальна", "потойбічна"],
+    "adjectives_n": ["чужоземне", "незнайоме", "дивне", "зношене часом", "бувале", "мандрівне", "блукальне", "потойбічне"],
+    "adjectives_pl": ["чужоземні", "незнайомі", "дивні", "зношені часом", "бувалі", "мандрівні", "блукальні", "потойбічні"],
+    "adjectives_gen_pl": ["чужоземних", "незнайомих", "дивних", "зношених часом", "бувалих", "мандрівних", "блукальних", "потойбічних"],
+    "ruinReason_n": "позбавлене будь-яких ознак життя",
+    "inspirationsVerbPhrase_f": [
+     "розділила хліб із прочанином",
+     "вирушила на прощу до святині",
+     "побачила віщий сон про =spice:elements.travel.practices.!random="
+    ]
+   }
+  }
+ }
+}
