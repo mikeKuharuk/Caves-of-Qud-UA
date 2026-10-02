@@ -79,18 +79,31 @@ namespace CavesOfQudUA.Grammar
     }
 
     /// <summary>
-    /// The grammatical gender of each object's Ukrainian name, from the translators' qud-gender notes. The table is
-    /// written by `py tools/qud.py build` into NounGenders.g.cs; without that file it stays empty.
+    /// The grammatical gender of each object's Ukrainian name, from the translators' qud-gender notes, and of the
+    /// nouns the code passes as plain strings (a liquid's name), by their Ukrainian text. The tables are written by
+    /// `py tools/qud.py build` into NounGenders.g.cs; without that file they stay empty.
     /// </summary>
     public static partial class NounGenders
     {
         public static readonly Dictionary<string, string> ByBlueprint = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> ByWord = new Dictionary<string, string>();
 
         static NounGenders()
         {
             Fill(ByBlueprint);
+            FillWords(ByWord);
         }
 
         static partial void Fill(Dictionary<string, string> table);
+
+        static partial void FillWords(Dictionary<string, string> table);
+
+        /// <summary>The gender of a translated noun given as text («{{B|вода}}» → feminine), or null.</summary>
+        public static UkGender? OfWord(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return null;
+            string key = UkrainianForms.StripMarkup(text).Trim().ToLowerInvariant();
+            return ByWord.TryGetValue(key, out string letter) ? UkrainianForms.FromLetter(letter) : null;
+        }
     }
 }

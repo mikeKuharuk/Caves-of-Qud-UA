@@ -67,11 +67,14 @@ namespace CavesOfQudUA.Grammar
             if (Object != null) Agree(Context, UkrainianGender.Of(Object));
         }
 
-        /// <summary>=x|uk.agree#rank=: the same with a word from the code (CodeWords), such as a hunter's rank.</summary>
+        /// <summary>
+        /// =x|uk.agree#rank=: the same with a noun given as text: a word from the code (CodeWords, a hunter's rank), or a
+        /// translated noun with a qud-gender note (a liquid's name: «кривава солонувата вода»).
+        /// </summary>
         [VariablePostProcessor(new string[] { "uk.agree" })]
         public static void Agree(VariableContext Context, string Word)
         {
-            UkGender? gender = CodeWords.GenderOf(Word);
+            UkGender? gender = CodeWords.GenderOf(Word) ?? NounGenders.OfWord(Word);
             if (gender.HasValue) Agree(Context, gender.Value);
         }
 
