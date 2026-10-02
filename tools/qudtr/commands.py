@@ -13,7 +13,7 @@ import pathlib
 import re
 import xml.etree.ElementTree as ET
 
-from . import batch, checks, po, store, units
+from . import batch, checks, held, po, store, units
 from .sources import REPO
 
 PO_DIR = REPO / "work" / "po" / "uk"
@@ -331,9 +331,22 @@ def noun_genders_cs(genders: dict[str, str]) -> str:
 def cmd_validate(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR,
                  show_warnings: bool = True) -> tuple[int, int]:
     errors = warnings = 0
+    registry, problems = held.load()
+    for p in problems:
+        errors += 1
+        print(f"error: {p}")
+    seen_held = set()
     for name, text in sorted(files.items()):
         cat, _ = load_catalog(text, name, po_dir, store_dir)
         pname = units.po_name(name)
+        for e in cat.entries:
+            k = (pname, store.keys(e.msgctxt, e.msgid)[0])
+            if e.obsolete or k not in registry:
+                continue
+            seen_held.add(k)
+            if e.msgstr:
+                warnings += 1
+                print(f"warning: {pname}: {e.msgctxt}: held: translated now; remove it from held.tsv")
         for e in cat.entries:
             if e.obsolete or not e.msgstr:
                 continue
@@ -364,6 +377,10 @@ def cmd_validate(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir
         if n_unsaved:
             warnings += 1
             print(f"warning: {pname}: {n_unsaved} translation(s) not saved to translations/uk; run save")
+    for catalog, key in sorted(set(registry) - seen_held):
+        if any(units.po_name(n) == catalog for n in files):
+            warnings += 1
+            print(f"warning: held.tsv: {catalog} {key}: no such unit in this game build; remove it")
     errors += check_spice_paths(files, po_dir, store_dir)
     print(f"{errors} error(s), {warnings} warning(s)")
     return errors, warnings
@@ -469,22 +486,35 @@ def cmd_apply(files: dict[str, str], paths: list[pathlib.Path], po_dir: pathlib.
 # --------------------------------------------------------------------------------------------
 # stats
 
-def cmd_stats(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR) -> None:
-    rows = []
+def cmd_stats(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR,
+              list_held: bool = False) -> None:
+    """Progress per catalog. held: units left untranslated on purpose (translations/uk/held.tsv); the last column
+    counts them as done, since nothing is left to translate there."""
+    registry, _ = held.load()
+    rows, listing = [], []
     for name, text in sorted(files.items()):
         cat, _ = load_catalog(text, name, po_dir, store_dir)
+        pname = units.po_name(name)
         live = [e for e in cat.entries if not e.obsolete]
         done = [e for e in live if e.translated]
         fuzzy = [e for e in live if e.msgstr and e.fuzzy]
+        kept = [e for e in live if not e.msgstr and (pname, store.keys(e.msgctxt, e.msgid)[0]) in registry]
         words = sum(map(_words, live))
         done_words = sum(map(_words, done))
-        rows.append((units.po_name(name), len(live), len(done), len(fuzzy), words, done_words))
-    print(f"{'file':34} {'units':>7} {'done':>7} {'fuzzy':>6} {'words':>8} {'done%':>6}")
-    t = [0, 0, 0, 0, 0]
-    for name, n, d, f, w, dw in rows:
-        t = [t[0] + n, t[1] + d, t[2] + f, t[3] + w, t[4] + dw]
-        print(f"{name:34} {n:7} {d:7} {f:6} {w:8} {100 * dw / w if w else 0:5.1f}%")
-    print(f"{'TOTAL':34} {t[0]:7} {t[1]:7} {t[2]:6} {t[3]:8} {100 * t[4] / t[3] if t[3] else 0:5.1f}%")
+        held_words = sum(map(_words, kept))
+        rows.append((pname, len(live), len(done), len(kept), len(fuzzy), words, done_words, held_words))
+        listing += [(pname, e, registry[(pname, store.keys(e.msgctxt, e.msgid)[0])]) for e in kept]
+    print(f"{'file':34} {'units':>7} {'done':>7} {'held':>5} {'fuzzy':>6} {'words':>8} {'done%':>6} {'+held':>6}")
+    t = [0] * 7
+    for name, *r in rows:
+        t = [a + b for a, b in zip(t, r)]
+        n, d, h, f, w, dw, hw = r
+        print(f"{name:34} {n:7} {d:7} {h:5} {f:6} {w:8} {100 * dw / w if w else 0:5.1f}% {100 * (dw + hw) / w if w else 0:5.1f}%")
+    n, d, h, f, w, dw, hw = t
+    print(f"{'TOTAL':34} {n:7} {d:7} {h:5} {f:6} {w:8} {100 * dw / w if w else 0:5.1f}% {100 * (dw + hw) / w if w else 0:5.1f}%")
+    if list_held:
+        for pname, e, h in listing:
+            print(f"{h.status:4} {pname}: {e.msgctxt}: {h.reason}")
 
 
 # --------------------------------------------------------------------------------------------

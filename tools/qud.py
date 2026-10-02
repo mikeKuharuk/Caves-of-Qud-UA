@@ -5,7 +5,7 @@
   py tools/qud.py save     work/po/uk/*.po → translations/uk/*.jsonl (after editing the PO files)
   py tools/qud.py build    [--include-fuzzy]   → mod/Language/*.uk.xml
   py tools/qud.py validate [--errors-only]     markup and typography checks
-  py tools/qud.py stats                        progress per file
+  py tools/qud.py stats    [--held]            progress per file (--held: list units left English on purpose)
   py tools/qud.py import FILE.uk.xml ...       fill translations from existing translated XML
   py tools/qud.py worksheet PO [--ctx RE]      untranslated units → work/batch/*.jsonl
   py tools/qud.py check-worksheet FILE ...     check a filled-in worksheet (no PO access)
@@ -43,7 +43,8 @@ def main(argv=None) -> int:
     p_build.add_argument("--force", action="store_true", help="overwrite hand-written output files")
     p_val = with_source(sub.add_parser("validate", help="check translations"))
     p_val.add_argument("--errors-only", action="store_true")
-    with_source(sub.add_parser("stats", help="translation progress"))
+    p_stats = with_source(sub.add_parser("stats", help="translation progress"))
+    p_stats.add_argument("--held", action="store_true", help="also list the units left untranslated on purpose")
     p_imp = with_source(sub.add_parser("import", help="import existing *.uk.xml"))
     p_imp.add_argument("files", nargs="+", type=pathlib.Path)
     p_imp.add_argument("--overwrite", action="store_true")
@@ -78,7 +79,7 @@ def main(argv=None) -> int:
         errors, _ = commands.cmd_validate(files, show_warnings=not a.errors_only)
         return 1 if errors else 0
     if a.cmd == "stats":
-        commands.cmd_stats(files)
+        commands.cmd_stats(files, list_held=a.held)
         return 0
     if a.cmd == "import":
         commands.cmd_import(files, a.files, overwrite=a.overwrite)
