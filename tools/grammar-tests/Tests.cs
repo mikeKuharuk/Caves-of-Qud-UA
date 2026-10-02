@@ -63,6 +63,36 @@ static class Tests
         Eq("вкрита рідиною", UkrainianForms.AgreeAdjective("вкритий рідиною", UkGender.Feminine, lookup), "a phrase");
         Eq("{{c|фазоспряжений}}", UkrainianForms.AgreeAdjective("{{c|фазоспряжений}}", UkGender.Feminine, lookup), "not in the table");
         Eq("іржавий", UkrainianForms.StripMarkup("{{K|іржавий}}"), "strip markup");
+        Eq("{{c|фазоспряжена}}", UkrainianForms.AgreeAdjective("{{c|фазоспряжений}}", UkGender.Feminine, lookup, regular: true),
+           "not in the table, regular endings");
+        Eq("{{r|іржаві}} і {{m|вкриті рідиною}}",
+           UkrainianForms.AgreeAdjective("{{r|іржавий}} і {{m|вкритий рідиною}}", UkGender.Plural, lookup), "two joined adjectives");
+        Eq("іржава, синя", UkrainianForms.AgreeAdjective("іржавий, синій", UkGender.Feminine, lookup, regular: true),
+           "a joined adjective not in the table");
+
+        Eq("сіра", UkrainianForms.InflectRegular("сірий", UkGender.Feminine), "hard -ий");
+        Eq("синє", UkrainianForms.InflectRegular("синій", UkGender.Neuter), "soft -ій");
+        Eq("безкраї", UkrainianForms.InflectRegular("безкраїй", UkGender.Plural), "-їй");
+        Eq("чорно-біла", UkrainianForms.InflectRegular("чорно-білий", UkGender.Feminine), "a hyphenated compound");
+        Eq("заплямована кров’ю", UkrainianForms.InflectRegular("заплямований кров’ю", UkGender.Feminine), "a participle phrase");
+        Eq("Зла", UkrainianForms.InflectRegular("Злий", UkGender.Feminine), "capital letter");
+        Eq("Рух", UkrainianForms.InflectRegular("Рух", UkGender.Feminine), "a noun stays");
+        Eq("сірий", UkrainianForms.InflectRegular("сірий", UkGender.Masculine), "masculine stays");
+        var ordinals = new Dictionary<string, string>
+        {
+            ["1-й"] = "1-ша", ["2-й"] = "2-га", ["3-й"] = "3-тя", ["4-й"] = "4-та", ["7-й"] = "7-ма", ["8-й"] = "8-ма",
+            ["9-й"] = "9-та", ["10-й"] = "10-та", ["11-й"] = "11-та", ["13-й"] = "13-та", ["21-й"] = "21-ша",
+            ["23-й"] = "23-тя", ["30-й"] = "30-та", ["0-й"] = "0-ва", ["-1-й"] = "-1-ша", ["40-й"] = "40-ва",
+        };
+        foreach (var pair in ordinals)
+            Eq(pair.Value, UkrainianForms.InflectRegular(pair.Key, UkGender.Feminine), $"ordinal {pair.Key}");
+        Eq("3-тє", UkrainianForms.InflectRegular("3-й", UkGender.Neuter), "neuter ordinal");
+        Eq("2-гі", UkrainianForms.InflectRegular("2-й", UkGender.Plural), "plural ordinal");
+
+        Eq("Скопа", CodeWords.Translate("Osprey"), "a word from the code");
+        Eq("Unknown", CodeWords.Translate("Unknown"), "an unknown word stays");
+        Eq("Feminine", CodeWords.GenderOf("Owl").ToString(), "gender by the English word");
+        Eq("Masculine", CodeWords.GenderOf("Орел").ToString(), "gender by the Ukrainian word");
 
         Eq("Упав", UkrainianForms.Capitalize("упав"), "capitalize");
         Eq("{{W|Упав}}", UkrainianForms.Capitalize("{{W|упав}}"), "capitalize inside markup");

@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../../mod/Grammar/UkrainianForms.cs" />
+    <Compile Include="../../mod/Grammar/UkrainianWords.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
 </Project>

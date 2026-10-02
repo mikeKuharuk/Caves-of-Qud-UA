@@ -73,6 +73,15 @@ class Checks(unittest.TestCase):
         self.assertIn("uk-grammar", codes(src, good.replace(":хід:ходи:ходів", ":хід:ходи"), severity="error"))
         self.assertNotIn("uk-grammar", codes("=subject.T= fell.", "=subject.Name= =subject.g:упав:упала:упало:упали=."))
 
+    def test_the_mods_post_processors(self):
+        # =rank|uk.word= and =x|uk.agree#rank= are still =rank= and =x= (mod/Grammar/UkrainianPostProcessors.cs)
+        src = "=spice:ordinal.!random= =rank="
+        self.assertEqual(checks.check(src, "=spice:ordinal.!random|uk.agree#rank= =rank|uk.word="), [])
+        self.assertEqual(checks.check("=modifier|spaceAfter==subject.displayNameOnlyDirect=",
+                                      "=modifier|uk.agree#subject|spaceAfter==subject.displayNameOnlyDirect="), [])
+        self.assertIn("uk-grammar", codes(src, "=spice:ordinal.!random|uk.agree= =rank|uk.word=", severity="error"))
+        self.assertEqual(checks.check("the =spice:x.adjectives.!random= bones", "тверді й =spice:x.adjectives.!random|uk.pl= рештки"), [])
+
     def test_grammar_feedback_of_the_first_packages(self):
         # a fifth form for the player is allowed in g
         self.assertNotIn("uk-grammar", codes("=object.t=", "=object.g:його:її:його:їх:вас="))

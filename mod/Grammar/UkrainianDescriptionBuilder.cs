@@ -7,7 +7,8 @@ namespace CavesOfQudUA.Grammar
     /// Builds object names for Ukrainian. The adjectives the game puts before a name (mods such as «іржавий», the
     /// size, a liquid, «вживлений») are translated in the masculine; here they take the gender of the object
     /// («іржава сокира», «іржаве кресало», «іржаві чоботи»). The other forms come from the translators' uk-forms
-    /// notes, which `qud.py build` writes into AdjectiveForms.g.cs.
+    /// notes, which `qud.py build` writes into AdjectiveForms.g.cs; an adjective with no note takes the regular
+    /// endings (-ий → -а, -е, -і).
     /// </summary>
     public class UkrainianDescriptionBuilder : DescriptionBuilder
     {
@@ -27,7 +28,7 @@ namespace CavesOfQudUA.Grammar
             foreach (KeyValuePair<string, int> entry in this)
             {
                 if (entry.Value >= BaseOrder) continue;
-                string form = UkrainianForms.AgreeAdjective(entry.Key, gender, AdjectiveForms.Get);
+                string form = UkrainianForms.AgreeAdjective(entry.Key, gender, AdjectiveForms.Get, regular: true);
                 if (form != entry.Key) agreed.Add(new KeyValuePair<string, string>(entry.Key, form));
             }
             foreach (KeyValuePair<string, string> pair in agreed)

@@ -80,7 +80,7 @@ namespace CavesOfQudUA.Grammar
                 // ey/em of the mopango: the neuter where a gendered form is unavoidable (D11); "it" people likewise
                 case "elverson":
                 case "neuterperson": return UkGender.Neuter;
-                // singular they: agreement in the plural, like the English (proposed to Mike, not yet decided)
+                // singular they: agreement in the plural, «вони», like the English (D12)
                 case "nonspecific": return UkGender.Plural;
                 case "neuter": return null;
             }
@@ -106,17 +106,104 @@ namespace CavesOfQudUA.Grammar
         /// An adjective agreed with a gender. text is the adjective as translated, in the masculine and possibly
         /// inside markup ({{K|іржавий}}); forms looks up the masculine plain text and gives [feminine, neuter,
         /// plural], or null when the adjective does not change (an indeclinable word, or not in the table).
+        /// Two adjectives joined by «і», «й», «та» or a comma («заплямований кров’ю і заплямований вином») agree one
+        /// by one. With regular, an adjective missing from the table takes the regular endings (InflectRegular).
         /// </summary>
-        public static string AgreeAdjective(string text, UkGender gender, System.Func<string, string[]> forms)
+        public static string AgreeAdjective(string text, UkGender gender, System.Func<string, string[]> forms,
+                                            bool regular = false)
         {
-            if (string.IsNullOrEmpty(text) || gender == UkGender.Masculine || forms == null) return text;
+            if (string.IsNullOrEmpty(text) || gender == UkGender.Masculine) return text;
             string plain = StripMarkup(text).Trim();
-            string[] f = plain.Length == 0 ? null : forms(plain);
-            if (f == null || f.Length < 3) return text;
+            if (plain.Length == 0) return text;
+            string whole = FromTable(plain, gender, forms);
+            if (whole != null) return Replace(text, plain, whole, 0, out _);
+            string[] parts = plain.Split(Joints, System.StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2) return regular ? InflectRegular(text, gender) : text;
+            string result = text;
+            int from = 0;
+            foreach (string raw in parts)
+            {
+                string part = raw.Trim();
+                string form = FromTable(part, gender, forms) ?? (regular ? InflectRegular(part, gender) : part);
+                result = Replace(result, part, form, from, out from);
+            }
+            return result;
+        }
+
+        static readonly string[] Joints = { " і ", " й ", " та ", ", " };
+
+        static string FromTable(string plain, UkGender gender, System.Func<string, string[]> forms)
+        {
+            string[] f = forms == null ? null : forms(plain);
+            if (f == null || f.Length < 3) return null;
             string form = gender == UkGender.Feminine ? f[0] : gender == UkGender.Neuter ? f[1] : f[2];
-            if (string.IsNullOrEmpty(form)) return text;
-            int at = text.IndexOf(plain, System.StringComparison.Ordinal);
-            return at < 0 ? text : text.Substring(0, at) + form + text.Substring(at + plain.Length);
+            return string.IsNullOrEmpty(form) ? null : form;
+        }
+
+        // replaces the first plain after from in text (plain appears there whole, inside markup if any)
+        static string Replace(string text, string plain, string form, int from, out int end)
+        {
+            int at = text.IndexOf(plain, from, System.StringComparison.Ordinal);
+            if (at < 0)
+            {
+                end = from;
+                return text;
+            }
+            end = at + form.Length;
+            return text.Substring(0, at) + form + text.Substring(at + plain.Length);
+        }
+
+        static readonly System.Text.RegularExpressions.Regex RegularAdjective = new System.Text.RegularExpressions.Regex(
+            @"(?<![\p{L}’'ʼ-])([\p{L}’'ʼ-]*?\p{L})(ий|ій|їй)(?![\p{L}’'ʼ])");
+        static readonly System.Text.RegularExpressions.Regex DigitOrdinal = new System.Text.RegularExpressions.Regex(
+            @"(?<![\d])(-?\d+)-й(?!\p{L})");
+
+        /// <summary>
+        /// A masculine adjective phrase agreed by the regular endings, for adjectives with no uk-forms note:
+        /// -ий → -а/-е/-і (сірий), -ій → -я/-є/-і (синій), -їй → -я/-є/-ї (безкраїй). An ordinal in digits takes its
+        /// ending from the numeral: 1-й → 1-ша, 2-й → 2-га, 3-й → 3-тя, 7-й → 7-ма, 10-й → 10-та. Every such word in text
+        /// changes (a phrase such as «вкритий кислотою» agrees); markup stays.
+        /// </summary>
+        public static string InflectRegular(string text, UkGender gender)
+        {
+            if (string.IsNullOrEmpty(text) || gender == UkGender.Masculine) return text;
+            int g = gender == UkGender.Feminine ? 0 : gender == UkGender.Neuter ? 1 : 2;
+            text = RegularAdjective.Replace(text, m =>
+            {
+                string stem = m.Groups[1].Value;
+                switch (m.Groups[2].Value)
+                {
+                    case "ий": return stem + new[] { "а", "е", "і" }[g];
+                    case "ій": return stem + new[] { "я", "є", "і" }[g];
+                    default: return stem + new[] { "я", "є", "ї" }[g];
+                }
+            });
+            return DigitOrdinal.Replace(text, m => m.Groups[1].Value + "-" + OrdinalEnding(long.Parse(m.Groups[1].Value), g));
+        }
+
+        // the letters after the hyphen of an ordinal in digits, feminine/neuter/plural by g, from the numeral's last word
+        static string OrdinalEnding(long number, int g)
+        {
+            long n = number < 0 ? -number : number;
+            string stem;
+            if (n == 0) stem = "в";                                   // нульова
+            else if (n % 100 >= 10 && n % 100 <= 19) stem = "т";      // десята, одинадцята
+            else if (n % 1000 == 0) stem = "н";                       // тисячна
+            else if (n % 100 == 40) stem = "в";                       // сорокова
+            else if (n % 10 == 0) stem = "т";                         // двадцята, сота
+            else
+            {
+                switch (n % 10)
+                {
+                    case 1: stem = "ш"; break;                        // перша
+                    case 2: stem = "г"; break;                        // друга
+                    case 3: return new[] { "тя", "тє", "ті" }[g];     // третя
+                    case 7:
+                    case 8: stem = "м"; break;                        // сьома, восьма
+                    default: stem = "т"; break;                       // четверта, п’ята, шоста, дев’ята
+                }
+            }
+            return stem + new[] { "а", "е", "і" }[g];
         }
 
         /// <summary>The text without Qud's {{shader|…}} markup and &amp;X / ^X colour codes.</summary>

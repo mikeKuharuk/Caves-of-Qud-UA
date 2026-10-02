@@ -96,6 +96,10 @@ EN_GRAMMAR = re.compile(
 EN_GRAMMAR_BARE = re.compile(r"^(?:verb|does|Does|did|Did|ternaryVerb)(?::|$)")
 # English-only post-processors a translation drops: =item.name|pluralize= → =item.name=
 EN_POSTS = {"pluralize", "article", "indefiniteArticle", "definiteArticle", "a", "an", "the"}
+# the mod's own post-processors a translation adds (mod/Grammar/UkrainianPostProcessors.cs): =rank|uk.word=,
+# =modifier|uk.agree#subject=, =adj|uk.pl=
+UK_POSTS = {"uk.word", "uk.agree", "uk.f", "uk.n", "uk.pl"}
+UK_AGREE_BARE = re.compile(r"\|uk\.agree(?![#\w.])")
 # replacers whose parameters are words to translate: =partial.if:some:all=, =already.sign:+:-=
 TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
 
@@ -111,7 +115,7 @@ def comparable(key: str) -> str:
     m = TEXT_PARAMS.match(head)
     if m:
         head = m.group(1)
-    return "|".join([head] + [p for p in posts if p.split(":", 1)[0] not in EN_POSTS])
+    return "|".join([head] + [p for p in posts if re.split(r"[:#]", p, maxsplit=1)[0] not in EN_POSTS | UK_POSTS])
 
 
 def uk_grammar_problem(key: str) -> str | None:
@@ -284,6 +288,8 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
         problem = uk_grammar_problem(key)
         if problem:
             err("uk-grammar", problem)
+    if UK_AGREE_BARE.search(msgstr):
+        err("uk-grammar", "|uk.agree needs the object or word to agree with: =x|uk.agree#subject=")
     uses_uk_grammar = spaced or any(UK_GRAMMAR.match(k) for k in dst_ph)
     # =subject.Does:hit= → =subject.Name= … : plain variables of an object whose English grammar was replaced
     replaced = {placeholder_root(k) for k in missing if EN_GRAMMAR.match(k)}

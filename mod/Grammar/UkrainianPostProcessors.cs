@@ -11,6 +11,8 @@ namespace CavesOfQudUA.Grammar
     ///   |pluralize, |plural       Grammar.Pluralize: English endings → the word unchanged
     ///   |title, |titleCaseWithArticle   Every Word Capitalized → only the first letter, as Ukrainian titles are
     ///   |a.to.an, |scanForAn      "a" → "an" → nothing to do
+    /// and adds the mod's own: |uk.word (an English word from the code in Ukrainian), |uk.agree#X (an adjective
+    /// agreed with X's gender) and |uk.f, |uk.n, |uk.pl (an adjective in a fixed gender).
     /// </summary>
     [HasVariableReplacer(Lang = "uk")]
     public static class UkrainianPostProcessors
@@ -45,6 +47,67 @@ namespace CavesOfQudUA.Grammar
         [VariablePostProcessor(new string[] { "scanForAn", "a.to.an" }, Override = true)]
         public static void ScanForAn(VariableContext Context)
         {
+        }
+
+        /// <summary>=rank|uk.word=: an English word from the code in Ukrainian (CodeWords).</summary>
+        [VariablePostProcessor(new string[] { "uk.word" })]
+        public static void Word(VariableContext Context)
+        {
+            string value = Context.Value.ToString();
+            SetValue(Context, value, CodeWords.Translate(value));
+        }
+
+        /// <summary>
+        /// =modifier|uk.agree#subject=: a masculine adjective (or «X і Y») agreed with an object, by the uk-forms table
+        /// and else by the regular endings: «Злий» → «Зла» for a female twin.
+        /// </summary>
+        [VariablePostProcessor(new string[] { "uk.agree" })]
+        public static void Agree(VariableContext Context, GameObject Object)
+        {
+            if (Object != null) Agree(Context, UkrainianGender.Of(Object));
+        }
+
+        /// <summary>=x|uk.agree#rank=: the same with a word from the code (CodeWords), such as a hunter's rank.</summary>
+        [VariablePostProcessor(new string[] { "uk.agree" })]
+        public static void Agree(VariableContext Context, string Word)
+        {
+            UkGender? gender = CodeWords.GenderOf(Word);
+            if (gender.HasValue) Agree(Context, gender.Value);
+        }
+
+        /// <summary>
+        /// =adj|uk.f=, =adj|uk.n=, =adj|uk.pl=: a masculine adjective in the feminine, neuter or plural, for a noun the
+        /// template itself fixes («тверді й =…adjectives.!random|uk.pl= рештки»).
+        /// </summary>
+        [VariablePostProcessor(new string[] { "uk.f" })]
+        public static void Feminine(VariableContext Context)
+        {
+            Agree(Context, UkGender.Feminine);
+        }
+
+        [VariablePostProcessor(new string[] { "uk.n" })]
+        public static void Neuter(VariableContext Context)
+        {
+            Agree(Context, UkGender.Neuter);
+        }
+
+        [VariablePostProcessor(new string[] { "uk.pl" })]
+        public static void Plural(VariableContext Context)
+        {
+            Agree(Context, UkGender.Plural);
+        }
+
+        static void Agree(VariableContext Context, UkGender gender)
+        {
+            string value = Context.Value.ToString();
+            SetValue(Context, value, UkrainianForms.AgreeAdjective(value, gender, AdjectiveForms.Get, regular: true));
+        }
+
+        static void SetValue(VariableContext Context, string old, string value)
+        {
+            if (value == old) return;
+            Context.Value.Clear();
+            Context.Value.Append(value);
         }
 
         static void CapitalizeValue(VariableContext Context)
