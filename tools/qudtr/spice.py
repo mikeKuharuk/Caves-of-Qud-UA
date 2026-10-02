@@ -57,9 +57,12 @@ def load(text: str) -> dict:
 
 
 def is_text(value: str) -> bool:
-    """A value a translator must see: letters left after removing its references, or two references or more,
-    whose order Ukrainian may need to change («=adjectives= =nouns= =festival=»)."""
-    return bool(LETTER.search(REFERENCE.sub(" ", value))) or len(REFERENCE.findall(value)) >= 2
+    """A value a translator must see: letters left after removing its references; two references or more, whose
+    order Ukrainian may need to change («=adjectives= =nouns= =festival=»); or a reference with punctuation, which
+    may need another list («=greetingFriend=!» → the vocative «Друже!»). A bare reference is not."""
+    refs = REFERENCE.findall(value)
+    rest = REFERENCE.sub(" ", value)
+    return bool(LETTER.search(rest)) or len(refs) >= 2 or bool(refs) and bool(rest.strip())
 
 
 # Keys whose values the game reads as identifiers, never shown:

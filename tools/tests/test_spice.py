@@ -32,6 +32,13 @@ class Spice(unittest.TestCase):
         ])
         self.assertEqual({u.kind for u in us}, {"spice"})
 
+    def test_what_is_a_unit(self):
+        self.assertTrue(spice.is_text("strange"))
+        self.assertTrue(spice.is_text("=spice:adjectives.!random= =spice:nouns.!random="))
+        self.assertTrue(spice.is_text("=spice:commonPhrases.greetingFriend.!random=!"))  # «Друже!» needs the vocative
+        self.assertFalse(spice.is_text("=spice:commonPhrases.greetingFriend.!random="))
+        self.assertFalse(spice.is_text("<spice.commonPhrases.strange.!random>"))
+
     def test_identifiers_are_not_units(self):
         # FoundAsBabe stores a @professions value; =spice:professions.entity@profession.plural= then selects by it
         sample = """{"spice": {
