@@ -97,6 +97,11 @@ static class Tests
         Eq("Ви вже це знаєте.", Translate("Text", "Ви вже це знаєте."), "no English: unchanged");
         Eq("{{R|Ворог}}", Translate("Text", "{{R|Ворог}}"), "markup alone is not English");
 
+        // a pattern that starts with a hole must not swallow the lines before it
+        Add("Test2", "Can't move or attack.", "Не може рухатися чи атакувати.");
+        Add("Test2", "{0} DV", "{0} ЗУ");
+        Eq("Не може рухатися чи атакувати.\n-5 ЗУ", Translate("Test2", "Can't move or attack.\n-5 DV"), "holes stay within a line");
+
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");
 

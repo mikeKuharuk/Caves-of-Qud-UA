@@ -121,18 +121,21 @@ namespace CavesOfQudUA.Patches
             return t;
         }
 
-        /// <summary>«-{0} DV» → ^-(.*?) DV$.</summary>
+        /// <summary>
+        /// «-{0} DV» → ^-(anything but a line break, lazily) DV$. A hole never spans lines, so a pattern that starts or
+        /// ends with one cannot swallow a multi-line text: that is matched line by line.
+        /// </summary>
         public static Regex PatternOf(string key)
         {
             var sb = new StringBuilder("^");
             int last = 0;
             foreach (Match m in Hole.Matches(key))
             {
-                sb.Append(Regex.Escape(key.Substring(last, m.Index - last))).Append("(.*?)");   // a part may come out empty
+                sb.Append(Regex.Escape(key.Substring(last, m.Index - last))).Append("([^\n]*?)");   // a part may come out empty, but never spans lines
                 last = m.Index + m.Length;
             }
             sb.Append(Regex.Escape(key.Substring(last))).Append('$');
-            return new Regex(sb.ToString(), RegexOptions.Singleline);
+            return new Regex(sb.ToString());
         }
 
         static void Miss(string table, string text)
