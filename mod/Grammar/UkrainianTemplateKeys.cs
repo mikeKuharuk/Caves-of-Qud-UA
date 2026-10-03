@@ -134,6 +134,31 @@ namespace CavesOfQudUA.Grammar
             if (Context.Capitalize) Context.Value.InitUpper();
         }
 
+        /// <summary>
+        /// =x.species=, =x.apparentSpecies=: the species is an English tag («human», «bear»), so it comes from the
+        /// Species table. =player.species:voc= gives the vocative for a text that addresses someone («Вітаємо,
+        /// людино»). A species not in the table (the display name the game falls back to) stays as it is.
+        /// </summary>
+        [VariableReplacer(new string[] { "species" }, Default = "creature", Capitalization = true, Override = true)]
+        public static void Species(VariableContext Context, GameObject Object)
+        {
+            AppendSpecies(Context, Object.GetSpecies());
+        }
+
+        [VariableReplacer(new string[] { "apparentSpecies" }, Default = "creature", Capitalization = true, Override = true)]
+        public static void ApparentSpecies(VariableContext Context, GameObject Object)
+        {
+            AppendSpecies(Context, Object.GetApparentSpecies());
+        }
+
+        static void AppendSpecies(VariableContext Context, string english)
+        {
+            string text = english == null ? "істота" : null;
+            if (text == null && Context.HasParameter("voc")) text = CodeTables.Get("Species.voc", english);
+            text = text ?? CodeTables.Get("Species", english) ?? english;
+            Context.Value.Append(Context.Capitalize ? UkrainianForms.Capitalize(text) : text);
+        }
+
         // ---- address and kinship terms ----
 
         [VariableReplacer(new string[] { "formalAddressTerm" }, Capitalization = true, Override = true)]

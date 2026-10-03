@@ -14,7 +14,7 @@ import re
 import xml.etree.ElementTree as ET
 from xml.sax import saxutils
 
-from . import batch, checks, held, po, store, units
+from . import batch, checks, codetables, held, po, store, units
 from .sources import REPO
 
 PO_DIR = REPO / "work" / "po" / "uk"
@@ -22,6 +22,7 @@ STORE_DIR = REPO / "translations" / "uk"
 OUT_DIR = REPO / "mod" / "Language"
 GENDERS_OUT = REPO / "mod" / "Grammar" / "NounGenders.g.cs"
 ADJECTIVES_OUT = REPO / "mod" / "Grammar" / "AdjectiveForms.g.cs"
+CODE_TABLES = REPO / "mod" / "Grammar" / "CodeTables.g.cs"
 VARIANT_NAMES = "VariantNames.uk.xml"
 CREATURE_TYPES = "CreatureTypes.uk.xml"
 MUTATION_NAME = re.compile(r"(?:^|/)mutation\[([^\]]+)\]@DisplayName$")
@@ -215,6 +216,22 @@ def _write_po(path: pathlib.Path, cat: po.Catalog) -> None:
 # --------------------------------------------------------------------------------------------
 # build
 
+def code_table_of(cat: po.Catalog, include_fuzzy: bool = False, vocative: bool = False) -> dict[str, str]:
+    """English → Ukrainian from a Code.* catalog; with vocative, the forms its «uk-voc:» notes give."""
+    out = {}
+    for e in cat.entries:
+        if e.obsolete or not e.msgstr or (e.fuzzy and not include_fuzzy):
+            continue
+        if not vocative:
+            out[e.msgid] = e.msgstr
+            continue
+        for c in e.translator_comments:
+            m = codetables.VOCATIVE.match(c)
+            if m:
+                out[e.msgid] = m.group(1)
+    return out
+
+
 def translations_of(cat: po.Catalog, include_fuzzy: bool = False) -> dict:
     return {e.key: e.msgstr for e in cat.entries
             if not e.obsolete and e.msgstr and (include_fuzzy or not e.fuzzy)}
@@ -228,6 +245,7 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
     CreatureTypes.uk.xml; without them those files are left as they are."""
     problems = 0
     out_dir.mkdir(parents=True, exist_ok=True)
+    code_tables: dict[str, dict[str, str]] = {}
     for name, text in sorted(files.items()):
         out = out_dir / units.output_name(name)
         cat, _ = load_catalog(text, name, po_dir, store_dir)
@@ -235,6 +253,12 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
         po_build = cat.headers.get("X-Qud-Build")
         if src_build and po_build and src_build != po_build:
             print(f"warning: {units.po_name(name)} was synced against {po_build}, the game has {src_build}; run sync")
+        if codetables.is_code_table(name):
+            table = codetables.table_name(name)
+            code_tables[table] = code_table_of(cat, include_fuzzy)
+            code_tables[table + ".voc"] = code_table_of(cat, include_fuzzy, vocative=True)
+            print(f"{CODE_TABLES.name + ' ' + table:40} {len(code_tables[table]):6} translated")
+            continue
         trans = translations_of(cat, include_fuzzy)
         xml, count = units.build(text, name, trans, source_note=f"Game build {src_build}.")
         if len(trans) > count:
@@ -256,6 +280,9 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
         if not out.exists() or out.read_text(encoding="utf-8") != xml:
             out.write_text(xml, encoding="utf-8", newline="\n")
         print(f"{out.name:40} {count:6} translated")
+    code = codetables.code_tables_cs({k: v for k, v in code_tables.items() if v})
+    if not CODE_TABLES.exists() or CODE_TABLES.read_text(encoding="utf-8") != code:
+        CODE_TABLES.write_text(code, encoding="utf-8", newline="\n")
     if mutations_xml is None:
         print(f"warning: no Mutations.xml next to the string tables; {VARIANT_NAMES} not rebuilt")
     else:

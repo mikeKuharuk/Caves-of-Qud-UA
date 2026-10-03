@@ -105,6 +105,8 @@ GLUE_POSTS = {"before", "after"}
 UK_AGREE_BARE = re.compile(r"\|uk\.agree(?![#\w.])")
 # replacers whose parameters are words to translate: =partial.if:some:all=, =already.sign:+:-=
 TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
+# the mod's own parameters a translation adds: =player.species:voc= (the vocative, mod/Grammar/UkrainianTemplateKeys.cs)
+UK_PARAMS = re.compile(r":voc$")
 
 
 def placeholder_root(key: str) -> str:
@@ -119,6 +121,7 @@ def comparable(key: str) -> str:
     m = TEXT_PARAMS.match(head)
     if m:
         head = m.group(1)
+    head = UK_PARAMS.sub("", head)
     dropped = EN_POSTS | UK_POSTS | GLUE_POSTS
     return "|".join([head] + [p for p in posts if re.split(r"[:#]", p, maxsplit=1)[0] not in dropped])
 

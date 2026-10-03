@@ -166,6 +166,14 @@ https://steamcommunity.com/app/333640/discussions/2/563660860618434971/) **[пе
    `Base/ObjectBlueprints` ще одну таблицю, `Tags.example.xml` (`tools/qudtr/tags.py`). Далі вона
    проходить звичайний шлях: `Tags.po` → `translations/uk/Tags.jsonl` → `Tags.uk.xml`. Теги, які код
    читає як ключі (`Species`, `Class`, `TinkerCategory`, `Gender`), туди не потрапляють.
+10. Цілих файлів даних експорт не має: `Commands.xml` (назви клавіш), `Colors.xml` (назви кольорів),
+   `Bodies.xml`, `Genders.xml`. А експорт фракцій пропускає `RecipeText` (схема пише його як
+   `recipetext`), `BuyDescription` і `DefaultAddress`. `tools/qudtr/datatables.py` будує з `Base` таблиці
+   `Commands.example.xml` і `Colors.example.xml` і доповнює `Factions.example.xml`. Злиття мусить
+   повторювати атрибути, які завантажувач інакше скидає: `UpgradeFrom` команд, `Colors` шейдерів,
+   `Parent` фракцій (наш `Factions.uk.xml` обнуляв його в 34 фракцій) **[перевірено в коді]**.
+   Слова, які наш C# шукає сам (назви видів), ідуть у кодові таблиці `Code.*.example.xml`
+   (`tools/qudtr/codetables.py`), а збірка пише їх у `CodeTables.g.cs`.
 
 ## Що нам дає фреймворк і чого не дає
 

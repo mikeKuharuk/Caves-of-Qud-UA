@@ -5,7 +5,7 @@ import os
 import pathlib
 import subprocess
 
-from . import tags, units
+from . import codetables, datatables, tags, units
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 DEFAULT_GAME_DIR = pathlib.Path(os.environ.get("QUD_GAME_DIR", r"D:\Steam\steamapps\common\Caves of Qud"))
@@ -52,11 +52,28 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
     spice = path.parent / "HistorySpice.jsonc"
     if spice.exists():
         files[spice.name] = spice.read_text(encoding="utf-8-sig")
-    # nor do the tags the game shows without exporting them (tags.py); they come from the blueprints there
+    # nor do the tags and part fields the game shows without exporting them (tags.py); they come from the blueprints
     blueprints = path.parent / "ObjectBlueprints"
     if blueprints.is_dir():
-        table = tags.example_xml({p.name: p.read_text(encoding="utf-8-sig") for p in sorted(blueprints.glob("*.xml"))},
-                                 build)
+        texts = {p.name: p.read_text(encoding="utf-8-sig") for p in sorted(blueprints.glob("*.xml"))}
+        table = tags.example_xml(texts, build)
         if table:
             files[tags.NAME] = table
+        # and the words our C# looks up (codetables.py): species
+        genotypes = path.parent / "Genotypes.xml"
+        table = codetables.species_xml(texts, genotypes.read_text(encoding="utf-8-sig") if genotypes.exists() else None,
+                                       build)
+        if table:
+            files[codetables.SPECIES] = table
+    # nor the data files with no export at all, and what the Factions export misses (datatables.py)
+    for name, make in ((datatables.COMMANDS, datatables.commands_xml), (datatables.COLORS, datatables.colors_xml)):
+        base = path.parent / name.replace(".example.xml", ".xml")
+        if base.exists():
+            table = make(base.read_text(encoding="utf-8-sig"), build)
+            if table:
+                files[name] = table
+    factions = path.parent / "Factions.xml"
+    if "Factions.example.xml" in files and factions.exists():
+        files["Factions.example.xml"] = datatables.augment_factions(files["Factions.example.xml"],
+                                                                    factions.read_text(encoding="utf-8-sig"))
     return files, str(path)

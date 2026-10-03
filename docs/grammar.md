@@ -109,6 +109,9 @@ COMMENT[k] = "uk-forms: іржава|іржаве|іржаві"    # жіноч�
   - `zone.prosaic` дає назву місця без «the outskirts of»;
   - `factionaddress` і `descriptiveCategory` не множать англійськими правилами;
   - `disguise.name` — без «a».
+- Види (`=x.species=`, `=x.apparentSpecies=`): гра передає англійський тег («human», «bear»), тож назва береться
+  з таблиці `Species` (`CodeTables`, каталог `Code.Species.po`). `=player.species:voc=` дає кличний відмінок із
+  нотатки `uk-voc:` («Вітаємо, людино»).
 - Терміни звертання й спорідненості (`UkrainianTerms`): `formalAddressTerm`, `siblingTerm`, `offspringTerm`
   у кличному відмінку («друже»/«подруго», «брате»/«сестро», «сину»/«доню»), `personTerm`,
   `immaturePersonTerm`, `parentTerm` — у називному. Беруться за статтю самої особи, навіть гравця, до якого
