@@ -52,5 +52,34 @@ class VariantNames(unittest.TestCase):
         self.assertEqual((tag.get("Name"), tag.get("Value")), ("VariantName", "Жало \"дивне\" & ін."))
 
 
+class CherubTypes(unittest.TestCase):
+    CREATURES = """<objects>
+  <object Name="Baboons Cherub" Inherits="BaseBaboon">
+    <part Name="Render" DisplayName="baboon cherub" Tile="x.png" />
+  </object>
+  <object Name="Mechanical Baboons Cherub" Inherits="BaseBaboon">
+    <part Name="Render" DisplayName="mechanical baboon cherub" />
+  </object>
+  <object Name="Prey Cherub" Inherits="BaseAntelope">
+    <part Name="Render" DisplayName="grazing cherub" />
+    <tag Name="AlternateCreatureType" Value="grazer" />
+  </object>
+  <object Name="Baboon" Inherits="BaseBaboon">
+    <part Name="Render" DisplayName="baboon" />
+  </object>
+</objects>"""
+
+    def test_every_cherub_without_the_tag_gets_the_word_the_game_would_cut(self):
+        # CherubimSpawner.ReplaceDescription: name up to the first space, after dropping «mechanical »
+        self.assertEqual(commands.cherub_types(self.CREATURES),
+                         {"Baboons Cherub": "baboon", "Mechanical Baboons Cherub": "baboon"})
+
+    def test_the_merge_sets_the_tag(self):
+        root = ET.fromstring(commands.tag_merges_xml("AlternateCreatureType", {"Baboons Cherub": "baboon"}, "test"))
+        obj = root.find("object")
+        self.assertEqual((obj.get("Name"), obj.find("tag").get("Name"), obj.find("tag").get("Value")),
+                         ("Baboons Cherub", "AlternateCreatureType", "baboon"))
+
+
 if __name__ == "__main__":
     unittest.main()

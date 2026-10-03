@@ -75,7 +75,9 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "build":
         return 1 if commands.cmd_build(files, include_fuzzy=a.include_fuzzy, force=a.force,
-                                       mutations_xml=sources.base_text(a.source, a.tag, "Mutations.xml")) else 0
+                                       mutations_xml=sources.base_text(a.source, a.tag, "Mutations.xml"),
+                                       creatures_xml=sources.base_text(a.source, a.tag,
+                                                                       "ObjectBlueprints/Creatures.xml")) else 0
     if a.cmd == "validate":
         errors, _ = commands.cmd_validate(files, show_warnings=not a.errors_only)
         return 1 if errors else 0

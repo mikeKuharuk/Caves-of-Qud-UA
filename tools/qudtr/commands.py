@@ -23,6 +23,7 @@ OUT_DIR = REPO / "mod" / "Language"
 GENDERS_OUT = REPO / "mod" / "Grammar" / "NounGenders.g.cs"
 ADJECTIVES_OUT = REPO / "mod" / "Grammar" / "AdjectiveForms.g.cs"
 VARIANT_NAMES = "VariantNames.uk.xml"
+CREATURE_TYPES = "CreatureTypes.uk.xml"
 MUTATION_NAME = re.compile(r"(?:^|/)mutation\[([^\]]+)\]@DisplayName$")
 DISPLAY_NAME = re.compile(r"^object\[([^\]]+)\]/part\[Render\]@DisplayName$")
 QUD_GENDER = re.compile(r"^qud-gender:\s*(m|f|n|pl)\b")
@@ -221,9 +222,10 @@ def translations_of(cat: po.Catalog, include_fuzzy: bool = False) -> dict:
 
 def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR,
               out_dir: pathlib.Path = OUT_DIR, include_fuzzy: bool = False, force: bool = False,
-              mutations_xml: str | None = None) -> int:
-    """Write mod/Language/*.uk.xml. Returns the number of problems (0 = fine). mutations_xml is the game's
-    Base/Mutations.xml, for VariantNames.uk.xml; without it that file is left as it is."""
+              mutations_xml: str | None = None, creatures_xml: str | None = None) -> int:
+    """Write mod/Language/*.uk.xml. Returns the number of problems (0 = fine). mutations_xml and creatures_xml are
+    the game's Base/Mutations.xml and ObjectBlueprints/Creatures.xml, for VariantNames.uk.xml and
+    CreatureTypes.uk.xml; without them those files are left as they are."""
     problems = 0
     out_dir.mkdir(parents=True, exist_ok=True)
     for name, text in sorted(files.items()):
@@ -257,16 +259,18 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
     if mutations_xml is None:
         print(f"warning: no Mutations.xml next to the string tables; {VARIANT_NAMES} not rebuilt")
     else:
-        out = out_dir / VARIANT_NAMES
         names = variant_names(files, mutations_xml, po_dir, store_dir, include_fuzzy)
-        if not names:
-            out.unlink(missing_ok=True)
-        else:
-            xml = variant_names_xml(names)
-            ET.fromstring(xml)  # the output must be well-formed
-            if not out.exists() or out.read_text(encoding="utf-8") != xml:
-                out.write_text(xml, encoding="utf-8", newline="\n")
-        print(f"{out.name:40} {len(names):6} variant names")
+        write_generated(out_dir / VARIANT_NAMES, variant_names_xml(names) if names else None)
+        print(f"{VARIANT_NAMES:40} {len(names):6} variant names")
+    if creatures_xml is None:
+        print(f"warning: no ObjectBlueprints/Creatures.xml next to the string tables; {CREATURE_TYPES} not rebuilt")
+    else:
+        types = cherub_types(creatures_xml)
+        write_generated(out_dir / CREATURE_TYPES, tag_merges_xml(
+            "AlternateCreatureType", types, "from the game's ObjectBlueprints/Creatures.xml: the creature type of each "
+            "cherub, which the game would otherwise cut from the translated name (commands.cherub_types)")
+            if types else None)
+        print(f"{CREATURE_TYPES:40} {len(types):6} cherub creature types")
     genders = noun_genders(files, po_dir, store_dir)
     words = word_genders(files, po_dir, store_dir)
     code = noun_genders_cs(genders, words)
@@ -308,13 +312,45 @@ def variant_names(files: dict[str, str], mutations_xml: str, po_dir: pathlib.Pat
 
 
 def variant_names_xml(names: dict[str, str], lang: str = "uk") -> str:
+    return tag_merges_xml("VariantName", names, f"from translations/{lang}/Mutations.jsonl: the names of the "
+                          "mutations with a fixed variant, which the game reads from the VariantName tag", lang)
+
+
+def tag_merges_xml(tag: str, values: dict[str, str], note: str, lang: str = "uk") -> str:
+    """A language file that merges one tag into blueprints: blueprint → value."""
     body = "".join(f'  <object Name={saxutils.quoteattr(bp)} Load="Merge">\n'
-                   f'    <tag Name="VariantName" Value={saxutils.quoteattr(v)} />\n'
-                   f'  </object>\n' for bp, v in sorted(names.items()))
+                   f'    <tag Name="{tag}" Value={saxutils.quoteattr(v)} />\n'
+                   f'  </object>\n' for bp, v in sorted(values.items()))
     return (f'<?xml version="1.0" encoding="utf-8"?>\n'
-            f'<!-- {units.GENERATED_MARKER} from translations/{lang}/Mutations.jsonl: the names of the mutations '
-            f'with a fixed variant, which the game reads from the VariantName tag. Do not edit. -->\n'
+            f'<!-- {units.GENERATED_MARKER} {note}. Do not edit. -->\n'
             f'<objects Lang="{lang}" Encoding="utf-8">\n{body}</objects>\n')
+
+
+CHERUB = re.compile(r'<object\s+Name="([^"]*? Cherub)"[^>]*>(.*?)</object>', re.S)
+
+
+def cherub_types(creatures_xml: str) -> dict[str, str]:
+    """Cherub blueprint → the creature type the game would cut from its English name («baboon cherub» → baboon).
+    CherubimSpawner.ReplaceDescription puts that word into the cherub's description, an English literal in the code:
+    from the AlternateCreatureType tag if there is one, else the display name up to its first space. Our names have
+    no space («херувим-павіан»), so the cut throws when a tomb crypt or Shesh spawns a cherub, and a mechanical cherub
+    would get «механічний». Giving every cherub the tag keeps the English description as it is in English."""
+    out = {}
+    for name, body in CHERUB.findall(creatures_xml):
+        m = re.search(r'<part\s+Name="Render"[^>]*\bDisplayName="([^"]*)"', body)
+        if m and "AlternateCreatureType" not in body:
+            out[name] = m.group(1).replace("mechanical ", "").split(" ")[0]
+    return out
+
+
+def write_generated(out: pathlib.Path, xml: str | None) -> None:
+    """Write a generated language file, or remove it when there is nothing to merge."""
+    if xml is None:
+        out.unlink(missing_ok=True)
+        return
+    ET.fromstring(xml)  # the output must be well-formed
+    if not out.exists() or out.read_text(encoding="utf-8") != xml:
+        out.write_text(xml, encoding="utf-8", newline="\n")
 
 
 def noun_genders(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
