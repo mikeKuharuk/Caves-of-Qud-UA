@@ -282,8 +282,10 @@ class ExampleFile:
                 if is_unit(value) and not excluded(el.tag, attr, value, el.get("Name")):
                     msgid, compound = _attr_msgid(value)
                     if strip_marks(msgid):   # "▶" alone: nothing to translate (" " is a real value)
+                        # our own tables carry a Note attribute for the translator (codetables.py)
+                        note = _compound_note(msgid) if compound else el.get("Note")
                         out.append(Unit(self.name, f"{here}@{attr}" if here else f"@{attr}", msgid, "attr",
-                                        compound, _compound_note(msgid) if compound else None))
+                                        compound, note))
             if is_template(el) and path:
                 if template_has_text(el):
                     out.append(Unit(self.name, here, inner_xml(el), "template", note=TEMPLATE_NOTE))

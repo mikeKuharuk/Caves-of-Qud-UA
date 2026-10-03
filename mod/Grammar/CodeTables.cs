@@ -24,5 +24,21 @@ namespace CavesOfQudUA.Grammar
             if (english == null || !Tables.TryGetValue(table, out Dictionary<string, string> entries)) return null;
             return entries.TryGetValue(english, out string text) ? text : null;
         }
+
+        /// <summary>Every entry of a table (none if there is no such table).</summary>
+        public static IEnumerable<KeyValuePair<string, string>> All(string table)
+        {
+            return Tables.TryGetValue(table, out Dictionary<string, string> entries)
+                ? entries
+                : (IEnumerable<KeyValuePair<string, string>>)new KeyValuePair<string, string>[0];
+        }
+
+        /// <summary>For tools/patch-tests: an entry added by hand.</summary>
+        public static void Add(string table, string english, string text)
+        {
+            if (!Tables.TryGetValue(table, out Dictionary<string, string> entries))
+                Tables[table] = entries = new Dictionary<string, string>();
+            entries[english] = text;
+        }
     }
 }

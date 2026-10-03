@@ -69,6 +69,22 @@ static class Tests
         Eq("б’є", Call(G, "ThirdPerson", "б’є", false), "no English third person");
         Eq("сидіти", Call(G, "PastTenseOf", "сидіти"), "no English past tense");
 
+        // the code tables: exact keys, patterns, lines, agreement, and the effect patch on a real effect class
+        Type tables = mod.GetType("CavesOfQudUA.Grammar.CodeTables", true);
+        Type text = mod.GetType("CavesOfQudUA.Patches.CodeText", true);
+        void Add(string table, string en, string uk) => tables.GetMethod("Add").Invoke(null, new object[] { table, en, uk });
+        string Translate(string table, string en) => (string)text.GetMethod("Translate").Invoke(null, new object[] { table, en, null });
+        Add("Test", "Acts semi-randomly.", "Діє майже навмання.");
+        Add("Test", "-{0} DV", "-{0} ЗУ");
+        Add("Test", "-{0} to all mental attributes", "-{0} до всіх ментальних характеристик");
+        Eq("Діє майже навмання.", Translate("Test", "Acts semi-randomly."), "an exact key");
+        Eq("-3 ЗУ", Translate("Test", "-3 DV"), "a pattern");
+        Eq("Діє майже навмання.\n-3 ЗУ\nsomething new", Translate("Test", "Acts semi-randomly.\n-3 DV\nsomething new"), "line by line");
+        Eq("-2 до всіх ментальних характеристик", Translate("Test", "-2 to all mental attributes"), "the longest pattern wins");
+        Add("Effects", "{{G|poisoned}}", "{{G|отруєний}}");
+        object poisoned = Activator.CreateInstance(game.GetType("XRL.World.Effects.Poisoned", true));
+        Eq("{{G|отруєний}}", game.GetType("XRL.World.Effect").GetMethod("GetDescription").Invoke(poisoned, null), "an effect name through the patch");
+
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");
 

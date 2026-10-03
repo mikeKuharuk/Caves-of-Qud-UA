@@ -216,19 +216,20 @@ def _write_po(path: pathlib.Path, cat: po.Catalog) -> None:
 # --------------------------------------------------------------------------------------------
 # build
 
-def code_table_of(cat: po.Catalog, include_fuzzy: bool = False, vocative: bool = False) -> dict[str, str]:
-    """English → Ukrainian from a Code.* catalog; with vocative, the forms its «uk-voc:» notes give."""
+def code_table_of(cat: po.Catalog, include_fuzzy: bool = False, note: re.Pattern | None = None) -> dict[str, str]:
+    """English → Ukrainian from a Code.* catalog. With note, only the entries whose translator notes match it, each
+    mapped to the note's first group (a vocative) or to its translation (uk-agree)."""
     out = {}
     for e in cat.entries:
         if e.obsolete or not e.msgstr or (e.fuzzy and not include_fuzzy):
             continue
-        if not vocative:
+        if note is None:
             out[e.msgid] = e.msgstr
             continue
         for c in e.translator_comments:
-            m = codetables.VOCATIVE.match(c)
+            m = note.match(c)
             if m:
-                out[e.msgid] = m.group(1)
+                out[e.msgid] = m.group(1) if m.groups() else e.msgstr
     return out
 
 
@@ -256,7 +257,8 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
         if codetables.is_code_table(name):
             table = codetables.table_name(name)
             code_tables[table] = code_table_of(cat, include_fuzzy)
-            code_tables[table + ".voc"] = code_table_of(cat, include_fuzzy, vocative=True)
+            code_tables[table + ".voc"] = code_table_of(cat, include_fuzzy, note=codetables.VOCATIVE)
+            code_tables[table + ".agree"] = code_table_of(cat, include_fuzzy, note=codetables.AGREE)
             print(f"{CODE_TABLES.name + ' ' + table:40} {len(code_tables[table]):6} translated")
             continue
         trans = translations_of(cat, include_fuzzy)

@@ -108,6 +108,8 @@ GLUE_POSTS = {"before", "after"}
 UK_AGREE_BARE = re.compile(r"\|uk\.agree(?![#\w.])")
 # replacers whose parameters are words to translate: =partial.if:some:all=, =already.sign:+:-=
 TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
+# the parts of a code-table pattern the code computes: «-{0} DV» (codetables.py), not {{shader|text}} markup
+CODE_HOLE = re.compile(r"(?<!\{)\{\d+\}(?!\})")
 # the mod's own parameters a translation adds: =player.species:voc= (the vocative, mod/Grammar/UkrainianTemplateKeys.cs)
 UK_PARAMS = re.compile(r":voc$")
 
@@ -325,6 +327,11 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
     for marker in CODE_MARKERS:
         if msgid.count(marker) != msgstr.count(marker):
             err("code-marker", f"keep {marker} as it is: the game's code looks for it in the text")
+
+    # {0}, {1}… in the code tables stand for what the code computes (codetables.py): all of them must stay
+    src_holes = collections.Counter(CODE_HOLE.findall(msgid))
+    if src_holes and src_holes != collections.Counter(CODE_HOLE.findall(msgstr)):
+        err("code-hole", f"keep every {{n}} of the source exactly once: {sorted(src_holes)}")
 
     # ~Cmd key tokens (help text); '~' alternatives in dialogue are compared by count
     src_cmd = collections.Counter(COMMAND.findall(msgid))

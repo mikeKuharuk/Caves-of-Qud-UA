@@ -1,13 +1,19 @@
-"""Tables our C# code looks words up in: English text the game passes as it is (a creature's species), or, later,
-the English the Harmony patches catch. Their source is the game itself (sources.load builds them from the Base
-folder), so they go through the usual catalog, store and translation, but the build writes them as C#
-(mod/Grammar/CodeTables.g.cs, not in git: its keys are the game's English), not as a language file.
+"""Tables our C# code looks words up in: English text the game passes as it is (a creature's species), and the
+English the Harmony patches catch (effect names and descriptions…). Their source is the game itself (sources.load
+builds them from the Base folder and the decompiled code), so they go through the usual catalog, store and
+translation, but the build writes them as C# (mod/Grammar/CodeTables.g.cs, not in git: its keys are the game's
+English), not as a language file.
 
-A catalog file is named Code.<Table>.example.xml; each entry is <entry Key="english" Text="▶english" />. A
-translator's note «uk-voc: <form>» gives the vocative too (table <Table>.voc), for texts that address someone.
+A catalog file is named Code.<Table>.example.xml; each entry is <entry Key="english" Text="▶english" Note="…" />.
+A key may be a pattern: {0}, {1}… stand for what the code computes («-{0} DV»), and the translation must keep them.
+Translator notes can add:
+  uk-voc: <form>   the vocative too (table <Table>.voc), for texts that address someone
+  uk-agree         the translation is a masculine adjective phrase that agrees with the object it describes
+                   (table <Table>.agree): an effect «отруєний» shows as «отруєна» on a woman, «отруєні» on «ви»
 """
 from __future__ import annotations
 
+import pathlib
 import re
 import xml.etree.ElementTree as ET
 
@@ -15,7 +21,9 @@ from .units import MARK
 
 PREFIX = "Code."
 SPECIES = "Code.Species.example.xml"
+EFFECTS = "Code.Effects.example.xml"
 VOCATIVE = re.compile(r"^uk-voc:\s*(.+?)\s*$")
+AGREE = re.compile(r"^uk-agree\b")
 
 
 def is_code_table(name: str) -> bool:
@@ -27,11 +35,17 @@ def table_name(name: str) -> str:
     return name[len(PREFIX):].removesuffix(".example.xml")
 
 
-def table_xml(table: str, keys: list[str], build: str | None, source: str) -> str | None:
-    if not keys:
+def _esc(s: str) -> str:
+    return (s.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;").replace(">", "&gt;")
+            .replace("\n", "&#10;").replace("\t", "&#9;"))
+
+
+def table_xml(table: str, entries: list[tuple[str, str | None]], build: str | None, source: str) -> str | None:
+    """The string table for a code table: (English key, translator note or None) per entry."""
+    if not entries:
         return None
-    esc = lambda s: s.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;")
-    body = "".join(f'  <entry Key="{esc(k)}" Text="{MARK}{esc(k)}" />\n' for k in keys)
+    body = "".join(f'  <entry Key="{_esc(k)}" Text="{MARK}{_esc(k)}"' + (f' Note="{_esc(n)}"' if n else "") + " />\n"
+                   for k, n in entries)
     return ('<?xml version="1.0" encoding="utf-8"?>\n<!--\n'
             f"Caves of Qud - Generated Localizable XML {build or 'unknown'}\n"
             f"Not from the game: tools/qudtr/codetables.py builds it from {source}.\n\n"
@@ -52,7 +66,20 @@ def species_xml(blueprints: dict[str, str], genotypes: str | None, build: str | 
     if genotypes:
         keys.update(GENOTYPE_SPECIES.findall(genotypes))
     keys = sorted(k for k in keys if re.search(r"[A-Za-z]", k))  # not the "*" wildcard
-    return table_xml("Species", keys, build, "the Species tags of Base/ObjectBlueprints and Base/Genotypes.xml")
+    return table_xml("Species", [(k, None) for k in keys], build,
+                     "the Species tags of Base/ObjectBlueprints and Base/Genotypes.xml")
+
+
+EFFECTS_NOTE = ("Ефект: {where}. Назва ефекту (DisplayName) або рядок його опису; {{0}}… — те, що рахує код (числа, "
+                "імена), лишіть їх. Назва-прикметник, що описує носія («poisoned»), — у чоловічому роді з нотаткою "
+                "uk-agree: мод узгодить її з носієм («отруєна», для гравця — «отруєні»).")
+
+
+def effects_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """Effect names and descriptions the game's C# writes (codescan.scan_effects)."""
+    from . import codescan
+    entries = [(e.key, EFFECTS_NOTE.format(where=e.where)) for e in codescan.scan_effects(decompiled)]
+    return table_xml("Effects", entries, build, "the decompiled game code (XRL.World.Effects)")
 
 
 def entries(xml_text: str) -> list[str]:
@@ -62,7 +89,8 @@ def entries(xml_text: str) -> list[str]:
 def code_tables_cs(tables: dict[str, dict[str, str]]) -> str:
     """The C# that fills CodeTables (mod/Grammar/CodeTables.cs): table → English → Ukrainian."""
     def lit(s: str) -> str:
-        return '"' + s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n") + '"'
+        return ('"' + s.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\r", "\\r")
+                .replace("\t", "\\t").replace("\0", "\\0") + '"')
     blocks = []
     for name, table in sorted(tables.items()):
         lines = "".join(f"                [{lit(k)}] = {lit(v)},\n" for k, v in sorted(table.items()))
