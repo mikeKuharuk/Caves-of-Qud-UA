@@ -98,7 +98,7 @@ EN_GRAMMAR_BARE = re.compile(r"^(?:verb|does|Does|did|Did|ternaryVerb)(?::|$)")
 EN_POSTS = {"pluralize", "article", "indefiniteArticle", "definiteArticle", "a", "an", "the"}
 # the mod's own post-processors a translation adds (mod/Grammar/UkrainianPostProcessors.cs, UkrainianCalendar.cs):
 # =rank|uk.word=, =modifier|uk.agree#subject=, =adj|uk.pl=, =saveTime|uk.date=
-UK_POSTS = {"uk.word", "uk.agree", "uk.f", "uk.n", "uk.pl", "uk.date"}
+UK_POSTS = {"uk.word", "uk.agree", "uk.f", "uk.n", "uk.pl", "uk.date", "uk.stem"}
 # the game's punctuation glue, printed only next to a value that is not empty: =subtype|after:,= avoids «Рівень 1,,
 # Classic» (around an empty value the game culls one space, never a comma: GameText.ProcessCulling)
 GLUE_POSTS = {"before", "after"}

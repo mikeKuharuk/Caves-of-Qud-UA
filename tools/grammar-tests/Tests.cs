@@ -124,6 +124,24 @@ static class Tests
         Eq("", UkrainianForms.GuessByEnding("Ейн-Роґель").ToString(), "a soft sign does not tell");
         Eq("п’ятниця", UkrainianForms.CleanCultureText("пʼятниця"), "the typographic apostrophe");
 
+        Eq("друже", UkrainianTerms.Get(KinTerm.FormalAddress, "male", false, false, "he"), "address a man");
+        Eq("подруго", UkrainianTerms.Get(KinTerm.FormalAddress, "female", false, false, "she"), "address a woman");
+        Eq("друже", UkrainianTerms.Get(KinTerm.FormalAddress, "nonspecific", false, true, "they"), "singular they is one person");
+        Eq("друзі", UkrainianTerms.Get(KinTerm.FormalAddress, "plural", true, false, "they"), "a group");
+        Eq("лане моя", UkrainianTerms.Get(KinTerm.FormalAddress, "hindren female", false, false, "she"), "hindren doe");
+        Eq("сестро", UkrainianTerms.Get(KinTerm.Sibling, "female", false, false, "she"), "sister, vocative");
+        Eq("родичу", UkrainianTerms.Get(KinTerm.Sibling, "elverson", false, false, "ey"), "sib for neopronouns");
+        Eq("доню", UkrainianTerms.Get(KinTerm.Offspring, null, false, false, "she"), "a pronoun set without a gender name");
+        Eq("особа", UkrainianTerms.Get(KinTerm.Person, "neuter", false, false, "it"), "a neutral person");
+
+        Eq("Джопп", UkrainianWordTools.WordRoot("Джоппа"), "root of a name");
+        Eq("мерехтлив", UkrainianWordTools.WordRoot("мерехтливий"), "root of an adjective");
+        Eq("вод", UkrainianWordTools.WordRoot("вода"), "a short root keeps three letters");
+        Eq("кров", UkrainianWordTools.WordRoot("кров"), "no ending");
+        Eq("Туркатум", UkrainianWordTools.WordRoot("Туркатум"), "a consonant ending stays");
+        Eq("сокира, камінь", string.Join(", ", UkrainianWordTools.MeaningfulWords("сокира з каменю").ConvertAll(w => w == "каменю" ? "камінь" : w)), "stop words drop out");
+        Eq("і", string.Join(",", UkrainianWordTools.MeaningfulWords("і")), "nothing meaningful: every word");
+
         Console.WriteLine(failures == 0 ? "all grammar tests passed" : $"{failures} failure(s)");
         return failures == 0 ? 0 : 1;
     }
