@@ -67,6 +67,17 @@ namespace CavesOfQudUA.Grammar
         }
 
         /// <summary>
+        /// The form of =X.p:<for the player>:<for anyone else>=: the first for the player addressed as «ви», the second
+        /// (with @ for the name) for anyone else; a lone form serves the player, and anyone else gets just the name.
+        /// </summary>
+        public static string ForPlayerOrOther(bool secondPersonPlayer, string[] forms)
+        {
+            if (forms == null || forms.Length == 0) return secondPersonPlayer ? "" : "@";
+            if (secondPersonPlayer) return forms[0];
+            return forms.Length > 1 ? forms[1] : "@";
+        }
+
+        /// <summary>
         /// The agreement class of a gender name from the game (Genders.xml), or null when the name says nothing about
         /// Ukrainian grammar and the noun's own gender should decide.
         /// </summary>

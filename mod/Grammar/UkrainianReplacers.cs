@@ -45,6 +45,23 @@ namespace CavesOfQudUA.Grammar
             return Finish(Context, UkrainianForms.ByGender(UkrainianGender.Of(Noun), Forms(Context)));
         }
 
+        /// <summary>
+        /// =object.p:<for the player>:<for anyone else>= — a phrase that names X in the third person, which «ви»
+        /// cannot fill («розтрощує розум (ви)»). The player gets their own wording; anyone else the second form,
+        /// where @ stands for the name as =object.name= prints it: =object.p:ваш розум:розум (@)=.
+        /// </summary>
+        [VariableReplacer("p", Capitalization = true, Default = "")]
+        public static string Player(VariableContext Context, GameObject Object)
+        {
+            string[] forms = Forms(Context);
+            string form = UkrainianForms.ForPlayerOrOther(UkrainianGender.IsSecondPerson(Object), forms);
+            if (form.IndexOf('@') >= 0)
+                form = form.Replace("@", Object.GetDisplayName(int.MaxValue, null, null, AsIfKnown: false, Single: false,
+                    NoConfusion: false, NoColor: false, Stripped: false, ColorOnly: false, Visible: true, WithoutTitles: true,
+                    ForSort: false, Short: true));
+            return Finish(Context, form);
+        }
+
         [VariableReplacer("plural")]
         public static string Plural(VariableContext Context, int Number)
         {

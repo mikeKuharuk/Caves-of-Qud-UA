@@ -80,11 +80,14 @@ def placeholder_key(token: str) -> str:
     return "|".join([".".join(parts), *kept])
 
 
-# =X.v:<3 од.>:<2 мн.>[:<3 мн.>]=, =X.g:<ч.>:<ж.>[:<с.>[:<мн.>[:<гравець>]]]=, =N.plural:<1>:<2–4>:<5+>= (mod/Grammar)
-UK_GRAMMAR = re.compile(r"^(?:[A-Za-z_][\w]*\.)+(v|V|g|G|plural)(?::|$)")
-UK_GRAMMAR_FORMS = {"v": (2, 3), "g": (2, 5), "plural": (3, 3)}
+# =X.v:<3 од.>:<2 мн.>[:<3 мн.>]=, =X.g:<ч.>:<ж.>[:<с.>[:<мн.>[:<гравець>]]]=, =N.plural:<1>:<2–4>:<5+>=,
+# =X.p:<для гравця>[:<для інших, @ — ім’я>]= (mod/Grammar)
+UK_GRAMMAR = re.compile(r"^(?:[A-Za-z_][\w]*\.)+(v|V|g|G|plural|p|P)(?::|$)")
+UK_GRAMMAR_FORMS = {"v": (2, 3), "g": (2, 5), "plural": (3, 3), "p": (1, 2)}
 # the same, with forms that may contain spaces: the game accepts them, PLACEHOLDER does not see them
-UK_GRAMMAR_SPACED = re.compile(r"=((?:[A-Za-z_]\w*\.)+(?:v|V|g|G|plural):[^=\n]*\s[^=\n]*)=")
+UK_GRAMMAR_SPACED = re.compile(r"=((?:[A-Za-z_]\w*\.)+(?:v|V|g|G|plural|p|P):[^=\n]*\s[^=\n]*)=")
+# names a =X.p:…= stands for (its @): =object.name=, =object.name:withTitles=, =object.the.name's=
+NAME_OF = re.compile(r"^\w+(?:\.the|\.a)?\.(?:name|Name)\b")
 # English grammar the game computes for an object: a translation may drop it for Ukrainian grammar
 EN_GRAMMAR = re.compile(
     r"^(?:[A-Za-z_]\w*\.)+(?:does|doesly|did|didly|verb|ternaryVerb|t|a|an|the|it|its|is|are|has|have|was|were|itis|"
@@ -309,6 +312,11 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
     if uses_uk_grammar:
         for key in [k for k in missing if EN_GRAMMAR_BARE.match(k)]:
             del missing[key]
+    # =object.p:ваш розум:розум (@)= names its object
+    p_roots = {placeholder_root(k) for k in list(dst_ph) + spaced
+               if UK_GRAMMAR.match(k) and UK_GRAMMAR.match(k).group(1).lower() == "p"}
+    for key in [k for k in missing if placeholder_root(k) in p_roots and NAME_OF.match(k)]:
+        del missing[key]
     if missing:
         warn("placeholder", f"placeholder(s) missing: {sorted(missing)}")
     if extra:

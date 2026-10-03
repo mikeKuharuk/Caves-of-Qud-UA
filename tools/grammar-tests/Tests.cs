@@ -142,6 +142,11 @@ static class Tests
         Eq("сокира, камінь", string.Join(", ", UkrainianWordTools.MeaningfulWords("сокира з каменю").ConvertAll(w => w == "каменю" ? "камінь" : w)), "stop words drop out");
         Eq("і", string.Join(",", UkrainianWordTools.MeaningfulWords("і")), "nothing meaningful: every word");
 
+        string[] mind = { "ваш розум", "розум (@)" };
+        Eq("ваш розум", UkrainianForms.ForPlayerOrOther(true, mind), "the player's own wording");
+        Eq("розум (@)", UkrainianForms.ForPlayerOrOther(false, mind), "anyone else, with the name");
+        Eq("@", UkrainianForms.ForPlayerOrOther(false, new[] { "себе" }), "a lone form: anyone else gets the name");
+
         Console.WriteLine(failures == 0 ? "all grammar tests passed" : $"{failures} failure(s)");
         return failures == 0 ? 0 : 1;
     }

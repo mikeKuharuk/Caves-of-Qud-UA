@@ -81,6 +81,10 @@ class Checks(unittest.TestCase):
                                       "=modifier|uk.agree#subject|spaceAfter==subject.displayNameOnlyDirect="), [])
         self.assertIn("uk-grammar", codes(src, "=spice:ordinal.!random|uk.agree= =rank|uk.word=", severity="error"))
         self.assertEqual(checks.check("the =spice:x.adjectives.!random= bones", "тверді й =spice:x.adjectives.!random|uk.pl= рештки"), [])
+        # =object.p:…= names its object: the player's own wording, else the name at @
+        self.assertEqual(checks.check("=subject.T= =verb:sunder= =object.the.name's= mind!",
+                                      "=subject.Name= =subject.v:розтрощує:розтрощуєте:розтрощують= =object.p:ваш розум:розум (@)=!"), [])
+        self.assertIn("uk-grammar", codes("x =object.name= y", "x =object.p:= y", severity="error"))
         # the game's punctuation glue may come and go: a comma only after a subtype that is there
         self.assertEqual(checks.check("Level =level= =subtype= =gamemode=", "Рівень =level=, =subtype|after:,= =gamemode="), [])
 
