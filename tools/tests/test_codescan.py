@@ -66,11 +66,24 @@ class Effects(unittest.TestCase):
 
 
 class Holes(unittest.TestCase):
+    def test_crlf_lines_keep_no_cr(self):
+        # the key is what CodeText looks up: a line without its «\r»
+        self.assertEqual(codescan.lines_of("Inventory quick keys\r\n\r\n&WCtrl+A&y - Eat\r\n&WCtrl+P&y - Apply"),
+                         ["Inventory quick keys", "&WCtrl+A&y - Eat", "&WCtrl+P&y - Apply"])
+
     def test_every_hole_must_stay(self):
         self.assertEqual(checks.check("-{0} DV", "-{0} ЗУ"), [])
         self.assertIn("code-hole", {i.code for i in checks.check("-{0} DV", "-ЗУ")})
         self.assertIn("code-hole", {i.code for i in checks.check("-{0} DV", "-{1} ЗУ") if i.severity == "error"})
         self.assertEqual(checks.check("{{G|poisoned}}", "{{G|отруєний}}"), [])
+        # a hole right before the end of markup is a hole too
+        self.assertIn("code-hole", {i.code for i in checks.check("You gain {{C|{0}}} XP!", "Ви отримуєте {{C|}} ОД!")})
+
+    def test_a_word_counted_with_a_hole(self):
+        self.assertEqual(checks.check("in {0} rounds.", "через {0} {0:хід:ходи:ходів}."), [])
+        errors = lambda uk: {i.code for i in checks.check("in {0} rounds.", uk) if i.severity == "error"}
+        self.assertIn("code-hole", errors("через {0} {1:хід:ходи:ходів}."))   # no {1} in the source
+        self.assertIn("code-hole", errors("через {0} {0:ходи:ходів}."))       # two forms
 
 
 DIDX = """public class Healing : Effect
@@ -82,6 +95,7 @@ DIDX = """public class Healing : Effect
         DidXToY("strike", "at", target, "with " + weapon.its + " fist", EndMark: "!");
         IComponent<GameObject>.XDidYToZ(Actor, "kick", Object);
         Messaging.WDidXToYWithZ(Actor, "staunch", Object, "with", Bandage);
+        DidXToY("juke", Directions.GetDirectionDescription(text) + ", moving", Object, "out of " + ParentObject.its + " way", null, null, null, ParentObject);
     }
     public void DidX(string Verb, string Extra = null) { }
 }
@@ -98,6 +112,14 @@ class DidXScan(unittest.TestCase):
         self.assertEqual(found.get("XZ|strike|at||with {0} fist|!"), "<subject> strike at <object> with {0} fist!")
         self.assertIn("XZ|kick||||.", found)
         self.assertEqual(found.get("WXZ|staunch||with||."), "<subject> staunch <object> with <indirect>.")
+
+    def test_holes_are_counted_across_the_key(self):
+        # the run time fills a translation's {n} with the key's {n}: two fields must not both have a {0}
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Healing.cs").write_text(DIDX, encoding="utf-8")
+            found = {k: e for k, e, w in codescan.scan_didx(pathlib.Path(d))}
+        self.assertEqual(found.get("XZ|juke|{0}, moving||out of {1} way|."),
+                         "<subject> juke {0}, moving <object> out of {1} way.")
 
     def test_a_template_with_our_variables_passes(self):
         self.assertEqual(checks.check("<subject> die!", "=subject.Name= =subject.v:помирає:помираєте:помирають=!"), [])

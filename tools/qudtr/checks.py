@@ -108,8 +108,11 @@ GLUE_POSTS = {"before", "after"}
 UK_AGREE_BARE = re.compile(r"\|uk\.agree(?![#\w.])")
 # replacers whose parameters are words to translate: =partial.if:some:all=, =already.sign:+:-=
 TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
-# the parts of a code-table pattern the code computes: «-{0} DV» (codetables.py), not {{shader|text}} markup
-CODE_HOLE = re.compile(r"(?<!\{)\{\d+\}(?!\})")
+# the parts of a code-table pattern the code computes: «-{0} DV» (codetables.py), as CodeText finds them, also where
+# markup ends right after one: {{C|{0}}}
+CODE_HOLE = re.compile(r"\{\d+\}")
+# a word a translation counts with a hole's number: «через {0} {0:хід:ходи:ходів}» (mod/Patches/CodeText.cs)
+CODE_COUNTED = re.compile(r"\{(\d+):([^{}]*)\}")
 # the mod's own parameters a translation adds: =player.species:voc= (the vocative, mod/Grammar/UkrainianTemplateKeys.cs)
 UK_PARAMS = re.compile(r":voc$")
 
@@ -341,6 +344,11 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
         err("code-hole", f"{{n}} not in the source: {sorted(dst_holes - src_holes)}")
     elif src_holes != dst_holes:
         warn("code-hole", f"keep every {{n}} of the source exactly once: {sorted(src_holes)}")
+    for m in CODE_COUNTED.finditer(msgstr):
+        if "{" + m.group(1) + "}" not in src_holes:
+            err("code-hole", f"{m.group(0)} counts with a {{n}} the source does not have")
+        elif len(m.group(2).split(":")) != 3:
+            err("code-hole", f"{m.group(0)}: give the three forms, for 1, 2–4 and 5+ ({{0:хід:ходи:ходів}})")
 
     # ~Cmd key tokens (help text); '~' alternatives in dialogue are compared by count
     src_cmd = collections.Counter(COMMAND.findall(msgid))

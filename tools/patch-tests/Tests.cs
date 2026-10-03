@@ -102,6 +102,31 @@ static class Tests
         Add("Test2", "{0} DV", "{0} ЗУ");
         Eq("Не може рухатися чи атакувати.\n-5 ЗУ", Translate("Test2", "Can't move or attack.\n-5 DV"), "holes stay within a line");
 
+        // a translation's {n} is the key's {n}: across the fields of a DidX key, out of order, and repeated
+        string Lookup(string table, string key) => (string)text.GetMethod("Lookup").Invoke(null, new object[] { table, key });
+        Add("Test3", "XZ|juke|{0}, moving||out of {1} way|.", "фінт {0}, з дороги ({1})");
+        Eq("фінт на північ, з дороги (its)", Lookup("Test3", "XZ|juke|на північ, moving||out of its way|."), "holes across a DidX key");
+        Add("Test4", "{1} hits {0}.", "{0} отримує удар від {1}.");
+        Eq("пащеклац отримує удар від Мехмет.", Translate("Test4", "Мехмет hits пащеклац."), "holes out of order");
+        Add("Test5", "{0} and {0} again", "{0} двічі");
+        Eq("пащеклац двічі", Translate("Test5", "пащеклац and пащеклац again"), "a repeated hole");
+        Eq("пащеклац and сокира again", Translate("Test5", "пащеклац and сокира again"), "a repeated hole is the same text");
+
+        // «\r\n» lines (the inventory quick keys): looked up without the «\r», which stays
+        Add("Test6", "Inventory quick keys", "Швидкі клавіші інвентаря");
+        Add("Test6", "&WCtrl+A&y - Eat", "&WCtrl+A&y - З’їсти");
+        Eq("Швидкі клавіші інвентаря\r\n\r\n&WCtrl+A&y - З’їсти\r\n&WCtrl+P&y - Apply",
+           Translate("Test6", "Inventory quick keys\r\n\r\n&WCtrl+A&y - Eat\r\n&WCtrl+P&y - Apply"), "\\r\\n lines");
+
+        // a translation counts with a number hole: {0:хід:ходи:ходів}
+        Add("Test7", "The dead will be recalled in {0} rounds.", "Мерців буде відкликано через {0} {0:хід:ходи:ходів}.");
+        string Recalled(string n) => Translate("Test7", "The dead will be recalled in " + n + " rounds.");
+        Eq("Мерців буде відкликано через 1 хід.", Recalled("1"), "1 хід");
+        Eq("Мерців буде відкликано через 3 ходи.", Recalled("3"), "3 ходи");
+        Eq("Мерців буде відкликано через 12 ходів.", Recalled("12"), "12 ходів");
+        Eq("Мерців буде відкликано через {{C|21}} хід.", Recalled("{{C|21}}"), "a number in markup");
+        Eq("Мерців буде відкликано через 2.5 ходи.", Recalled("2.5"), "a number that is not whole");
+
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");
 

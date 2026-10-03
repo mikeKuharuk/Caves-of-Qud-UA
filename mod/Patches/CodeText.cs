@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using CavesOfQudUA.Grammar;
@@ -9,7 +10,8 @@ namespace CavesOfQudUA.Patches
     /// <summary>
     /// The English the game's C# writes, in Ukrainian, from the code tables (CodeTables: the Code.* catalogs). A
     /// key is the text exactly as the game produces it, or a pattern where {0}, {1}… match what the code computes
-    /// («-{0} DV» → «-{0} ЗУ»). A text with several lines is looked up line by line. Agreement: a key listed in the
+    /// («-{0} DV» → «-{0} ЗУ»); a translation counts with a number hole by {n:хід:ходи:ходів} («через {0}
+    /// {0:хід:ходи:ходів}»). A text with several lines is looked up line by line. Agreement: a key listed in the
     /// table's ".agree" companion is a masculine adjective phrase that agrees with the object it describes.
     /// What is not found stays English and is written once to Player.log as «[uk-miss] table: text», so play can
     /// grow the tables (tools/misses.py).
@@ -26,6 +28,7 @@ namespace CavesOfQudUA.Patches
         static readonly HashSet<string> Missed = new HashSet<string>();
         static readonly Dictionary<string, string> Memo = new Dictionary<string, string>();
         static readonly Regex Hole = new Regex(@"\{(\d+)\}");
+        static readonly Regex Counted = new Regex(@"\{(\d+):([^{}]*)\}");
         static readonly Regex English = new Regex("[A-Za-z]{2}");
         static readonly Regex EnglishWord = new Regex("[A-Za-z]{3}");
 
@@ -60,13 +63,16 @@ namespace CavesOfQudUA.Patches
             bool any = false;
             for (int i = 0; i < lines.Length; i++)
             {
-                string line = Find(table, t, lines[i], agreeWith);
+                // a «\r\n» line is looked up without its «\r» (the keys have none) and keeps it
+                bool cr = lines[i].EndsWith("\r");
+                string plain = cr ? lines[i].Substring(0, lines[i].Length - 1) : lines[i];
+                string line = Find(table, t, plain, agreeWith);
                 if (line != null)
                 {
-                    lines[i] = line;
+                    lines[i] = cr ? line + "\r" : line;
                     any = true;
                 }
-                else Miss(table, lines[i]);
+                else Miss(table, plain);
             }
             return any ? string.Join("\n", lines) : text;
         }
@@ -90,14 +96,31 @@ namespace CavesOfQudUA.Patches
             {
                 Match m = p.Match.Match(text);
                 if (!m.Success) continue;
-                string result = Hole.Replace(p.Text, h =>
+                string result = Counted.Replace(p.Text, h =>
                 {
-                    int g = int.Parse(h.Groups[1].Value) + 1;
-                    return g < m.Groups.Count ? m.Groups[g].Value : h.Value;
+                    Group g = m.Groups["h" + h.Groups[1].Value];
+                    return g.Success ? FormFor(g.Value, h.Groups[2].Value.Split(':')) : h.Value;
+                });
+                result = Hole.Replace(result, h =>
+                {
+                    Group g = m.Groups["h" + h.Groups[1].Value];
+                    return g.Success ? g.Value : h.Value;
                 });
                 return Agree(name, p.Key, result, agreeWith);
             }
             return null;
+        }
+
+        /// <summary>
+        /// The form of {n:хід:ходи:ходів} for the number hole n holds: 1, 2–4, 5+. A number that is not whole takes
+        /// the 2–4 form, the nearest to the genitive singular it needs («2,5 клітинки»).
+        /// </summary>
+        static string FormFor(string number, string[] forms)
+        {
+            string plain = UkrainianForms.StripMarkup(number).Trim();
+            if (long.TryParse(plain, NumberStyles.Integer, CultureInfo.InvariantCulture, out long n))
+                return UkrainianForms.ByNumber(n, forms);
+            return forms[forms.Length > 1 ? 1 : 0];
         }
 
         static string Agree(string table, string key, string text, GameObject agreeWith)
@@ -123,15 +146,21 @@ namespace CavesOfQudUA.Patches
 
         /// <summary>
         /// «-{0} DV» → ^-(anything but a line break, lazily) DV$. A hole never spans lines, so a pattern that starts or
-        /// ends with one cannot swallow a multi-line text: that is matched line by line.
+        /// ends with one cannot swallow a multi-line text: that is matched line by line. Each hole is a group named
+        /// after its number, so a translation's {n} is the key's {n} wherever it stands; a number the key repeats
+        /// must match the same text again.
         /// </summary>
         public static Regex PatternOf(string key)
         {
             var sb = new StringBuilder("^");
+            var seen = new HashSet<string>();
             int last = 0;
             foreach (Match m in Hole.Matches(key))
             {
-                sb.Append(Regex.Escape(key.Substring(last, m.Index - last))).Append("([^\n]*?)");   // a part may come out empty, but never spans lines
+                string n = m.Groups[1].Value;
+                sb.Append(Regex.Escape(key.Substring(last, m.Index - last)));
+                // a part may come out empty, but never spans lines
+                sb.Append(seen.Add(n) ? "(?<h" + n + ">[^\n]*?)" : @"\k<h" + n + ">");
                 last = m.Index + m.Length;
             }
             sb.Append(Regex.Escape(key.Substring(last))).Append('$');

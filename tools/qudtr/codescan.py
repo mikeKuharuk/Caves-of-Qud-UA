@@ -207,6 +207,12 @@ def number_holes(text: str) -> str:
     return re.sub(HOLE, repl, text)
 
 
+def number_fields(*fields: str) -> list[str]:
+    """The HOLE marks of several fields of one key → {0}, {1}… counted across all of them, so that no two holes of
+    the key share a number (a translation's {n} is the key's {n}, mod/Patches/CodeText.PatternOf)."""
+    return number_holes("\u0001".join(fields)).split("\u0001")
+
+
 ENGLISH = re.compile(r"[A-Za-z]{2,}")
 
 
@@ -216,8 +222,9 @@ def useful(text: str) -> bool:
 
 
 def lines_of(text: str) -> list[str]:
-    """A built text split into its lines, each one a key."""
-    return [line for line in text.split("\n") if useful(line)]
+    """A built text split into its lines, each one a key. A «\\r\\n» line keeps no «\\r»: CodeText looks a line up
+    without it (and the XML of the string table would turn it into a space)."""
+    return [line.removesuffix("\r") for line in text.split("\n") if useful(line)]
 
 
 # ---- methods ------------------------------------------------------------------------------------------------
@@ -373,8 +380,7 @@ def scan_didx(src_dir: pathlib.Path) -> list[tuple[str, str, str]]:
             def options(name: str, default: str) -> list[str]:
                 if name not in fields or strip_parens(fields[name]) == "null":
                     return [default]
-                found_patterns = patterns(fields[name])
-                return [number_holes(p) for p in found_patterns] if found_patterns else []
+                return patterns(fields[name])   # holes still unnumbered: they are counted across the key below
             preps = options("Preposition", "") if kind != "X" else [""]
             ipreps = options("IndirectPreposition", "") if kind == "WXZ" else [""]
             extras = options("Extra", "")
@@ -383,8 +389,9 @@ def scan_didx(src_dir: pathlib.Path) -> list[tuple[str, str, str]]:
                 for iprep in ipreps:
                     for extra in extras:
                         for end in ends:
-                            key = didx_key(kind, verb, prep, iprep, extra, end)
-                            found.setdefault(key, (didx_english(kind, verb, prep, iprep, extra, end), where))
+                            parts = number_fields(prep, iprep, extra, end)
+                            key = didx_key(kind, verb, *parts)
+                            found.setdefault(key, (didx_english(kind, verb, *parts), where))
     return [(k, e, w) for k, (e, w) in sorted(found.items())]
 
 
