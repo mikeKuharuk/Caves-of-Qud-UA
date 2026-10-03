@@ -30,6 +30,15 @@ def from_tag(tag: str, mirror: pathlib.Path = MIRROR) -> dict[str, str]:
     return out
 
 
+def base_text(source: str | None, tag: str | None, name: str) -> str | None:
+    """A game data file next to ExampleLanguage in the Base folder (Mutations.xml), or None when the source has
+    none (a mirror tag holds only ExampleLanguage)."""
+    if tag:
+        return None
+    path = (pathlib.Path(source) if source else GAME_EXAMPLE_DIR).parent / name
+    return path.read_text(encoding="utf-8-sig") if path.exists() else None
+
+
 def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
     """Return ({file name: xml text}, human-readable description of the source)."""
     if tag:

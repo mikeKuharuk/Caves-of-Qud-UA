@@ -12,6 +12,7 @@ import difflib
 import pathlib
 import re
 import xml.etree.ElementTree as ET
+from xml.sax import saxutils
 
 from . import batch, checks, held, po, store, units
 from .sources import REPO
@@ -21,6 +22,8 @@ STORE_DIR = REPO / "translations" / "uk"
 OUT_DIR = REPO / "mod" / "Language"
 GENDERS_OUT = REPO / "mod" / "Grammar" / "NounGenders.g.cs"
 ADJECTIVES_OUT = REPO / "mod" / "Grammar" / "AdjectiveForms.g.cs"
+VARIANT_NAMES = "VariantNames.uk.xml"
+MUTATION_NAME = re.compile(r"(?:^|/)mutation\[([^\]]+)\]@DisplayName$")
 DISPLAY_NAME = re.compile(r"^object\[([^\]]+)\]/part\[Render\]@DisplayName$")
 QUD_GENDER = re.compile(r"^qud-gender:\s*(m|f|n|pl)\b")
 BATCH_DIR = REPO / "work" / "batch"
@@ -217,8 +220,10 @@ def translations_of(cat: po.Catalog, include_fuzzy: bool = False) -> dict:
 
 
 def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR,
-              out_dir: pathlib.Path = OUT_DIR, include_fuzzy: bool = False, force: bool = False) -> int:
-    """Write mod/Language/*.uk.xml. Returns the number of problems (0 = fine)."""
+              out_dir: pathlib.Path = OUT_DIR, include_fuzzy: bool = False, force: bool = False,
+              mutations_xml: str | None = None) -> int:
+    """Write mod/Language/*.uk.xml. Returns the number of problems (0 = fine). mutations_xml is the game's
+    Base/Mutations.xml, for VariantNames.uk.xml; without it that file is left as it is."""
     problems = 0
     out_dir.mkdir(parents=True, exist_ok=True)
     for name, text in sorted(files.items()):
@@ -249,6 +254,19 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
         if not out.exists() or out.read_text(encoding="utf-8") != xml:
             out.write_text(xml, encoding="utf-8", newline="\n")
         print(f"{out.name:40} {count:6} translated")
+    if mutations_xml is None:
+        print(f"warning: no Mutations.xml next to the string tables; {VARIANT_NAMES} not rebuilt")
+    else:
+        out = out_dir / VARIANT_NAMES
+        names = variant_names(files, mutations_xml, po_dir, store_dir, include_fuzzy)
+        if not names:
+            out.unlink(missing_ok=True)
+        else:
+            xml = variant_names_xml(names)
+            ET.fromstring(xml)  # the output must be well-formed
+            if not out.exists() or out.read_text(encoding="utf-8") != xml:
+                out.write_text(xml, encoding="utf-8", newline="\n")
+        print(f"{out.name:40} {len(names):6} variant names")
     genders = noun_genders(files, po_dir, store_dir)
     words = word_genders(files, po_dir, store_dir)
     code = noun_genders_cs(genders, words)
@@ -262,6 +280,41 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
         ADJECTIVES_OUT.write_text(code, encoding="utf-8", newline="\n")
     print(f"{ADJECTIVES_OUT.name:40} {len(adjectives):6} adjectives")
     return problems
+
+
+def fixed_variants(mutations_xml: str) -> dict[str, str]:
+    """Mutation → the variant blueprint it is fixed to, from the game's Base/Mutations.xml
+    (<mutation Name="Stinger (Confusing Venom)" … Variant="Stinger Confusion">)."""
+    return {m.get("Name"): m.get("Variant") for m in ET.fromstring(mutations_xml).iter("mutation")
+            if m.get("Name") and m.get("Variant")}
+
+
+def variant_names(files: dict[str, str], mutations_xml: str, po_dir: pathlib.Path = PO_DIR,
+                  store_dir: pathlib.Path = STORE_DIR, include_fuzzy: bool = False) -> dict[str, str]:
+    """Variant blueprint → the Ukrainian name of the mutation fixed to it. The game names such a mutation after the
+    variant's VariantName tag, not the mutation's DisplayName (BaseMutation.GetVariantName: «Stinger (Confusing
+    Venom)» in character creation and on the character sheet), and tags are not in the string tables."""
+    name = next((n for n in files if n.startswith("Mutations.")), None)
+    if name is None:
+        return {}
+    fixed = fixed_variants(mutations_xml)
+    cat, _ = load_catalog(files[name], name, po_dir, store_dir)
+    out = {}
+    for e in cat.entries:
+        m = MUTATION_NAME.search(e.msgctxt or "")
+        if m and m.group(1) in fixed and not e.obsolete and e.msgstr and (include_fuzzy or not e.fuzzy):
+            out[fixed[m.group(1)]] = e.msgstr
+    return out
+
+
+def variant_names_xml(names: dict[str, str], lang: str = "uk") -> str:
+    body = "".join(f'  <object Name={saxutils.quoteattr(bp)} Load="Merge">\n'
+                   f'    <tag Name="VariantName" Value={saxutils.quoteattr(v)} />\n'
+                   f'  </object>\n' for bp, v in sorted(names.items()))
+    return (f'<?xml version="1.0" encoding="utf-8"?>\n'
+            f'<!-- {units.GENERATED_MARKER} from translations/{lang}/Mutations.jsonl: the names of the mutations '
+            f'with a fixed variant, which the game reads from the VariantName tag. Do not edit. -->\n'
+            f'<objects Lang="{lang}" Encoding="utf-8">\n{body}</objects>\n')
 
 
 def noun_genders(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
