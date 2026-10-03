@@ -223,13 +223,14 @@ def code_table_of(cat: po.Catalog, include_fuzzy: bool = False, note: re.Pattern
     for e in cat.entries:
         if e.obsolete or not e.msgstr or (e.fuzzy and not include_fuzzy):
             continue
+        key = codetables.key_of(e.msgctxt, e.msgid)
         if note is None:
-            out[e.msgid] = e.msgstr
+            out[key] = e.msgstr
             continue
         for c in e.translator_comments:
             m = note.match(c)
             if m:
-                out[e.msgid] = m.group(1) if m.groups() else e.msgstr
+                out[key] = m.group(1) if m.groups() else e.msgstr
     return out
 
 

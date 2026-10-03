@@ -40,12 +40,14 @@ def _esc(s: str) -> str:
             .replace("\n", "&#10;").replace("\t", "&#9;"))
 
 
-def table_xml(table: str, entries: list[tuple[str, str | None]], build: str | None, source: str) -> str | None:
-    """The string table for a code table: (English key, translator note or None) per entry."""
+def table_xml(table: str, entries: list[tuple], build: str | None, source: str) -> str | None:
+    """The string table for a code table, an entry per (key, note) or (key, English for the translator, note): the
+    key is what the patch looks up, the English what the translator reads (by default the key itself)."""
     if not entries:
         return None
-    body = "".join(f'  <entry Key="{_esc(k)}" Text="{MARK}{_esc(k)}"' + (f' Note="{_esc(n)}"' if n else "") + " />\n"
-                   for k, n in entries)
+    rows = [(e[0], e[0], e[1]) if len(e) == 2 else e for e in entries]
+    body = "".join(f'  <entry Key="{_esc(k)}" Text="{MARK}{_esc(text)}"' + (f' Note="{_esc(n)}"' if n else "") + " />\n"
+                   for k, text, n in rows)
     return ('<?xml version="1.0" encoding="utf-8"?>\n<!--\n'
             f"Caves of Qud - Generated Localizable XML {build or 'unknown'}\n"
             f"Not from the game: tools/qudtr/codetables.py builds it from {source}.\n\n"
@@ -80,6 +82,30 @@ def effects_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     from . import codescan
     entries = [(e.key, EFFECTS_NOTE.format(where=e.where)) for e in codescan.scan_effects(decompiled)]
     return table_xml("Effects", entries, build, "the decompiled game code (XRL.World.Effects)")
+
+
+DIDX = "Code.DidX.example.xml"
+DIDX_NOTE = ("Розповідь гри (DidX, {where}). <subject> — хто діє, <object> і <indirect> — над чим і з чим. Перекладіть "
+             "шаблоном нашої граматики: =subject.Name= =subject.v:…:…:…=, =object.name=, =indirect.name=, "
+             "=object.p:…:…= тощо (docs/grammar.md); кінцевий знак — як в оригіналі. {{0}}… — те, що рахує код: "
+             "лишіть його або, якщо це англійський займенник («its»), приберіть і поставте нотатку "
+             "«qud-ok: code-hole — займенник».")
+
+
+def didx_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """The narration the game conjugates itself (codescan.scan_didx)."""
+    from . import codescan
+    rows = [(key, english, DIDX_NOTE.format(where=where)) for key, english, where in codescan.scan_didx(decompiled)]
+    return table_xml("DidX", rows, build, "the decompiled game code (Messaging.XDidY and its wrappers)")
+
+
+KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@Text$", re.S)
+
+
+def key_of(msgctxt: str, msgid: str) -> str:
+    """The key of a code-table unit: its context names it; the English is only for the translator."""
+    m = KEY_IN_CONTEXT.match(msgctxt or "")
+    return m.group(1) if m else msgid
 
 
 def entries(xml_text: str) -> list[str]:

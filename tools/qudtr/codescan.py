@@ -292,3 +292,97 @@ def scan_effects(src_dir: pathlib.Path) -> list[Entry]:
                 for line in lines_of(text):
                     entries.setdefault(number_holes(line), f"{name}.{method}")
     return [Entry(k, w) for k, w in sorted(entries.items())]
+
+
+# ---- DidX: the English narration the game conjugates itself ------------------------------------------------
+
+DIDX_CALL = re.compile(r"(?<![\w])(DidX|DidXToY|DidXToYWithZ|XDidY|XDidYToZ|WDidXToYWithZ)\s*\(")
+NAMED_ARG = re.compile(r"^\s*([A-Z]\w*)\s*:(?!:)\s*(.*)$", re.S)
+KINDS = {"DidX": "X", "XDidY": "X", "DidXToY": "XZ", "XDidYToZ": "XZ", "DidXToYWithZ": "WXZ", "WDidXToYWithZ": "WXZ"}
+
+
+def _is_string(arg: str) -> bool:
+    return bool(patterns(arg)) or literal_value(strip_parens(arg)) is not None
+
+
+def didx_fields(method: str, args: list[str]) -> dict[str, str] | None:
+    """The message fields of a DidX-family call: Verb, Preposition, IndirectPreposition, Extra, EndMark, by the
+    overload the arguments select (IComponent wrappers have no Actor; Messaging statics start with it)."""
+    positional = [a for a in args if not NAMED_ARG.match(a)]
+    named = {m.group(1): m.group(2) for a in args for m in [NAMED_ARG.match(a)] if m}
+    if method.startswith(("X", "W")):
+        if not positional or literal_value(strip_parens(positional[0])) is not None:
+            return None   # the SubjectOverride overloads: a string instead of the actor
+        positional = positional[1:]
+    kind = KINDS[method]
+    if kind == "X":
+        order = ["Verb", "Extra", "EndMark"]
+    elif kind == "XZ":
+        order = ["Verb", "Preposition", "Object", "Extra", "EndMark"] if len(positional) > 1 and _is_string(positional[1]) \
+            else ["Verb", "Object", "Extra", "EndMark"]
+    else:
+        order = ["Verb", "DirectPreposition", "DirectObject", "IndirectPreposition", "IndirectObject", "Extra", "EndMark"] \
+            if len(positional) > 1 and _is_string(positional[1]) \
+            else ["Verb", "DirectObject", "IndirectPreposition", "IndirectObject", "Extra", "EndMark"]
+    fields = dict(zip(order, positional))
+    fields.update(named)
+    if "DirectPreposition" in fields:
+        fields["Preposition"] = fields.pop("DirectPreposition")
+    return fields
+
+
+def didx_key(kind: str, verb: str, prep: str, iprep: str, extra: str, end: str) -> str:
+    """The key the patch builds at run time (mod/Patches/DidXPatches.cs): null parts empty, EndMark defaults to «.»."""
+    return "|".join([kind, verb, prep, iprep, extra, end])
+
+
+def didx_english(kind: str, verb: str, prep: str, iprep: str, extra: str, end: str) -> str:
+    """What the translator sees: the parts in English order, the participants as <subject>, <object>, <indirect>."""
+    parts = ["<subject>", verb, prep]
+    if kind != "X":
+        parts.append("<object>")
+    if kind == "WXZ":
+        parts += [iprep, "<indirect>"]
+    parts.append(extra)
+    return " ".join(p for p in parts if p) + end
+
+
+def scan_didx(src_dir: pathlib.Path) -> list[tuple[str, str, str]]:
+    """(key, English for the translator, where) for every DidX-family call with a literal verb."""
+    found: dict[str, tuple[str, str]] = {}
+    for path in sorted(src_dir.rglob("*.cs")):
+        src = path.read_text(encoding="utf-8-sig")
+        if "DidX" not in src and "XDidY" not in src:
+            continue
+        masked = mask(src)
+        cls = CLASS.search(masked)
+        where = cls.group(1) if cls else path.stem
+        for m in DIDX_CALL.finditer(masked):
+            o = m.end() - 1
+            c = matching(src, o)
+            if c < 0 or masked[m.start() - 1:m.start()] in ("void ",) or re.search(r"\bvoid\s+$", masked[max(0, m.start() - 12):m.start()]):
+                continue   # a declaration, not a call
+            fields = didx_fields(m.group(1), split_top(src[o + 1:c], ","))
+            if not fields or "Verb" not in fields:
+                continue
+            verb = literal_value(strip_parens(fields["Verb"]))
+            if not verb:
+                continue
+            kind = KINDS[m.group(1)]
+
+            def options(name: str, default: str) -> list[str]:
+                if name not in fields or strip_parens(fields[name]) == "null":
+                    return [default]
+                found_patterns = patterns(fields[name])
+                return [number_holes(p) for p in found_patterns] if found_patterns else []
+            preps = options("Preposition", "") if kind != "X" else [""]
+            ipreps = options("IndirectPreposition", "") if kind == "WXZ" else [""]
+            extras = options("Extra", "")
+            ends = options("EndMark", ".")
+            for prep in preps:
+                for iprep in ipreps:
+                    for extra in extras:
+                        for end in ends:
+                            key = didx_key(kind, verb, prep, iprep, extra, end)
+                            found.setdefault(key, (didx_english(kind, verb, prep, iprep, extra, end), where))
+    return [(k, e, w) for k, (e, w) in sorted(found.items())]

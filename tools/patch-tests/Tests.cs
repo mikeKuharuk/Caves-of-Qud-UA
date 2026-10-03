@@ -85,6 +85,11 @@ static class Tests
         object poisoned = Activator.CreateInstance(game.GetType("XRL.World.Effects.Poisoned", true));
         Eq("{{G|отруєний}}", game.GetType("XRL.World.Effect").GetMethod("GetDescription").Invoke(poisoned, null), "an effect name through the patch");
 
+        // the DidX key must be the one tools/qudtr/codescan.py writes (didx_key)
+        Type didx = mod.GetType("CavesOfQudUA.Patches.DidX", true);
+        Eq("X|die||||!", didx.GetMethod("Key").Invoke(null, new object[] { "X", "die", null, null, null, "!" }), "the DidX key");
+        Eq("XZ|sit|down on|||.", didx.GetMethod("Key").Invoke(null, new object[] { "XZ", "sit", "down on", null, null, null }), "a null end mark is a full stop");
+
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");
 

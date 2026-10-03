@@ -319,6 +319,11 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
                if UK_GRAMMAR.match(k) and UK_GRAMMAR.match(k).group(1).lower() == "p"}
     for key in [k for k in missing if placeholder_root(k) in p_roots and NAME_OF.match(k)]:
         del missing[key]
+    # the narration table (Code.DidX) names its participants <subject>, <object>, <indirect>: the translation
+    # brings the variables for them
+    if "<subject>" in msgid:
+        for key in [k for k in extra if placeholder_root(k) in ("subject", "object", "indirect", "owner")]:
+            del extra[key]
     if missing:
         warn("placeholder", f"placeholder(s) missing: {sorted(missing)}")
     if extra:
@@ -328,10 +333,14 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
         if msgid.count(marker) != msgstr.count(marker):
             err("code-marker", f"keep {marker} as it is: the game's code looks for it in the text")
 
-    # {0}, {1}… in the code tables stand for what the code computes (codetables.py): all of them must stay
+    # {0}, {1}… in the code tables stand for what the code computes (codetables.py): all of them must stay; one may
+    # go when it only held an English word such as «its» (accept that with qud-ok: code-hole)
     src_holes = collections.Counter(CODE_HOLE.findall(msgid))
-    if src_holes and src_holes != collections.Counter(CODE_HOLE.findall(msgstr)):
-        err("code-hole", f"keep every {{n}} of the source exactly once: {sorted(src_holes)}")
+    dst_holes = collections.Counter(CODE_HOLE.findall(msgstr))
+    if dst_holes - src_holes:
+        err("code-hole", f"{{n}} not in the source: {sorted(dst_holes - src_holes)}")
+    elif src_holes != dst_holes:
+        warn("code-hole", f"keep every {{n}} of the source exactly once: {sorted(src_holes)}")
 
     # ~Cmd key tokens (help text); '~' alternatives in dialogue are compared by count
     src_cmd = collections.Counter(COMMAND.findall(msgid))

@@ -53,6 +53,18 @@ namespace CavesOfQudUA.Patches
             return any ? string.Join("\n", lines) : text;
         }
 
+        /// <summary>
+        /// The entry for key, exact or by pattern ({n} filled in), or null (logged as a miss). For tables whose key
+        /// is not the game's text itself, such as the DidX narration.
+        /// </summary>
+        public static string Lookup(string table, string key)
+        {
+            if (string.IsNullOrEmpty(key)) return null;
+            string found = Find(table, Load(table), key, null);
+            if (found == null) Miss(table, key);
+            return found;
+        }
+
         static string Find(string name, Table t, string text, GameObject agreeWith)
         {
             if (t.Exact.TryGetValue(text, out string exact)) return Agree(name, text, exact, agreeWith);

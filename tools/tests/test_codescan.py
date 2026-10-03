@@ -69,7 +69,38 @@ class Holes(unittest.TestCase):
     def test_every_hole_must_stay(self):
         self.assertEqual(checks.check("-{0} DV", "-{0} ЗУ"), [])
         self.assertIn("code-hole", {i.code for i in checks.check("-{0} DV", "-ЗУ")})
+        self.assertIn("code-hole", {i.code for i in checks.check("-{0} DV", "-{1} ЗУ") if i.severity == "error"})
         self.assertEqual(checks.check("{{G|poisoned}}", "{{G|отруєний}}"), [])
+
+
+DIDX = """public class Healing : Effect
+{
+    public override void Apply()
+    {
+        DidX("begin", "healing");
+        DidX("die", null, "!");
+        DidXToY("strike", "at", target, "with " + weapon.its + " fist", EndMark: "!");
+        IComponent<GameObject>.XDidYToZ(Actor, "kick", Object);
+        Messaging.WDidXToYWithZ(Actor, "staunch", Object, "with", Bandage);
+    }
+    public void DidX(string Verb, string Extra = null) { }
+}
+"""
+
+
+class DidXScan(unittest.TestCase):
+    def test_calls_become_runtime_keys(self):
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Healing.cs").write_text(DIDX, encoding="utf-8")
+            found = {k: e for k, e, w in codescan.scan_didx(pathlib.Path(d))}
+        self.assertEqual(found.get("X|begin|||healing|."), "<subject> begin healing.")
+        self.assertIn("X|die||||!", found)
+        self.assertEqual(found.get("XZ|strike|at||with {0} fist|!"), "<subject> strike at <object> with {0} fist!")
+        self.assertIn("XZ|kick||||.", found)
+        self.assertEqual(found.get("WXZ|staunch||with||."), "<subject> staunch <object> with <indirect>.")
+
+    def test_a_template_with_our_variables_passes(self):
+        self.assertEqual(checks.check("<subject> die!", "=subject.Name= =subject.v:помирає:помираєте:помирають=!"), [])
 
 
 if __name__ == "__main__":
