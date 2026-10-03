@@ -98,6 +98,32 @@ static class Tests
         Eq("{{W|Упав}}", UkrainianForms.Capitalize("{{W|упав}}"), "capitalize inside markup");
         Eq("’Ять", UkrainianForms.Capitalize("’ять"), "capitalize skips punctuation");
 
+        Eq("другий", UkrainianNumbers.OrdinalWord(2), "ordinal word");
+        Eq("третій", UkrainianNumbers.OrdinalWord(3), "ordinal word, soft");
+        Eq("двадцять перший", UkrainianNumbers.OrdinalWord(21), "compound ordinal");
+        Eq("сороковий", UkrainianNumbers.OrdinalWord(40), "round ordinal");
+        Eq("101-й", UkrainianNumbers.OrdinalWord(101), "a large ordinal in digits");
+        Eq("12-й", UkrainianNumbers.OrdinalDigits(12), "ordinal in digits");
+        Eq("12-го", UkrainianNumbers.DayOfMonth(12), "day of the month");
+        Eq("один раз", UkrainianNumbers.Multiplicative(1), "once");
+        Eq("двічі", UkrainianNumbers.Multiplicative(2), "twice");
+        Eq("4 рази", UkrainianNumbers.Multiplicative(4), "four times");
+        Eq("5 разів", UkrainianNumbers.Multiplicative(5), "five times");
+        Eq("21 раз", UkrainianNumbers.Multiplicative(21), "twenty-one times");
+        Eq("жодного разу", UkrainianNumbers.Multiplicative(0), "never");
+
+        Eq("True", UkrainianNumbers.TryParseSavedTime("Friday, October 2, 2026 at 4:58:24 PM", out DateTime saved).ToString(), "parse the save time");
+        Eq("2026-10-02 16:58:24", saved.ToString("yyyy-MM-dd HH:mm:ss"), "the parsed save time");
+        Eq("п’ятниця, 2 жовтня 2026 р., 16:58:24",
+           UkrainianNumbers.FormatSavedTime(saved, System.Globalization.CultureInfo.GetCultureInfo("uk-UA")), "the save time in Ukrainian");
+        Eq("False", UkrainianNumbers.TryParseSavedTime("not a date", out _).ToString(), "garbage stays as it is");
+
+        Eq("Feminine", UkrainianForms.GuessByEnding("Джоппа").ToString(), "a name in -а");
+        Eq("Masculine", UkrainianForms.GuessByEnding("Туркатум").ToString(), "a name in a consonant");
+        Eq("Plural", UkrainianForms.GuessByEnding("Карпати").ToString(), "a name in -и");
+        Eq("", UkrainianForms.GuessByEnding("Ейн-Роґель").ToString(), "a soft sign does not tell");
+        Eq("п’ятниця", UkrainianForms.CleanCultureText("пʼятниця"), "the typographic apostrophe");
+
         Console.WriteLine(failures == 0 ? "all grammar tests passed" : $"{failures} failure(s)");
         return failures == 0 ? 0 : 1;
     }

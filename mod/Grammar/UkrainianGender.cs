@@ -46,6 +46,22 @@ namespace CavesOfQudUA.Grammar
             return noun ?? personal ?? UkGender.Masculine;
         }
 
+        /// <summary>
+        /// The gender of a zone name, for the biome adjective the game puts before it: the whole name if a translator
+        /// gave it a qud-gender note, else the name without its first words («слизька соляна пустеля» → «соляна
+        /// пустеля»), else, for a one-word proper name such as a village, a guess from its ending. Null: unknown.
+        /// </summary>
+        public static UkGender? OfZoneName(string name)
+        {
+            string[] words = UkrainianForms.StripMarkup(name ?? "").Trim().Split(' ');
+            for (int i = 0; i < words.Length; i++)
+            {
+                UkGender? gender = NounGenders.OfWord(string.Join(" ", words, i, words.Length - i));
+                if (gender.HasValue) return gender;
+            }
+            return words.Length == 1 ? UkrainianForms.GuessByEnding(words[0]) : null;
+        }
+
         /// <summary>A noun the game passes with its own pronouns (a body part, an effect, a random official).</summary>
         public static UkGender Of(GenderedNoun noun)
         {
@@ -66,7 +82,15 @@ namespace CavesOfQudUA.Grammar
         static UkGender? FromPronouns(IPronounProvider pronouns)
         {
             if (pronouns == null) return null;
-            if (pronouns is Gender gender) return UkrainianForms.FromGameGender(gender.Name, gender.Plural, gender.PseudoPlural);
+            // a gender the table does not know («hindren female», a generated one) goes by its pronouns
+            if (pronouns is Gender gender)
+                return UkrainianForms.FromGameGender(gender.Name, gender.Plural, gender.PseudoPlural)
+                       ?? (gender.Name == "neuter" ? null : FromSubjective(pronouns));
+            return FromSubjective(pronouns);
+        }
+
+        static UkGender? FromSubjective(IPronounProvider pronouns)
+        {
             switch (pronouns.Subjective)
             {
                 case "he": return UkGender.Masculine;

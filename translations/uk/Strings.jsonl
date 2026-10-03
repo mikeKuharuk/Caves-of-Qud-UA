@@ -298,7 +298,7 @@
 {"k":"b38f4147ba22c1b4fd72","p":"ae4e2e68851e053f","s":"8e58dd6d5ad4","t":"Гру видалено!"}
 {"k":"83d550a47c63cd435305","p":"7528826683a9cf63","s":"76e36cdb0740","t":"=gameName= :: =description="}
 {"k":"e524a718d64384b69ebf","p":"f9f0321bc5cb69e8","s":"9511de1b5158","t":"{{C|Місцевість:}} =location="}
-{"k":"1f327c28b8d6efdfc7bf","p":"ec2811bf0f62c12c","s":"ff3b58447706","t":"{{C|Останнє збереження:}} =saveTime="}
+{"k":"1f327c28b8d6efdfc7bf","p":"ec2811bf0f62c12c","s":"ff3b58447706","t":"{{C|Останнє збереження:}} =saveTime|uk.date=","c":["=saveTime= гра зберігає англійською («Friday, October 2, 2026 at 4:58:24 PM») і сортує за ним; |uk.date показує його українською."]}
 {"k":"93075066aa435a8d62cd","p":"42daf601f5ce44f9","s":"ccce0d0322f5","t":"{{K|=size= =gameID=}}"}
 {"k":"563fb4c307e472d9d2a7","p":"b5d5b9e6b2f1d40f","s":"cad846e306b2","t":"{{=color=|[=value.signed=]}}"}
 {"k":"ced3921d961f0430d346","p":"b23334ee756e259e","s":"aeb4329adea7","t":"{{y|=mutation.name:withAnnotations=}}"}

@@ -103,6 +103,25 @@ namespace CavesOfQudUA.Grammar
         }
 
         /// <summary>
+        /// A guess at the gender of a proper name from its ending, for names no translator annotated (a generated
+        /// village): -а/-я feminine (Джоппа), -о/-е/-є neuter, -и/-і/-ї plural, a consonant masculine (Туркатум).
+        /// Null for -ь and anything else, where the ending does not tell.
+        /// </summary>
+        public static UkGender? GuessByEnding(string word)
+        {
+            string w = StripMarkup(word ?? "").Trim().ToLowerInvariant();
+            if (w.Length < 2 || !char.IsLetter(w[w.Length - 1])) return null;
+            switch (w[w.Length - 1])
+            {
+                case 'а': case 'я': return UkGender.Feminine;
+                case 'о': case 'е': case 'є': return UkGender.Neuter;
+                case 'и': case 'і': case 'ї': return UkGender.Plural;
+                case 'ь': return null;
+            }
+            return w[w.Length - 1] >= 'а' && w[w.Length - 1] <= 'я' || w[w.Length - 1] == 'ґ' ? UkGender.Masculine : (UkGender?)null;
+        }
+
+        /// <summary>
         /// An adjective agreed with a gender. text is the adjective as translated, in the masculine and possibly
         /// inside markup ({{K|іржавий}}); forms looks up the masculine plain text and gives [feminine, neuter,
         /// plural], or null when the adjective does not change (an indeclinable word, or not in the table).
@@ -204,6 +223,16 @@ namespace CavesOfQudUA.Grammar
                 }
             }
             return stem + new[] { "а", "е", "і" }[g];
+        }
+
+        /// <summary>
+        /// Text the .NET culture formatted (a date), in our typography: the apostrophe ’ instead of ʼ («пʼятниця») or ',
+        /// and plain spaces instead of the no-break ones before «р.», which the game's fonts may lack.
+        /// </summary>
+        public static string CleanCultureText(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return text;
+            return text.Replace('ʼ', '’').Replace('\'', '’').Replace(' ', ' ').Replace(' ', ' ');
         }
 
         /// <summary>The text without Qud's {{shader|…}} markup and &amp;X / ^X colour codes.</summary>
