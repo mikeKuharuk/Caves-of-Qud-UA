@@ -606,3 +606,29 @@ the Soft	М’якоть	f	concept	proposed	the glowing Soft → сяйлива 
 gunslinger-sultan	султан-стрілець	m	concept	proposed	Hist-sultans
 god-sultan	бог-султан	m	concept	proposed	Hist-sultans
 dreamstuff	сновидна матерія	f	concept	proposed	Hist-sultans
+ambient broadcast power grid	мережа бездротового живлення	f	concept	proposed	Code.DidX/Text; пор. «станція бездротового живлення»
+normality lattice	ґратка нормальності	f	concept	proposed	Code.DidX
+concussive blast	ударна хвиля	f	mechanic	proposed	Code.DidX
+refract (antiprism)	заломлювати		mechanic	proposed	Code.DidX: «заломлює ваш образ на нові копії»
+hobbled	кульгає (підрізано сухожилля)		effect	proposed	Code.DidX; ефект після вміння «Підрізання»
+suppressed (suppressing fire)	притиснутий вогнем	m	effect	proposed	Code.DidX; прикметник узгоджується з носієм
+Death From Above	Смерть згори	f	skill	proposed	Code.Text; вміння немає в Skills/ActivatedAbilities 2.0.212, тож сама назва там лишається англійською
+maker's mark	клеймо майстра	n	item	proposed	Code.Text
+model faction	фракція-взірець	f	concept	proposed	Code.Text
+holographic glamour	голографічна личина	f	item	proposed	Code.Text
+control pit	кабіна керування	f	component	proposed	Code.Text
+flight capability	засіб польоту	m	mechanic	proposed	Code.Text
+magnetic containment	магнітне утримання	n	mechanic	proposed	Code.Text
+Bind Set	набір призначень клавіш	m	ui	proposed	Code.Text
+junk (PackRat)	мотлох	m	item	proposed	Code.Text
+Tabula Rasae	Табули Раси	pl	item	proposed	Code.Text; частина без креслення
+Named Locations (journal)	Названі місця	pl	ui	proposed	Code.Text; категорія журналу, у Strings її немає
+binal specter	двоїстий привид	m	character	proposed	Code.Text
+rind (irisdual)	шкаралупа	f	item	proposed	Code.Text
+pet (PetEitherOr, PetGloaming)	улюбленець	m	character	proposed	Code.Text
+Cubic Form	Кубічна Форма	f	concept	proposed	Code.Text
+conk (verb)	ударити по тімені		skill	proposed	дієслово до вміння «Удар по тімені»
+hobble (verb)	підрізати		skill	proposed	дієслово до вміння «Підрізання»
+shank (verb)	штрикнути		skill	proposed	дієслово до вміння «Штрик»
+go berserk	упасти в шал		skill	proposed	до вміння «Берсерк!»; «шал берсерка»
+rejoinder	зустрічний удар	m	skill	proposed	як вміння «Зустрічний удар»
