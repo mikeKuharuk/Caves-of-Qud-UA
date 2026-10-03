@@ -153,6 +153,13 @@ https://steamcommunity.com/app/333640/discussions/2/563660860618434971/) **[пе
    текст читається як CP437.
 8. Хибні `▶`: `ArmsOnEquip BaseHands/Category` і прапорці `xtagGrammar` `massNoun`/`Proper` — це
    ключі. Якщо їх перекласти, гра падає або тихо ламається граматика.
+9. Таблиці містять лише теги зі списку `ObjectBlueprintLoader.TagNode.displayTags`. Тегу
+   `VariantName` там немає, а саме з нього гра бере назву мутації з фіксованим варіантом
+   (`BaseMutation.GetVariantName`). Тому в створенні персонажа жало лишалося «Stinger (Confusing
+   Venom)», хоча `DisplayName` мутації перекладено. Ми це обходимо: `qud.py build` пише
+   `VariantNames.uk.xml` з тегами, узятими з перекладених назв мутацій (за атрибутом `Variant` у
+   `Base/Mutations.xml`). Мовний файл — звичайне злиття blueprint-ів, тож будь-який тег у ньому
+   працює **[перевірено в коді; у грі ще ні]**.
 
 ## Що нам дає фреймворк і чого не дає
 
