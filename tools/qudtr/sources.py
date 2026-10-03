@@ -1,22 +1,24 @@
 """Where the ExampleLanguage files come from: the installed game, a folder, or a mirror tag."""
 from __future__ import annotations
 
-import os
 import pathlib
 import subprocess
 
-from . import codetables, datatables, tags, units
+from . import codetables, datatables, game, tags, units
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
-DEFAULT_GAME_DIR = pathlib.Path(os.environ.get("QUD_GAME_DIR", r"D:\Steam\steamapps\common\Caves of Qud"))
-GAME_EXAMPLE_DIR = DEFAULT_GAME_DIR / "CoQ_Data" / "StreamingAssets" / "Base" / "ExampleLanguage"
+# the installed game: QUD_GAME_DIR, or the Steam library that has it (game.py), on Windows, macOS or Linux
+DEFAULT_GAME_DIR = game.find_game() or pathlib.Path(game.GAME_FOLDER)
+GAME_DATA_DIR = game.data_dir(DEFAULT_GAME_DIR) or DEFAULT_GAME_DIR / game.DATA_LAYOUTS[0]
+GAME_EXAMPLE_DIR = GAME_DATA_DIR / "StreamingAssets" / "Base" / "ExampleLanguage"
 MIRROR = REPO / "work" / "example-language"
 
 
 def from_dir(path: pathlib.Path) -> dict[str, str]:
     files = {p.name: p.read_text(encoding="utf-8-sig") for p in sorted(path.glob("*.example.xml"))}
     if not files:
-        raise SystemExit(f"no *.example.xml files in {path}")
+        raise SystemExit(f"no *.example.xml files in {path}: is the game on the lang-experimental branch? "
+                         f"(point QUD_GAME_DIR at the game's folder, or pass --source)")
     return files
 
 

@@ -24,9 +24,9 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from qudtr import po, spice  # noqa: E402
-from qudtr.sources import DEFAULT_GAME_DIR, REPO  # noqa: E402
+from qudtr.sources import GAME_DATA_DIR, REPO  # noqa: E402
 
-SPICE_FILE = DEFAULT_GAME_DIR / "CoQ_Data" / "StreamingAssets" / "Base" / "HistorySpice.jsonc"
+SPICE_FILE = GAME_DATA_DIR / "StreamingAssets" / "Base" / "HistorySpice.jsonc"
 CODE_DIR = REPO / "work" / "decompiled" / "2.0.212.31" / "Assembly-CSharp"
 REF = re.compile(r"=spice:([^=|\s]+)|<spice\.([^<>|\s]+)>|=spice\.set:([^:=\s]+):|=\^:([^=|\s]+)")
 CODE_PATH = re.compile(r"\"spice\.([A-Za-z0-9_.$!@]+)\"")

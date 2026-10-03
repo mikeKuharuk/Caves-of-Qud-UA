@@ -34,13 +34,111 @@
 таблиці рядків `*.uk.xml` і C#-код для української граматики: відмінків, роду, трьох форм
 множини.
 
-Встановлення (коли з'явиться перший реліз):
+## Як встановити зараз (Windows, macOS)
 
-1. Steam → Caves of Qud → Властивості → Бета-версії → `lang-experimental`.
-2. Розпакувати реліз у `%USERPROFILE%\AppData\LocalLow\Freehold Games\CavesOfQud\Mods\CavesOfQudUA`.
-3. У грі увімкнути «Allow scripting mods», вибрати мову «Українська» в меню мов (лівий нижній кут
-   титульного екрана) і **почати нову гру**: збереження фіксують текст у момент створення
-   об'єктів.
+Готового архіву з модом поки немає. Таблиці перекладу офіційного фреймворку містять англійський
+текст гри, а його ми не поширюємо: у репозиторії лише наш український текст. Тому мод
+збирається у вас, з вашої копії гри. Це робить одна команда.
+
+Переклад зроблено для збірки **2.0.212.31**. На macOS мод ще не перевіряли: якщо щось не так,
+напишіть у [Issues](https://github.com/mikeKuharuk/Caves-of-Qud-UA/issues).
+
+### 1. Перемкніть гру на `lang-experimental`
+
+Steam → Бібліотека → Caves of Qud → Властивості → Бета-версії → виберіть `lang-experimental`
+(пароль не потрібен). Дочекайтеся, поки Steam оновить гру.
+
+### 2. Поставте інструменти
+
+Потрібні Python 3.10+ і Git. Ще потрібні .NET SDK 10 і `ilspycmd`: з ними перекладається текст,
+який пише сам код гри (назви й описи ефектів, розповідь про дії, спливні вікна). Без них мод теж
+працює, але цей текст лишиться англійським.
+
+**Windows** — у PowerShell:
+
+```powershell
+winget install Python.Python.3.13 Git.Git Microsoft.DotNet.SDK.10
+```
+
+Закрийте й знову відкрийте PowerShell, тоді:
+
+```powershell
+dotnet tool install -g ilspycmd --version 11.1.0.9782
+```
+
+**macOS** — у Терміналі, через [Homebrew](https://brew.sh):
+
+```bash
+brew install python git
+brew install --cask dotnet-sdk
+dotnet tool install -g ilspycmd --version 11.1.0.9782
+```
+
+### 3. Завантажте переклад і встановіть мод
+
+**Windows:**
+
+```powershell
+git clone https://github.com/mikeKuharuk/Caves-of-Qud-UA.git
+cd Caves-of-Qud-UA
+py tools/qud.py install
+```
+
+**macOS:**
+
+```bash
+git clone https://github.com/mikeKuharuk/Caves-of-Qud-UA.git
+cd Caves-of-Qud-UA
+python3 tools/qud.py install
+```
+
+Команда `install` робить таке:
+
+1. Знаходить гру в бібліотеках Steam. Якщо не знайде, вкажіть теку гри сами:
+   `--game "<шлях>/steamapps/common/Caves of Qud"`.
+2. Уперше декомпілює код гри. Це хвилина-дві, і результат лишається тільки у вас.
+3. Збирає мод з англійського тексту вашої гри та нашого перекладу.
+4. Підключає теку `mod/` до теки модів гри посиланням `CavesOfQudUA`:
+   - Windows: `%USERPROFILE%\AppData\LocalLow\Freehold Games\CavesOfQud\Mods`;
+   - macOS: `~/Library/Application Support/com.FreeholdGames.CavesOfQud/Mods`.
+
+Гра читає мод прямо з теки репозиторію, тож не переносьте й не видаляйте її.
+
+### 4. У грі
+
+1. Запустіть гру й **дозвольте моди зі скриптами**. Гра спитає про це сама, або ввімкніть їх
+   заздалегідь: Options → Mods → Allow scripting mods.
+   - Без цього гра вимикає мод цілком.
+   - Скрипти — це українська граматика (відмінки, рід, форми множини) і патчі для тексту, який
+     пише код гри. Увесь код відкритий, він у теці [`mod/`](mod/).
+2. На титульному екрані внизу ліворуч виберіть мову **«Українська»**. Гра перезапуститься.
+3. **Почніть нову гру.** Збереження фіксують текст на момент створення предметів та істот.
+
+### Оновлення і видалення
+
+Оновити — завантажити нову версію перекладу й зібрати мод знову, а тоді перезапустити гру:
+
+```bash
+git pull
+py tools/qud.py install
+```
+
+На macOS замість `py` пишіть `python3`.
+
+Видалити — спершу вибрати в грі англійську мову, тоді:
+
+```bash
+py tools/qud.py install --remove
+```
+
+Ця команда прибирає лише посилання з теки модів. Після неї теку репозиторію можна видалити.
+
+Журнал гри, де видно помилки мода:
+
+- Windows: `%USERPROFILE%\AppData\LocalLow\Freehold Games\CavesOfQud\Player.log`;
+- macOS: `~/Library/Logs/Freehold Games/CavesOfQud/Player.log`.
+
+На Linux усе так само, як на macOS (теку модів команда теж знаходить), але це не перевірено.
 
 ## Для перекладачів
 
@@ -67,7 +165,7 @@ powershell -File tools/deploy.ps1   # підключити mod/ до гри
 | `docs/decisions.md` | Журнал рішень |
 | `docs/style-guide.md` | Стиль перекладу й робочий цикл |
 | `docs/research/` | Дослідження: офіційний фреймворк, інші переклади, як гра працює з текстом |
-| `tools/qud.py` | `sync` / `save` / `build` / `validate` / `stats` / `import` (модулі в `tools/qudtr/`, тести в `tools/tests/`) |
+| `tools/qud.py` | `install` для гравців; `sync` / `save` / `build` / `validate` / `stats` / `import` для перекладачів (модулі в `tools/qudtr/`, тести в `tools/tests/`) |
 | `tools/deploy.ps1` | Підключає `mod/` до теки модів гри через junction (для розробки) |
 | `tools/misses.py` | Збирає з `Player.log` рядки, для яких гра не знайшла перекладу |
 | `tools/analysis/` | Скрипти, що міряють обсяг тексту й зміни між збірками |

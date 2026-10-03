@@ -16,9 +16,9 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from qudtr import spice  # noqa: E402
-from qudtr.sources import DEFAULT_GAME_DIR  # noqa: E402
+from qudtr.sources import GAME_DATA_DIR  # noqa: E402
 
-SPICE_FILE = DEFAULT_GAME_DIR / "CoQ_Data" / "StreamingAssets" / "Base" / "HistorySpice.jsonc"
+SPICE_FILE = GAME_DATA_DIR / "StreamingAssets" / "Base" / "HistorySpice.jsonc"
 
 
 def main(argv: list[str]) -> int:

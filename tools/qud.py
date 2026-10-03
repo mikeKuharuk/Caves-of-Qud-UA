@@ -10,10 +10,12 @@
   py tools/qud.py worksheet PO [--ctx RE]      untranslated units → work/batch/*.jsonl
   py tools/qud.py check-worksheet FILE ...     check a filled-in worksheet (no PO access)
   py tools/qud.py apply FILE ...               filled-in worksheets → PO catalogs
+  py tools/qud.py install  [--game DIR] [--remove]   build the mod and link it into the game (for players)
 
 translations/uk/*.jsonl (in git) holds only our Ukrainian text; the English lives in the local
 PO working copies, rebuilt from the installed game. The English string tables default to the
-installed game's CoQ_Data/StreamingAssets/Base/ExampleLanguage (set QUD_GAME_DIR to override).
+installed game's StreamingAssets/Base/ExampleLanguage, the game found in the Steam libraries
+(set QUD_GAME_DIR to the game's folder to override).
 """
 import argparse
 import pathlib
@@ -58,10 +60,18 @@ def main(argv=None) -> int:
     p_ap.add_argument("worksheets", nargs="+", type=pathlib.Path)
     p_cw = sub.add_parser("check-worksheet", help="check filled-in worksheets without applying them")
     p_cw.add_argument("worksheets", nargs="+", type=pathlib.Path)
+    p_in = sub.add_parser("install", help="build the mod from the installed game and link it into its Mods folder")
+    p_in.add_argument("--game", help="the game's folder (default: found in the Steam libraries)")
+    p_in.add_argument("--mods", help="the game's Mods folder (default: the usual one for this system)")
+    p_in.add_argument("--remove", action="store_true", help="unlink the mod from the Mods folder")
+    p_in.add_argument("--no-code", action="store_true", help="skip decompiling the game for the code tables")
 
     a = ap.parse_args(argv)
     if a.cmd == "check-worksheet":   # needs no game files and never touches the catalogs
         return 1 if commands.cmd_check_worksheet(a.worksheets) else 0
+    if a.cmd == "install":   # finds the game itself (qudtr/install.py)
+        from qudtr import install
+        return install.run(a.game, a.mods, remove=a.remove, with_code=not a.no_code)
     files, desc = sources.load(a.source, a.tag)
     print(f"source: {desc}")
     if a.cmd == "sync":
