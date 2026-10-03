@@ -5,6 +5,8 @@ import os
 import pathlib
 import subprocess
 
+from . import tags, units
+
 REPO = pathlib.Path(__file__).resolve().parents[2]
 DEFAULT_GAME_DIR = pathlib.Path(os.environ.get("QUD_GAME_DIR", r"D:\Steam\steamapps\common\Caves of Qud"))
 GAME_EXAMPLE_DIR = DEFAULT_GAME_DIR / "CoQ_Data" / "StreamingAssets" / "Base" / "ExampleLanguage"
@@ -45,8 +47,16 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
         return from_tag(tag), f"mirror tag {tag}"
     path = pathlib.Path(source) if source else GAME_EXAMPLE_DIR
     files = from_dir(path)
+    build = next((b for b in map(units.game_build, files.values()) if b), None)
     # HistorySpice has no example file; it lives next to ExampleLanguage in the game's Base folder
     spice = path.parent / "HistorySpice.jsonc"
     if spice.exists():
         files[spice.name] = spice.read_text(encoding="utf-8-sig")
+    # nor do the tags the game shows without exporting them (tags.py); they come from the blueprints there
+    blueprints = path.parent / "ObjectBlueprints"
+    if blueprints.is_dir():
+        table = tags.example_xml({p.name: p.read_text(encoding="utf-8-sig") for p in sorted(blueprints.glob("*.xml"))},
+                                 build)
+        if table:
+            files[tags.NAME] = table
     return files, str(path)

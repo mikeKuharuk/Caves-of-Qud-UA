@@ -161,6 +161,12 @@ https://steamcommunity.com/app/333640/discussions/2/563660860618434971/) **[пе
    `Base/Mutations.xml`). Мовний файл — звичайне злиття blueprint-ів, тож будь-який тег у ньому
    працює **[перевірено в коді; у грі ще ні]**.
 
+   Інші такі теги з текстом для гравця: `TitleIfNamed`, `TurretName`, `NoTeleport`,
+   `OverlandBlockMessage`, `PartDescription` (21 рядок у 2.0.212.31). Для них `sources.load` збирає з
+   `Base/ObjectBlueprints` ще одну таблицю, `Tags.example.xml` (`tools/qudtr/tags.py`). Далі вона
+   проходить звичайний шлях: `Tags.po` → `translations/uk/Tags.jsonl` → `Tags.uk.xml`. Теги, які код
+   читає як ключі (`Species`, `Class`, `TinkerCategory`, `Gender`), туди не потрапляють.
+
 ## Що нам дає фреймворк і чого не дає
 
 | Дає | Не дає (доведеться робити самим) |
