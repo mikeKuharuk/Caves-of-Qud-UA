@@ -66,7 +66,7 @@ salthopper	солестриб	m	species	proposed
 glowfish	світлорибка	f	species	proposed	
 qudzu	кудзу	f	species	proposed	гра слів: kudzu + Qud
 True Kin	Чистокровні	pl	genotype	ok	рішення Mike (D9). Одна особа: чистокровний/чистокровна
-Mutated Human	Мутована людина	f	genotype	proposed	
+Mutated Human	Мутовані люди	pl	genotype	proposed	D13: множина, як «Чистокровні»
 dram	драм	m	currency	ok	рішення Mike (D9). 1 драм, 2 драми, 5 драмів
 water ritual	ритуал води	m	concept	proposed	
 fresh water	прісна вода	f	item	proposed	
