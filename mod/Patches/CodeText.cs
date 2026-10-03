@@ -103,14 +103,14 @@ namespace CavesOfQudUA.Patches
             return t;
         }
 
-        /// <summary>«-{0} DV» → ^-(.+?) DV$.</summary>
+        /// <summary>«-{0} DV» → ^-(.*?) DV$.</summary>
         public static Regex PatternOf(string key)
         {
             var sb = new StringBuilder("^");
             int last = 0;
             foreach (Match m in Hole.Matches(key))
             {
-                sb.Append(Regex.Escape(key.Substring(last, m.Index - last))).Append("(.+?)");
+                sb.Append(Regex.Escape(key.Substring(last, m.Index - last))).Append("(.*?)");   // a part may come out empty
                 last = m.Index + m.Length;
             }
             sb.Append(Regex.Escape(key.Substring(last))).Append('$');

@@ -386,3 +386,146 @@ def scan_didx(src_dir: pathlib.Path) -> list[tuple[str, str, str]]:
                             key = didx_key(kind, verb, prep, iprep, extra, end)
                             found.setdefault(key, (didx_english(kind, verb, prep, iprep, extra, end), where))
     return [(k, e, w) for k, (e, w) in sorted(found.items())]
+
+
+# ---- Text: popups, failure messages and the message log ------------------------------------------------------
+
+SINK_CALL = re.compile(
+    r"(?<![\w])((?:Popup\.)(?:Show|ShowFail|ShowBlock|ShowYesNo|ShowYesNoCancel|ShowBlockPrompt|ShowBlockSpace|"
+    r"ShowBlockWithCopy|WarnYesNo|AskString|AskNumber|ShowAsync|ShowFailAsync|ShowYesNoAsync|ShowYesNoCancelAsync|"
+    r"AskStringAsync|AskNumberAsync|ShowSpace|PickOption|PickOptionAsync|ShowOptionList)|(?:[\w.]+\.)?Fail|"
+    r"(?:MessageQueue\.|IComponent<GameObject>\.)?AddPlayerMessage|(?:[\w.]+\.)?EmitMessage|"
+    r"(?:[\w.]+\.)?DisplayMessage)\s*\(")   # DisplayMessage: journal notices («You note the location of…»)
+SKIP_FILE = re.compile(r"Wish|Debug|Test|Cheat|MapEditor")
+STRING_ARRAY = re.compile(r"new\s+(?:string\s*\[\s*\]|List<string>)\s*\{")
+IDENT = re.compile(r"^[A-Za-z_]\w*$")
+BUILT = re.compile(r"^([A-Za-z_]\w*)\.ToString\(\)$")
+METHOD_HEAD = re.compile(r"\)\s*(?:where[^{]*)?$")
+CONTROL = re.compile(r"\b(?:if|for|foreach|while|switch|catch|using|lock|else|do|try|finally)\s*(?:\(|$)")
+
+
+def enclosing_body(masked: str, pos: int) -> tuple[int, int]:
+    """The span of the method body around pos: the innermost {…} whose head ends with a parameter list and is not
+    a control statement. The whole file if none."""
+    depth_starts, j, best = [], 0, (0, len(masked))
+    stack = []
+    for j, c in enumerate(masked):
+        if j >= pos and not stack:
+            break
+        if c == "{":
+            stack.append(j)
+        elif c == "}" and stack:
+            start = stack.pop()
+            if start < pos < j:
+                head = masked[max(0, start - 300):start].rstrip()
+                line = head[head.rfind("\n") + 1:] if "\n" in head else head
+                if METHOD_HEAD.search(head) and not CONTROL.search(line):
+                    if j - start < best[1] - best[0]:
+                        best = (start + 1, j)
+    # blocks still open at pos also enclose it
+    for start in stack:
+        end = matching(masked, start)
+        if end > pos:
+            head = masked[max(0, start - 300):start].rstrip()
+            line = head[head.rfind("\n") + 1:] if "\n" in head else head
+            if METHOD_HEAD.search(head) and not CONTROL.search(line) and end - start < best[1] - best[0]:
+                best = (start + 1, end)
+    return best
+
+
+def resolve(src: str, masked: str, pos: int, expr: str) -> list[str]:
+    """The texts an argument can be: its own patterns; for a local variable, what the method assigns to it; for
+    builder.ToString(), the Append chain of that builder in the method."""
+    expr = strip_parens(expr)
+    found = patterns(expr)
+    if found:
+        return found
+    a, b = enclosing_body(masked, pos)
+    body, mbody = src[a:b], masked[a:b]
+    if IDENT.match(expr):
+        out = []
+        for m in re.finditer(rf"(?<![\w.]){re.escape(expr)}\s*=(?!=)", mbody):
+            out += patterns(split_top(body[m.end():], ";")[0])
+        return out
+    m = BUILT.match(expr)
+    if m:
+        name = m.group(1)
+        built = []
+        for call in re.finditer(rf"(?<![\w]){re.escape(name)}\s*\.(Append|AppendLine|Compound)\s*\(|\)\s*\.(Append|AppendLine|Compound)\s*\(", mbody):
+            o = call.end() - 1
+            c = matching(body, o)
+            if c < 0:
+                continue
+            args = split_top(body[o + 1:c], ",")
+            method = call.group(1) or call.group(2)
+            if method == "Compound" and len(args) > 1:
+                sep = args[1].strip()
+                built.append(literal_value(sep) or {"'\n'": "\n", "' '": " "}.get(sep, " "))
+            ps = patterns(args[0]) if args else []
+            built.append(ps[0] if ps else HOLE)
+            if method == "AppendLine":
+                built.append("\n")
+        return ["".join(built)] if any(p not in (HOLE, "\n", " ") for p in built) else []
+    return []
+
+
+def specific(text: str) -> bool:
+    """A key the patch may look up: English words, and, for a pattern, enough fixed text that it cannot swallow
+    unrelated lines («You {0}» could)."""
+    if not useful(text):
+        return False
+    if "{0}" not in text:
+        return True
+    literal = re.sub(r"\{\d+\}|\{\{[^|}]*\||\}\}", " ", text)
+    words = re.findall(r"[A-Za-z]{2,}", literal)
+    # a pattern matches the whole line (^…$), so two words of fixed text are enough: «You receive {0}!»
+    return len(words) >= 3 or len(words) == 2 and len("".join(words)) >= 6
+
+
+def scan_text(src_dir: pathlib.Path) -> list[Entry]:
+    """Popups, failure messages and message-log lines the game's C# writes, line by line (CodeText splits a text
+    into lines when the whole is not a key)."""
+    entries: dict[str, str] = {}
+    for path in sorted(src_dir.rglob("*.cs")):
+        rel = path.relative_to(src_dir).as_posix()
+        if SKIP_FILE.search(rel) or rel.startswith(("XRL.Wish", "XRL.Tests")):
+            continue
+        src = path.read_text(encoding="utf-8-sig")
+        if not SINK_CALL.search(src):
+            continue
+        masked = mask(src)
+        cls = CLASS.search(masked)
+        where = cls.group(1) if cls else path.stem
+        for m in SINK_CALL.finditer(masked):
+            name = m.group(1)
+            if masked[m.start() - 1:m.start()] == ")" or re.search(r"\)\s*\.\s*$", masked[max(0, m.start() - 8):m.start()]):
+                continue   # a ReplaceBuilder chain: the string tables already did it
+            if re.search(r"\b(?:void|Keys|Task|bool|string)\s+(?:\w+\s+)*$", masked[max(0, m.start() - 40):m.start()]):
+                continue   # a declaration
+            o = m.end() - 1
+            c = matching(src, o)
+            if c < 0:
+                continue
+            args = split_top(src[o + 1:c], ",")
+            exprs = []
+            if name.endswith("EmitMessage"):
+                exprs = args[:2]
+            elif args:
+                exprs = [args[0]]
+            exprs += [mm.group(2) for a in args for mm in [NAMED_ARG.match(a)] if mm and mm.group(1) in ("Title", "Intro", "Prompt", "Message", "Msg")]
+            texts = []
+            for e in exprs:
+                if NAMED_ARG.match(e) and not NAMED_ARG.match(e).group(1) in ("Title", "Intro", "Prompt", "Message", "Msg"):
+                    continue
+                texts += resolve(src, masked, m.start(), e)
+            for arr in STRING_ARRAY.finditer(src[o + 1:c]):
+                start = o + 1 + arr.end() - 1
+                end = matching(src, start)
+                for item in split_top(src[start + 1:end], ","):
+                    texts += patterns(item)
+            for text in texts:
+                for line in lines_of(text):
+                    key = number_holes(line)
+                    if specific(key):
+                        entries.setdefault(key, f"{where} ({name.split('.')[-1]})")
+    return [Entry(k, w) for k, w in sorted(entries.items())]

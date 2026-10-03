@@ -68,7 +68,8 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
     # and the English the game's C# writes itself, from the decompiled code of this very build (ilspycmd, work/)
     decompiled = REPO / "work" / "decompiled" / str(build) / "Assembly-CSharp"
     if decompiled.is_dir():
-        for name, make in ((codetables.EFFECTS, codetables.effects_xml), (codetables.DIDX, codetables.didx_xml)):
+        for name, make in ((codetables.EFFECTS, codetables.effects_xml), (codetables.DIDX, codetables.didx_xml),
+                           (codetables.TEXT, codetables.text_xml)):
             table = make(decompiled, build)
             if table:
                 files[name] = table

@@ -99,6 +99,20 @@ def didx_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     return table_xml("DidX", rows, build, "the decompiled game code (Messaging.XDidY and its wrappers)")
 
 
+TEXT = "Code.Text.example.xml"
+TEXT_NOTE = ("Текст, який пише сам C# гри ({where}): спливне вікно, відмова, рядок журналу повідомлень чи "
+             "журналу пригод. Один рядок; {{0}}… — те, що рахує код (імена, числа), лишіть їх (англійський займенник "
+             "можна прибрати з нотаткою «qud-ok: code-hole — займенник»). Безглуздий ключ, складений з кусників коду, "
+             "лишайте без перекладу.")
+
+
+def text_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """Popups, failure messages and message-log lines the game's C# writes (codescan.scan_text)."""
+    from . import codescan
+    entries = [(e.key, TEXT_NOTE.format(where=e.where)) for e in codescan.scan_text(decompiled)]
+    return table_xml("Text", entries, build, "the decompiled game code (popups, Fail, the message log, the journal)")
+
+
 KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@Text$", re.S)
 
 
