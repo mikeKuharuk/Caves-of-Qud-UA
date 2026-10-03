@@ -1,0 +1,26 @@
+<!--
+  Runs the mod's Harmony patches against the game's own assemblies, outside the game. Build the mod first:
+    dotnet build tools/grammar-build
+    dotnet run (with the option project set to tools/patch-tests)
+  It loads the game's Assembly-CSharp and the mod's compiled DLL by reflection (they target the game's Mono
+  libraries, so they cannot be compiled into a .NET 10 program), applies every [HarmonyPatch] class with the game's
+  own Harmony, and calls the patched game methods. Only what needs no Unity runtime can be tested here.
+  Exit code 1 on a failure.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <!-- the game's Harmony keeps its patch info with BinaryFormatter, gone from .NET 9 on -->
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Tests.cs" />
+    <!-- the game's 0Harmony targets Mono; this build of the same library runs on .NET, and the mod's
+         [HarmonyPatch] attributes bind to it by assembly name -->
+    <PackageReference Include="Lib.Harmony" Version="2.4.2" />
+  </ItemGroup>
+</Project>

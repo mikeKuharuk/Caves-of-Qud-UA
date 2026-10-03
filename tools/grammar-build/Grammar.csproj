@@ -1,5 +1,5 @@
 <!--
-  Compile check for mod/Grammar without starting the game:
+  Compile check for the mod's C# (mod/Grammar, mod/Patches) without starting the game:
     dotnet build tools/grammar-build
   The game compiles the mod's .cs files itself; this project mirrors its setup
   (CoQ_Data/StreamingAssets/Base/Mods.csproj.template.txt: netstandard2.0, C# 9, the game's own assemblies).
@@ -18,7 +18,7 @@
     <NoWarn>$(NoWarn);CS1701;CS1702</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="../../mod/Grammar/**/*.cs" />
+    <Compile Include="../../mod/**/*.cs" />
     <Reference Include="$(QudLibPath)\*.dll" Private="false" />
   </ItemGroup>
 </Project>
