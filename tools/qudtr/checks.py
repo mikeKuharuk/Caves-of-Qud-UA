@@ -99,6 +99,9 @@ EN_POSTS = {"pluralize", "article", "indefiniteArticle", "definiteArticle", "a",
 # the mod's own post-processors a translation adds (mod/Grammar/UkrainianPostProcessors.cs): =rank|uk.word=,
 # =modifier|uk.agree#subject=, =adj|uk.pl=
 UK_POSTS = {"uk.word", "uk.agree", "uk.f", "uk.n", "uk.pl"}
+# the game's punctuation glue, printed only next to a value that is not empty: =subtype|after:,= avoids «Рівень 1,,
+# Classic» (around an empty value the game culls one space, never a comma: GameText.ProcessCulling)
+GLUE_POSTS = {"before", "after"}
 UK_AGREE_BARE = re.compile(r"\|uk\.agree(?![#\w.])")
 # replacers whose parameters are words to translate: =partial.if:some:all=, =already.sign:+:-=
 TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
@@ -110,12 +113,14 @@ def placeholder_root(key: str) -> str:
 
 
 def comparable(key: str) -> str:
-    """A placeholder as the check compares it: English post-processors and translatable parameters left out."""
+    """A placeholder as the check compares it: English post-processors, punctuation glue and translatable parameters
+    left out."""
     head, *posts = key.split("|")
     m = TEXT_PARAMS.match(head)
     if m:
         head = m.group(1)
-    return "|".join([head] + [p for p in posts if re.split(r"[:#]", p, maxsplit=1)[0] not in EN_POSTS | UK_POSTS])
+    dropped = EN_POSTS | UK_POSTS | GLUE_POSTS
+    return "|".join([head] + [p for p in posts if re.split(r"[:#]", p, maxsplit=1)[0] not in dropped])
 
 
 def uk_grammar_problem(key: str) -> str | None:

@@ -81,6 +81,8 @@ class Checks(unittest.TestCase):
                                       "=modifier|uk.agree#subject|spaceAfter==subject.displayNameOnlyDirect="), [])
         self.assertIn("uk-grammar", codes(src, "=spice:ordinal.!random|uk.agree= =rank|uk.word=", severity="error"))
         self.assertEqual(checks.check("the =spice:x.adjectives.!random= bones", "тверді й =spice:x.adjectives.!random|uk.pl= рештки"), [])
+        # the game's punctuation glue may come and go: a comma only after a subtype that is there
+        self.assertEqual(checks.check("Level =level= =subtype= =gamemode=", "Рівень =level=, =subtype|after:,= =gamemode="), [])
 
     def test_grammar_feedback_of_the_first_packages(self):
         # a fifth form for the player is allowed in g
