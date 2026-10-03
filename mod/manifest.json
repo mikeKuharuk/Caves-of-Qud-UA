@@ -13,6 +13,10 @@
     {
       "Path": "/Grammar/",
       "Build": ">=2.0.212"
+    },
+    {
+      "Path": "/Patches/",
+      "Build": ">=2.0.212"
     }
   ]
 }
