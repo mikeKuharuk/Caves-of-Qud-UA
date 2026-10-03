@@ -22,7 +22,7 @@ namespace CavesOfQudUA.Grammar
         public override void Resolve()
         {
             base.Resolve();  // adds the size adjective
-            UkGender gender = UkrainianGender.Of(Object);
+            UkGender gender = UkrainianGender.OfName(Object);  // a name is third person, even the player's
             if (gender == UkGender.Masculine || Count == 0) return;
             var agreed = new List<KeyValuePair<string, string>>();
             foreach (KeyValuePair<string, int> entry in this)

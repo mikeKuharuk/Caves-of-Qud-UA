@@ -30,6 +30,16 @@ namespace CavesOfQudUA.Grammar
         {
             if (obj == null) return UkGender.Masculine;
             if (IsSecondPerson(obj)) return UkGender.Plural;
+            return OfName(obj);
+        }
+
+        /// <summary>
+        /// The agreement class of an object's name, which is always in the third person: the adjectives before the
+        /// player's name follow the player's gender («слизька мокра Марта»), not the plural of «ви».
+        /// </summary>
+        public static UkGender OfName(GameObject obj)
+        {
+            if (obj == null) return UkGender.Masculine;
             UkGender? personal = Personal(obj);
             UkGender? noun = Noun(obj.GetBlueprint(false));
             if (obj.HasProperName || obj.IsPlayer()) return personal ?? noun ?? UkGender.Masculine;
