@@ -1,0 +1,98 @@
+{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Code.Species.example.xml"}
+{"k":"29e929d8c217fb7255a4","p":"f61c7b918004f91f","s":"8d3287c6fbb6","t":"алое","c":["qud-gender: n"]}
+{"k":"2952c94a0f62c8260bf3","p":"c1b52db171cc1e8e","s":"c25340a1397a","t":"амеба","c":["qud-gender: f","uk-voc: амебо"]}
+{"k":"ecfc24820303348baf8a","p":"6b56cb1f59fe7cf4","s":"67a333356cdc","t":"мураха","c":["qud-gender: f","uk-voc: мурахо"]}
+{"k":"2c95cb77dcdfa17b4218","p":"55bfb059ffd75fec","s":"b68e6884a9f4","t":"антилопа","c":["qud-gender: f","uk-voc: антилопо"]}
+{"k":"afbcb28e49075f8015b6","p":"7f523c7fa66f40a1","s":"eb3cad5b7bea","t":"мавпа","c":["qud-gender: f","uk-voc: мавпо"]}
+{"k":"930119c829076441c126","p":"8895dd29193faa79","s":"5bf55acf6675","t":"лазуродмух","c":["qud-gender: m"]}
+{"k":"76ab42dfffea64a84627","p":"e6a57ed51fccacdb","s":"ea9c0339aaf9","t":"павіан","c":["qud-gender: m","uk-voc: павіане"]}
+{"k":"ac9212d5d60d68d23e67","p":"b6defa01a81d5344","s":"ff1b4a27562d","t":"борсук","c":["qud-gender: m","uk-voc: борсуче"]}
+{"k":"b6d407f574041c6bb288","p":"ced62ceaeff5edcc","s":"94c2144b4b6f","t":"бетил","c":["qud-gender: m","uk-voc: бетиле"]}
+{"k":"bf3e43a91b89141a86e6","p":"27c80364d43d9bf6","s":"ca5bcec12f71","t":"кажан","c":["qud-gender: m","uk-voc: кажане"]}
+{"k":"0ebaae70e1f567803968","p":"8f9a511dbef10409","s":"bc98bb50e809","t":"ведмідь","c":["qud-gender: m","uk-voc: ведмедю"]}
+{"k":"5ab01c256e48afdeeacf","p":"0ef074b13f1336f1","s":"7b3e7cdfdbca","t":"жук","c":["qud-gender: m","uk-voc: жуче"]}
+{"k":"b7fc3d616cd76d6daaa2","p":"51355e92fb930e29","s":"d2abab53d2c4","t":"двоногий робот","c":["qud-gender: m","uk-voc: двоногий роботе"]}
+{"k":"bac0786d3999d02bbb84","p":"879b0d8958d0dead","s":"749a1a16c343","t":"кущ","c":["qud-gender: m"]}
+{"k":"515ca35b4fabfa78cd59","p":"55f7d19019df5bce","s":"77af778b51ab","t":"кіт","c":["qud-gender: m","uk-voc: коте"]}
+{"k":"895f2dc2e2dff618b823","p":"3f60283da3666d92","s":"9c1880f9229f","t":"сом","c":["qud-gender: m","uk-voc: соме"]}
+{"k":"f77ac2342c7c2b96aa49","p":"8dff7bf47861fde5","s":"61988f2da9e1","t":"багатоніжка","c":["qud-gender: f","uk-voc: багатоніжко"]}
+{"k":"3e77fc645783d248b46f","p":"29549bb8157b1305","s":"ef58ef3c1e32","t":"хамелеон","c":["qud-gender: m","uk-voc: хамелеоне"]}
+{"k":"8101160e21a266bf8b64","p":"ccd39b8169cfa0ee","s":"09f20eb14937","t":"молюск","c":["qud-gender: m","uk-voc: молюску"]}
+{"k":"83bf79d032809ec174f0","p":"877a5cf8fc4807b5","s":"3349a915f7cd","t":"краб","c":["qud-gender: m","uk-voc: крабе"]}
+{"k":"30565626091d1d9a33a7","p":"c12eea6ffdcfb08d","s":"084d8db02a67","t":"скелелюд","c":["qud-gender: m","uk-voc: скелелюде"]}
+{"k":"c83d22eeaa5a291b25db","p":"14f9011f69df9cc0","s":"a9f2a7587d7c","t":"крокодил","c":["qud-gender: m","uk-voc: крокодиле"]}
+{"k":"4a850740383937e02f9f","p":"5d135a58a042fd2f","s":"851d49d30876","t":"ворона","c":["qud-gender: f","uk-voc: вороно"]}
+{"k":"4b529f4082268eac9c7c","p":"91795059067bd6f2","s":"60a0f78b507f","t":"кристал","c":["qud-gender: m"]}
+{"k":"1b856c85fd47f4816f99","p":"6d143605fe4236b3","s":"e5b2dc12ab8a","t":"світанкокрил","c":["qud-gender: m","uk-voc: світанкокриле"]}
+{"k":"8431757ee09766e14585","p":"1b4515c59fe8125d","s":"cd6357efdd96","t":"пес","c":["qud-gender: m","uk-voc: псе"]}
+{"k":"f7c52d67e14b31e159d3","p":"35e2283903c84492","s":"e2ca6aec5255","t":"бабка","c":["qud-gender: f","uk-voc: бабко"]}
+{"k":"c420d3ce576233d60127","p":"4f9a71ed24edebc7","s":"8cd34e250f2f","t":"дромад","c":["qud-gender: m","uk-voc: дромаде"]}
+{"k":"993bc8870210f52ba503","p":"3a112869d214259e","s":"70ac66102173","t":"вугор","c":["qud-gender: m","uk-voc: вугре"]}
+{"k":"efb818aa1b5c6cea5a78","p":"6ea2f4845a136eff","s":"b474a99a2705","t":"риба","c":["qud-gender: f","uk-voc: рибо"]}
+{"k":"604cc633cf61efa25ec5","p":"56423d3602118304","s":"0ae2f6c706cf","t":"фламінго","c":["qud-gender: m","uk-voc: фламінго"]}
+{"k":"a6a88883a911610b51ea","p":"818a6cfee08b18a6","s":"c06b0cfe0cc5","t":"квітка","c":["qud-gender: f"]}
+{"k":"7036eb1dafb45e37c785","p":"7ccecdebbef647b9","s":"f4debdb7ab7d","t":"муха","c":["qud-gender: f","uk-voc: мухо"]}
+{"k":"1fd8d93ae3b653f5fb9d","p":"cffe94228c409668","s":"a5869ec70e48","t":"фрактус","c":["qud-gender: m"]}
+{"k":"81efa3eb219952588a63","p":"3ed621fef397ac83","s":"74fa5327cc0f","t":"жаба","c":["qud-gender: f","uk-voc: жабо"]}
+{"k":"add1e2773e9f066dcdbc","p":"3c14032aedfc7705","s":"dfae81e1bc7a","t":"гібон","c":["qud-gender: m","uk-voc: гібоне"]}
+{"k":"75a5515ab3aa12fe8b89","p":"554b708feb9b201a","s":"5480f08f3596","t":"коза","c":["qud-gender: f","uk-voc: козо"]}
+{"k":"b868a67e63443c14a0c0","p":"ce8f9bc78b03e209","s":"6aceb5a3d89d","t":"козлолюд","c":["qud-gender: m","uk-voc: козлолюде"]}
+{"k":"29a6f2c780280bd638e9","p":"864a4d76602026b9","s":"c82ca16f4dbf","t":"золотодмух","c":["qud-gender: m"]}
+{"k":"e204e99264433314ee3c","p":"2f8e35f442ad2d8d","s":"4f45bae37504","t":"шестиногий робот","c":["qud-gender: m","uk-voc: шестиногий роботе"]}
+{"k":"f094b452f85126b594ce","p":"53bea823943c8b73","s":"4106c0f12797","t":"гіндрен","c":["qud-gender: m","uk-voc: гіндрене"]}
+{"k":"e0bf050babe1c4142715","p":"d7e3efeb2743d64e","s":"fd62862b6dc2","t":"кінь","c":["qud-gender: m","uk-voc: коню"]}
+{"k":"ed97feb6c863d64569b3","p":"e8dc5763b07fe602","s":"e4e5d8e7546e","t":"робот-левітатор","c":["qud-gender: m","uk-voc: роботе-левітаторе"]}
+{"k":"4399a14b3dabf269669d","p":"06f061a321a3f11c","s":"79a5478768d2","t":"людина","c":["qud-gender: f","uk-voc: людино"]}
+{"k":"2d19ad835b0ae68fc38f","p":"881e41887db24c07","s":"3be9007f1789","t":"людиноподібний робот","c":["qud-gender: m","uk-voc: людиноподібний роботе"]}
+{"k":"c4e8cd749d5cb8945407","p":"f180d01c1a79675f","s":"c50a5e4de898","t":"гумор","c":["qud-gender: m"]}
+{"k":"58b64f878d9ee1301bbc","p":"a2b26f632c848bb2","s":"39e48f935fdc","t":"ігуана","c":["qud-gender: f","uk-voc: ігуано"]}
+{"k":"fe2a82fbd2b3052b2bf4","p":"06fcf787d4b03a4f","s":"9fec08e4574b","t":"інфраструктура","c":["qud-gender: f"]}
+{"k":"26ba3eaf310c46aff790","p":"8f441be59fd060be","s":"90319295c0ca","t":"нефритодмух","c":["qud-gender: m"]}
+{"k":"5e70d369756452b77a0e","p":"ad699f1f0abf605b","s":"22d8ec27fc12","t":"медуза","c":["qud-gender: f","uk-voc: медузо"]}
+{"k":"522c6c1b7cc0d7cb2df1","p":"f5534a5357990ab8","s":"3a3b1843d983","t":"горбочерв’як","c":["qud-gender: m","uk-voc: горбочерв’яче"]}
+{"k":"18b23d53a3b6e016f8b6","p":"2bbfb85903858bfa","s":"92f01795e1d3","t":"гальмокорінь","c":["qud-gender: m"]}
+{"k":"77259ce9c075245034cb","p":"362c24e93ac723ef","s":"adc6e9ebc4ea","t":"лах","c":["qud-gender: m"]}
+{"k":"30634049071139d3d2d2","p":"5420c1acd441efb8","s":"cc87cd82b5e4","t":"мінога","c":["qud-gender: f","uk-voc: міного"]}
+{"k":"cd38d6b286ba93c41624","p":"bf82a2f400b7b50c","s":"566bba575064","t":"п’явка","c":["qud-gender: f","uk-voc: п’явко"]}
+{"k":"7f4cefa3eca0caa22a90","p":"4f259566cf200fe3","s":"4625a81f62d0","t":"лишайник","c":["qud-gender: m"]}
+{"k":"c7ae7c0545464e888b61","p":"49fc2f9d0b10b207","s":"fab6e832b504","t":"латаття","c":["qud-gender: n"]}
+{"k":"01566121aca5d52f9507","p":"29b4985c021fc45a","s":"8e8b7ef0ac96","t":"жива плоть","c":["qud-gender: f"]}
+{"k":"b3a25fd31c5a0bac6426","p":"742793d9c391ad1f","s":"6e9e616fc2e4","t":"меха","c":["qud-gender: f","uk-voc: мехо"]}
+{"k":"4c6c77a1349efd4f3000","p":"ab60894fb9c5b502","s":"e8237a71776b","t":"мопанго","c":["qud-gender: n","uk-voc: мопанго"]}
+{"k":"fc8f45bfcd185531f27e","p":"4fed98ee9f222e70","s":"19c3d6e4f5c8","t":"метелик","c":["qud-gender: m","uk-voc: метелику"]}
+{"k":"b3106dac193348054255","p":"57a58339e74fc510","s":"292ddfdaecbc","t":"дивина","c":["qud-gender: f"]}
+{"k":"13c5403c1bd7150f6262","p":"a2371181577166c7","s":"d076c8fdf54b","t":"слизняк","c":["qud-gender: m","uk-voc: слизняче"]}
+{"k":"37efd87ec76b8a1a6599","p":"fa12303541f181f6","s":"87fb00d259cb","t":"окунь","c":["qud-gender: m","uk-voc: окуню"]}
+{"k":"74d4ceb29918909d3c01","p":"c39cf9fe2f1ee17c","s":"f0b8c9d84dd2","t":"свиня","c":["qud-gender: f","uk-voc: свине"]}
+{"k":"00a66f62575394da739f","p":"ea3ef510c2e288c4","s":"3bedfd8b0a7c","t":"колючник","c":["qud-gender: m"]}
+{"k":"07b4b241163e486b75bd","p":"450189f0f1879d16","s":"41927728f9eb","t":"чотириногий робот","c":["qud-gender: m","uk-voc: чотириногий роботе"]}
+{"k":"93fc810dd86214b16115","p":"fa80527614152887","s":"cd4fff429ba7","t":"кудзу","c":["qud-gender: f"]}
+{"k":"ccebb44ea0032d7b4b13","p":"d4a0539e6de37019","s":"4813494d137e","t":"корінь","c":["qud-gender: m"]}
+{"k":"9746104f122aa4c2d8ab","p":"58cd06771c16a78c","s":"3be6ed4b3397","t":"рожедмух","c":["qud-gender: m"]}
+{"k":"bfc9627bab89fbc39e5a","p":"f636859716eae3fc","s":"aff7dfbe4614","t":"саламандра","c":["qud-gender: f","uk-voc: саламандро"]}
+{"k":"43b0a8499b35894733c7","p":"a732b9e8e2edca98","s":"83833b00fc08","t":"солестриб","c":["qud-gender: m","uk-voc: солестрибе"]}
+{"k":"d3dee3b6ccc79b619595","p":"14f6a0e77bf045c0","s":"631ffa50b59a","t":"скорпіон","c":["qud-gender: m","uk-voc: скорпіоне"]}
+{"k":"f409a7fb2bbaf28845dd","p":"596c826e03c2472f","s":"31fc15942b0c","t":"акула","c":["qud-gender: f","uk-voc: акуло"]}
+{"k":"bad1e82a677833e6ad80","p":"8a1cab5990951ec8","s":"e343bdc26f89","t":"шейд","c":["qud-gender: m","uk-voc: шейде"]}
+{"k":"f11ee23905800966d2ac","p":"e8049ecf111355fa","s":"cd03861f0ff8","t":"слимак","c":["qud-gender: m","uk-voc: слимаче"]}
+{"k":"f921b9f34a9e90d916a0","p":"9548b0a1ac35098c","s":"64ad6f1ac1a4","t":"слінт","c":["qud-gender: m","uk-voc: слінте"]}
+{"k":"c2a6f7fbd7306707ded1","p":"8551926dcd19f6d1","s":"62156a7b494a","t":"равлик","c":["qud-gender: m","uk-voc: равлику"]}
+{"k":"29aa91943500bc973445","p":"d7fe7920c27192cc","s":"c0cc16c7a065","t":"пащеклац","c":["qud-gender: m","uk-voc: пащеклаце"]}
+{"k":"7612be4a0e61bef4cfa0","p":"4ddebd7ae27edcb5","s":"9bfa0b50a90e","t":"павук","c":["qud-gender: m","uk-voc: павуче"]}
+{"k":"52237b4d0eec2beb5adf","p":"e4ea1ad5dd7ae5df","s":"525eca1d5089","t":"зірка","c":["qud-gender: f"]}
+{"k":"dfb39192f2752ae6fbfc","p":"342ca91562bd89f2","s":"b5ccd0082268","t":"сукулент","c":["qud-gender: m"]}
+{"k":"24a0e267e425014dfca7","p":"e7b78bed1003d375","s":"6c75a9810d5a","t":"свардим","c":["qud-gender: m","uk-voc: свардиме"]}
+{"k":"6acd583104f569d70263","p":"b80368819f7ed90c","s":"7560bc7b4a35","t":"свиня","c":["qud-gender: f","uk-voc: свине"]}
+{"k":"5ecf7eabdfc22b0bbab4","p":"be1495310a47a10d","s":"55a4bc5be68e","t":"кліщ","c":["qud-gender: m","uk-voc: кліщу"]}
+{"k":"e62654fd116cae855b64","p":"62e7663a096bb69a","s":"224ec67c8947","t":"черепаха","c":["qud-gender: f","uk-voc: черепахо"]}
+{"k":"6f71d4496fbade2b6086","p":"6b16349f3d5aef21","s":"dc9c5edb8b2d","t":"дерево","c":["qud-gender: n"]}
+{"k":"e92969a55aff38f5e35c","p":"fc6b6f097eb31b79","s":"e5ca18130b8d","t":"триногий робот","c":["qud-gender: m","uk-voc: триногий роботе"]}
+{"k":"d30a920883d4831f6289","p":"7eaac6a10d29baf1","s":"551916735aee","t":"троль","c":["qud-gender: m","uk-voc: тролю"]}
+{"k":"fe0c58c07992f1b51ba2","p":"481c75741e302068","s":"7aa28455a7db","t":"турель","c":["qud-gender: f"]}
+{"k":"82670200feb6450cec99","p":"d7c3fbb0a1865c4d","s":"c25234c750b1","t":"їжак","c":["qud-gender: m","uk-voc: їжаче"]}
+{"k":"2fcc118b3be0eec5008e","p":"335fb442e7cd0ac0","s":"295fb2ee2022","t":"уршиїб","c":["qud-gender: m","uk-voc: уршиїбе"]}
+{"k":"b4e07d4c154026bd285c","p":"d1e1da5f126816a7","s":"76bf0a982e29","t":"ванта","c":["qud-gender: f"]}
+{"k":"107f9d9a95787dcee09b","p":"6a2b5c0680de7ef9","s":"3958765b23d8","t":"лоза","c":["qud-gender: f"]}
+{"k":"1757cd01db12da99e92f","p":"44b57b9301285e8e","s":"917b7bbd7da8","t":"колісний робот","c":["qud-gender: m","uk-voc: колісний роботе"]}
+{"k":"02c8aff4820ad562ef71","p":"82e1af009211f169","s":"9ea65c0807a0","t":"лісовичок","c":["qud-gender: m","uk-voc: лісовичку"]}
+{"k":"bee5a4555ec80756932a","p":"101a82e738fae96c","s":"b9af17af4fc5","t":"черв’як","c":["qud-gender: m","uk-voc: черв’яче"]}
