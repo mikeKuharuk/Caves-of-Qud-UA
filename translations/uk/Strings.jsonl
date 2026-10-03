@@ -1457,13 +1457,13 @@
 {"k":"5caa0dd3307d1e9688f8","p":"2e4c66a7b78de828","s":"c7860ef5b439","t":"=commandKeyConsole:Accept= Модифікувати  =commandKeyConsole:CmdInsert= Список модифікацій  =commandKeyConsole:Cancel= Вийти"}
 {"k":"a4a1bc9b26c9f9943e29","p":"013dbe8fc2bbd343","s":"af020a40fc9f","t":"У вас немає жодної схеми предметів."}
 {"k":"d858850d6d7c3483f48b","p":"f522ec93ee13c037","s":"67c233318ade","t":"=commandKeyConsole:Accept= Створити  =commandKeyConsole:V Positive=/=commandKeyConsole:V Negative= Гортати  =commandKeyConsole:Cancel= Вийти"}
-{"k":"eb0f03a815126f2dc198","p":"cf94038a674c8c9e","s":"0c5271d023d7","t":"Скринька бітів","c":["Bit Locker → «Скринька бітів» (новий термін); bits → біти, як «бітами для майстрування» в описі здібності заряджання."]}
+{"k":"eb0f03a815126f2dc198","p":"cf94038a674c8c9e","s":"0c5271d023d7","t":"Скринька брухту","c":["Bit Locker → «Скринька бітів» (новий термін); bits → біти, як «бітами для майстрування» в описі здібності заряджання."]}
 {"k":"ed4e7a7413de7769e3f0","p":"2921a11f25dadaa2","s":"f0238d8504fe","t":"=have.magnitude="}
 {"k":"aa80b1ba300379713bf3","p":"1dabd463d4636b61","s":"e92be09ea75e","t":"=bit= =description="}
 {"k":"982fc4f0207532e6bbe0","p":"4e4c6c3ceb57536d","s":"10a848bf872c","t":"-або-"}
 {"k":"6c7668b2b6dfd379f305","p":"7db3dc47261321af","s":"9d913d6e1820","t":"Для майстрування не годиться: =object=.","c":["=object= — предмет із тим самим blueprint-ом, що й інгредієнт, але непридатний (підробка); після двокрапки в називному."]}
 {"k":"b49035341072c6c32728","p":"868fc17caede1948","s":"19d9810fc72d","t":"У вас немає потрібного інгредієнта: =ingredients.orList=!"}
-{"k":"3a814eea0a72a6d11f11","p":"fe08f13081ee268b","s":"a4a8d7d723e9","t":"Бракує потрібних бітів <=bitcost=>! У вас є:\n\n=bits="}
+{"k":"3a814eea0a72a6d11f11","p":"fe08f13081ee268b","s":"a4a8d7d723e9","t":"Бракує потрібного брухту <=bitcost=>! У вас є:\n\n=bits="}
 {"k":"40c4d3befb3c7d47ae7d","p":"4e2d99b42b0ced6d","s":"60f748974dd1","t":"Не можна майструвати, коли поруч вороги!"}
 {"k":"6b836f1077e32347ab58","p":"014fe138bcd587b5","s":"f621353a2af6","t":"=object.Name= не =object.v:знімається:знімаєтеся:знімаються=.","c":["Предмет став підметом («Шолом не знімається»), тож без знахідного."]}
 {"k":"593e983887b5b037ab08","p":"2a8a503354a25e18","s":"83f905da0c8a","t":"Не вдається використати інгредієнт!"}
@@ -3319,7 +3319,7 @@
 {"k":"6453f746dcecf7a05edf","p":"618d841e8ceb5686","s":"990658ec5054","t":"=subject.Name= =subject.v:розбирає:розбираєте:розбирають=: =object.name= =subject.formatDirection:ifAny#direction=. Здобуто: =result.name= x=amount=.","c":["Дієслово своє («розбирає»): ShowSource має лише вінок із відьминого дерева («break down»)","uk-case: object=acc","qud-ok: placeholder — =amount.a.or.cardinal.names#result= → =result.name= x=amount="]}
 {"k":"2b8915907005e1a109f2","p":"caee16e6881b78f5","s":"641e6ab8da94","t":"=subject.Name= =subject.v:збирає:збираєте:збирають=: =result.name= x=amount= =subject.from.its.direction:ifAny#direction=.","c":["Дієслово своє («збирає»): =verb= — «harvest»","uk-case: result=acc","qud-ok: placeholder — =amount.a.or.cardinal.names#result= → =result.name= x=amount="]}
 {"k":"9fed7391534a8b63b9c4","p":"2e13f881f7d6bc40","s":"385769618da9","t":"Тут більше нічого збирати."}
-{"k":"392045aa6f71c9cc6962","p":"833584749699283a","s":"ab8d673b0fe0","t":"=chance=% шанс, що під час розбирання артефакту ви отримаєте =amount= =amount.plural:додатковий:додаткові:додаткових= =amount.plural:біт:біти:бітів= найвищого рівня"}
+{"k":"392045aa6f71c9cc6962","p":"833584749699283a","s":"ab8d673b0fe0","t":"=chance=% шанс, що під час розбирання артефакту ви отримаєте =amount= =amount.plural:додаткову:додаткові:додаткових= =amount.plural:одиницю:одиниці:одиниць= брухту найвищого рівня"}
 {"k":"8edf0a3772634dd54560","p":"3e6ce818f958fe17","s":"3c4c52c370bf","t":"Голографія","c":["назва деталі в техскані: «{{C|[назва: стан]}}» (StyledStatus.Format); код цього значення не порівнює. Злитно з великими літерами, як перекладені стани («ПотрібенНосій») і NameForStatus в Items.po"]}
 {"k":"5a28967a185148ac0d41","p":"523a39e21c886931","s":"7d3ff48f7306","t":"=subject.Name= =subject.v:з’являється:з’являєтеся:з’являються= =subject.to.the.direction=."}
 {"k":"e5eba955efdcae4d8448","p":"8b010a437937e964","s":"43449cae82d6","t":"=subject.Name= =subject.v:зникає:зникаєте:зникають= =subject.to.the.direction=."}
@@ -4624,7 +4624,7 @@
 {"k":"ce40fc6aed5142657429","p":"48f4e2212c0aa150","s":"e0829451de9d","t":"У вас немає енергоелементів, що підходять."}
 {"k":"fac31a9b54c178b9b39d","p":"a2f853bc67f333d4","s":"013b814ff7e0","t":"=object.Name=: виберіть енергоелемент","c":["uk-case: object=gen","Заголовок вибору для гравця."]}
 {"k":"9cebe893523163fc31c9","p":"93742964ae55a515","s":"edd07031b8df","t":"Не підходить!"}
-{"k":"2bd55c058a7f7f5161c9","p":"ce1b28aa6091bf68","s":"a6511749e948","t":"Не вдається вийняти новий енергоелемент з інвентаря!"}
+{"k":"2bd55c058a7f7f5161c9","p":"ce1b28aa6091bf68","s":"a6511749e948","t":"Не вдається вийняти новий енергоелемент з інвентарю!"}
 {"k":"83ef9949bc5074c86e46","p":"80faccc018247b69","s":"1b6b7bed51df","t":"=subject.Name= =subject.v:вставляє:вставляєте:вставляють= =object.name= у пристрій: =device.name=.","c":["uk-case: object=acc, device=acc","object — енергоелемент (ч. р., неістота, знахідний = називний), пристрій — після двокрапки."]}
 {"k":"18e3e66ca9577e232d28","p":"43ea83ca2e5b81f5","s":"1d2e0a00b4c3","t":"Не вдається вийняти старий енергоелемент!"}
 {"k":"458e389b745fdeb5a8bf","p":"b9cba22b7e224b9c","s":"f0ddcc165c1b","t":"=subject.Name= =subject.directionIfAny|addParens= =subject.v:зникає:зникаєте:зникають=.","c":["qud-ok: placeholder — =subject.directionIfAny= отримав addParens: напрямок після назви в дужках («Пащеклац (на північ) зникає»), порожній напрямок дужок не дає."]}
@@ -5126,7 +5126,7 @@
 {"k":"41de6794bbfd43f5ef7a","p":"c1c7b5b66df64b3d","s":"e6d9a242dadd","t":"=elements.join=","c":["лише змінні: переклад збігається з оригіналом"]}
 {"k":"17359f54d75fc01743af","p":"db194014440b552b","s":"7adff6e985cf","t":"Коли предмет увімкнено, =stat.name=: =adjust.signed==percent.if:%=","c":["When activated → «Коли предмет увімкнено» (як AddsRep, CancelRangedAttacks); «Характеристика: +N», як BasicCookingEffect_RandomStat Details"]}
 {"k":"8325c9d23904e25b605d","p":"cc44e84052699a23","s":"9ce234def9f1","t":"=stat.Name=: =adjust.signed==percent.if:%=","c":["«Сила: +2» замість «+2 Сила», як BasicCookingEffect_RandomStat Details; =stat.Name= — велика форма того самого ключа (на початку рядка)"]}
-{"k":"c20b8b3539ba72148013","p":"2517b9c324f97ce0","s":"1a17d6a66532","t":"[{{=color=|Невідомий біт =level=}}]","c":["запасна назва біта, коли в Data.xml немає запису (BitType_…_Data)"]}
+{"k":"c20b8b3539ba72148013","p":"2517b9c324f97ce0","s":"1a17d6a66532","t":"[{{=color=|Невідомий брухт =level=}}]","c":["запасна назва біта, коли в Data.xml немає запису (BitType_…_Data)"]}
 {"k":"fe791677fe2f8588dea0","p":"cc966c62af2c46d5","s":"71d06b2b55d5","t":"розбирання","c":["назва дії для «Ви припиняєте =autoActDescription=, бо …» — віддієслівний іменник, як «дослідження», «копання»"]}
 {"k":"52f7ce98261da910e29e","p":"12a80a26a5e846e8","s":"66dfa1b643d7","t":"предмет, над яким ви працювали, зник","c":["частина «Ви припиняєте розбирання, бо =because=.» (AutoAct Interrupt Message)"]}
 {"k":"7a1d4586036c94623c59","p":"12a80a26a5e846e8","s":"d729da01ed2e","t":"предмет, над яким ви працювали, знищено","c":["частина «…, бо =because=.»"]}
@@ -5315,7 +5315,7 @@
 {"k":"486efc170ee85eb6e488","p":"4bfcee30c5a7b0eb","s":"91e2a2c15ab3","t":"=num= Б","c":["bytes → «Б»: скорочення замість трьох форм множини"]}
 {"k":"64e34d5c80f1fb57eccc","p":"5024dce863d456fe","s":"d5e94c0c4105","t":", =cognomen=","c":["лише змінні: переклад збігається з оригіналом"]}
 {"k":"91b2add17bb67a46134c","p":"39a93199a8b6db54","s":"09f23d71ea39","t":"без ефекту","c":["=saveBonus= при нульовому бонусі"]}
-{"k":"62933060bb8fd6675345","p":"4b1bc4e34dc69a7f","s":"24f6804375df","t":"{{K|| Вартість у бітах |}}\n=coststring=","c":["bits → біти (Tinkering ConsoleUI Bit Locker → Скринька бітів)"]}
+{"k":"62933060bb8fd6675345","p":"4b1bc4e34dc69a7f","s":"24f6804375df","t":"{{K|| Вартість у брухті |}}\n=coststring=","c":["bits → біти (Tinkering ConsoleUI Bit Locker → Скринька бітів)"]}
 {"k":"ae4d2d00652c8f418948","p":"8f3d1806864ab6a4","s":"0405726a06e0","t":"{{K|| Інгредієнти |}}"}
 {"k":"e0e77dc50d4a03f93ece","p":"2d6faa7257e91610","s":"10a848bf872c","t":"-або-","c":["як Tinkering ConsoleUI -or- → -або-"]}
 {"k":"a2bd52b5c0fa3c11fb7b","p":"b7093293e95594a2","s":"812ad35228d8","t":"{{R|X}} =tinkereditem=","c":["лише змінні: переклад збігається з оригіналом"]}

@@ -78,7 +78,8 @@ carbide	карбід	m	material	proposed
 tonic	тонік	m	item	proposed	
 artifact	артефакт	m	item	proposed	
 scrap	брухт	m	item	proposed	
-bits	біти	pl	item	proposed	тінкерські компоненти
+bits (tinkering)	брухт	m	item	ok	D14. Незлічуване: «3 одиниці брухту». Види: брухт металу / електроніки / кристалів / енергосистем
+bits (data)	біти	pl	concept	ok	D14: біти даних — «псіонічні біти», «центильйони бітів»
 energy cell	енергоелемент	m	item	proposed	
 sultan	султан	m	title	proposed	і для жінок-султанів: «султан» як титул обох статей, без «султанка» (Hist-sultans; на підтвердження)
 Resheph	Решеф	m	character	ok	приклад з D4
@@ -421,7 +422,6 @@ ley lines	лей-лінії	pl	concept	proposed	Ley Shifting → Зсув лей
 X Generation (mutation)	Виділення X	n	pattern	proposed	Glitter Dust Generation → Виділення блискітного пилу
 Golden Dawn	«Золота Зоря»	f	concept	proposed	
 Bell of Rest	Дзвін Спочинку	m	item	proposed	
-bits (tinkering)	брухт	m	item	proposed	брухт металу / електроніки / кристалів / енергосистем
 pool	озерце	n	terrain	proposed	калюжа рідини на мапі
 tube (unknown tonic)	ампула	f	item	proposed	невідомий тонік
 Dark Vision	Темнозорість	f	mutation	proposed	
@@ -632,3 +632,4 @@ hobble (verb)	підрізати		skill	proposed	дієслово до вмін�
 shank (verb)	штрикнути		skill	proposed	дієслово до вміння «Штрик»
 go berserk	упасти в шал		skill	proposed	до вміння «Берсерк!»; «шал берсерка»
 rejoinder	зустрічний удар	m	skill	proposed	як вміння «Зустрічний удар»
+inventory	інвентар	m	ui	ok	D14: родовий «інвентарю»
