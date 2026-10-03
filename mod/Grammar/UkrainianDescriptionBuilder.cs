@@ -15,8 +15,11 @@ namespace CavesOfQudUA.Grammar
         // entries before the base name (AddBase: 10) are adjectives (AddAdjective: -500)
         const int BaseOrder = 10;
 
-        public UkrainianDescriptionBuilder(int Cutoff, bool BaseOnly) : base(Cutoff, BaseOnly)
+        // the base constructor with these parameters is obsolete (it would skip the translator), so set them here
+        public UkrainianDescriptionBuilder(int Cutoff, bool BaseOnly)
         {
+            this.Cutoff = Cutoff;
+            this.BaseOnly = BaseOnly;
         }
 
         public override void Resolve()
