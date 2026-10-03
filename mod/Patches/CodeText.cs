@@ -24,12 +24,30 @@ namespace CavesOfQudUA.Patches
 
         static readonly Dictionary<string, Table> Tables = new Dictionary<string, Table>();
         static readonly HashSet<string> Missed = new HashSet<string>();
+        static readonly Dictionary<string, string> Memo = new Dictionary<string, string>();
         static readonly Regex Hole = new Regex(@"\{(\d+)\}");
+        static readonly Regex English = new Regex("[A-Za-z]{2}");
+        static readonly Regex EnglishWord = new Regex("[A-Za-z]{3}");
 
-        /// <summary>The Ukrainian for text from table, agreed with agreeWith where the table says so.</summary>
+        /// <summary>
+        /// The Ukrainian for text from table, agreed with agreeWith where the table says so. A text with no English in
+        /// it (the string tables already translated it) passes at once; results are remembered, since the HUD asks for
+        /// the same effect descriptions every frame.
+        /// </summary>
         public static string Translate(string table, string text, GameObject agreeWith = null)
         {
-            if (string.IsNullOrEmpty(text)) return text;
+            if (string.IsNullOrEmpty(text) || !English.IsMatch(UkrainianForms.StripMarkup(text))) return text;
+            string memoKey = table + "\u0001" + (agreeWith == null ? "" : ((int)UkrainianGender.Of(agreeWith)).ToString())
+                             + "\u0001" + text;
+            if (Memo.TryGetValue(memoKey, out string cached)) return cached;
+            string result = Compute(table, text, agreeWith);
+            if (Memo.Count > 20000) Memo.Clear();
+            Memo[memoKey] = result;
+            return result;
+        }
+
+        static string Compute(string table, string text, GameObject agreeWith)
+        {
             Table t = Load(table);
             string whole = Find(table, t, text, agreeWith);
             if (whole != null) return whole;
@@ -119,7 +137,7 @@ namespace CavesOfQudUA.Patches
 
         static void Miss(string table, string text)
         {
-            if (!Uk.Active || string.IsNullOrEmpty(text) || !Regex.IsMatch(text, "[A-Za-z]{2}")) return;
+            if (!Uk.Active || string.IsNullOrEmpty(text) || !EnglishWord.IsMatch(UkrainianForms.StripMarkup(text))) return;
             if (!Missed.Add(table + "\u0001" + text)) return;
             try { MetricsManager.LogInfo("[uk-miss] " + table + ": " + text); }
             catch (System.Exception) { }   // a log line must never break the text (and there is no Unity in the tests)

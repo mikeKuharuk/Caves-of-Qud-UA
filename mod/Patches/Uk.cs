@@ -14,6 +14,12 @@ namespace CavesOfQudUA.Patches
         /// <summary>For tools/patch-tests, which run the patches outside the game (no options, no Unity).</summary>
         public static bool? ForceActive;
 
+        /// <summary>
+        /// Set by tools/patch-tests: there is no Unity, so patches on Unity components (PopupMessage) cannot be applied
+        /// and step aside through their Prepare().
+        /// </summary>
+        public static bool OutsideUnity;
+
         /// <summary>Whether the text holds a Cyrillic letter: our words, as opposed to English the code wrote.</summary>
         public static bool HasCyrillic(string text)
         {

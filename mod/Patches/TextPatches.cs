@@ -1,0 +1,109 @@
+using System.Collections.Generic;
+using System.Reflection;
+using HarmonyLib;
+using Qud.UI;
+using XRL.Messages;
+using XRL.UI;
+
+namespace CavesOfQudUA.Patches
+{
+    /// <summary>
+    /// Popups, failure messages and message-log lines the game's C# writes in English (607 popup and 335 log places
+    /// in the code, docs/research/localization-gaps.md §2): «You receive X!», «You cannot examine things while you are
+    /// confused.». They pass a few sinks, where the text goes through the Text code table (CodeText): exactly, by
+    /// pattern, or line by line. Text the string tables already translated has no English and passes at once.
+    /// </summary>
+    [HarmonyPatch(typeof(Popup), nameof(Popup.ShowBlock))]
+    static class ShowBlockPatch
+    {
+        // before Markup.Transform, so the keys' {{X|…}} markup still matches; it also covers Show, ShowFail and Fail
+        static void Prefix(ref string Message, ref string Title)
+        {
+            if (!Uk.Active) return;
+            Message = CodeText.Translate("Text", Message);
+            Title = CodeText.Translate("Text", Title);
+        }
+    }
+
+    /// <summary>The modern popup every other popup ends in: yes/no questions, prompts, option lists.</summary>
+    [HarmonyPatch(typeof(PopupMessage), nameof(PopupMessage.ShowPopup))]
+    static class ShowPopupPatch
+    {
+        static bool Prepare() => !Uk.OutsideUnity;   // a Unity component: only the game can patch it
+
+        static void Prefix(ref string message, ref string title, ref string contextTitle, List<QudMenuItem> buttons,
+                           List<QudMenuItem> items)
+        {
+            if (!Uk.Active) return;
+            message = CodeText.Translate("Text", message);
+            title = CodeText.Translate("Text", title);
+            contextTitle = CodeText.Translate("Text", contextTitle);
+            Items(buttons);
+            Items(items);
+        }
+
+        static void Items(List<QudMenuItem> list)
+        {
+            if (list == null) return;
+            for (int i = 0; i < list.Count; i++)
+            {
+                QudMenuItem item = list[i];
+                string text = CodeText.Translate("Text", item.text);
+                if (text == item.text) continue;
+                item.text = text;
+                list[i] = item;
+            }
+        }
+    }
+
+    /// <summary>Option lists, the classic UI included: the title, the intro and each option.</summary>
+    [HarmonyPatch]
+    static class PickOptionPatch
+    {
+        static IEnumerable<MethodBase> TargetMethods()
+        {
+            yield return AccessTools.Method(typeof(Popup), nameof(Popup.PickOption));
+            yield return AccessTools.Method(typeof(Popup), nameof(Popup.PickOptionAsync));
+        }
+
+        static void Prefix(ref string Title, ref string Intro, ref IReadOnlyList<string> Options)
+        {
+            if (!Uk.Active) return;
+            Title = CodeText.Translate("Text", Title);
+            Intro = CodeText.Translate("Text", Intro);
+            if (Options == null) return;
+            List<string> translated = null;
+            for (int i = 0; i < Options.Count; i++)
+            {
+                string text = CodeText.Translate("Text", Options[i]);
+                if (text == Options[i] && translated == null) continue;
+                if (translated == null)
+                {
+                    translated = new List<string>(Options.Count);
+                    for (int j = 0; j < i; j++) translated.Add(Options[j]);
+                }
+                translated.Add(text);
+            }
+            if (translated != null) Options = translated;
+        }
+    }
+
+    /// <summary>The message log.</summary>
+    [HarmonyPatch]
+    static class AddPlayerMessagePatch
+    {
+        static IEnumerable<MethodBase> TargetMethods()
+        {
+            yield return AccessTools.Method(typeof(MessageQueue), nameof(MessageQueue.AddPlayerMessage),
+                                            new[] { typeof(string), typeof(string), typeof(bool) });
+            yield return AccessTools.Method(typeof(MessageQueue), nameof(MessageQueue.AddPlayerMessage),
+                                            new[] { typeof(string), typeof(char), typeof(bool) });
+        }
+
+        static void Prefix(ref string Message)
+        {
+            if (!Uk.Active) return;
+            Message = CodeText.Translate("Text", Message);
+        }
+    }
+}

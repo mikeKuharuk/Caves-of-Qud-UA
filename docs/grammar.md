@@ -167,6 +167,10 @@ COMMENT[k] = "uk-forms: іржава|іржаве|іржаві"    # жіноч�
   (`=subject.Name= =subject.v:помирає:помираєте:помирають=!`). Ключ таблиці — `вид|дієслово|прийменник|
   непрямий прийменник|extra|кінцевий знак`; перекладач бачить англійською «<subject> die!».
 
+- `TextPatches`: спливні вікна, відмови й журнал повідомлень (`Popup.ShowBlock`, `PopupMessage.ShowPopup`,
+  `Popup.PickOption`, `MessageQueue.AddPlayerMessage`) — через таблицю `Text`. Текст без англійської (його вже
+  переклали таблиці рядків) проходить одразу; результати пам’ятаються.
+
 Перевірка без гри: `dotnet build tools/grammar-build`, потім `dotnet run --project tools/patch-tests`. Стенд
 вантажить збірку гри й DLL мода, застосовує патчі (Harmony тієї ж версії, що в грі, але для .NET) і викликає
 справжні методи гри.

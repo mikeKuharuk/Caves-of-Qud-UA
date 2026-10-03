@@ -52,6 +52,7 @@ static class Tests
         }
         mod = Assembly.LoadFrom(modDll);
 
+        mod.GetType("CavesOfQudUA.Patches.Uk", true).GetField("OutsideUnity").SetValue(null, true);
         var harmony = new HarmonyLib.Harmony("CavesOfQudUA.tests");
         harmony.PatchAll(mod);
         Console.WriteLine($"{harmony.GetPatchedMethods().Count()} game methods patched");
@@ -89,6 +90,12 @@ static class Tests
         Type didx = mod.GetType("CavesOfQudUA.Patches.DidX", true);
         Eq("X|die||||!", didx.GetMethod("Key").Invoke(null, new object[] { "X", "die", null, null, null, "!" }), "the DidX key");
         Eq("XZ|sit|down on|||.", didx.GetMethod("Key").Invoke(null, new object[] { "XZ", "sit", "down on", null, null, null }), "a null end mark is a full stop");
+
+        // the Text table at the sinks: a pattern with a Ukrainian name in it, and text with no English passing at once
+        Add("Text", "You receive {0}!", "Ви отримуєте: {0}!");
+        Eq("Ви отримуєте: сокира!", Translate("Text", "You receive сокира!"), "a sink pattern");
+        Eq("Ви вже це знаєте.", Translate("Text", "Ви вже це знаєте."), "no English: unchanged");
+        Eq("{{R|Ворог}}", Translate("Text", "{{R|Ворог}}"), "markup alone is not English");
 
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");
