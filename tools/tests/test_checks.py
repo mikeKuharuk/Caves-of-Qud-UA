@@ -39,6 +39,11 @@ class Checks(unittest.TestCase):
         self.assertIn("placeholder", codes("=subject.T= hits you.", "Хтось б'є вас.", severity="warning"))
         self.assertIn("placeholder", codes("Hits you.", "=subject.T= б'є вас.", severity="warning"))
         self.assertNotIn("placeholder", codes("=a= and =b=", "=b= і =a="))  # reordering is fine
+        # an argument the source passes after «#» is the code's variable: the translation may name it
+        self.assertNotIn("placeholder", codes("=subject.Does#verb= the =thing=.",
+                                              "=subject.Name= =verb|uk.v#subject= =thing=."))
+        self.assertIn("placeholder", codes("=subject.Does:hit= the =thing=.",
+                                           "=subject.Name= =verb|uk.v#subject= =thing=.", severity="warning"))
 
     def test_adjacent_placeholders(self):
         src = "=pronouns.subjective==verb:'re:afterpronoun= here"

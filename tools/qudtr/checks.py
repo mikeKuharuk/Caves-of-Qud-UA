@@ -344,6 +344,11 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
     replaced = {placeholder_root(k) for k in missing if EN_GRAMMAR.match(k)}
     for key in [k for k in extra if placeholder_root(k) in replaced]:
         del extra[key]
+    # an argument the source names after «#» (=subject.Does#verb=) is a variable of the code's own: the translation
+    # may name it directly (=verb|uk.v#subject=, a data verb from the Verbs table)
+    params = {p for k in PLACEHOLDER.findall(msgid) for p in re.findall(r"#(\w+)", k)}
+    for key in [k for k in extra if placeholder_root(k) in params]:
+        del extra[key]
     dst_roots = {placeholder_root(k) for k in dst_ph} | {placeholder_root(k) for k in spaced}
     for key in [k for k in missing if EN_GRAMMAR.match(k) and placeholder_root(k) in dst_roots]:
         del missing[key]

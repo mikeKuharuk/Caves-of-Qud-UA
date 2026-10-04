@@ -399,9 +399,16 @@ FIELD_DEFAULT = re.compile(r"\b(?:public|private|protected|internal)\s+(?:static
 TAG_LOOKUP = re.compile(r'^(?:[\w.]+\.)?Get(?:TagOrStringProperty|TagOrProperty|StringProperty|Tag)\(\s*"([^"]+)"'
                         r'(?:\s*,\s*("(?:[^"\\]|\\.)*"))?\s*\)$')
 MEMBER = re.compile(r"^[A-Za-z_]\w*\.([A-Za-z_]\w*)$")
-# blueprint verbs the code passes to a method parameter, out of the scanner's reach: BootSequence.BootUI(…, Verb, …)
+# blueprint verbs the code passes to a method parameter, out of the scanner's reach: BootSequence.BootUI(…, Verb, …),
+# Harvestable.GetVerb() into WDidXToYWithZ, a part's Verb into an effect or an event parameter, a template's =verb=
 EXTRA_VERB_FIELDS = (("BootSequence", "VerbOnBootInitialized"), ("BootSequence", "VerbOnBootDone"),
-                     ("BootSequence", "VerbOnBootAborted"))
+                     ("BootSequence", "VerbOnBootAborted"), ("Harvestable", "HarvestVerb"), ("RefractLight", "Verb"),
+                     ("ReflectProjectiles", "Verb"), ("FabricateFromSelf", "FabricateVerb"))
+# the default verb a part takes from the string tables, which stays English there to key the Verbs table: «disappear»
+# of TeleportTo, «harvest», «butcher», «fabricate» (the templates conjugate it through =verb|uk.v#subject=)
+VERB_DEFAULT = re.compile(r'_S\(\s*"([^"]*[Dd]efault[^"]*[Vv]erb[^"]*)"\s*,\s*"([a-z][a-z ]*)"\s*\)')
+# a liquid's freezing verb (Liquids.xml), which Die narrates through DidX: «The lava solidifies!»
+FREEZE_VERB = re.compile(r'<freezeObject\b[^>]*\bVerb="([^"]+)"')
 
 
 def default_value(rhs: str) -> str | None:
@@ -421,6 +428,7 @@ class GameData:
     def __init__(self, src_dir: pathlib.Path, blueprints: dict[str, str] | None):
         self.defaults: dict[str, set[str]] = {}      # field → defaults, in any class
         self.class_defaults: dict[tuple[str, str], set[str]] = {}
+        self.verb_defaults: dict[str, str] = {}       # a string table's default verb → its context
         for path in src_dir.rglob("*.cs"):
             text = path.read_text(encoding="utf-8-sig")
             for m in FIELD_DEFAULT.finditer(text):
@@ -428,12 +436,16 @@ class GameData:
                 if value:
                     self.defaults.setdefault(m.group(1), set()).add(value)
                     self.class_defaults.setdefault((path.stem, m.group(1)), set()).add(value)
+            for context, verb in VERB_DEFAULT.findall(text):
+                self.verb_defaults.setdefault(verb, context)
         self.attributes: dict[str, set[str]] = {}    # attribute → values, on any part
         self.part_attributes: dict[tuple[str, str], set[str]] = {}
         self.tags: dict[str, set[str]] = {}
+        self.freeze_verbs: set[str] = set()
         for text in (blueprints or {}).values():
             from .units import uncommented
             text = uncommented(text)
+            self.freeze_verbs.update(FREEZE_VERB.findall(text))
             for part, attrs in re.findall(r'<part\s+Name="([^"]+)"([^>]*)>', text):
                 for a, v in re.findall(r'(\w+)="([^"]*)"', attrs):
                     if v:
@@ -588,6 +600,10 @@ def _analyse_didx(src_dir: pathlib.Path, blueprints: dict[str, str] | None):
     for cls_name, field_name in EXTRA_VERB_FIELDS:
         for v in data.field(cls_name, field_name):
             verbs.setdefault(v, cls_name)
+    for v, context in sorted(data.verb_defaults.items()):
+        verbs.setdefault(v, f"«{context}» у Strings")
+    for v in sorted(data.freeze_verbs):
+        verbs.setdefault(v, "Liquids: як застигає рідина (смерть рідини через DidX)")
     result = ([(k, e, w) for k, (e, w) in sorted(found.items())], [Entry(k, w) for k, w in sorted(verbs.items())])
     _ANALYSIS[cache_key] = result
     return result

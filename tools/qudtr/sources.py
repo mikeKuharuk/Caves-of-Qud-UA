@@ -78,9 +78,14 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
             table = make(decompiled, build)
             if table:
                 files[name] = table
-        # the narration also needs the blueprints: the verbs the data gives (codescan.GameData)
+        # the narration also needs the blueprints: the verbs the data gives (codescan.GameData), the liquids' freezing
+        # verbs among them
+        data = dict(texts)
+        liquids = path.parent / "Liquids.xml"
+        if liquids.exists():
+            data[liquids.name] = liquids.read_text(encoding="utf-8-sig")
         for name, make in ((codetables.DIDX, codetables.didx_xml), (codetables.VERBS, codetables.verbs_xml)):
-            table = make(decompiled, build, texts)
+            table = make(decompiled, build, data)
             if table:
                 files[name] = table
     # nor the data files with no export at all, and what the Factions export misses (datatables.py)
