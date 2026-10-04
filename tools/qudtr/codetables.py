@@ -189,6 +189,21 @@ def rules_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     return table_xml("Rules", entries, build, "the decompiled game code (rules lines of descriptions)")
 
 
+DAMAGE = "Code.Damage.example.xml"
+DAMAGE_NOTE = ("Кінець рядка шкоди ({where}): після «Ви отримуєте 5 шкоди» чи «Пащеклац отримує 5 шкоди». %t, %o — "
+               "чиє це було, %O — хто це зробив, %S — хто розпалив: замість них пишіть "
+               "=object.p:<гравець>:<інший, @ — ім’я>:<коли нікого>=, напр. «від =object.p:вашого укусу:укусу (@):"
+               "укусу=.»; =subject…= — той, хто отримує шкоду. Ім’я в пропуску чи @ стоїть у називному, тож — у "
+               "дужках. {{0}}… — те, що підставляє код.")
+
+
+def damage_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """The tails of the damage lines (codescan.scan_damage): mod/Patches/DamagePatches renders them."""
+    from . import codescan
+    entries = [(e.key, DAMAGE_NOTE.format(where=e.where)) for e in codescan.scan_damage(decompiled)]
+    return table_xml("Damage", entries, build, "the decompiled game code (TakeDamage messages)")
+
+
 KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@(?:Text|Forms)$", re.S)
 
 

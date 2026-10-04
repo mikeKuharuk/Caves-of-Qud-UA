@@ -85,6 +85,11 @@ class Checks(unittest.TestCase):
         self.assertEqual(checks.check("=subject.T= =verb:sunder= =object.the.name's= mind!",
                                       "=subject.Name= =subject.v:розтрощує:розтрощуєте:розтрощують= =object.p:ваш розум:розум (@)=!"), [])
         self.assertIn("uk-grammar", codes("x =object.name= y", "x =object.p:= y", severity="error"))
+        # a damage tail's third form, for no one to blame (DamagePatches), may say nothing; the first two may not
+        self.assertEqual(checks.check("from the fire%S!", "від вогню =object.p:(ваш):(@):=!"), [])
+        self.assertEqual(checks.check("from %t bite.", "від =object.p:вашого укусу:укусу (@):укусу=."), [])
+        self.assertIn("uk-grammar", codes("from %t bite.", "від =object.p::укусу (@):укусу=.", severity="error"))
+        self.assertIn("uk-grammar", codes("from %t bite.", "від =object.p:a:b:c:d=.", severity="error"))
         # the game's punctuation glue may come and go: a comma only after a subtype that is there
         self.assertEqual(checks.check("Level =level= =subtype= =gamemode=", "Рівень =level=, =subtype|after:,= =gamemode="), [])
         # a direction can be empty (the player; the same cell): brackets around it must be glued on

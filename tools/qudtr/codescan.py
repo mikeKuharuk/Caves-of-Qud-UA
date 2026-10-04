@@ -1130,7 +1130,7 @@ def computed_texts(expr: str, src: str, masked: str, pos: int, family: list[tupl
     if BUILT.match(expr):
         if "LocalizationMatch" in src[a:b]:
             return []   # a builder beside the English that checks its _T twin (ModRecycling)
-        return resolve(src, masked, pos, expr)
+        return builder_texts(src, masked, BUILT.match(expr).group(1), pos, {})
     m = CALLED.match(name)
     if m:
         return [t for fsrc, fmasked in family for _, s, e in bodies(fmasked, {m.group(1)}) for t in built_texts(fsrc[s:e])]
@@ -1268,4 +1268,55 @@ def scan_rules(src_dir: pathlib.Path) -> list[Entry]:
             for found in computed_texts(positional[0], src, masked, m.start(), family):
                 for key in code_keys(found):
                     entries.setdefault(key, where)
+    return [Entry(k, w) for k, w in sorted(entries.items())]
+
+
+# ---- Damage: the tails of the damage lines -----------------------------------------------------------------------
+
+TAKE_DAMAGE = re.compile(r"(?<![\w])(TakeDamage)\s*\(")
+MESSAGE_DEFAULT = re.compile(r'\bstring Message = ("(?:[^"\\]|\\.)*")')
+DAMAGE_EVENT = re.compile(r'Event\.New\(\s*"TakeDamage"')
+DAMAGE_EVENT_VAR = re.compile(r'(\w+)\s*=\s*Event\.New\(\s*"TakeDamage"')
+MESSAGE_LITERAL = re.compile(r'(\w+)\.SetParameter\(\s*"Message",\s*')
+
+
+def scan_damage(src_dir: pathlib.Path) -> list[Entry]:
+    """The tails of the damage lines: what the code passes TakeDamage as its Message («from %t bite.», by default
+    «from %t attack.») — named, in its place among the arguments (the ref overload's tenth, the others' second, or
+    the third of TakeDamage(Amount, FromAttacker, ShowMessage)), or as the TakeDamage event's parameter. Physics
+    puts a head before it and fills its %-codes in English; DamagePatches takes the tail over first."""
+    tree = SourceTree(src_dir)
+    entries: dict[str, str] = {}
+
+    def add(texts, where):
+        for found in texts:
+            for key in code_keys(found):
+                entries.setdefault(key, where)
+    for where, family, src, masked, m, positional, named in tree.calls(TAKE_DAMAGE, "bool|void"):
+        expr = named.get("Message", named.get("ShowMessage"))
+        if expr is None and positional:
+            if positional[0].lstrip().startswith("ref "):
+                expr = positional[9] if len(positional) > 9 else None
+            elif len(positional) == 3 and not patterns(positional[1], nested=True):
+                expr = positional[2]
+            elif len(positional) > 1:
+                expr = positional[1]
+        if expr is not None:
+            add(computed_texts(expr, src, masked, m.start(), family), where)
+    for path, raw in tree.raw.items():
+        if "TakeDamage" not in raw:
+            continue
+        for m in MESSAGE_DEFAULT.finditer(raw):
+            add([literal_value(m.group(1))], path.stem)
+        if DAMAGE_EVENT.search(raw):
+            src, masked = tree.text(path)
+            # only the TakeDamage event's own Message: another event's («Attacked», for the AI) is an identifier
+            events = {m.group(1) for m in DAMAGE_EVENT_VAR.finditer(masked)}
+            for m in MESSAGE_LITERAL.finditer(masked):
+                if m.group(1) not in events:
+                    continue
+                o = m.start() + m.group(0).index("(")
+                args = split_top(src[o + 1:matching(src, o)], ",")
+                if len(args) > 1 and not BUILT.match(strip_parens(args[1])):
+                    add(computed_texts(args[1], src, masked, m.start(), [(src, masked)]), f"{path.stem} (TakeDamage)")
     return [Entry(k, w) for k, w in sorted(entries.items())]

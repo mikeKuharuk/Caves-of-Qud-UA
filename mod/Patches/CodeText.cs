@@ -34,6 +34,23 @@ namespace CavesOfQudUA.Patches
         static readonly Regex English = new Regex("[A-Za-z]{2}");
         static readonly Regex EnglishWord = new Regex("[A-Za-z]{3}");
 
+        /// <summary>Whether text, its markup aside, has English in it: what the string tables did not translate.</summary>
+        public static bool HasEnglish(string text)
+        {
+            return !string.IsNullOrEmpty(text) && English.IsMatch(UkrainianForms.StripMarkup(text));
+        }
+
+        static readonly Regex Variable = new Regex(@"=[A-Za-z_][\w.]*(?::[^=\n]*)?=");
+
+        /// <summary>
+        /// Whether a translation still has an English word in it, its markup and our grammar variables aside
+        /// (=object.p:…=): a general key that took a hole it should not have.
+        /// </summary>
+        public static bool HasEnglishWord(string text)
+        {
+            return !string.IsNullOrEmpty(text) && EnglishWord.IsMatch(Variable.Replace(UkrainianForms.StripMarkup(text), " "));
+        }
+
         /// <summary>
         /// The Ukrainian for text from table, agreed with agreeWith where the table says so. A text with no English in
         /// it (the string tables already translated it) passes at once; results are remembered, since the HUD asks for
@@ -41,7 +58,7 @@ namespace CavesOfQudUA.Patches
         /// </summary>
         public static string Translate(string table, string text, GameObject agreeWith = null)
         {
-            if (string.IsNullOrEmpty(text) || !English.IsMatch(UkrainianForms.StripMarkup(text))) return text;
+            if (!HasEnglish(text)) return text;
             string memoKey = table + "\u0001" + (agreeWith == null ? "" : ((int)UkrainianGender.Of(agreeWith)).ToString())
                              + "\u0001" + text;
             if (Memo.TryGetValue(memoKey, out string cached)) return cached;
@@ -205,6 +222,9 @@ namespace CavesOfQudUA.Patches
             sb.Append(Regex.Escape(key.Substring(last))).Append('$');
             return new Regex(sb.ToString());
         }
+
+        /// <summary>Logs text as missing from table (once): for a caller that found a key it cannot use.</summary>
+        public static void LogMiss(string table, string text) => Miss(table, text);
 
         static void Miss(string table, string text)
         {

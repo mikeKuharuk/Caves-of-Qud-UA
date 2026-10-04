@@ -81,9 +81,9 @@ def placeholder_key(token: str) -> str:
 
 
 # =X.v:<3 од.>:<2 мн.>[:<3 мн.>]=, =X.g:<ч.>:<ж.>[:<с.>[:<мн.>[:<гравець>]]]=, =N.plural:<1>:<2–4>:<5+>=,
-# =X.p:<для гравця>[:<для інших, @ — ім’я>]= (mod/Grammar)
+# =X.p:<для гравця>[:<для інших, @ — ім’я>[:<коли нікого немає: лише хвости шкоди, DamagePatches>]]= (mod/Grammar)
 UK_GRAMMAR = re.compile(r"^(?:[A-Za-z_][\w]*\.)+(v|V|g|G|plural|p|P)(?::|$)")
-UK_GRAMMAR_FORMS = {"v": (2, 3), "g": (2, 5), "plural": (3, 3), "p": (1, 2)}
+UK_GRAMMAR_FORMS = {"v": (2, 3), "g": (2, 5), "plural": (3, 3), "p": (1, 3)}
 # the same, with forms that may contain spaces: the game accepts them, PLACEHOLDER does not see them
 UK_GRAMMAR_SPACED = re.compile(r"=((?:[A-Za-z_]\w*\.)+(?:v|V|g|G|plural|p|P):[^=\n]*\s[^=\n]*)=")
 # names a =X.p:…= stands for (its @): =object.name=, =object.name:withTitles=, =object.the.name's=
@@ -144,7 +144,9 @@ def uk_grammar_problem(key: str) -> str | None:
     name = UK_GRAMMAR.match(head).group(1)
     forms = head.split(":")[1:]
     lo, hi = UK_GRAMMAR_FORMS[name.lower()]
-    if not lo <= len(forms) <= hi or not all(f.strip() for f in forms):
+    # p's third form, for no one to blame, may say nothing: «від вогню=object.p: (ваш): (@):=!»
+    filled = forms[:2] if name.lower() == "p" else forms
+    if not lo <= len(forms) <= hi or not all(f.strip() for f in filled):
         want = str(lo) if lo == hi else f"{lo}–{hi}"
         return f"={key}= needs {want} non-empty forms, has {len(forms)}"
     return None

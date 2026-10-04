@@ -73,7 +73,8 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
     if decompiled.is_dir():
         for name, make in ((codetables.EFFECTS, codetables.effects_xml), (codetables.TEXT, codetables.text_xml),
                            (codetables.WORDS, codetables.words_xml), (codetables.ABILITIES, codetables.abilities_xml),
-                           (codetables.FRAGMENTS, codetables.fragments_xml), (codetables.RULES, codetables.rules_xml)):
+                           (codetables.FRAGMENTS, codetables.fragments_xml), (codetables.RULES, codetables.rules_xml),
+                           (codetables.DAMAGE, codetables.damage_xml)):
             table = make(decompiled, build)
             if table:
                 files[name] = table

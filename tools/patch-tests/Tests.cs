@@ -75,6 +75,7 @@ static class Tests
         Patched("XRL.World.Anatomy.BodyPart", "GetOrdinalDescription", "Prefix");
         Patched("XRL.World.Parts.ActivatedAbilities", "AddAbility", "Prefix");
         Patched("XRL.World.GameObject", "SetActivatedAbilityDisplayName", "Prefix");
+        Patched("XRL.World.Parts.Physics", "ProcessTakeDamage", "Prefix");
         Patched("XRL.World.Parts.ActivatedAbilityEntry", "Read", "Postfix");
 
         SetActive(true);
@@ -190,6 +191,23 @@ static class Tests
             "{0} влучає у вас {{{1}|(x{2})}} і завдає {3} шкоди ({5}). [{6}]");
         Eq("Пащеклац влучає у вас {{y|(x1)}} і завдає 3 шкоди (гострі щелепи). [12]",
            Translate("Test11", "Пащеклац hits {{y|(x1)}} for 3 damage with its гострі щелепи. [12]"), "a melee hit");
+
+        // a damage line's tail: with no one to blame, =object.p:…= takes its third form (and an empty one its space)
+        Type damage = mod.GetType("CavesOfQudUA.Patches.Damage", true);
+        string NoOne(string template) => (string)damage.GetMethod("NoOne").Invoke(null, new object[] { template });
+        Eq("від атаки.", NoOne("від =object.p:вашої атаки:атаки (@):атаки=."), "no one: the third form");
+        Eq("від атаки.", NoOne("від =object.p:вашої атаки:атаки (@)=."), "no one: the second form without the name");
+        Eq("від вогню!", NoOne("від вогню =object.p:(ваш):(@):=!"), "no one: nothing, and no space before «!»");
+        // a general key takes a tail it does not know, with its %t or English in a hole: the tail stays as the game has it
+        Add("Damage", "from {0}!", "({0})!");
+        string Tail(string message) => (string)damage.GetMethod("Tail").Invoke(null, new object[] { message, null, null, true });
+        Eq(null, Tail("from %t mystery!"), "a %t or an English word left in a hole is no translation");
+        Eq(null, Tail("from a mystery!"), "an English word left in a hole is no translation");
+        Type codeText = mod.GetType("CavesOfQudUA.Patches.CodeText", true);
+        Eq("False", codeText.GetMethod("HasEnglishWord").Invoke(null, new object[] { "від =object.p:вашої атаки:атаки (@)=." }).ToString(),
+           "our grammar variables are not English");
+        Eq(null, Tail("від укусу."), "a tail the string tables gave passes");
+        // (a tail that renders goes through the game's template engine, which is empty outside the game)
 
         // a statistic's ID in a hole: the string tables' title for it; with no blueprints loaded, the ID as it is
         Add("Test9", "Fails a {0} save.", "Провалює кидок «{0}».");

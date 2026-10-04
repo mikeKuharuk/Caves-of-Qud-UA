@@ -455,6 +455,45 @@ class HitMessage(unittest.TestCase):
                                  "{0} suffers {{R|welts}} {1}", "{0} suffer {{R|welts}} {1}"})
 
 
+class DamageScan(unittest.TestCase):
+    # made-up parts calling TakeDamage the ways the game does
+    SOURCES = {
+        "GameObject.cs": """public class GameObject
+{
+	public bool TakeDamage(ref int Amount, string Attributes = null, string DeathReason = null, string Message = "from %t whack.")
+	{
+		return true;
+	}
+}""",
+        "Nettle.cs": """public class Nettle : IPart
+{
+	public void Sting(GameObject Who, GameObject By)
+	{
+		Who.TakeDamage(2, "from %t nettles!", "Poison");
+		Who.TakeDamage(1, Attributes: "Cold", Message: "from the frost.");
+		Who.TakeDamage(3, By, "from " + By.an() + " landing!");
+		int n = 4;
+		Who.TakeDamage(ref n, "Heat", null, null, null, null, null, null, null, "from %t embers.");
+		Who.TakeDamage(5, Message: IComponent<GameObject>._T("Ctx", "from the string tables."));
+		Event e = Event.New("TakeDamage");
+		e.SetParameter("Message", "from %t sap!");
+		Who.FireEvent(e);
+		Event ai = Event.New("AIMessage");
+		ai.SetParameter("Message", "Attacked");
+		Who.FireEvent(ai);
+	}
+}""",
+    }
+
+    def test_every_way_of_passing_the_tail(self):
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.SOURCES.items():
+                (pathlib.Path(d) / rel).write_text(text, encoding="utf-8")
+            found = {e.key for e in codescan.scan_damage(pathlib.Path(d))}
+        self.assertEqual(found, {"from %t whack.", "from %t nettles!", "from the frost.", "from {0} landing!",
+                                 "from %t embers.", "from %t sap!"})
+
+
 class RulesScan(unittest.TestCase):
     # made-up parts in the shapes the game's code takes
     SOURCES = {
