@@ -305,6 +305,13 @@ def scan_effects(src_dir: pathlib.Path) -> list[Entry]:
             for text in texts_of_body(src, a, b):
                 for line in lines_of(text):
                     entries.setdefault(number_holes(line), f"{name}.{method}")
+            # and what each return can be, followed through locals, fields, builders in if/else and ternaries: the
+            # pass above keeps the keys translated before, this one adds what it missed (Frenzied's lines, Prone's)
+            for m in re.finditer(r"\breturn\b", masked[a:b]):
+                expr = split_top(src[a + m.end():b], ";")[0]
+                for found in computed_texts(expr, src, masked, a + m.start(), [(src, masked)]):
+                    for key in code_keys(found):
+                        entries.setdefault(key, f"{name}.{method}")
     return [Entry(k, w) for k, w in sorted(entries.items())]
 
 
@@ -784,6 +791,7 @@ def third_person(verb: str) -> str:
 
 
 GET_VERB = re.compile(r'^[\w.]+\.GetVerb\(\s*"([^"]+)"\s*(?:,\s*PrependSpace:\s*(true|false))?\s*\)$')
+SEPARATOR = "separator"   # (SEPARATOR, text): a Compound's separator, there only after some text
 PARAMETER_DEFAULT = re.compile(r'\.GetStringParameter\(\s*"(\w+)"\s*,\s*("(?:[^"\\]|\\.)*")\s*\)$')
 # an event parameter with this many values or fewer is spelled out where a builder appends it (ShowDamageType:
 # «damage» and two more); one with more stays a hole (Message: the damage tails)
@@ -811,12 +819,13 @@ def appended(src: str, masked: str, var: str, s: int, e: int, values: dict | Non
             continue
         args = split_top(text[o + 1:c], ",")
         arg = args[0].strip() if args and args[0].strip() else ""
-        if m.group(1) == "Compound" and len(args) > 1:
-            # the separator goes before the text when the builder is not empty: «"\n\n"» keeps the lines apart
-            sep = args[1].strip()
+        if m.group(1) == "Compound":
+            # the separator goes before the text only when the builder is not empty (a SEPARATOR the paths resolve);
+            # «"\n\n"» keeps the lines apart, and with none given it is a space
+            sep = args[1].strip() if len(args) > 1 else "' '"
             sep_char = CHAR.match(sep)
-            parts.append([literal_value(sep) if literal_value(sep) is not None
-                          else {"\\n": "\n"}.get(sep_char.group(1), sep_char.group(1)) if sep_char else " "])
+            parts.append([(SEPARATOR, literal_value(sep) if literal_value(sep) is not None
+                           else {"\\n": "\n"}.get(sep_char.group(1), sep_char.group(1)) if sep_char else " ")])
         if arg:
             char = CHAR.match(arg)
             verb = GET_VERB.match(arg)
@@ -869,7 +878,8 @@ def builder_paths(src: str, masked: str, var: str, a: int, b: int, cap: int = 64
                     paths = [("", d) for _, d in paths]
                 elif parts:
                     for options in parts:
-                        paths = [(t + o, d) for t, d in paths for o in options][:cap]
+                        paths = [(t + (o[1] if t else "") if isinstance(o, tuple) else t + o, d)
+                                 for t, d in paths for o in options][:cap]
             elif kind == "block":
                 paths = run(rest[0], rest[1], paths)
             else:

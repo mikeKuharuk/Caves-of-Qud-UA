@@ -427,6 +427,14 @@ class HitMessage(unittest.TestCase):
                                  "{{g|You smack with {0} {1}!}}", "{{g|You smack}}",
                                  "{0} smacks you soundly", "{0} smack you soundly"})
 
+    def test_a_compound_separator_only_after_some_text(self):
+        src = ("void M()\n{\n\tusing TextBuilder sb = TextBuilder.Get();\n\tif (Loud)\n\t{\n\t\tsb.Append(\"Shouting\");"
+               "\n\t}\n\tsb.Compound(\"plain words\");\n\tShow(sb.ToString());\n}")
+        masked = codescan.mask(src)
+        start = src.index("if (Loud)")
+        self.assertEqual(set(codescan.builder_paths(src, masked, "sb", start, src.index("Show"))),
+                         {"Shouting plain words", "plain words"})
+
     def test_an_event_parameter_spelled_out(self):
         # the damage line's «damage» word: a parameter's default and the few values passed for it elsewhere
         sources = {
