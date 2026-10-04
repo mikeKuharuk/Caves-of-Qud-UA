@@ -305,5 +305,67 @@ class AbilitiesScan(unittest.TestCase):
         self.assertEqual(found, {"Glower", "You glower.", "Copy [{0} left]", "Switch on {0}", "Switch off {0}",
                                  "Spit Seeds", "Spit Pits", "Glide", "Glide ({0})", "Jump"})
 
+
+class FragmentsScan(unittest.TestCase):
+    # made-up parts in the shapes the game's code takes
+    SOURCES = {
+        "ModShiny.cs": """public class ModShiny : IModification
+{
+	public override bool HandleEvent(GetDisplayNameEvent E)
+	{
+		E.AddAdjective("{{Y|shiny}}", -20);
+		E.AddAdjective(IComponent<GameObject>._S("Ctx", "dull"));
+		return base.HandleEvent(E);
+	}
+}""",
+        # a tag with a hole, a tag of holes alone, a with-clause, a title
+        "Perched.cs": """public class Perched : Effect
+{
+	public override bool HandleEvent(GetDisplayNameEvent E)
+	{
+		E.AddTag("[{{B|perched on " + PerchedOn.an() + "}}]");
+		E.AddTag("[{{B|" + Count + "}}]");
+		E.AddWithClause("tail feathers");
+		E.AddTitle("keeper of the Perch");
+		return base.HandleEvent(E);
+	}
+}""",
+        # an adjective a field holds, which a subclass sets
+        "Glowing.cs": """public class Glowing : IPart
+{
+	public string Adjective = "glowing";
+
+	public override bool HandleEvent(GetDisplayNameEvent E)
+	{
+		E.AddAdjective(Adjective);
+		return true;
+	}
+}""",
+        "Shimmering.cs": """public class Shimmering : Glowing
+{
+	public Shimmering()
+	{
+		Adjective = "shimmering";
+	}
+}""",
+        # the event passes its parameter through: not a fragment of its own
+        "GetDisplayNameEvent.cs": """public class GetDisplayNameEvent
+{
+	public void AddAdjective(string Adjective, int OrderAdjust = 0)
+	{
+		DB.AddAdjective(Adjective, OrderAdjust);
+	}
+}""",
+    }
+
+    def test_what_the_code_adds_to_a_name(self):
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.SOURCES.items():
+                (pathlib.Path(d) / rel).write_text(text, encoding="utf-8")
+            found = {e.key: e.where for e in codescan.scan_fragments(pathlib.Path(d))}
+        self.assertEqual(set(found), {"{{Y|shiny}}", "[{{B|perched on {0}}}]", "tail feathers", "keeper of the Perch",
+                                      "glowing", "shimmering"})
+        self.assertEqual(found["tail feathers"], "Perched: те, з чим предмет («with …»)")
+
 if __name__ == "__main__":
     unittest.main()

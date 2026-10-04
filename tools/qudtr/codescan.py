@@ -831,7 +831,7 @@ def built_texts(body: str) -> list[str]:
     return out
 
 
-def ability_texts(expr: str, src: str, masked: str, pos: int, family: list[tuple[str, str]], depth: int = 0) -> list[str]:
+def computed_texts(expr: str, src: str, masked: str, pos: int, family: list[tuple[str, str]], depth: int = 0) -> list[str]:
     """What a name expression can be: its literals and patterns; for a local, what the method assigns to it; for a
     field, what the class and its subclasses assign (UrchinBelcher: CommandName = "Belch Urchins"); for a method of
     the class or of a subclass (the breathers' GetCommandDisplayName), what it returns or builds. Text the string
@@ -842,7 +842,7 @@ def ability_texts(expr: str, src: str, masked: str, pos: int, family: list[tuple
     q = ternary(expr)
     branches = [q[1], q[2]] if q else split_top(expr, "??")
     if len(branches) > 1:
-        return [t for b in branches for t in ability_texts(b, src, masked, pos, family, depth + 1)]
+        return [t for b in branches for t in computed_texts(b, src, masked, pos, family, depth + 1)]
     own = patterns(expr)
     if own:
         return own
@@ -862,7 +862,7 @@ def ability_texts(expr: str, src: str, masked: str, pos: int, family: list[tuple
                     grown = " + ".join('"\\u0002"' if strip_parens(t) == name else t for t in terms)
                     values += [p.replace("\u0002", v) for p in patterns(grown) for v in values]
                 else:
-                    values += ability_texts(rhs, src, masked, a + m.start(), family, depth + 1)
+                    values += computed_texts(rhs, src, masked, a + m.start(), family, depth + 1)
             return values
         out = []
         for fsrc, fmasked in family:
@@ -879,64 +879,116 @@ def ability_texts(expr: str, src: str, masked: str, pos: int, family: list[tuple
     return []
 
 
+class SourceTree:
+    """The decompiled sources, read once: each file's text (masked on demand) and which classes derive from which,
+    so that a field a subclass sets and a method it overrides are found (computed_texts)."""
+
+    def __init__(self, src_dir: pathlib.Path):
+        self.src_dir = src_dir
+        self.raw: dict[pathlib.Path, str] = {}
+        self.subclasses: dict[str, list[pathlib.Path]] = {}
+        for path in sorted(src_dir.rglob("*.cs")):
+            self.raw[path] = path.read_text(encoding="utf-8-sig")
+            for m in SUBCLASS.finditer(self.raw[path]):
+                self.subclasses.setdefault(m.group(1), []).append(path)
+        self._masked: dict[pathlib.Path, tuple[str, str]] = {}
+
+    def text(self, path: pathlib.Path) -> tuple[str, str]:
+        if path not in self._masked:
+            self._masked[path] = (self.raw[path], mask(self.raw[path]))
+        return self._masked[path]
+
+    def family(self, path: pathlib.Path, cls: str) -> list[tuple[str, str]]:
+        """This file and those of the class's subclasses, at any depth (a decompiled class is a file of its name)."""
+        out, todo = [], [cls]
+        while todo:
+            for p in self.subclasses.get(todo.pop(), []):
+                if p not in out and p != path:
+                    out.append(p)
+                    todo.append(p.stem)
+        return [self.text(path)] + [self.text(p) for p in out]
+
+    def calls(self, call: re.Pattern, declared: str):
+        """(where, family, src, masked, match, positional args, named args) for each call outside the skipped
+        files; declared: the return types that make it a declaration instead."""
+        for path in self.raw:
+            if SKIP_FILE.search(path.relative_to(self.src_dir).as_posix()) or not call.search(self.raw[path]):
+                continue
+            src, masked = self.text(path)
+            cls = CLASS.search(masked)
+            where = cls.group(1) if cls else path.stem
+            family = None
+            for m in call.finditer(masked):
+                if re.search(rf"\b(?:{declared})\s+$", masked[max(0, m.start() - 24):m.start()]):
+                    continue
+                o = m.end() - 1
+                c = matching(src, o)
+                if c < 0:
+                    continue
+                args = split_top(src[o + 1:c], ",")
+                family = family or self.family(path, where)
+                yield (where, family, src, masked, m, [x for x in args if not NAMED_ARG.match(x)],
+                       {mm.group(1): mm.group(2) for x in args for mm in [NAMED_ARG.match(x)] if mm})
+
+
+def code_keys(text: str) -> list[str]:
+    """The keys a computed text gives, a line each with its holes numbered; not a placeholder that names a method
+    («[BreatherBase::…]»), nor holes with no word around them («[{{B|{0}}}]»)."""
+    out = []
+    for line in lines_of(text):
+        key = number_holes(line)
+        literal = re.sub(r"\{\d+\}", " ", key)
+        if "::" in key or "{0}" in key and not re.search(r"[A-Za-z]{3,}", literal):
+            continue
+        out.append(key)
+    return out
+
+
 def scan_abilities(src_dir: pathlib.Path) -> list[Entry]:
     """The names the code gives activated abilities (AddMyActivatedAbility("Intimidate", …), «Clone [{0} left]» on a
     rename) and the descriptions it passes along: the ability bar, the manager and the popups show them as the entry
     keeps them. Names the string tables give (_S, _T) are theirs, and so are blueprint values the game's own
     localization XML lists (the «AbilityName» tag)."""
-    raw: dict[pathlib.Path, str] = {}
-    subclasses: dict[str, list[pathlib.Path]] = {}
-    for path in sorted(src_dir.rglob("*.cs")):
-        raw[path] = path.read_text(encoding="utf-8-sig")
-        for m in SUBCLASS.finditer(raw[path]):
-            subclasses.setdefault(m.group(1), []).append(path)
-    masked_of: dict[pathlib.Path, tuple[str, str]] = {}
-
-    def text(path: pathlib.Path) -> tuple[str, str]:
-        if path not in masked_of:
-            masked_of[path] = (raw[path], mask(raw[path]))
-        return masked_of[path]
-
-    def descendants(cls: str) -> list[pathlib.Path]:
-        out, todo = [], [cls]
-        while todo:
-            for p in subclasses.get(todo.pop(), []):
-                if p not in out:
-                    out.append(p)
-                    todo.append(p.stem)
-        return out
-
     entries: dict[str, str] = {name: where for name, where in EXTRA_ABILITY_NAMES}
-    for path in raw:
-        if SKIP_FILE.search(path.relative_to(src_dir).as_posix()) or not ABILITY_CALL.search(raw[path]):
-            continue
-        src, masked = text(path)
-        cls = CLASS.search(masked)
-        where = cls.group(1) if cls else path.stem
-        family = [(src, masked)] + [text(p) for p in descendants(where) if p != path]
-        for m in ABILITY_CALL.finditer(masked):
-            if re.search(r"\b(?:Guid|void|bool|ActivatedAbilityEntry)\s+$", masked[max(0, m.start() - 24):m.start()]):
-                continue   # a declaration
-            o = m.end() - 1
-            c = matching(src, o)
-            if c < 0:
-                continue
-            args = split_top(src[o + 1:c], ",")
-            positional = [x for x in args if not NAMED_ARG.match(x)]
-            named = {mm.group(1): mm.group(2) for x in args for mm in [NAMED_ARG.match(x)] if mm}
-            if m.group(1).startswith("Set"):
-                wanted = [(named.get("DisplayName", positional[1] if len(positional) > 1 else None), "назва")]
-            else:
-                wanted = [(named.get("Name", positional[0] if positional else None), "назва"),
-                          (named.get("Description", positional[3] if len(positional) > 3 else None), "опис")]
-            for expr, what in wanted:
-                if expr is None:
-                    continue
-                for found in ability_texts(expr, src, masked, m.start(), family):
-                    for line in lines_of(found):
-                        key = number_holes(line)
-                        literal = re.sub(r"\{\d+\}", " ", key)
-                        if "::" in key or "{0}" in key and not re.search(r"[A-Za-z]{3,}", literal):
-                            continue   # a placeholder naming a method («[BreatherBase::…]»), or holes alone
+    for where, family, src, masked, m, positional, named in SourceTree(src_dir).calls(
+            ABILITY_CALL, "Guid|void|bool|ActivatedAbilityEntry"):
+        if m.group(1).startswith("Set"):
+            wanted = [(named.get("DisplayName", positional[1] if len(positional) > 1 else None), "назва")]
+        else:
+            wanted = [(named.get("Name", positional[0] if positional else None), "назва"),
+                      (named.get("Description", positional[3] if len(positional) > 3 else None), "опис")]
+        for expr, what in wanted:
+            if expr is not None:
+                for found in computed_texts(expr, src, masked, m.start(), family):
+                    for key in code_keys(found):
                         entries.setdefault(key, f"{where}: {what} здібності")
+    return [Entry(k, w) for k, w in sorted(entries.items())]
+
+
+# ---- Fragments: what the code adds to a name -------------------------------------------------------------------
+
+FRAGMENT_CALL = re.compile(r"\.(AddAdjective|AddHonorific|AddMark|AddTag|AddClause|AddWithClause|AddEpithet|AddTitle)"
+                           r"\s*\(")
+FRAGMENT_KINDS = {
+    "AddAdjective": "прикметник перед назвою",
+    "AddHonorific": "прикметник перед назвою",
+    "AddMark": "знак перед назвою",
+    "AddTag": "позначка після назви",
+    "AddClause": "доповнення після назви",
+    "AddWithClause": "те, з чим предмет («with …»)",
+    "AddEpithet": "епітет після імені",
+    "AddTitle": "титул після імені",
+}
+
+
+def scan_fragments(src_dir: pathlib.Path) -> list[Entry]:
+    """What the code adds to an object's name in English (GetDisplayNameEvent: E.AddAdjective("keen"),
+    E.AddTag("[{{r|rusted}}]")): our DescriptionBuilder looks each one up as it comes in. What the string tables
+    give (_S, _T) is theirs."""
+    entries: dict[str, str] = {}
+    for where, family, src, masked, m, positional, named in SourceTree(src_dir).calls(FRAGMENT_CALL, "void"):
+        if positional:
+            for found in computed_texts(positional[0], src, masked, m.start(), family):
+                for key in code_keys(found):
+                    entries.setdefault(key, f"{where}: {FRAGMENT_KINDS[m.group(1)]}")
     return [Entry(k, w) for k, w in sorted(entries.items())]

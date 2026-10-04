@@ -127,6 +127,11 @@ COMMENT[k] = "uk-forms: іржава|іржаве|іржаві"    # жіноч�
 - `UkrainianDescriptionBuilder`: прикметники перед назвою беруть рід об’єкта (таблиця
   `AdjectiveForms.g.cs`, її пише `qud.py build` з нотаток `uk-forms`, а для решти — правильні
   закінчення, `UkrainianForms.InflectRegular`).
+  - Те, що код дописує до назви англійською (`E.AddAdjective("keen")`, `E.AddTag("[{{r|rusted}}]")`, «з …»,
+    титули), білдер перекладає вже на вході: його `AddAdjective`, `AddTag`, `AddClause`, `AddWithClause`,
+    `AddEpithet`, `AddTitle`, `AddMark` віртуальні, тож Harmony не треба. Таблиця — `Fragments`
+    (`codescan.scan_fragments`, 45 фрагментів). Прикметник у ній чоловічого роду і далі узгоджується з
+    назвою («відточена сокира»), позначка в дужках — безособова («[заіржавіло]»), «з …» — в орудному.
 - `CodeWords` (`UkrainianWords.cs`): англійські літерали коду, які потрапляють у шаблони, — українською
   і з родом.
 - `NounGenders.ByWord`: рід перекладених іменників за їхнім текстом, з усіх нотаток `qud-gender` (2 734

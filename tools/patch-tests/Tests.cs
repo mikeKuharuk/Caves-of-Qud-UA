@@ -185,6 +185,18 @@ static class Tests
         Eq(null, Template("XZ", "quux", "past", null, null, "!"), "a verb the table lacks: no template");
         Eq("свій шаблон", Template("XZ", "zap", "past", null, null, "!"), "a verb's own key comes first");
 
+        // what the code adds to a name comes into our DescriptionBuilder through the Fragments table
+        Add("Fragments", "glinting", "блискучий");
+        Add("Fragments", "[{{B|perched on {0}}}]", "[{{B|на сідалі: {0}}}]");
+        Type builderType = mod.GetType("CavesOfQudUA.Grammar.UkrainianDescriptionBuilder", true);
+        object builder = Activator.CreateInstance(builderType, int.MaxValue, false);
+        builderType.GetMethod("AddAdjective").Invoke(builder, new object[] { "glinting", 0 });
+        builderType.GetMethod("AddTag").Invoke(builder, new object[] { "[{{B|perched on гілка}}]", 0 });
+        builderType.GetMethod("AddTag").Invoke(builder, new object[] { "[{{K|порожньо}}]", 0 });
+        var parts = (IDictionary<string, int>)builder;
+        Eq("[{{B|на сідалі: гілка}}]|[{{K|порожньо}}]|блискучий", string.Join("|", parts.Keys.OrderBy(k => k, StringComparer.Ordinal)),
+           "a name's fragments: an adjective, a tag by pattern, one already Ukrainian");
+
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");
         Eq("5 turns", Call(X, "Things", 5, "turn", null), "other languages keep the English count");

@@ -159,6 +159,21 @@ def abilities_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     return table_xml("Abilities", entries, build, "the decompiled game code (activated abilities)")
 
 
+FRAGMENTS = "Code.Fragments.example.xml"
+FRAGMENTS_NOTE = ("Частина назви, яку дописує код ({where}). Прикметник перед назвою — у чоловічому роді, мод "
+                  "узгодить його з назвою («відточений» → «відточена сокира»; неправильні форми — нотатка "
+                  "«uk-forms: ж|с|мн»). Позначка в дужках після назви — безособово, як «[зламано]», «[порожньо]». "
+                  "«з …» — в орудному відмінку («редуктором»). Розмітку {{{{X|…}}}} лишайте, {{0}} — те, що підставляє "
+                  "код (назва, число).")
+
+
+def fragments_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """What the code adds to an object's name: adjectives, tags, clauses, titles (codescan.scan_fragments)."""
+    from . import codescan
+    entries = [(e.key, FRAGMENTS_NOTE.format(where=e.where)) for e in codescan.scan_fragments(decompiled)]
+    return table_xml("Fragments", entries, build, "the decompiled game code (parts of object names)")
+
+
 KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@(?:Text|Forms)$", re.S)
 
 

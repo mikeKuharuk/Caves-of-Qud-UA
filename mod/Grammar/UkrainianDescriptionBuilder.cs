@@ -9,6 +9,9 @@ namespace CavesOfQudUA.Grammar
     /// («іржава сокира», «іржаве кресало», «іржаві чоботи»). The other forms come from the translators' uk-forms
     /// notes, which `qud.py build` writes into AdjectiveForms.g.cs; an adjective with no note takes the regular
     /// endings (-ий → -а, -е, -і).
+    /// What the code adds to a name in English («keen», «[{{r|rusted}}]», «librarian of the Stilt») comes in
+    /// through the Fragments table as it is added (codescan.scan_fragments); what the string tables gave is
+    /// Ukrainian already and passes.
     /// </summary>
     public class UkrainianDescriptionBuilder : DescriptionBuilder
     {
@@ -21,6 +24,27 @@ namespace CavesOfQudUA.Grammar
             this.Cutoff = Cutoff;
             this.BaseOnly = BaseOnly;
         }
+
+        static string Fragment(string text) => Patches.CodeText.Translate("Fragments", text);
+
+        // AddHonorific goes through AddAdjective
+        public override void AddAdjective(string Adjective, int OrderAdjust = 0) =>
+            base.AddAdjective(Fragment(Adjective), OrderAdjust);
+
+        public override void AddMark(string Mark, int OrderAdjust = 0) => base.AddMark(Fragment(Mark), OrderAdjust);
+
+        public override void AddTag(string Tag, int OrderAdjust = 0) => base.AddTag(Fragment(Tag), OrderAdjust);
+
+        public override void AddClause(string Clause, int OrderAdjust = 0) =>
+            base.AddClause(Fragment(Clause), OrderAdjust);
+
+        public override void AddWithClause(string Clause, int OrderAdjust = 0) =>
+            base.AddWithClause(Fragment(Clause), OrderAdjust);
+
+        public override void AddEpithet(string Epithet, int OrderAdjust = 0) =>
+            base.AddEpithet(Fragment(Epithet), OrderAdjust);
+
+        public override void AddTitle(string Title, int OrderAdjust = 0) => base.AddTitle(Fragment(Title), OrderAdjust);
 
         public override void Resolve()
         {
