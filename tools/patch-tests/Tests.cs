@@ -57,6 +57,20 @@ static class Tests
         harmony.PatchAll(mod);
         Console.WriteLine($"{harmony.GetPatchedMethods().Count()} game methods patched");
 
+        // patches whose effect needs Unity: at least each must sit on its method (a renamed method fails here)
+        void Patched(string type, string method, string kind)
+        {
+            MethodBase target = HarmonyLib.AccessTools.Method(game.GetType(type, true), method);
+            HarmonyLib.Patches info = target == null ? null : HarmonyLib.Harmony.GetPatchInfo(target);
+            int count = info == null ? 0 : kind == "Postfix" ? info.Postfixes.Count : info.Prefixes.Count;
+            if (count == 0)
+            {
+                failures++;
+                Console.WriteLine($"FAIL no {kind} on {type}.{method}");
+            }
+        }
+        Patched("Qud.UI.MessageLogWindow", "GameInit", "Postfix");
+
         SetActive(true);
         const string G = "XRL.Language.Grammar";
         Eq("сокира", Call(G, "Pluralize", "сокира"), "no English plural on a Ukrainian word");

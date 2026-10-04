@@ -88,6 +88,22 @@ namespace CavesOfQudUA.Patches
         }
     }
 
+    /// <summary>
+    /// The message log's title. The window sets it once, in Init, while the game starts up: before the mods load, so
+    /// the string table has no Ukrainian yet («String table miss … Message Log Title» in Player.log) and the title
+    /// stays «Message log». GameInit runs at the start of every game, new or loaded; set the title again there.
+    /// </summary>
+    [HarmonyPatch(typeof(MessageLogWindow), nameof(MessageLogWindow.GameInit))]
+    static class MessageLogTitlePatch
+    {
+        static void Postfix()
+        {
+            if (!Uk.Active) return;
+            SingletonWindowBase<MessageLogWindow>.instance?.headerText?.SetText(
+                XRL.Language.Strings._S("Message Log Title", "Message log"));
+        }
+    }
+
     /// <summary>The message log.</summary>
     [HarmonyPatch]
     static class AddPlayerMessagePatch
