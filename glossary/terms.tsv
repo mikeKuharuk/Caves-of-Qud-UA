@@ -652,3 +652,29 @@ thrown weapon (slot)	метальна зброя	f	body	proposed	Bodies: час�
 missile weapon (slot)	стрілецька зброя	f	body	proposed	Bodies: частина тіла
 left / right / upper / lower (laterality)	лівий / правий / верхній / нижній		body	proposed	Bodies: узгоджуються з назвою частини (UkrainianLaterality)
 fore / hind / mid (laterality)	передній / задній / середній		body	proposed	Bodies: «foreleg» → «передня нога»
+keen (item mod)	відточений		mod	proposed	Code.Fragments/Rules; «sharp» — уже «гострий»
+mighty (item mod)	могутній		mod	proposed	Code.Fragments/Rules
+overbuilt (item mod)	надміцний		mod	proposed	Code.Fragments/Rules
+orthopedic (item mod)	ортопедичний		mod	proposed	Code.Fragments/Rules
+metallized (item mod)	металізований		mod	proposed	Code.Fragments/Rules
+nanochelated (item mod)	нанохелатований		mod	proposed	Code.Fragments/Rules
+smart (item mod)	розумний		mod	proposed	Code.Fragments/Rules; smartgun — розумна зброя
+heartstopper (item mod)	серцезупинний		mod	proposed	Code.Fragments/Rules
+defib (item mod)	дефібриляторний		mod	proposed	Code.Fragments/Rules
+flare-compensating (item mod)	протиспалаховий		mod	proposed	Code.Fragments/Rules
+anti-gravity (item mod)	антигравітаційний		mod	proposed	Code.Fragments/Rules
+microserrated (item mod)	мікрозубчастий		mod	proposed	Code.Fragments/Rules
+HUD (item mod)	проєкційний		mod	proposed	Code.Fragments/Rules: прикметник перед назвою
+massively overloaded (item mod)	надзвичайно перевантажений		mod	proposed	Code.Fragments/Rules
+Fly (ability)	Політ	m	ability	proposed	Code.Abilities; «Fly (X)» — «Політ (X)»
+Swoop (ability)	Спікірувати		ability	proposed	Code.Abilities: англійське дієслово — інфінітив
+Breathe Fire (ability)	Дихнути вогнем		ability	proposed	Code.Abilities: подихи — «Дихнути …» з орудним
+Clone (ability)	Клонувати		ability	proposed	Code.Abilities; «Clone [2 left]» — «Клонувати [лишилося: 2]»
+cold damage	шкода від холоду	f	mechanic	proposed	Code.Text: «{{icy|шкоди від холоду}}»; heat — від жару
+Great Asphalt Sea	Велике Асфальтове Море	n	place	proposed	Code.Journal
+Fossilized Saads	Скам’янілі Саади	pl	concept	proposed	Code.Journal: «помолився за Скам’янілих Саадів»
+Court of Sultans	Двір Султанів	m	place	proposed	Code.Journal
+hillfolk	горяни	pl	concept	proposed	Code.Journal
+Sheba Hagadias	Шеба Гаґадіас	f	person	proposed	як у розмовах; Code.Fragments: «бібліотекарка Стовпа»
+Moon King	Місячний Король	m	concept	proposed	Code.Journal
+power grid	енергомережа	f	item	proposed	Code.Words: силові лінії (IPowerTransmission)
