@@ -322,20 +322,39 @@ def didx_fields(method: str, args: list[str]) -> dict[str, str] | None:
             return None   # the SubjectOverride overloads: a string instead of the actor
         positional = positional[1:]
     kind = KINDS[method]
+    # the overload with a preposition: a string second, or a bare null there (no call passes a null object)
+    with_preposition = len(positional) > 1 and (_is_string(positional[1]) or strip_parens(positional[1]) == "null")
     if kind == "X":
         order = ["Verb", "Extra", "EndMark"]
     elif kind == "XZ":
-        order = ["Verb", "Preposition", "Object", "Extra", "EndMark"] if len(positional) > 1 and _is_string(positional[1]) \
+        order = ["Verb", "Preposition", "Object", "Extra", "EndMark"] if with_preposition \
             else ["Verb", "Object", "Extra", "EndMark"]
     else:
         order = ["Verb", "DirectPreposition", "DirectObject", "IndirectPreposition", "IndirectObject", "Extra", "EndMark"] \
-            if len(positional) > 1 and _is_string(positional[1]) \
+            if with_preposition \
             else ["Verb", "DirectObject", "IndirectPreposition", "IndirectObject", "Extra", "EndMark"]
     fields = dict(zip(order, positional))
     fields.update(named)
     if "DirectPreposition" in fields:
         fields["Preposition"] = fields.pop("DirectPreposition")
     return fields
+
+
+MARKUP = re.compile(r"\{\{[^|{}]*\||\}\}|&[A-Za-z]|\^[A-Za-z]")
+
+
+def member_literals(src: str, masked: str, name: str) -> list[str]:
+    """The literals a class assigns to a field or property anywhere in the file: «public string Text =
+    "immobilized";», «DisplayName = "{{r|bleeding}}";». For a «…Stripped» name, those of the field without the
+    «Stripped», with the color markup taken off as Strip() does."""
+    stripped = name.endswith("Stripped")
+    base = name[:-len("Stripped")] if stripped else name
+    out = []
+    for m in re.finditer(rf"(?<![\w.]){re.escape(base)}\s*=(?!=)", masked):
+        value = literal_value(strip_parens(split_top(src[m.end():], ";")[0]))
+        if value:
+            out.append(MARKUP.sub("", value) if stripped else value)
+    return list(dict.fromkeys(out))
 
 
 def didx_key(kind: str, verb: str, prep: str, iprep: str, extra: str, end: str) -> str:
@@ -378,9 +397,19 @@ def scan_didx(src_dir: pathlib.Path) -> list[tuple[str, str, str]]:
             kind = KINDS[m.group(1)]
 
             def options(name: str, default: str) -> list[str]:
-                if name not in fields or strip_parens(fields[name]) == "null":
+                # holes stay unnumbered here: they are counted across the key below
+                expr = strip_parens(fields.get(name, "null"))
+                if expr == "null":
                     return [default]
-                return patterns(fields[name])   # holes still unnumbered: they are counted across the key below
+                own = patterns(expr)
+                if own:
+                    return own
+                # computed: what the method assigns to the local, or the class to the field, and the field as one
+                # hole, since the verb still names the message («begin {0}!»: the bleeding's own liquid term)
+                found = resolve(src, masked, m.start(), expr)
+                if not found and IDENT.match(expr):
+                    found = member_literals(src, masked, expr)
+                return found + [HOLE]
             preps = options("Preposition", "") if kind != "X" else [""]
             ipreps = options("IndirectPreposition", "") if kind == "WXZ" else [""]
             extras = options("Extra", "")

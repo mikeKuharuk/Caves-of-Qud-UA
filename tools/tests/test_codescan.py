@@ -124,6 +124,30 @@ class DidXScan(unittest.TestCase):
     def test_a_template_with_our_variables_passes(self):
         self.assertEqual(checks.check("<subject> die!", "=subject.Name= =subject.v:помирає:помираєте:помирають=!"), [])
 
+    def test_computed_fields_and_a_null_preposition(self):
+        src = """public class Bleeding : Effect
+{
+    public string Text = "immobilized";
+    public Bleeding()
+    {
+        DisplayName = "{{r|bleeding}}";
+    }
+    public void Tick()
+    {
+        DidX("begin", DisplayNameStripped, "!");
+        DidX("are", Text, "!");
+        IComponent<GameObject>.XDidYToZ(ParentObject, "give", null, The.Player, "a treat");
+    }
+}
+"""
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Bleeding.cs").write_text(src, encoding="utf-8")
+            found = {k for k, e, w in codescan.scan_didx(pathlib.Path(d))}
+        # a field: what the class assigns it (markup off for «…Stripped»), and one hole for what it computes
+        self.assertTrue({"X|begin|||bleeding|!", "X|begin|||{0}|!", "X|are|||immobilized|!", "X|are|||{0}|!"} <= found)
+        # a bare null second is the preposition, not the object
+        self.assertIn("XZ|give|||a treat|.", found)
+
 
 class WordsScan(unittest.TestCase):
     def test_constants_the_player_reads(self):
