@@ -691,16 +691,195 @@ def specific(text: str) -> bool:
     return len(words) >= 3 or len(words) == 2 and len("".join(words)) >= 6
 
 
+# ---- A builder across if/else: the hit message Combat assembles piece by piece ---------------------------------
+
+def closing(masked: str, i: int, b: int) -> int:
+    """The bracket that closes the one at i, or b when it lies past b (a range cut inside a block)."""
+    j = matching(masked, i)
+    return j if 0 <= j < b else b
+
+
+def statement_end(masked: str, i: int, b: int) -> int:
+    """Where the statement at i ends (just past it): a {block}, an if/else chain, or up to its «;»."""
+    while i < b and masked[i] in " \t\r\n":
+        i += 1
+    if i >= b:
+        return b
+    if masked[i] == "{":
+        return min(closing(masked, i, b) + 1, b)
+    if re.match(r"if\s*\(", masked[i:i + 8]):
+        p = masked.index("(", i)
+        j = statement_end(masked, closing(masked, p, b) + 1, b)
+        k = j
+        while k < b and masked[k] in " \t\r\n":
+            k += 1
+        if re.match(r"else\b", masked[k:k + 5]):
+            return statement_end(masked, k + 4, b)
+        return j
+    depth, j = 0, i
+    while j < b:
+        c = masked[j]
+        if c in "\"'" or c in "$@" and j + 1 < b and masked[j + 1] in "\"$@":
+            j = string_end(masked, j)   # «"{{g|You"» holds braces
+            continue
+        if c in "([{":
+            depth += 1
+        elif c in ")]}":
+            depth -= 1
+        elif c == ";" and depth == 0:
+            return j + 1
+        j += 1
+    return b
+
+
+def statements(masked: str, a: int, b: int):
+    """The statements of masked[a:b] in order: ("if", [(condition, start, end)…], else (start, end) or None),
+    ("block", start, end) or ("stmt", start, end)."""
+    i = a
+    while i < b:
+        while i < b and masked[i] in " \t\r\n":
+            i += 1
+        if i >= b:
+            return
+        if re.match(r"if\s*\(", masked[i:i + 8]):
+            branches, other = [], None
+            while True:
+                p = masked.index("(", i)
+                q = closing(masked, p, b)
+                end = statement_end(masked, q + 1, b)
+                branches.append((re.sub(r"\s+", " ", masked[p + 1:q]).strip(), q + 1, end))
+                k = end
+                while k < b and masked[k] in " \t\r\n":
+                    k += 1
+                if not re.match(r"else\b", masked[k:k + 5]):
+                    i = end
+                    break
+                k += 4
+                while k < b and masked[k] in " \t\r\n":
+                    k += 1
+                if re.match(r"if\s*\(", masked[k:k + 8]):
+                    i = k
+                    continue
+                other = (k, statement_end(masked, k, b))
+                i = other[1]
+                break
+            yield ("if", branches, other)
+        elif masked[i] == "{":
+            j = closing(masked, i, b)
+            yield ("block", i + 1, j)
+            i = j + 1
+        else:
+            j = statement_end(masked, i, b)
+            yield ("stmt", i, j)
+            i = j
+
+
+def third_person(verb: str) -> str:
+    """The English third person singular the game's GetVerb gives: «hit» → «hits», «miss» → «misses»."""
+    if re.search(r"(?:s|sh|ch|x|z|o)$", verb):
+        return verb + "es"
+    if re.search(r"[^aeiou]y$", verb):
+        return verb[:-1] + "ies"
+    return verb + "s"
+
+
+GET_VERB = re.compile(r'^[\w.]+\.GetVerb\(\s*"([^"]+)"\s*\)$')
+
+
+def appended(src: str, masked: str, var: str, s: int, e: int):
+    """What one statement adds to the builder var: a list of option lists (one per piece), "clear", or None when
+    it leaves var alone. A call that takes the builder writes into it: its_(Weapon, sb) a pronoun and a name."""
+    text, mtext = src[s:e], masked[s:e]
+    if re.match(rf"\s*{re.escape(var)}\s*\.\s*Clear\s*\(", mtext):
+        return "clear"
+    passed = re.search(rf"\b(\w+)\s*\([^;]*\b{re.escape(var)}\s*\)", mtext)
+    if passed and not re.match(rf"\s*{re.escape(var)}\s*\.", mtext):
+        return [[HOLE + " " + HOLE]] if passed.group(1) == "its_" else [[HOLE]]
+    if not re.match(rf"\s*{re.escape(var)}\s*\.", mtext):
+        return None
+    parts = []
+    for m in re.finditer(r"\.(Append|AppendLine|Compound)\s*\(", mtext):
+        o = m.end() - 1
+        c = matching(text, o)
+        if c < 0:
+            continue
+        args = split_top(text[o + 1:c], ",")
+        arg = args[0].strip() if args and args[0].strip() else ""
+        if m.group(1) == "Compound" and len(args) > 1:
+            parts.append([" "])
+        if arg:
+            char = CHAR.match(arg)
+            verb = GET_VERB.match(arg)
+            if char:
+                parts.append([{"\\n": "\n"}.get(char.group(1), char.group(1))])
+            elif verb:
+                parts.append([" " + third_person(verb.group(1)), " " + verb.group(1)])
+            else:
+                parts.append(patterns(arg, nested=True) or [HOLE])
+        if m.group(1) == "AppendLine":
+            parts.append(["\n"])
+    return parts
+
+
+def builder_paths(src: str, masked: str, var: str, a: int, b: int, cap: int = 64) -> list[str]:
+    """Every text the builder var can hold after src[a:b]: its pieces in order, each if/else taking each of its
+    branches (and none, without an else). A condition decided once keeps its value along the path («if
+    (!TerseMessages)» twice), so no impossible mix comes out."""
+    touches = re.compile(rf"(?<![\w.]){re.escape(var)}\b")
+
+    def run(a: int, b: int, paths: list) -> list:
+        for kind, *rest in statements(masked, a, b):
+            if kind == "if":
+                span = (rest[0][0][1], rest[1][1] if rest[1] else rest[0][-1][2])
+            else:
+                span = (rest[0], rest[1])
+            if kind != "stmt" and not touches.search(masked, *span):
+                continue   # a block that leaves the builder alone: its conditions do not matter here
+            if kind == "stmt":
+                parts = appended(src, masked, var, rest[0], rest[1])
+                if parts == "clear":
+                    paths = [("", d) for _, d in paths]
+                elif parts:
+                    for options in parts:
+                        paths = [(t + o, d) for t, d in paths for o in options][:cap]
+            elif kind == "block":
+                paths = run(rest[0], rest[1], paths)
+            else:
+                branches, other = rest
+                out = []
+                for text, decided in paths:
+                    d, taken = dict(decided), False
+                    for cond, s, e in branches:
+                        if cond in d:
+                            if d[cond]:
+                                out += run(s, e, [(text, d)])
+                                taken = True
+                                break
+                            continue
+                        out += run(s, e, [(text, {**d, cond: True})])
+                        d[cond] = False
+                    if not taken:
+                        out += run(other[0], other[1], [(text, d)]) if other else [(text, d)]
+                paths = out[:cap]
+        return paths
+    return list(dict.fromkeys(t for t, _ in run(a, b, [("", {})])))
+
+
+PERCENT_CODE = re.compile(r"%[tToOdSe]")
+MESSAGE_PARAM = re.compile(r'\.SetParameter\(\s*"Message",\s*(\w+)\.ToString\(\)\s*\)')
+
+
 def scan_text(src_dir: pathlib.Path) -> list[Entry]:
     """Popups, failure messages and message-log lines the game's C# writes, line by line (CodeText splits a text
-    into lines when the whole is not a key)."""
+    into lines when the whole is not a key). Also the hit message Combat builds for TakeDamage to show
+    (SetParameter("Message", sb.ToString())): Physics puts the attacker's name for its %T."""
     entries: dict[str, str] = {}
     for path in sorted(src_dir.rglob("*.cs")):
         rel = path.relative_to(src_dir).as_posix()
         if SKIP_FILE.search(rel) or rel.startswith(("XRL.Wish", "XRL.Tests")):
             continue
         src = path.read_text(encoding="utf-8-sig")
-        if not SINK_CALL.search(src):
+        if not SINK_CALL.search(src) and not MESSAGE_PARAM.search(src):
             continue
         masked = mask(src)
         cls = CLASS.search(masked)
@@ -737,6 +916,19 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
                     key = number_holes(line)
                     if specific(key):
                         entries.setdefault(key, f"{where} ({name.split('.')[-1]})")
+        for m in MESSAGE_PARAM.finditer(masked):
+            a, b = enclosing_body(masked, m.start())
+            # from the builder's declaration: a method may reuse the name in another block
+            decls = list(re.finditer(rf"\b(?:TextBuilder|StringBuilder|var)\s+{re.escape(m.group(1))}\s*=",
+                                     masked[a:m.start()]))
+            if decls:
+                a += decls[-1].end()
+                a = masked.index(";", a) + 1
+            for text in builder_paths(src, masked, m.group(1), a, m.start()):
+                for line in lines_of(PERCENT_CODE.sub(HOLE, text)):
+                    key = number_holes(line)
+                    if specific(key):
+                        entries.setdefault(key, f"{where} (TakeDamage Message)")
     return [Entry(k, w) for k, w in sorted(entries.items())]
 
 

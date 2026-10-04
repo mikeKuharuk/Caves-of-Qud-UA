@@ -384,6 +384,50 @@ class FragmentsScan(unittest.TestCase):
         self.assertEqual(found["tail feathers"], "Perched: те, з чим предмет («with …»)")
 
 
+class HitMessage(unittest.TestCase):
+    # a made-up attack in the shape of Combat's: a builder filled across if/else, handed to TakeDamage as its Message
+    SOURCE = """public class Brawl : IPart
+{
+	public void Strike(bool Hard)
+	{
+		using TextBuilder sb = TextBuilder.Get();
+		if (Attacker.IsPlayer())
+		{
+			sb.Append("{{g|You");
+			if (Hard)
+			{
+				sb.Append(" hard");
+			}
+			sb.Append(" smack");
+			if (!Terse)
+			{
+				sb.Append(" with ");
+				Attacker.its_(Weapon, sb);
+			}
+			if (!Terse)
+			{
+				sb.Append('!');
+			}
+			sb.Append("}}");
+		}
+		else if (Defender.IsPlayer())
+		{
+			sb.Append("%T").Append(Attacker.GetVerb("smack")).Append(" you soundly");
+		}
+		E.SetParameter("Message", sb.ToString());
+	}
+}"""
+
+    def test_every_path_once_and_the_same_condition_alike(self):
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Brawl.cs").write_text(self.SOURCE, encoding="utf-8")
+            found = {e.key for e in codescan.scan_text(pathlib.Path(d))}
+        # «!Terse» decides both blocks at once: no «with» without «!», nor the other way round
+        self.assertEqual(found, {"{{g|You hard smack with {0} {1}!}}", "{{g|You hard smack}}",
+                                 "{{g|You smack with {0} {1}!}}", "{{g|You smack}}",
+                                 "{0} smacks you soundly", "{0} smack you soundly"})
+
+
 class RulesScan(unittest.TestCase):
     # made-up parts in the shapes the game's code takes
     SOURCES = {

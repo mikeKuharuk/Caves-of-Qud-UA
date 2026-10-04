@@ -185,6 +185,12 @@ static class Tests
         Eq(null, Template("XZ", "quux", "past", null, null, "!"), "a verb the table lacks: no template");
         Eq("свій шаблон", Template("XZ", "zap", "past", null, null, "!"), "a verb's own key comes first");
 
+        // a melee hit as Combat builds it: a colour code in markup, the pronoun hole before a weapon of two words
+        Add("Test11", "{0} hits {{{1}|(x{2})}} for {3} damage with {4} {5}. [{6}]",
+            "{0} влучає у вас {{{1}|(x{2})}} і завдає {3} шкоди ({5}). [{6}]");
+        Eq("Пащеклац влучає у вас {{y|(x1)}} і завдає 3 шкоди (гострі щелепи). [12]",
+           Translate("Test11", "Пащеклац hits {{y|(x1)}} for 3 damage with its гострі щелепи. [12]"), "a melee hit");
+
         // a statistic's ID in a hole: the string tables' title for it; with no blueprints loaded, the ID as it is
         Add("Test9", "Fails a {0} save.", "Провалює кидок «{0}».");
         Add("Test10", "Passes a {0} save.", "Проходить кидок «{0}».");
