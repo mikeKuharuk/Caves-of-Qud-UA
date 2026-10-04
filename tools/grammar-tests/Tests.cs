@@ -36,6 +36,20 @@ static class Tests
         Eq("стріла ×3", UkrainianThings.Count(3, "3", "стріла"), "a Ukrainian name has no plural to give");
         Eq(null, UkrainianThings.Count(3, "3", "widget"), "an English word we do not know stays with the game");
 
+        // body parts' sides and ordinals (the game's bits: left 1, right 2, upper 4, lower 8, fore 16, mid 32, hind 64)
+        Eq("ліва рука", UkrainianLaterality.With("рука", 1, UkGender.Feminine, false), "left arm");
+        Eq("Ліва рука", UkrainianLaterality.With("Рука", 1, UkGender.Feminine, true), "Left Arm, capitalized");
+        Eq("верхній правий ріг", UkrainianLaterality.With("ріг", 4 | 2, UkGender.Masculine, false), "upper right horn");
+        Eq("праве заднє крило", UkrainianLaterality.With("крило", 2 | 64, UkGender.Neuter, false), "right hind wing");
+        Eq("ліві середньо-передні ноги", UkrainianLaterality.With("ноги", 1 | 32 | 16, UkGender.Plural, false), "left mid-fore");
+        Eq("голова", UkrainianLaterality.With("голова", 0, UkGender.Feminine, false), "no laterality");
+        Eq("рука", UkrainianLaterality.Strip("ліва рука", 1, false), "strip");
+        Eq("Ріг", UkrainianLaterality.Strip("Верхній правий ріг", 4 | 2, true), "strip, capitalized");
+        Eq("права рука", UkrainianLaterality.Strip("права рука", 1, false), "strip only the laterality's own words");
+        Eq("друга голова", UkrainianLaterality.WithOrdinal(2, "голова", UkGender.Feminine, false), "second head");
+        Eq("Третя ліва рука", UkrainianLaterality.WithOrdinal(3, "Ліва рука", UkGender.Feminine, true), "Third Left Arm");
+        Eq("другий ріг", UkrainianLaterality.WithOrdinal(2, "ріг", UkGender.Masculine, false), "second horn");
+
         string[] fell = { "упав", "упала", "упало", "упали" };
         Eq("упав", UkrainianForms.ByGender(UkGender.Masculine, fell), "masculine");
         Eq("упала", UkrainianForms.ByGender(UkGender.Feminine, fell), "feminine");

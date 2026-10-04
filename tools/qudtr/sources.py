@@ -82,7 +82,8 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
             if table:
                 files[name] = table
     # nor the data files with no export at all, and what the Factions export misses (datatables.py)
-    for name, make in ((datatables.COMMANDS, datatables.commands_xml), (datatables.COLORS, datatables.colors_xml)):
+    for name, make in ((datatables.COMMANDS, datatables.commands_xml), (datatables.COLORS, datatables.colors_xml),
+                       (datatables.BODIES, datatables.bodies_xml)):
         base = path.parent / name.replace(".example.xml", ".xml")
         if base.exists():
             table = make(base.read_text(encoding="utf-8-sig"), build)

@@ -71,6 +71,8 @@ static class Tests
         }
         Patched("Qud.UI.MessageLogWindow", "GameInit", "Postfix");
         Patched("Qud.UI.FilterBarCategoryButton", "SetCategory", "Postfix");
+        Patched("XRL.World.Anatomy.BodyPart", "GetOrdinalName", "Prefix");
+        Patched("XRL.World.Anatomy.BodyPart", "GetOrdinalDescription", "Prefix");
 
         SetActive(true);
         const string G = "XRL.Language.Grammar";
@@ -89,6 +91,15 @@ static class Tests
         Eq("ще 1 хід", Call(X, "Things", 1, "more turn", "more turns"), "Things: «more»");
         Eq("3 клітинки", Call(X, "Things", 3f, "square", null), "Things on a float");
         Eq("4 widgets", Call(X, "Things", 4, "widget", null), "Things: an English word we do not know");
+
+        // body parts' sides on a Ukrainian name, the game's own on an English one (1 left, 2 right, 4 upper, 64 hind)
+        Type laterality = game.GetType("XRL.World.Capabilities.Laterality", true);
+        MethodInfo withSide = laterality.GetMethods().First(m => m.Name == "WithLateralityAdjective" && m.GetParameters().Length == 4);
+        string Sided(string noun, int bits, bool capitalized) => (string)withSide.Invoke(null, new object[] { noun, bits, null, capitalized });
+        Eq("ліва рука", Sided("рука", 1, false), "left arm");
+        Eq("Верхній правий ріг", Sided("Ріг", 4 | 2, true), "Upper Right Horn");
+        // (an English name goes to the game's own code, which needs the string tables and so Unity: not testable here)
+        Eq("рука", Call("XRL.World.Capabilities.Laterality", "StripLateralityAdjective", "ліва рука", 1, false), "the sides taken off");
 
         // the code tables: exact keys, patterns, lines, agreement, and the effect patch on a real effect class
         Type tables = mod.GetType("CavesOfQudUA.Grammar.CodeTables", true);

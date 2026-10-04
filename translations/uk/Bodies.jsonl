@@ -1,0 +1,345 @@
+{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Bodies.example.xml"}
+{"k":"d1eae064fbd2328d3f48","p":"bf9ec2ab4bc0833c","s":"230d8358dc8e","t":"тіло","c":["qud-gender: n"]}
+{"k":"7a7cba0c6838276d1a07","p":"2b05026da932b30e","s":"6ccaa6415b5e","t":"Тіло","c":["qud-gender: n"]}
+{"k":"6510ea74056773a23504","p":"2d821e208dad11cc","s":"9f2e6d33a371","t":"голова","c":["qud-gender: f"]}
+{"k":"ca4af58b95e1083f4c27","p":"01aff4b39c6093c3","s":"9bb0aacc6d51","t":"Голова","c":["qud-gender: f"]}
+{"k":"9b441dd0f384a9cac368","p":"92e9166def82d454","s":"0282d9b79f42","t":"обличчя","c":["qud-gender: n"]}
+{"k":"837eeedcb46233723532","p":"cdd3239d1c12706f","s":"304afc32b7ff","t":"Обличчя","c":["qud-gender: n"]}
+{"k":"6026244a65acb42b9386","p":"d33620fef887cae7","s":"3c482346f375","t":"спина","c":["qud-gender: f"]}
+{"k":"5352c3171565e9765fdd","p":"4137174024113626","s":"76900f1bfd16","t":"Спина","c":["qud-gender: f"]}
+{"k":"bd247ea95d2f8e0e6dd7","p":"615b1a8160bfebc0","s":"ddf7ff5ebd9d","t":"рука","c":["qud-gender: f"]}
+{"k":"61730851988ec7b7a376","p":"607eaf1d8a41f133","s":"d5cb968264a5","t":"Рука","c":["qud-gender: f"]}
+{"k":"a2eb0a4370b0a4530ab9","p":"a025c2f1d850d25f","s":"1b001706a418","t":"кисть","c":["qud-gender: f"]}
+{"k":"484d3d5148818ab98141","p":"129913c178900503","s":"fa18c06733fb","t":"Кисть","c":["qud-gender: f"]}
+{"k":"22ccde3ae7ecec5ea893","p":"15b98b425eed7e1d","s":"22e4f6912a69","t":"ступня","c":["qud-gender: f"]}
+{"k":"928d7cff729186f39ff1","p":"6b4a7aa4b514a7cb","s":"241773608843","t":"Ступня","c":["qud-gender: f"]}
+{"k":"9db947164c44d9cb8ce3","p":"f6d80407190b3d2b","s":"45a229d57d35","t":"кисті","c":["qud-gender: pl"]}
+{"k":"eeea796a326383f28c18","p":"98b232da05627350","s":"6b7204778686","t":"Кисті","c":["qud-gender: pl"]}
+{"k":"06890ff8445d77154fdc","p":"d92db8e9fa4aaab3","s":"a5add1365529","t":"ступні","c":["qud-gender: pl"]}
+{"k":"3749ef91c97c2f7c9963","p":"c731406a78ef5e20","s":"c59e96abc485","t":"Ступні","c":["qud-gender: pl"]}
+{"k":"0ce7aa373bb3148f9c66","p":"95760c049fefb1c5","s":"b3ff3344f9c9","t":"поруч у повітрі","c":["qud-gender: n"]}
+{"k":"ccc96ef2d7e699b4fd22","p":"ce479ed640775eb6","s":"05dccda838ff","t":"Поруч у повітрі","c":["qud-gender: n"]}
+{"k":"ac0d166ef74e7684ac64","p":"66dc59ad985f531f","s":"decd21737536","t":"метальна зброя","c":["qud-gender: f"]}
+{"k":"1e7b6555523ea399d6e0","p":"67b9857fe29b614c","s":"8339ccbb3e11","t":"Метальна зброя","c":["qud-gender: f"]}
+{"k":"43febc3d83b2c7d163e9","p":"e0ac5364ea9791b2","s":"9817bbd43e6a","t":"стрілецька зброя","c":["qud-gender: f"]}
+{"k":"4aa8ac383a25053d7965","p":"6192f113e0ef7f1b","s":"baaa790ac260","t":"Стрілецька зброя","c":["qud-gender: f"]}
+{"k":"6cb982e69e4b36bb3b71","p":"aa1287b1f12068e4","s":"499ff4029e0d","t":"грибний наріст","c":["qud-gender: m"]}
+{"k":"ce8381d38011737e63a7","p":"6578c0ce42f18b25","s":"985ec71f7b51","t":"Грибний наріст","c":["qud-gender: m"]}
+{"k":"ffd63db22a221fb7d2e6","p":"d3d5124c475ab5c3","s":"59cfea5ceddd","t":"крижаний наріст","c":["qud-gender: m"]}
+{"k":"fbf130c2a7c7e685c06b","p":"6de9369a8c6bbae4","s":"0074a9116d44","t":"Крижаний наріст","c":["qud-gender: m"]}
+{"k":"a397116b3250b7f5b61e","p":"e6e43644027ad04a","s":"a383bcb77c83","t":"плавець","c":["qud-gender: m"]}
+{"k":"7cf637362b3c269ff463","p":"1e8727e81255cd27","s":"5a2af601e7a2","t":"Плавець","c":["qud-gender: m"]}
+{"k":"98464b7010b9630bb797","p":"55d87ce8389dd388","s":"a4e3c20a3277","t":"корені","c":["qud-gender: pl"]}
+{"k":"997bb5375d191d5ab0c1","p":"920c2ba17714d4cd","s":"b4f350117ed6","t":"Коренева система","c":["qud-gender: f"]}
+{"k":"9d3a31bcad6073fbb719","p":"696bbe38cd9656fa","s":"0c62f876ef1d","t":"хвіст","c":["qud-gender: m"]}
+{"k":"30bd66fa2520613d74b3","p":"0301e12f0c77468b","s":"ae9c3bd11f76","t":"Хвіст","c":["qud-gender: m"]}
+{"k":"4e9739549f3b661d8bf3","p":"ef5e051c6ea3e97c","s":"425f281c14e9","t":"гусениця","c":["qud-gender: f"]}
+{"k":"be3b301b92901f8cb1aa","p":"9c670ce205a0b5b7","s":"5b4f5c8af615","t":"Гусениця","c":["qud-gender: f"]}
+{"k":"f8f29029f7e3c839dabd","p":"d3547f7abd7e0498","s":"24d8a6183728","t":"боєприпаси","c":["qud-gender: pl"]}
+{"k":"18bffb131067f7493a16","p":"5165a350373fecfb","s":"c16338e2b0b4","t":"Боєприпаси","c":["qud-gender: pl"]}
+{"k":"0102975c85314f0014d3","p":"2dd5f254a211f3c7","s":"59d98c516f8b","t":"квітка","c":["qud-gender: f"]}
+{"k":"5d155a5bcd6a023830f2","p":"bbadb11b5d255f47","s":"ca8203711df0","t":"Квітка","c":["qud-gender: f"]}
+{"k":"4485cb0ea7146ed988cb","p":"bdc122ed4341056d","s":"45e84635bc48","t":"шапинка","c":["qud-gender: f"]}
+{"k":"81a95a3528a8777acec1","p":"58e49afe0d9c8673","s":"1257ac04471d","t":"Шапинка","c":["qud-gender: f"]}
+{"k":"548efbef917b04b1514b","p":"bc7d0131c2823ff7","s":"2b4bbb8a4920","t":"навершя","c":["qud-gender: n"]}
+{"k":"bdd3a7d304106a8b5a0b","p":"f8b2bc0f4f3a9000","s":"916128d6fed7","t":"Навершя","c":["qud-gender: n"]}
+{"k":"cc4bd0f1386ffc9265ee","p":"5ab05e28de12fadd","s":"a67ba00d7af4","t":"центральна частка","c":["qud-gender: f"]}
+{"k":"cecbeb56853233be4272","p":"7f160541a4317429","s":"86d5e46756c3","t":"Центральна частка","c":["qud-gender: f"]}
+{"k":"729c3029da68166be732","p":"8ab67d9de0c564f2","s":"89aa494104e8","t":"центральна маса","c":["qud-gender: f"]}
+{"k":"c42fa2c1a46302aacc36","p":"1080641b8218a56c","s":"32186403819f","t":"Центральна маса","c":["qud-gender: f"]}
+{"k":"5fd767bf5bc14d167f84","p":"ce62fe52f1601943","s":"07affc45390e","t":"центральний вузол","c":["qud-gender: m"]}
+{"k":"6dcc807ce61ea5535da9","p":"b00a255f4e32c5bd","s":"882d433a2828","t":"Центральний вузол","c":["qud-gender: m"]}
+{"k":"1a52d0b9176de7700844","p":"411d7bd067985ec3","s":"10cb3cad75b5","t":"блок керування","c":["qud-gender: m"]}
+{"k":"9a10583fc06f1a4723b5","p":"282fb003dc73a2b8","s":"00def6f1bc54","t":"Блок керування","c":["qud-gender: m"]}
+{"k":"c626fa7e11f5601b68a0","p":"ecc099ced04cd590","s":"3c6a36b640fc","t":"вушко","c":["qud-gender: n"]}
+{"k":"efc2a2e8978a27c0bc3a","p":"69e684562a116630","s":"2dd27cd76567","t":"Вушко","c":["qud-gender: n"]}
+{"k":"9092b4c8d1d740cda7a0","p":"2aa5376b6c459a3b","s":"8ab353529558","t":"мольберт","c":["qud-gender: m"]}
+{"k":"396a327a00b4968fc83d","p":"bce5d5acfa154a46","s":"7e5f7f41ed69","t":"Мольберт","c":["qud-gender: m"]}
+{"k":"9a4b1dcc9b62833a6a22","p":"99259db21ede2249","s":"42b32a1c7cc5","t":"головна секція","c":["qud-gender: f"]}
+{"k":"6a3d5d0d7e5828aee2f7","p":"5bdb28a96673598d","s":"9afe95465b21","t":"Головна секція","c":["qud-gender: f"]}
+{"k":"08066d09764cff1c7c16","p":"e4040210f63035f3","s":"1e0584a25d9f","t":"перемичка","c":["qud-gender: f"]}
+{"k":"81e0bfc004f757c98f00","p":"7c3fb1afc149e98c","s":"ba5caa4285a8","t":"Перемичка","c":["qud-gender: f"]}
+{"k":"c43d8046674c11dd95ab","p":"ef3920c6769d1f40","s":"f14896d8de9d","t":"шия","c":["qud-gender: f"]}
+{"k":"08e9585763c3e79766e2","p":"3371f93871ef94d3","s":"6b27a97151bb","t":"Шия","c":["qud-gender: f"]}
+{"k":"0b6299bee74431563b38","p":"c4ff5ae65a7c2814","s":"dd0c3bbaba2e","t":"ядерний виріст","c":["qud-gender: m"]}
+{"k":"2555a37606e11fe3ece8","p":"faca3d7215c9a596","s":"25e17d253413","t":"Ядерний виріст","c":["qud-gender: m"]}
+{"k":"6ebb77456cbff7d30286","p":"3983d39c48733e00","s":"f6000d4ef895","t":"подушка","c":["qud-gender: f"]}
+{"k":"f77672c8958326834eab","p":"ce2ef749548e6e4d","s":"bbd4a3d040e9","t":"Подушка","c":["qud-gender: f"]}
+{"k":"c0c9783121540726a964","p":"6cac3a574b124a39","s":"8c1a64a5158b","t":"череп","c":["qud-gender: m"]}
+{"k":"473c337d5964f9e72f11","p":"6ce35b96bec77486","s":"2fb09efc5c44","t":"Череп","c":["qud-gender: m"]}
+{"k":"32b398e4e97dabdc0010","p":"f53365905de89f16","s":"ce5948afe02f","t":"верхня планка","c":["qud-gender: f"]}
+{"k":"7ccbf41ca23d3d258258","p":"0ddce4f95e452196","s":"0edb7ef3a709","t":"Верхня планка","c":["qud-gender: f"]}
+{"k":"aba11026bcf0af00b2cb","p":"fd6c447c0361e063","s":"28720365c5e7","t":"верх","c":["qud-gender: m"]}
+{"k":"a7966a7649c46f6dcc5e","p":"31e3922dc08a25bc","s":"d5cdfcf7ff75","t":"Верх","c":["qud-gender: m"]}
+{"k":"1686b4c3e93e8286a0fa","p":"05cb8c7a05473de3","s":"23b6ac8d08a9","t":"купол","c":["qud-gender: m"]}
+{"k":"fde031788d9251bbc0b5","p":"a9dd3cde042ec502","s":"8baccb275efb","t":"Купол","c":["qud-gender: m"]}
+{"k":"16e2ab1e742373666254","p":"15afafc4483b0f03","s":"5384953bcf2e","t":"панель доступу","c":["qud-gender: f"]}
+{"k":"741aed0f0ea88278faf5","p":"e42cf03da7686433","s":"827bdfb3a77e","t":"Панель доступу","c":["qud-gender: f"]}
+{"k":"91a1f84e521de06053a7","p":"1b135ce5de070934","s":"a701cbc3ccc3","t":"вусики","c":["qud-gender: pl"]}
+{"k":"aaa2488092087e33c3a2","p":"bf355cfddda7bdc6","s":"85f056db3d03","t":"Вусики","c":["qud-gender: pl"]}
+{"k":"7d122004b6b560d37793","p":"4eca36fa50382776","s":"a6ebfb432bfd","t":"оздоба","c":["qud-gender: f"]}
+{"k":"8f7df6742f8da1658bd4","p":"17dad96608c53a78","s":"7b39a9fd07f8","t":"Оздоба","c":["qud-gender: f"]}
+{"k":"bf18bd254263f80fdd80","p":"add052b80f4f037a","s":"51dc9d7dd0f5","t":"додаткове обличчя","c":["qud-gender: n"]}
+{"k":"83c3ce604436a87c1426","p":"3f6d08fb9a1b1467","s":"636722556374","t":"Додаткове обличчя","c":["qud-gender: n"]}
+{"k":"304e94002fbefed98744","p":"fa68d2717cf70141","s":"7be7f0bd8823","t":"лицьова пластина","c":["qud-gender: f"]}
+{"k":"d6651c96d4bd3b7cabbf","p":"4f199b55a66b756a","s":"c005bca80886","t":"Лицьова пластина","c":["qud-gender: f"]}
+{"k":"73989a5d9f5099980bf7","p":"972633b577614d58","s":"bb0da72893ab","t":"щупики","c":["qud-gender: pl"]}
+{"k":"a28cb56c04bd5deb18a7","p":"9e64b572510f7608","s":"edbbfd132342","t":"Щупики","c":["qud-gender: pl"]}
+{"k":"f9f1fba2506baaad1ec1","p":"c7d481f5576a1604","s":"31712afd6a1f","t":"дверний молоток","c":["qud-gender: m"]}
+{"k":"ecb0e9b26b5ac8d0cb3e","p":"55926c839a877756","s":"2d81dd891059","t":"Дверний молоток","c":["qud-gender: m"]}
+{"k":"5ec0ccdd60788f30bc1d","p":"43c4055b7171af01","s":"8ac1ef5381ca","t":"край","c":["qud-gender: m"]}
+{"k":"fa21b60afb039e8dac03","p":"a81e4f8788946701","s":"8cb0f0a4842d","t":"Край","c":["qud-gender: m"]}
+{"k":"0588466335a940c0da5b","p":"3ee1809ad9c3dd6f","s":"a060347ecec5","t":"наволочка","c":["qud-gender: f"]}
+{"k":"45125a4783d5236caff4","p":"8819b25df68b4b1a","s":"26f603d6d473","t":"Наволочка","c":["qud-gender: f"]}
+{"k":"1b7bbc4c951aad967963","p":"4f00016d7042dedc","s":"374691e61ff2","t":"сенсорна решітка","c":["qud-gender: f"]}
+{"k":"4218d4c2acd8185e0054","p":"5b0af9af69b940d8","s":"7ab96fda9631","t":"Сенсорна решітка","c":["qud-gender: f"]}
+{"k":"b51e1bc24e84ce35dfac","p":"b807733ccf72bb3b","s":"bf55fb84d9cc","t":"чуттєва брунька","c":["qud-gender: f"]}
+{"k":"a6198befd0ec55213ab5","p":"8dbdbba14c926dd5","s":"0156c7d0bac3","t":"Чуттєва брунька","c":["qud-gender: f"]}
+{"k":"b40a9384d71bc75ba322","p":"060bd4c13e4769bb","s":"11670c5e78c1","t":"чуттєва цибулина","c":["qud-gender: f"]}
+{"k":"5879f350761164af14bb","p":"cdf04333dd5360e3","s":"525ff935ee94","t":"Чуттєва цибулина","c":["qud-gender: f"]}
+{"k":"8d5ee0d545a2a4726369","p":"2c473a5f46bda3c2","s":"674e2fa266a9","t":"чуттєвий вузлик","c":["qud-gender: m"]}
+{"k":"b652ef5ef4c5c9a09d13","p":"2b4a49753f3f880f","s":"067b03c2f7fa","t":"Чуттєвий вузлик","c":["qud-gender: m"]}
+{"k":"dec04ec496cbc769b3ef","p":"301c08f8054e6286","s":"2c9c16d69382","t":"чуттєва оборка","c":["qud-gender: f"]}
+{"k":"622dd47df7664a359187","p":"dfc000b438b16223","s":"20b6b08c59d7","t":"Чуттєва оборка","c":["qud-gender: f"]}
+{"k":"46135bb3f70007680932","p":"9d872f45bbc7c1a2","s":"71c05d3b7975","t":"чуттєвий ганглій","c":["qud-gender: m"]}
+{"k":"9cfaf27e83fadeb7b356","p":"f07bb68dabebd98e","s":"c423179cddb3","t":"Чуттєвий ганглій","c":["qud-gender: m"]}
+{"k":"2485b21045917b657f64","p":"1802c4a0212bad08","s":"8432c539e98a","t":"лицьова частина черепа","c":["qud-gender: f"]}
+{"k":"25880a2e680cb85f866a","p":"2db36f72aacb1b02","s":"d9a646fdfb26","t":"Лицьова частина черепа","c":["qud-gender: f"]}
+{"k":"eba982d64e289406bba7","p":"1fdff73f1709075f","s":"7cb4bd2c12a4","t":"центральна планка","c":["qud-gender: f"]}
+{"k":"d7bf9ed14b72aab088f2","p":"7f418a9b968f9fae","s":"d0ac55c06fc5","t":"Центральна планка","c":["qud-gender: f"]}
+{"k":"9ffd3e4b3b47348ecf39","p":"0caad9c8d80cb07d","s":"4cf35cf87435","t":"рот","c":["qud-gender: m"]}
+{"k":"02e0914a62bbcfc5147e","p":"a1fec2009c9a8bd7","s":"169541e5585e","t":"Рот","c":["qud-gender: m"]}
+{"k":"f8a4b5a437eeb97b674b","p":"c0e97382dd7118d0","s":"47c215b5f70e","t":"око","c":["qud-gender: n"]}
+{"k":"f9431a4c9bfe51211c01","p":"3a0258b9eca022ca","s":"cee37055a415","t":"Око","c":["qud-gender: n"]}
+{"k":"3428787104f83cfa0156","p":"f35ff8d655d3ac06","s":"72b8774aa9e8","t":"дзеркальна поверхня","c":["qud-gender: f"]}
+{"k":"7547a68018702fc85847","p":"59b00469bff29f8c","s":"71d1517c0505","t":"Дзеркальна поверхня","c":["qud-gender: f"]}
+{"k":"17ab1850f9ff62e2cceb","p":"248fedebf3f09bb3","s":"cfcba3c50992","t":"гладка поверхня","c":["qud-gender: f"]}
+{"k":"c51d45ab8ded343ac138","p":"2ed8e8e0cce6117d","s":"8dcf86283f95","t":"Гладка поверхня","c":["qud-gender: f"]}
+{"k":"4bad0dcd1fe63d99e7a4","p":"46f97bbb4a1f2b38","s":"6a181a980a7a","t":"поверхня для письма","c":["qud-gender: f"]}
+{"k":"36244a0950d38b6a07b7","p":"4f8397c7e69e46ea","s":"89b8d0f108fb","t":"Поверхня для письма","c":["qud-gender: f"]}
+{"k":"b29340654ab0c18938c5","p":"0e2454b4f3723368","s":"18c813011e5f","t":"циферблат","c":["qud-gender: m"]}
+{"k":"3c9fd26b92e74420a2a5","p":"26355630674cb9ad","s":"abc420cd15f8","t":"Циферблат","c":["qud-gender: m"]}
+{"k":"d3192777eb283cd5b124","p":"b3cbffba317089b0","s":"7cd0fc6ee61e","t":"ковдра","c":["qud-gender: f"]}
+{"k":"e930bfb44bf15fe511e5","p":"68b2c91cc6ea5815","s":"c18f9ed184c7","t":"Ковдра","c":["qud-gender: f"]}
+{"k":"df9817afcc37ae2fd864","p":"f420879f79130afb","s":"9df66185dda7","t":"площина","c":["qud-gender: f"]}
+{"k":"624aabbacf1296280b3b","p":"b737fc2dc36f5e7a","s":"9956482c869f","t":"Площина","c":["qud-gender: f"]}
+{"k":"1bb46f07326852834ad5","p":"907db963f8354199","s":"bbfcd4160a1e","t":"корпус","c":["qud-gender: m"]}
+{"k":"35c0236d74205e14c867","p":"a7e5ef7723f9fcb3","s":"15f86e24ed25","t":"Корпус","c":["qud-gender: m"]}
+{"k":"d12ed74d39129bc3626c","p":"f90bad0ed54f39e6","s":"0639f753f2e9","t":"шасі","c":["qud-gender: n"]}
+{"k":"1dba62d39d215457aa70","p":"f8633a9c8775d52e","s":"687de21a9cc5","t":"Шасі","c":["qud-gender: n"]}
+{"k":"bd21d1725232f699ebfe","p":"301c34d48722df7f","s":"8f7fa27ffd37","t":"стійка для спорядження","c":["qud-gender: f"]}
+{"k":"6318b4c1874cda725cac","p":"c865ca01da9fbb5e","s":"4cd265c2b8c6","t":"Стійка","c":["qud-gender: f"]}
+{"k":"94d4cd95995cbd1b0f67","p":"4c38eb067b977010","s":"9dff50df08c6","t":"рама","c":["qud-gender: f"]}
+{"k":"be87504220aa260758db","p":"b1b29473c3f953a0","s":"d0b50e064a4f","t":"Рама","c":["qud-gender: f"]}
+{"k":"fdd8cca4f77681660a9b","p":"be3c6bd79e4a0656","s":"d686ae03d9a3","t":"мембрана","c":["qud-gender: f"]}
+{"k":"5cca71c3e7426909ddba","p":"1d5b55b28dfb7115","s":"4cc084a2b952","t":"Мембрана","c":["qud-gender: f"]}
+{"k":"bb317d49c8341f9563e1","p":"b2c3bf139685f5d1","s":"e9f2fbd0ec31","t":"ліпнина","c":["qud-gender: f"]}
+{"k":"dbd781b8f8c38ebf76ae","p":"80bb979c5883c902","s":"0911ca04e130","t":"Ліпнина","c":["qud-gender: f"]}
+{"k":"91756648bad55ca81249","p":"605837b33d0a114f","s":"8f9f33c33ed0","t":"скатертина","c":["qud-gender: f"]}
+{"k":"dc9dac05f41aafb3e3b5","p":"9be2af7f8f7cf331","s":"67bb37b21a82","t":"Скатертина","c":["qud-gender: f"]}
+{"k":"9072b87eac7b6ddef812","p":"dc3951ad16de4b73","s":"cc4c662401b6","t":"секція руки","c":["qud-gender: f"]}
+{"k":"70a7549296cb34554c2f","p":"001beca464cf728e","s":"5c4c99d097c5","t":"Секція руки","c":["qud-gender: f"]}
+{"k":"0a2f70e3b07729fb94c0","p":"1d5a165bf025ab1d","s":"dd4257f7cbdd","t":"арматура","c":["qud-gender: f"]}
+{"k":"6e90e7003436add9b72e","p":"6db4d35664ab0e9d","s":"0c6874e447ef","t":"Арматура","c":["qud-gender: f"]}
+{"k":"f5a2f53d926c13f951c6","p":"2c8923434b7ea71a","s":"2ccee63396e6","t":"кістка руки","c":["qud-gender: f"]}
+{"k":"45a245d4de3e5ed23250","p":"394ac5e9c3698462","s":"0fed4755974b","t":"Кістка руки","c":["qud-gender: f"]}
+{"k":"b02e77d14d3420836af9","p":"01479338e73f6eb5","s":"baf34cda01f0","t":"пагін","c":["qud-gender: m"]}
+{"k":"e79df4d676f3e38476d2","p":"b5c2e925029df425","s":"c25be37def09","t":"Пагін","c":["qud-gender: m"]}
+{"k":"6e4a0bfa7b42d20615a7","p":"d0c337d9e5541392","s":"f38c764c8aa0","t":"гілка","c":["qud-gender: f"]}
+{"k":"6972b3d8cb85766ca1b8","p":"8ce092c7acd1b34b","s":"52656e8104ee","t":"Гілка","c":["qud-gender: f"]}
+{"k":"780e9b057a07f234f419","p":"cb40c380c31eb080","s":"92d883f0b2d1","t":"клешнева кінцівка","c":["qud-gender: f"]}
+{"k":"dab1ebbdd9ff8ee716c1","p":"b8857e906153c600","s":"4b2bdc0540dc","t":"Клешнева кінцівка","c":["qud-gender: f"]}
+{"k":"6f0961e669c756c5d64e","p":"74711fdf4f558f80","s":"3d21db508135","t":"волокнистий вузол","c":["qud-gender: m"]}
+{"k":"5b029a1076d87ec5f2ce","p":"a415bf8b3d398578","s":"211305c97be3","t":"Волокнистий вузол","c":["qud-gender: m"]}
+{"k":"8e12907bd21c17ce95f5","p":"e4db822a2fb19918","s":"635231215aee","t":"вайя","c":["qud-gender: f"]}
+{"k":"88f686a8e3d845e27511","p":"1591066fa5dbb32b","s":"e747f89f0ead","t":"Вайя","c":["qud-gender: f"]}
+{"k":"f849565fb3c14ebd31fe","p":"b718c514ed3b6d45","s":"7706c3c94d5f","t":"завіса","c":["qud-gender: f"]}
+{"k":"a1b579df4ad61052d9d2","p":"0544e4d55912e895","s":"b222aee57dac","t":"Завіса","c":["qud-gender: f"]}
+{"k":"711e5c48b5a206d23366","p":"ef083c67cd5d7d7a","s":"ec580d1e235c","t":"сучок","c":["qud-gender: m"]}
+{"k":"4fe78f5821d0ff5923de","p":"bcdb2d92b4995a2d","s":"70615ec79d3f","t":"Сучок","c":["qud-gender: m"]}
+{"k":"8d060f095334440a9931","p":"b0cf8a256cea9db3","s":"c7c8fc91abb8","t":"нога","c":["qud-gender: f"]}
+{"k":"f03e977f69152100428e","p":"6c2d5d5167e58d1b","s":"7c94ee113e1b","t":"Нога","c":["qud-gender: f"]}
+{"k":"16ad4a032e3cfed0c4d4","p":"6f9eca229766f7e9","s":"9936cc26bd5f","t":"частка","c":["qud-gender: f"]}
+{"k":"73738d004a4ded7159e1","p":"d0381e96b2753063","s":"d06c76d0ea86","t":"Частка","c":["qud-gender: f"]}
+{"k":"df8292637a0acc4c0f65","p":"cb9fb4dc8907edc9","s":"400829473916","t":"труба","c":["qud-gender: f"]}
+{"k":"4ee235871b3976d25421","p":"4e0af4689e556b89","s":"3725dbfedcd5","t":"Труба","c":["qud-gender: f"]}
+{"k":"50f21653bb2c0c90fa24","p":"a844d1596a7038fc","s":"86032604836b","t":"укріплення","c":["qud-gender: n"]}
+{"k":"61ec546e5e16dfd836e1","p":"15b0570f24418d38","s":"8f17c1783f40","t":"Укріплення","c":["qud-gender: n"]}
+{"k":"c66634becd034f71e333","p":"2acfc7ba16b6d6b2","s":"7bb446f34fb1","t":"робо-рука","c":["qud-gender: f"]}
+{"k":"7826dcc08665a1e1b506","p":"6e999cc1c5aa8873","s":"5a22c1164063","t":"Робо-рука","c":["qud-gender: f"]}
+{"k":"7f8bcf91323da7f501b5","p":"c27a47f2ab54969f","s":"56835e1f628e","t":"бічна планка","c":["qud-gender: f"]}
+{"k":"96d67782da1fd9fec1da","p":"1eb6ec948d2cad78","s":"9965d2df24d9","t":"Бічна планка","c":["qud-gender: f"]}
+{"k":"de1e6ecba8fea0c04729","p":"b413f15d63fd3972","s":"fa31221d5507","t":"стебло","c":["qud-gender: n"]}
+{"k":"757a6508126179178b53","p":"85ac4ce9383bed0a","s":"6f270532b95c","t":"Стебло","c":["qud-gender: n"]}
+{"k":"a8e6a726493441a9abe9","p":"5368b071637a5c9f","s":"919a11f94809","t":"черешок","c":["qud-gender: m"]}
+{"k":"88471c5b4cc8a6ca1bb5","p":"97ea11c428a093b4","s":"7bcc3897ff37","t":"Черешок","c":["qud-gender: m"]}
+{"k":"ad2e8a8d32e9eac91fb2","p":"946e86dc75309c9b","s":"2d196c2acd92","t":"опора","c":["qud-gender: f"]}
+{"k":"c12b9c44fb5b8b9f3d5e","p":"629ea9489941ccda","s":"3905de76db9b","t":"Опора","c":["qud-gender: f"]}
+{"k":"3533b3e47ebd3439dd90","p":"1fbb4759ceff07cb","s":"d9714a30bf33","t":"опорна жердина","c":["qud-gender: f"]}
+{"k":"12dd902b5d02dd21e050","p":"65c700fcada753e8","s":"665df8a68ef7","t":"Опорна жердина","c":["qud-gender: f"]}
+{"k":"832b34ee901c7a4b14ea","p":"d445521d1be3ee18","s":"22639ca5f037","t":"опорна розпірка","c":["qud-gender: f"]}
+{"k":"eb72b4f652cd95196bcc","p":"333c4951132d320b","s":"a4092e3c6d60","t":"Опорна розпірка","c":["qud-gender: f"]}
+{"k":"0c35ae7d71096fcd4a13","p":"8a32d090f4116913","s":"08d7531fb326","t":"стрижневий корінь","c":["qud-gender: m"]}
+{"k":"787c2b2b9577371bf630","p":"88c1da08213dce74","s":"e943f7ddcf9a","t":"Стрижневий корінь","c":["qud-gender: m"]}
+{"k":"5f3a8a7b0511ce544e8e","p":"184330d10b6d5de4","s":"8096fe3618f1","t":"ротова лопать","c":["qud-gender: f"]}
+{"k":"30f506de01a9720e8ba2","p":"5e90fce51edc8fc8","s":"db1b9cbc5265","t":"Ротова лопать","c":["qud-gender: f"]}
+{"k":"3e07dd22711e2827643c","p":"227764ece146b60f","s":"8d4062462e6c","t":"кристалічна призма","c":["qud-gender: f"]}
+{"k":"b9e77d8bc8d7ece6d66c","p":"96a565e4218c7ba5","s":"97b25e38f223","t":"Кристалічна призма","c":["qud-gender: f"]}
+{"k":"0a8c26e7c42dabeaa766","p":"b70a707e09913d78","s":"235ff11b1155","t":"кукса","c":["qud-gender: f"]}
+{"k":"04ab7ec2fa8680e8e5ed","p":"121bbdd0b9abab4c","s":"7b08c776fab6","t":"Кукса","c":["qud-gender: f"]}
+{"k":"503292d85b04fc63d286","p":"9d37a01a86087d76","s":"899703d04dcd","t":"розгалуження","c":["qud-gender: n"]}
+{"k":"dd486c3abe92ce8a5111","p":"0fd8d64c4aa4118e","s":"39a80806440f","t":"Розгалуження","c":["qud-gender: n"]}
+{"k":"6fdac3686b71e4de1fb2","p":"d68ed22ca6de4ec8","s":"3a75174fe272","t":"нижня шухляда","c":["qud-gender: f"]}
+{"k":"87de0d5b2de56efa9364","p":"0385d7131e724f79","s":"961f65605395","t":"Нижня шухляда","c":["qud-gender: f"]}
+{"k":"df0e2c3293d8b1ccfb79","p":"b9b27d286b0be344","s":"002cd6bbb3f7","t":"перегородка","c":["qud-gender: f"]}
+{"k":"08efef83d1c24d79aa96","p":"32e17d859d2408aa","s":"cc29053ff492","t":"Перегородка","c":["qud-gender: f"]}
+{"k":"8ac786bc1bc87ffecfd2","p":"c75219a5ded7c425","s":"ad9a0cab12ee","t":"таця","c":["qud-gender: f"]}
+{"k":"4c12db06a1b532f515bc","p":"21b0a0908e08a88e","s":"3ba548ef4fa0","t":"Таця","c":["qud-gender: f"]}
+{"k":"556fa093269f8fe1233d","p":"90ab6178b4727487","s":"d329f11d9a60","t":"шухляда","c":["qud-gender: f"]}
+{"k":"edaa18e156af81194e34","p":"853f5800ac723698","s":"b36548cadb57","t":"Шухляда","c":["qud-gender: f"]}
+{"k":"1b8742fe585890e14972","p":"8307285253dd98f1","s":"bb8d9c7e24a5","t":"тонкий корінець","c":["qud-gender: m"]}
+{"k":"93438c120fb4a677f706","p":"e0960be9a3561150","s":"8d04c06845b6","t":"Тонкий корінець","c":["qud-gender: m"]}
+{"k":"3706727333f07efffb1d","p":"9673356a1bd4d959","s":"2aa535e4db9b","t":"секція кисті","c":["qud-gender: f"]}
+{"k":"f18acb78e70c86015416","p":"1b034dce1851f6a3","s":"9f55ee1a5641","t":"Секція кисті","c":["qud-gender: f"]}
+{"k":"06778eeaf9652a4e592a","p":"728d20b6309a7385","s":"85ab0377f082","t":"кістка кисті","c":["qud-gender: f"]}
+{"k":"930f4c3d974f842b8e1e","p":"6b13d2bd25a88743","s":"1217ef324604","t":"Кістка кисті","c":["qud-gender: f"]}
+{"k":"c9cbc9d2d563dcfdb020","p":"71ea7d181922d48c","s":"c2a116aa910d","t":"ручка","c":["qud-gender: f"]}
+{"k":"c7ed0122ce6d448b63d9","p":"acac21df1418544d","s":"fa04ae3d5198","t":"Ручка","c":["qud-gender: f"]}
+{"k":"36e5e139d4615a6816d5","p":"9ae2e39a34b845c8","s":"0ecc9806bf9d","t":"гіфа","c":["qud-gender: f"]}
+{"k":"b18b613076e3c02a5d25","p":"91db0ebbcd793683","s":"bf888b09bb47","t":"Гіфа","c":["qud-gender: f"]}
+{"k":"0f6102f872dc374781ec","p":"2e81e7293355dff2","s":"741094f66e2c","t":"клямка","c":["qud-gender: f"]}
+{"k":"cdf84be783205e8c9bb0","p":"c922eb7669380a4f","s":"ca07c594b020","t":"Клямка","c":["qud-gender: f"]}
+{"k":"958e9d387f052341c886","p":"4f57a6e364c52f6f","s":"9f91161f4343","t":"листок","c":["qud-gender: m"]}
+{"k":"3c72e0dd58e8b5854002","p":"ca92a56241ed7163","s":"b83382a973db","t":"Листок","c":["qud-gender: m"]}
+{"k":"9c67972059eb06a73f78","p":"264e6420fcb0303c","s":"3b3f77bf2992","t":"маніпулятор","c":["qud-gender: m"]}
+{"k":"318b005356e46fe9f267","p":"1fc0e1accfc0d4d0","s":"015139717681","t":"Маніпулятор","c":["qud-gender: m"]}
+{"k":"48fe8ff2d1996479b51d","p":"10e282527b878fdf","s":"2b3fdf05c4dd","t":"отвір","c":["qud-gender: m"]}
+{"k":"93de07e32b8a584c71e8","p":"21520359173d04cd","s":"f4b13e93df07","t":"Отвір","c":["qud-gender: m"]}
+{"k":"38135eb33ce268145b29","p":"19e230ec705a9208","s":"d0483d17291a","t":"клішня","c":["qud-gender: f"]}
+{"k":"1e544807caf0632d9271","p":"a334c26368bd32a6","s":"c7d973b9846a","t":"Клішня","c":["qud-gender: f"]}
+{"k":"3d789109d72b55dd272e","p":"13f8298669ee10ed","s":"faf7e08b0ce5","t":"листочок","c":["qud-gender: m"]}
+{"k":"17de3510f2b8579bd77a","p":"b85239f4b8d37a86","s":"e08590e8f682","t":"Листочок","c":["qud-gender: m"]}
+{"k":"89c80825df20446f8512","p":"6e745e853caf750e","s":"916f635e2519","t":"псевдоподія","c":["qud-gender: f"]}
+{"k":"2129f4909df758991594","p":"a7d8dfceb10c9a69","s":"0d903ff0474d","t":"Псевдоподія","c":["qud-gender: f"]}
+{"k":"bc60a0720c884bc6e44b","p":"d5c9e944c0820e74","s":"fdf0d7533af5","t":"поручень","c":["qud-gender: m"]}
+{"k":"52d7e71d30c12b8ee3dd","p":"ff03196eb6be5166","s":"8b270e3335b0","t":"Поручень","c":["qud-gender: m"]}
+{"k":"ec9b4562e209fef9c81e","p":"b09666e345a1a8b5","s":"75a86b681a7e","t":"робо-кисть","c":["qud-gender: f"]}
+{"k":"ae408273be5bb79deac6","p":"bf406e7180aea531","s":"07ee91635763","t":"Робо-кисть","c":["qud-gender: f"]}
+{"k":"0ee99976c5657662edfc","p":"ae197f963cf20285","s":"3eefa42d5206","t":"полиця","c":["qud-gender: f"]}
+{"k":"0718d208234556b66305","p":"42e6424fc3bff15e","s":"338c8ac89226","t":"Полиця","c":["qud-gender: f"]}
+{"k":"da927dd9c75641c14bb3","p":"37009cc447b49444","s":"40392e6acb6e","t":"бічна гіфа","c":["qud-gender: f"]}
+{"k":"2b535cb98b2e24d9a10d","p":"c97ddd8774e70603","s":"eaff53787da4","t":"Бічна гіфа","c":["qud-gender: f"]}
+{"k":"84b06adae4e1872c0bb2","p":"8080c53b8c681a8b","s":"ea7bf4bb7230","t":"бік","c":["qud-gender: m"]}
+{"k":"66dfd335acdfad68ab66","p":"87d23f22a506dbc7","s":"630ef00b7c4f","t":"Бік","c":["qud-gender: m"]}
+{"k":"4f199d4d0f739921e0fb","p":"6848abdad1107c0e","s":"37fb627c26a2","t":"тріщинка","c":["qud-gender: f"]}
+{"k":"04d52ab616ce9aa40c7b","p":"fd32a3d248dc9bb9","s":"8a7eed7c67a5","t":"Тріщинка","c":["qud-gender: f"]}
+{"k":"fbeb3bdd9f9723adfde4","p":"97fcfd64de02ebe0","s":"f50df719ed8b","t":"вусик","c":["qud-gender: m"]}
+{"k":"7cf969fc5e63a741e2f3","p":"c078f36a993b0237","s":"ddd58dc102ef","t":"Вусик","c":["qud-gender: m"]}
+{"k":"f55c1fe769d347856d60","p":"1a35b37c0903e7cd","s":"4c3b34ac878e","t":"щупальце","c":["qud-gender: n"]}
+{"k":"d3f281e8980c22ab7435","p":"4cdcfcdccece2188","s":"3ba02cd2a876","t":"Щупальце","c":["qud-gender: n"]}
+{"k":"e98ff8b46f2758ce08b7","p":"02b31e02f721a771","s":"a9116e0fd6f4","t":"точка кріплення","c":["qud-gender: f"]}
+{"k":"1a561417491f0ec6f1c8","p":"1e1640394ff7474c","s":"9a99b64c4886","t":"Точка кріплення","c":["qud-gender: f"]}
+{"k":"0a98711324cc24807603","p":"196d4da6232a2ddd","s":"4742f9ab46d9","t":"верхня шухляда","c":["qud-gender: f"]}
+{"k":"7e6ab5b56e39d6422f2a","p":"d19b0c83ea0d0d5f","s":"8bc91e0e8d38","t":"Верхня шухляда","c":["qud-gender: f"]}
+{"k":"33c5b27214291d35f95f","p":"e57c5eea237b7c2e","s":"3b6b49e8e232","t":"гілочка","c":["qud-gender: f"]}
+{"k":"e6f1129149e3a8f08c59","p":"d3be9560f8454f8c","s":"1d8154e1b461","t":"Гілочка","c":["qud-gender: f"]}
+{"k":"5fff7b81a9b8ae8e6a3c","p":"ae04c04a7dc80a95","s":"67b6a6b3785f","t":"лопать","c":["qud-gender: f"]}
+{"k":"66747f50a8ad17a86e64","p":"5f22dd2b42b1c082","s":"dd18d6da25ef","t":"Лопать","c":["qud-gender: f"]}
+{"k":"4bbb476bf1fb63371501","p":"784049106ce2cc2a","s":"8bf4e80ed180","t":"квінконс","c":["qud-gender: m"]}
+{"k":"c7b54ca78c7d0b7c2668","p":"da9eaf717bfda9db","s":"5ff844fc094b","t":"Квінконс","c":["qud-gender: m"]}
+{"k":"131c495bc1f2ad8927d3","p":"433b20bfdb52b25f","s":"d81585a2e84a","t":"кукси","c":["qud-gender: pl"]}
+{"k":"7bbcaaee36aa95c2a2ff","p":"9ddc4ac75fcc8268","s":"dcb871e7cc5b","t":"Кукси","c":["qud-gender: pl"]}
+{"k":"f460c606c4e940171fd4","p":"eb6fb52d406d5b75","s":"8532bc7f1de3","t":"розгалуження","c":["qud-gender: pl"]}
+{"k":"160ea177768c5784770c","p":"5b535c7839fa62cf","s":"cc53fcde823b","t":"Розгалуження","c":["qud-gender: pl"]}
+{"k":"410a7439c7bbb731963e","p":"cc9de9bb7f8c45b3","s":"3d7b82b329a0","t":"секції кистей","c":["qud-gender: pl"]}
+{"k":"9b26c7e081e9c279fd91","p":"0f9d49af00b0bfb4","s":"4a6c517e2ce8","t":"Секції кистей","c":["qud-gender: pl"]}
+{"k":"9d7996440147cb21ad73","p":"0c74af4034e5b57f","s":"c9634184911b","t":"кістки кистей","c":["qud-gender: pl"]}
+{"k":"ff462c89dc3880c0d88d","p":"75b7edd0d039f445","s":"aa7f87305c29","t":"Кістки кистей","c":["qud-gender: pl"]}
+{"k":"c8c1a17bb4abb6f2687a","p":"ef7dbf2a69a09ce3","s":"1ad945b5cd38","t":"клямки","c":["qud-gender: pl"]}
+{"k":"a559294e920aa8c9c947","p":"e29a3882e5c7cd8f","s":"c7be56341557","t":"Клямки","c":["qud-gender: pl"]}
+{"k":"b49438fc16bbd06c7fea","p":"f6c6cf2105d84041","s":"d4f762b08629","t":"бічні гіфи","c":["qud-gender: pl"]}
+{"k":"5ac6e8038a2146f21c56","p":"d54af2783b2f38f3","s":"44b8e42722f5","t":"Бічні гіфи","c":["qud-gender: pl"]}
+{"k":"479c62f06457133f2314","p":"e173af70927eac7e","s":"5ed0a10b951b","t":"листки","c":["qud-gender: pl"]}
+{"k":"deeb866c7c46f000768c","p":"852564673bfab62b","s":"0e23163adf07","t":"Листки","c":["qud-gender: pl"]}
+{"k":"c30c6fa904ce183d6d72","p":"3cd425b340e5599a","s":"b44da7d7954e","t":"маніпулятори","c":["qud-gender: pl"]}
+{"k":"4fd87b02514ba6d4e050","p":"beffb7c801886f6e","s":"903364e2d0ae","t":"Маніпулятори","c":["qud-gender: pl"]}
+{"k":"193187f55edca882893b","p":"ef5b0275e02dc8e6","s":"1ff4ea702167","t":"клішні","c":["qud-gender: pl"]}
+{"k":"621391a6385660436be7","p":"9d12f6ae26ddb80f","s":"c1a629cde3ef","t":"Клішні","c":["qud-gender: pl"]}
+{"k":"f41a4c98b2d92467844d","p":"435031e1904bdc2e","s":"b31e67ed5155","t":"листочки","c":["qud-gender: pl"]}
+{"k":"4afe103d3bc0cc51199f","p":"03805bd2eb83cac2","s":"e20ada4b10c5","t":"Листочки","c":["qud-gender: pl"]}
+{"k":"02dcab676fd8731a636b","p":"a9158bc66d91d00e","s":"2e1d590be7f9","t":"поручні","c":["qud-gender: pl"]}
+{"k":"168763fe32075b551013","p":"493e4cc569fc838a","s":"5a5cbc0f60a8","t":"Поручні","c":["qud-gender: pl"]}
+{"k":"afa695b393b93207cc10","p":"d7a1e7eabc9fe88e","s":"f6d40c85103e","t":"робо-кисті","c":["qud-gender: pl"]}
+{"k":"497833230337697befba","p":"fb42d42c8da1b5ae","s":"7cf3436c5503","t":"Робо-кисті","c":["qud-gender: pl"]}
+{"k":"3e8752c4526bf730e531","p":"f9660ba498ed503b","s":"9a983ffbd0de","t":"вусики","c":["qud-gender: pl"]}
+{"k":"ad0a1d89dce16bf9dbb9","p":"727f15f51dcb6a22","s":"f4b30f8b8e27","t":"Вусики","c":["qud-gender: pl"]}
+{"k":"a64a33abb87980415083","p":"71e72d9879c0eed0","s":"81029415ddb2","t":"щупальця","c":["qud-gender: pl"]}
+{"k":"a647d600dc23c4678481","p":"490d4ca4c69c202f","s":"269a7e8e48e3","t":"Щупальця","c":["qud-gender: pl"]}
+{"k":"274c4b2721428cb3820c","p":"17e34776624d5f9e","s":"82441a0f5b37","t":"псевдоподії","c":["qud-gender: pl"]}
+{"k":"6b64b781daa0271ac9fa","p":"b8d7bf7640bbde07","s":"b196c727d38c","t":"Псевдоподії","c":["qud-gender: pl"]}
+{"k":"55abcca54cf60ba0fb4f","p":"f03a876244c04087","s":"dfb36f1d2ead","t":"гілочки","c":["qud-gender: pl"]}
+{"k":"4b27ca8b1b084c694fe5","p":"a901cba7b16039c9","s":"53d5f5e2115b","t":"Гілочки","c":["qud-gender: pl"]}
+{"k":"8a2d7a45122e12f32129","p":"612fc0d5ffa5bfb2","s":"8fba16c03a05","t":"лопаті","c":["qud-gender: pl"]}
+{"k":"cde3060452da859ffc7e","p":"bb2eb5a066d7e696","s":"eaa36b528558","t":"Лопаті","c":["qud-gender: pl"]}
+{"k":"814fd5018e01dc5cd689","p":"370b142bb0924e24","s":"f4d8007bf462","t":"квінконси","c":["qud-gender: pl"]}
+{"k":"36a44175243f6e14fb7c","p":"d42632c8f1dd9a37","s":"9aa49746329c","t":"Квінконси","c":["qud-gender: pl"]}
+{"k":"a5db2715503060431db7","p":"3c6e2b8a58f3faad","s":"94330085239e","t":"тріщинки","c":["qud-gender: pl"]}
+{"k":"807030616cebfc66a7b3","p":"449b210ac4125128","s":"1e5c55e5a2d7","t":"Тріщинки","c":["qud-gender: pl"]}
+{"k":"b786612114bce4269644","p":"3baeae950822a1ff","s":"f1f24458e1a8","t":"полиці","c":["qud-gender: pl"]}
+{"k":"e42b185e484f3c31c96d","p":"5f42cfdd35ef0349","s":"74f3b4f39c05","t":"Полиці","c":["qud-gender: pl"]}
+{"k":"f2193ec89f1b9e09a9bc","p":"4dc6a41a436ef855","s":"9775baf53c8b","t":"точки кріплення","c":["qud-gender: pl"]}
+{"k":"db7ab7318418d39bbdba","p":"b9f3c61d270d525b","s":"41b488609255","t":"Точки кріплення","c":["qud-gender: pl"]}
+{"k":"c95a4acd06970510d1b2","p":"54a7b09dc3ee22ae","s":"cda8f83bd327","t":"тонкі корінці","c":["qud-gender: pl"]}
+{"k":"8f8e9ab73a8b336330b8","p":"54bf84620ea76599","s":"31e7ca308d5f","t":"Тонкі корінці","c":["qud-gender: pl"]}
+{"k":"950d6ee588425320347e","p":"8b5a8139e3501932","s":"cf4dc855cb88","t":"шухляди","c":["qud-gender: pl"]}
+{"k":"af9ae956842cdcdafdd1","p":"96719cc774c16549","s":"ed14110fccb3","t":"Шухляди","c":["qud-gender: pl"]}
+{"k":"a1ae76481c7049c9e2f2","p":"1f126c7d7851e994","s":"add875e192ed","t":"отвори","c":["qud-gender: pl"]}
+{"k":"861784f90c3ef955369b","p":"e8a1eab3812e65ae","s":"ee2c28fd245e","t":"Отвори","c":["qud-gender: pl"]}
+{"k":"f105f77e6fca1a739e52","p":"bbf2dcada888c6b8","s":"539822cd7b4b","t":"ручки","c":["qud-gender: pl"]}
+{"k":"a51ab93dde509af2ce64","p":"84f9983a93c15978","s":"9db6f247de16","t":"Ручки","c":["qud-gender: pl"]}
+{"k":"2325ebb50219a36905f9","p":"62f2010259e64089","s":"10d032ec1f19","t":"таці","c":["qud-gender: pl"]}
+{"k":"4a50d344b55522dd400a","p":"ba98a3e0749f7942","s":"fe6b2f43839a","t":"Таці","c":["qud-gender: pl"]}
+{"k":"d606ddbca8f8014789d2","p":"ef64f8c7858c81b9","s":"cae662172fd4","t":"основа","c":["qud-gender: f"]}
+{"k":"229958ad8ea94f2af68c","p":"72afa333c2d4050c","s":"7b47361aad19","t":"Основа","c":["qud-gender: f"]}
+{"k":"78d17f696e6520249a1a","p":"0923fe75c907ffb3","s":"75dd5a03b586","t":"нижня планка","c":["qud-gender: f"]}
+{"k":"c717135d58b3ecec510f","p":"d89f67e06ddf571d","s":"f5fc3abd854e","t":"Нижня планка","c":["qud-gender: f"]}
+{"k":"ef003037e17bb5fd7d5c","p":"2cb902adc3a85946","s":"be9b7607e070","t":"низ","c":["qud-gender: m"]}
+{"k":"ff284a8304d3928a04f2","p":"838500251b74944c","s":"479ad21ac909","t":"Низ","c":["qud-gender: m"]}
+{"k":"f620e707b9873711d435","p":"3f132ffb62bf5a4b","s":"66410fe48334","t":"кістки ступень","c":["qud-gender: pl"]}
+{"k":"d37206d05a07f737374f","p":"d96c119f6075c938","s":"cfb9a27bff19","t":"Кістки ступень","c":["qud-gender: pl"]}
+{"k":"4f895d6da6b6547fe07e","p":"69d0db5253589370","s":"2bd8b7b0d83e","t":"фундамент","c":["qud-gender: m"]}
+{"k":"cccd5b6c8a59c408f8cc","p":"f12bc99579781800","s":"df42a4d5d353","t":"Фундамент","c":["qud-gender: m"]}
+{"k":"e179cad5e4f0a842695b","p":"80fbbd5282a95845","s":"54e7bb3e6245","t":"передні ноги","c":["qud-gender: pl"]}
+{"k":"baf7097fcb9bcbe2fbf2","p":"26aaab2f21e5babf","s":"e09297d1e0a0","t":"Передні ноги","c":["qud-gender: pl"]}
+{"k":"ae6a48fce5b57a4db488","p":"a0720d1e0b37c639","s":"14e32f3cbdd3","t":"ноги","c":["qud-gender: pl"]}
+{"k":"4873e9a98573b28181b0","p":"cc22e61cd39726d8","s":"38557594d0fc","t":"Ноги","c":["qud-gender: pl"]}
+{"k":"22c37ca7b73658adaf3f","p":"c56c49bc3ebc2d8a","s":"411629cde75a","t":"задні ноги","c":["qud-gender: pl"]}
+{"k":"7cb44b8928ecc2674631","p":"6da9745decccc3e0","s":"3c9eef577d8d","t":"Задні ноги","c":["qud-gender: pl"]}
+{"k":"81587c7880695d69fef4","p":"3cfdc8dadbd9d9d4","s":"315d5096fed5","t":"полозки","c":["qud-gender: pl"]}
+{"k":"8e8158eff95b0c2516ca","p":"23f6b9563a44997f","s":"08dfb121cff1","t":"Полозки","c":["qud-gender: pl"]}
+{"k":"f91ba0bc20bf243d5413","p":"0c8dc5e70ed31095","s":"4453e0103061","t":"опорні розпірки","c":["qud-gender: pl"]}
+{"k":"b09daceb5458b5b417cc","p":"67ccf865b417bec1","s":"d43474dc19ab","t":"Опорні розпірки","c":["qud-gender: pl"]}
+{"k":"d30e9cee1a9cca762aa0","p":"255faae1f332ccad","s":"b346ffef9e6b","t":"ходова частина","c":["qud-gender: f"]}
+{"k":"5530a5f39f4a0737989f","p":"158437ba3a65658e","s":"38cee89fc869","t":"Ходова частина","c":["qud-gender: f"]}
+{"k":"b8b3e6b746fef861493e","p":"1e3086d2ab783c1c","s":"dffe303ef8a9","t":"опорні гіфи","c":["qud-gender: pl"]}
+{"k":"684082ce14a06b9e4677","p":"e1f66c811693610b","s":"24bd5f78e909","t":"Опорні гіфи","c":["qud-gender: pl"]}
+{"k":"9c4524fb7b9968a0bec0","p":"c61cd0ba5e1ffe8b","s":"43fcf4db98ca","t":"мульча","c":["qud-gender: f"]}
+{"k":"91520428d97cc5a94b24","p":"a628b76da413fdf7","s":"7811a3383dd0","t":"Мульча","c":["qud-gender: f"]}
+{"k":"c25265104ba7c3218bb4","p":"99b5565f2287fe98","s":"79c5afc2b0cb","t":"кілки","c":["qud-gender: pl"]}
+{"k":"cf5804bb0a027243d4a8","p":"5a1fa9dfd44830d1","s":"5e35185a08fb","t":"Кілки","c":["qud-gender: pl"]}
+{"k":"bb65acb2fa373adf8741","p":"487e9450ed4cd504","s":"c141cacc70a1","t":"м’язова нога","c":["qud-gender: f"]}
+{"k":"4432fa8cddb092da38f7","p":"3853979ca2dea208","s":"29d5a669e83c","t":"М’язова нога","c":["qud-gender: f"]}
+{"k":"6e3feaba1fff2263d281","p":"ab6d9615611a7f50","s":"864a2a8463c9","t":"колеса","c":["qud-gender: pl"]}
+{"k":"f40446aa63a86576fb28","p":"fab5b2d5c1929ba7","s":"856cc5edc4d0","t":"Колеса","c":["qud-gender: pl"]}
+{"k":"834fd9b9ec15c3225a63","p":"b110f6d11fdfc3c4","s":"ba59926159d2","t":"колесо","c":["qud-gender: n"]}
+{"k":"157d61b97439f5a7a8ec","p":"3c0501589b1b6eb8","s":"889a08322a41","t":"Колесо","c":["qud-gender: n"]}
+{"k":"f7a658f5386d88b380ad","p":"03819b4601684c38","s":"9dfcc0d2ff3b","t":"спинний плавець","c":["qud-gender: m"]}
+{"k":"0cfc0b5906fcf6fc73c6","p":"6046ac846c7a73ac","s":"8965c67c7e01","t":"Спинний плавець","c":["qud-gender: m"]}
+{"k":"0df9f0a957996d5e74e2","p":"dd4206e92c95f29a","s":"55791305ec33","t":"хвостовий плавець","c":["qud-gender: m"]}
+{"k":"6618bd2c8ce29c3992d8","p":"c603a79cb2b6b629","s":"0f55a9b7037c","t":"Хвостовий плавець","c":["qud-gender: m"]}
+{"k":"b3cd9969a17c42842b26","p":"089fc9ca7f36d6f6","s":"3ee0ab18cd85","t":"гніздо зброї","c":["qud-gender: n"]}
+{"k":"acd0a4f53c0d1e88c14a","p":"d7ca46946c5c81ce","s":"750a3f53c2a5","t":"Гніздо зброї","c":["qud-gender: n"]}
+{"k":"88c3d6b9ff0bc065b3cc","p":"42a2e40c56633206","s":"8c07d9ca0009","t":"середнє гніздо зброї","c":["qud-gender: n"]}
+{"k":"53e4a50cd6b677652480","p":"78f5415e6748f98b","s":"afe3de7aa149","t":"Середнє гніздо зброї","c":["qud-gender: n"]}
+{"k":"02f4ba65db1597ee75f5","p":"23456c4dec796c0a","s":"c66df5862cc5","t":"прищеплена дзеркальна рука","c":["qud-gender: f"]}
+{"k":"b5dc9cf64b9467444469","p":"d16b032691cbd0e9","s":"7cb2e042a1ff","t":"Прищеплена дзеркальна рука","c":["qud-gender: f"]}

@@ -640,3 +640,15 @@ Sultan Histories (journal tab)	Історії султанів	pl	ui	proposed	Co
 Village Histories (journal tab)	Історії сіл	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
 General Notes (journal tab)	Загальні нотатки	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
 Recipes (journal tab)	Рецепти	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
+arm (body part)	рука	f	body	proposed	Bodies: Arm — рука (обладунок на руці), Hand — кисть (тримає зброю)
+hand (body part)	кисть	f	body	proposed	Bodies: «Ліва кисть» у спорядженні; Hands (рукавиці) — кисті
+hands (body part)	кисті	pl	body	proposed	Bodies: слот рукавиць; «Worn on» прибрано
+foot (body part)	ступня	f	body	proposed	Bodies: частина тіла
+feet (body part)	ступні	pl	body	proposed	Bodies: частина тіла
+back (body part)	спина	f	body	proposed	Bodies: слот плаща; «Worn on» прибрано
+face (body part)	обличчя	n	body	proposed	Bodies: частина тіла
+floating nearby (body part)	поруч у повітрі	n	body	proposed	Bodies: частина тіла
+thrown weapon (slot)	метальна зброя	f	body	proposed	Bodies: частина тіла
+missile weapon (slot)	стрілецька зброя	f	body	proposed	Bodies: частина тіла
+left / right / upper / lower (laterality)	лівий / правий / верхній / нижній		body	proposed	Bodies: узгоджуються з назвою частини (UkrainianLaterality)
+fore / hind / mid (laterality)	передній / задній / середній		body	proposed	Bodies: «foreleg» → «передня нога»

@@ -51,6 +51,43 @@ class Colors(unittest.TestCase):
         self.assertEqual((shader.get("DisplayName"), shader.get("Colors")), ("закоханий", "r-R-M-m"))
 
 
+BODIES = """<bodies>
+  <bodyparttypes>
+    <bodyparttype Type="Back" DescriptionPrefix="Worn on" Integral="true" />
+    <bodyparttype Type="Roots" Description="Root System" Plural="true" />
+  </bodyparttypes>
+  <bodyparttypevariants>
+    <bodyparttypevariant VariantOf="Head" Type="Cap" Category="Fungal" />
+  </bodyparttypevariants>
+  <anatomies />
+</bodies>"""
+
+
+class Bodies(unittest.TestCase):
+    def test_names_with_the_loaders_defaults_and_the_merge_it_needs(self):
+        xml = datatables.bodies_xml(BODIES, None)
+        found = {(u.msgctxt, u.msgid) for u in units.extract(xml, datatables.BODIES)}
+        self.assertEqual(found, {
+            ("bodyparttypes/bodyparttype[Type=Back]@Name", "back"),
+            ("bodyparttypes/bodyparttype[Type=Back]@Description", "Back"),
+            ("bodyparttypes/bodyparttype[Type=Roots]@Name", "roots"),
+            ("bodyparttypes/bodyparttype[Type=Roots]@Description", "Root System"),
+            ("bodyparttypevariants/bodyparttypevariant[Type=Cap]@Name", "cap"),
+            ("bodyparttypevariants/bodyparttypevariant[Type=Cap]@Description", "Cap"),
+        })
+        out, _ = units.build(xml, datatables.BODIES, {
+            ("bodyparttypes/bodyparttype[Type=Back]@Name", "back"): "спина",
+            ("bodyparttypevariants/bodyparttypevariant[Type=Cap]@Name", "cap"): "шапинка",
+        })
+        root = ET.fromstring(out)
+        back = next(root.iter("bodyparttype"))
+        # «Worn on» goes: the loader reads an empty prefix as none
+        self.assertEqual((back.get("Name"), back.get("DescriptionPrefix")), ("спина", ""))
+        cap = next(root.iter("bodyparttypevariant"))
+        # a variant's merge restates VariantOf, without which the loader throws
+        self.assertEqual((cap.get("Name"), cap.get("VariantOf")), ("шапинка", "Head"))
+
+
 class Factions(unittest.TestCase):
     EXAMPLE = """<?xml version="1.0" encoding="utf-8"?>
 <!--

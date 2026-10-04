@@ -10,6 +10,12 @@ loaders merge into the data.
   augment_factions       adds to the official Factions table what its export misses: the water ritual's dish
                          question (exported as «recipetext», read as «RecipeText»), the interests' BuyDescription and
                          the DefaultAddress; and restates Parent, which the faction loader resets when absent.
+  Bodies.example.xml     body part names (Bodies.xml has no export): each type's and variant's Name, lower case for
+                         sentences («arm», the sides go before it: «left arm»), and Description, for the equipment
+                         screen («Arm»), with the loader's defaults when the file has none (Anatomies, BodyPartType).
+                         A variant's merge must restate VariantOf (the loader throws without it). DescriptionPrefix
+                         («Worn on» Back) is merged empty, which the loader reads as none: Ukrainian names the slot
+                         without it («Спина», «Руки» for gloves next to «Ліва рука»).
 """
 from __future__ import annotations
 
@@ -19,6 +25,7 @@ from .units import MARK
 
 COMMANDS = "Commands.example.xml"
 COLORS = "Colors.example.xml"
+BODIES = "Bodies.example.xml"
 
 
 def _header(build: str | None, schema: str) -> str:
@@ -72,6 +79,35 @@ def colors_xml(base_text: str, build: str | None) -> str | None:
     return (_header(build, '<colors>\n\n  <solidcolors>\n\n    <solidcolor Name="Key" DisplayName="DisplayText">\n\n'
                            '  <shaders>\n\n    <shader Name="Key" DisplayName="DisplayText">\n')
             + f'<colors Lang="example" Encoding="utf-8">\n{"".join(sections)}</colors>\n')
+
+
+def bodies_xml(base_text: str, build: str | None) -> str | None:
+    """The body part types' and variants' names of Base/Bodies.xml as a string table (module docstring)."""
+    root = ET.fromstring(base_text)
+    sections = []
+    for section, tag in (("bodyparttypes", "bodyparttype"), ("bodyparttypevariants", "bodyparttypevariant")):
+        lines = []
+        for el in root.iter(tag):
+            kind = el.get("Type")
+            if not kind:
+                continue
+            attrs = [_attr("Type", kind)]
+            if tag == "bodyparttypevariant":
+                attrs.append(_attr("VariantOf", el.get("VariantOf") or ""))
+            attrs.append(_attr("Name", MARK + (el.get("Name") or kind.lower())))
+            attrs.append(_attr("Description", MARK + (el.get("Description") or kind)))
+            if el.get("DescriptionPrefix"):
+                attrs.append(_attr("DescriptionPrefix", ""))
+            lines.append(f"    <{tag} {' '.join(attrs)} />\n")
+        if lines:
+            sections.append(f"  <{section}>\n{''.join(lines)}  </{section}>\n")
+    if not sections:
+        return None
+    return (_header(build, '<bodies>\n\n  <bodyparttypes>\n\n'
+                           '    <bodyparttype Type="Key" Name="DisplayText" Description="DisplayText">\n\n'
+                           '  <bodyparttypevariants>\n\n'
+                           '    <bodyparttypevariant Type="Key" Name="DisplayText" Description="DisplayText">\n')
+            + f'<bodies Lang="example" Encoding="utf-8">\n{"".join(sections)}</bodies>\n')
 
 
 def augment_factions(example_text: str, base_text: str) -> str:

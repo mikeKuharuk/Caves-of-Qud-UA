@@ -18,6 +18,7 @@
     <Compile Include="../../mod/Grammar/UkrainianTerms.cs" />
     <Compile Include="../../mod/Grammar/UkrainianWordTools.cs" />
     <Compile Include="../../mod/Grammar/UkrainianThings.cs" />
+    <Compile Include="../../mod/Grammar/UkrainianLaterality.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
 </Project>
