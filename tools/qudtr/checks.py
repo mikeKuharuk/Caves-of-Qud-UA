@@ -105,6 +105,10 @@ UK_POSTS = {"uk.word", "uk.agree", "uk.f", "uk.n", "uk.pl", "uk.date", "uk.stem"
 # the game's punctuation glue, printed only next to a value that is not empty: =subtype|after:,= avoids «Рівень 1,,
 # Classic» (around an empty value the game culls one space, never a comma: GameText.ProcessCulling)
 GLUE_POSTS = {"before", "after"}
+# a direction is empty when the object is the player (to.the.direction) or shares the cell (to.its.direction), and the
+# culling never takes brackets or quotes: «X () уникнув дуги». Glued on, =x.to.the.direction|before:(|after:)=, they
+# go with the value
+WRAPPED_DIRECTION = re.compile(r"[(«„]=([^=()|]*[Dd]irection[^=()|]*)=[)»“]")
 UK_AGREE_BARE = re.compile(r"\|uk\.agree(?![#\w.])")
 # replacers whose parameters are words to translate: =partial.if:some:all=, =already.sign:+:-=
 TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
@@ -349,6 +353,9 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
             err("code-hole", f"{m.group(0)} counts with a {{n}} the source does not have")
         elif len(m.group(2).split(":")) != 3:
             err("code-hole", f"{m.group(0)}: give the three forms, for 1, 2–4 and 5+ ({{0:хід:ходи:ходів}})")
+    for m in WRAPPED_DIRECTION.finditer(msgstr):
+        warn("empty-wrap", f"{m.group(0)}: the direction can be empty and would leave the brackets; glue them on: "
+                           f"={m.group(1)}|before:(|after:)=")
 
     # ~Cmd key tokens (help text); '~' alternatives in dialogue are compared by count
     src_cmd = collections.Counter(COMMAND.findall(msgid))

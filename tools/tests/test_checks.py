@@ -87,6 +87,10 @@ class Checks(unittest.TestCase):
         self.assertIn("uk-grammar", codes("x =object.name= y", "x =object.p:= y", severity="error"))
         # the game's punctuation glue may come and go: a comma only after a subtype that is there
         self.assertEqual(checks.check("Level =level= =subtype= =gamemode=", "Рівень =level=, =subtype|after:,= =gamemode="), [])
+        # a direction can be empty (the player; the same cell): brackets around it must be glued on
+        src = "=subject.Name= =subject.to.the.direction= falls in!"
+        self.assertIn("empty-wrap", codes(src, "=subject.Name= (=subject.to.the.direction=) падає!"))
+        self.assertEqual(checks.check(src, "=subject.Name= =subject.to.the.direction|before:(|after:)= падає!"), [])
 
     def test_grammar_feedback_of_the_first_packages(self):
         # a fifth form for the player is allowed in g
