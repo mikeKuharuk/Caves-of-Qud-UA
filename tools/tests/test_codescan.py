@@ -623,6 +623,49 @@ class DoesForms(unittest.TestCase):
                             ("quantum tunnel", "quantum tunnels")):
             self.assertEqual(codescan.third_person(verb), third, verb)
 
+    # the verb alone (X.GetVerb("verb")) after a name the code wrote: the subject's own T(), a local the method sets
+    # to «You», a ternary with «You» in it, and another object's possessive, which is never the player
+    GET_VERB_SOURCE = """public class Ladder : IPart
+{
+	public void Climb(GameObject who, GameObject Owner, GameObject Gadget)
+	{
+		IComponent<GameObject>.AddPlayerMessage(who.T() + who.GetVerb("try") + " to climb " + ParentObject.t() + ", but" + who.GetVerb("slip") + ".");
+		string text;
+		if (who.IsPlayer())
+		{
+			text = "You";
+		}
+		else
+		{
+			text = who.T();
+		}
+		IComponent<GameObject>.AddPlayerMessage(text + who.GetVerb("wave") + " at " + ParentObject.t() + ".");
+		IComponent<GameObject>.AddPlayerMessage((who.IsPlayer() ? "You" : who.T()) + who.GetVerb("shiver") + " with cold.");
+		IComponent<GameObject>.AddPlayerMessage(Owner.Poss(Gadget) + Gadget.GetVerb("whir") + " softly and stops.");
+	}
+}"""
+
+    def test_the_verb_alone_after_a_name(self):
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Ladder.cs").write_text(self.GET_VERB_SOURCE, encoding="utf-8")
+            found = {e.key for e in codescan.scan_text(pathlib.Path(d))}
+        self.assertEqual(found, {
+            # one subject keeps one person: no «tries … but slip»
+            "{0} tries to climb {1}, but slips.", "{0} try to climb {1}, but slip.", "You try to climb {0}, but slip.",
+            "{0} waves at {1}.", "{0} wave at {1}.", "You wave at {0}.",
+            "{0} shivers with cold.", "{0} shiver with cold.", "You shiver with cold.",
+            "{0} whirs softly and stops.", "{0} whir softly and stops."})
+
+    def test_the_crude_chain_keeps_a_verb_a_hole(self):
+        # resolve()'s every-Append-in-the-method text: GetVerb's forms there would only make glued keys look specific
+        src = 'void M()\n{\n\tsb.Append(X.The).Append(X.GetVerb("mill")).Append(" the grain");\n\tShow(sb.ToString());\n}'
+        codescan._EXPAND = ("Does", "does", "GetVerb")
+        try:
+            found = codescan.resolve(src, codescan.mask(src), src.index("Show"), "sb.ToString()")
+        finally:
+            codescan._EXPAND = ()
+        self.assertEqual([codescan.number_holes(t) for t in found], ["{0} the grain"])
+
 
 class OptionLists(unittest.TestCase):
     # a made-up menu in the shapes the game's code takes: options filled in a local first, a list grown by Add, an

@@ -160,44 +160,50 @@ def patterns(expr: str, nested: bool = False) -> list[str]:
         return patterns(q[1], nested) + patterns(q[2], nested)
     if LOCALIZED.search(expr):
         return []
-    out = [""]
+    out = [("", {})]   # each text so far, with the person each subject's verb took in it (does_forms)
     found = False
+    prev = ""
     for term in split_top(expr, "+"):
         term = strip_parens(term)
         value = literal_value(term)
         inner = ternary(term) if nested and value is None else None
         options = [p for b in inner[1:] for p in patterns(b, nested) or [HOLE]] if inner else []
-        does = does_forms(term) if _EXPAND_DOES and value is None else None
+        does = does_forms(term) if _EXPAND and value is None else None
         if value is not None:
             found = True
-            out = [o + value for o in out]
+            out = [(o + value, b) for o, b in out]
         elif does:
             found = True
-            out = [o + p for o in out for p in does][:16]
+            out = [v for o, b in out for v in with_verb(o, b, does, prev)][:16]
         elif any(p != HOLE for p in options):
             found = True
-            out = [o + p for o in out for p in dict.fromkeys(options)][:16]
+            out = [(o + p, b) for o, b in out for p in dict.fromkeys(options)][:16]
         elif term:
-            out = [o + HOLE for o in out]
-    return [o for o in out if found]
+            out = [(o + HOLE, b) for o, b in out]
+        prev = term
+    return list(dict.fromkeys(o for o, _ in out)) if found else []
 
 
-# scan_text turns it on: X.Does("verb") in a text the Text table keys gives its verb's forms (does_forms)
-_EXPAND_DOES = False
-DOES_CALL = re.compile(r"\.([Dd]oes)\s*\($")
+# the calls whose verb gives its forms (does_forms): X.Does("verb") and X.GetVerb("verb") in a text the Text table
+# keys, where scan_text turns them on
+_EXPAND: tuple[str, ...] = ()
+DOES_CALL = re.compile(r"\.([Dd]oes|GetVerb)\s*\($")
+NAME_CALL = re.compile(r"^([\w.\[\]]+)\.([Tt])\(")
 
 
-def does_forms(term: str) -> list[str] | None:
-    """What X.Does("fail") / X.does("fail") can say: the name and the verb in the third person («{0} fails»), a group
-    («{0} fail»), and the player in the second («You fail»: CodeText looks the player's «Ви fail» up as that). An
-    adverb argument goes before the verb («{0} merely clicks»). None when the term is no such call."""
+def does_forms(term: str) -> tuple[str, str, list[tuple[str, str]]] | None:
+    """What X.Does("fail") / X.does("fail") / X.GetVerb("fail") can say: (X, the call, [(person, text)…]). The person
+    is «one» (the third person, «{0} fails»), «many» («{0} fail») or «you», the player («You fail»: CodeText looks
+    the player's «Ви fail» up as that). Does writes the name too, a hole; GetVerb only the verb, after the name the
+    code wrote before it, which the player's form takes the place of (with_verb). An adverb argument goes before the
+    verb («{0} merely clicks»). None when the term is no such call."""
     if not term.endswith(")"):
         return None
     o = term.rfind("(", 0, len(term))
     while o > 0 and matching(term, o) != len(term) - 1:
         o = term.rfind("(", 0, o)
     m = DOES_CALL.search(term[:o + 1]) if o > 0 else None
-    if not m:
+    if not m or m.group(1) not in _EXPAND:
         return None
     args = split_top(term[o + 1:-1], ",")
     verb = literal_value(args[0].strip()) if args else None
@@ -205,13 +211,42 @@ def does_forms(term: str) -> list[str] | None:
         return None
     named = {mm.group(1): mm.group(2) for a in args for mm in [ANY_NAMED_ARG.match(a)] if mm}
     positional = [a for a in args if not ANY_NAMED_ARG.match(a)]
+    receiver = term[:m.start()].strip()
+    if m.group(1) == "GetVerb":
+        space = "" if named.get("PrependSpace", positional[1] if len(positional) > 1 else "true").strip() == "false" else " "
+        return receiver, "GetVerb", [("one", space + third_person(verb)), ("many", space + verb),
+                                     ("you", space + verb + PLAYER_MARK)]
     adverb_expr = named.get("Adverb", positional[4] if len(positional) > 4 else "null").strip()
     adverb = literal_value(adverb_expr)
     # an adverb the code computes («critically» or none, MissileWeapon) is there or not: a hole, or nothing
     befores = [" " + adverb] if adverb else [""] + ([" " + HOLE] if IDENT.match(adverb_expr) and adverb_expr != "null" else [])
     you = "You" if m.group(1) == "Does" else "you"
-    return [f for before in befores for f in (HOLE + before + " " + third_person(verb), HOLE + before + " " + verb,
-                                              you + before + " " + verb + PLAYER_MARK)]
+    return receiver, "Does", [f for before in befores for f in (("one", HOLE + before + " " + third_person(verb)),
+                                                                 ("many", HOLE + before + " " + verb),
+                                                                 ("you", you + before + " " + verb + PLAYER_MARK))]
+
+
+def with_verb(text: str, bound: dict, does: tuple, prev: str):
+    """text, whose subjects' verbs took the persons bound, followed by each form of does that agrees with them: one
+    subject keeps one person («{0} tries … but fails», not «… but fail»). GetVerb's player form takes the place of
+    the name before it, when that name is the same subject's (who.T() + who.GetVerb("try") → «You try») or a local
+    the method sets to «You» (says_you); after the subject's own «You», it is the bare verb."""
+    receiver, call, forms = does
+    person = bound.get(receiver)
+    for p, form in forms:
+        if person is not None and p != person:
+            continue
+        if call == "GetVerb" and p == "you":
+            if person == "you":
+                yield text + form.replace(PLAYER_MARK, ""), bound
+                continue
+            name = NAME_CALL.match(prev)
+            you = ("You" if name.group(2) == "T" else "you") if name and name.group(1) == receiver else says_you(prev)
+            if not you or not text.endswith(HOLE):
+                continue
+            yield text.rstrip(HOLE) + you + form, {**bound, receiver: p}
+            continue
+        yield text + form, {**bound, receiver: p}
 
 
 # marks the player's form of a Does until the whole line is known: a line where «you» acts on «you» or «your …» is
@@ -747,6 +782,34 @@ def enclosing_body(masked: str, pos: int) -> tuple[int, int]:
 def resolve(src: str, masked: str, pos: int, expr: str) -> list[str]:
     """The texts an argument can be: its own patterns; for a local variable, what the method assigns to it; for
     builder.ToString(), the Append chain of that builder in the method."""
+    global _SCOPE
+    scope, _SCOPE = _SCOPE, (src, masked, pos)
+    try:
+        return _resolve(src, masked, pos, expr)
+    finally:
+        _SCOPE = scope
+
+
+# the text resolve() reads, (source, masked source, position): a local before a GetVerb may hold «You» (says_you)
+_SCOPE: tuple[str, str, int] | None = None
+
+
+def says_you(name: str) -> str | None:
+    """«You» (or «you») when the name before a GetVerb can be it, else None: a branch that is the literal
+    («(Object.IsPlayer() ? "You" : Object.T()) + Object.GetVerb("feel")»), or a local the method resolve() reads
+    sets to it (MissileWeapon's «text = "You"» before «text + MessageAsFrom.GetVerb("hit")»)."""
+    q = ternary(strip_parens(name))
+    if q:
+        return next((v for v in (literal_value(x.strip()) for x in q[1:]) if v in ("You", "you")), None)
+    if _SCOPE is None or not IDENT.match(name):
+        return None
+    src, masked, pos = _SCOPE
+    a, b = enclosing_body(masked, pos)
+    m = re.search(rf'(?<![\w.]){re.escape(name)}\s*=\s*"([Yy]ou)"\s*;', src[a:b])
+    return m.group(1) if m else None
+
+
+def _resolve(src: str, masked: str, pos: int, expr: str) -> list[str]:
     expr = strip_parens(expr)
     found = patterns(expr)
     if found:
@@ -760,25 +823,35 @@ def resolve(src: str, masked: str, pos: int, expr: str) -> list[str]:
         return out
     m = BUILT.match(expr)
     if m:
-        name = m.group(1)
-        built = []
-        for call in re.finditer(rf"(?<![\w]){re.escape(name)}\s*\.(Append|AppendLine|Compound)\s*\(|\)\s*\.(Append|AppendLine|Compound)\s*\(", mbody):
-            o = call.end() - 1
-            c = matching(body, o)
-            if c < 0:
-                continue
-            args = split_top(body[o + 1:c], ",")
-            method = call.group(1) or call.group(2)
-            if method == "Compound" and len(args) > 1:
-                sep = args[1].strip()
-                built.append(literal_value(sep) or {"'\n'": "\n", "' '": " "}.get(sep, " "))
-            if args and args[0].strip():   # AppendLine() adds the line break alone
-                ps = patterns(args[0])
-                built.append(ps[0] if ps else HOLE)
-            if method == "AppendLine":
-                built.append("\n")
-        return ["".join(built)] if any(p not in (HOLE, "\n", " ") for p in built) else []
+        # every Append in the method, whichever builder and branch: GetVerb's forms would only make more of its
+        # glued keys look specific, so here it stays the hole it was (builder_paths gives the forms)
+        global _EXPAND
+        expand, _EXPAND = _EXPAND, tuple(c for c in _EXPAND if c != "GetVerb")
+        try:
+            return crude_chain(body, mbody, m.group(1))
+        finally:
+            _EXPAND = expand
     return []
+
+
+def crude_chain(body: str, mbody: str, name: str) -> list[str]:
+    built = []
+    for call in re.finditer(rf"(?<![\w]){re.escape(name)}\s*\.(Append|AppendLine|Compound)\s*\(|\)\s*\.(Append|AppendLine|Compound)\s*\(", mbody):
+        o = call.end() - 1
+        c = matching(body, o)
+        if c < 0:
+            continue
+        args = split_top(body[o + 1:c], ",")
+        method = call.group(1) or call.group(2)
+        if method == "Compound" and len(args) > 1:
+            sep = args[1].strip()
+            built.append(literal_value(sep) or {"'\n'": "\n", "' '": " "}.get(sep, " "))
+        if args and args[0].strip():   # AppendLine() adds the line break alone
+            ps = patterns(args[0])
+            built.append(ps[0] if ps else HOLE)
+        if method == "AppendLine":
+            built.append("\n")
+    return ["".join(built)] if any(p not in (HOLE, "\n", " ") for p in built) else []
 
 
 def specific(text: str) -> bool:
@@ -1056,12 +1129,12 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
     (builder_paths). Also the hit message Combat builds for TakeDamage to show (SetParameter("Message",
     sb.ToString())): Physics puts the attacker's name for its %T. A name with its verb (X.Does("fail")) gives the
     verb's forms (does_forms)."""
-    global _EXPAND_DOES
-    _EXPAND_DOES = True
+    global _EXPAND
+    _EXPAND = ("Does", "does", "GetVerb")
     try:
         return _scan_text(src_dir)
     finally:
-        _EXPAND_DOES = False
+        _EXPAND = ()
 
 
 def _scan_text(src_dir: pathlib.Path) -> list[Entry]:

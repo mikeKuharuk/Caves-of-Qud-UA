@@ -246,6 +246,9 @@ static class Tests
         Eq("Ви критично влучаєте в ціль (пащеклац)! (x2)", Translate("Text", "Ви critically hit пащеклац! (x2)"),
            "the Text table's player key");
         Eq("Пащеклац критично влучає у вас! (x2)", Translate("Text", "Пащеклац critically hits you! (x2)"), "and anyone else's");
+        // the verb alone (X.GetVerb), after a name or after the code's own «You»
+        Eq("Стріла не пробиває вашу броню!", Translate("Text", "Стріла fails to penetrate your armor!"), "a GetVerb key");
+        Eq("Вас трохи нудить.", Translate("Text", "You feel a little queasy."), "the player's GetVerb key");
         // the game info (XRLCore): its lines indented for the block are keys, the mode out of the Words table
         Eq("\n\n           Гра: класичний режим.\n\n           Хід 1120\n\n          Сід світу: 12345     \n\n\n   ",
            Translate("Text", "\n\n           Classic mode.\n\n           Turn 1120\n\n          World seed: 12345     \n\n\n   "),
