@@ -58,6 +58,17 @@ namespace CavesOfQudUA.Grammar
         }
 
         /// <summary>
+        /// =stat_title|uk.stat=: a statistic's ID the code passes as it is («Agility», in a skill's requirements) as
+        /// the string tables title it («Спритність»). The short name small screens get is Ukrainian already and passes.
+        /// </summary>
+        [VariablePostProcessor(new string[] { "uk.stat" })]
+        public static void Stat(VariableContext Context)
+        {
+            string value = Context.Value.ToString();
+            SetValue(Context, value, Patches.CodeText.StatTitle(value) ?? value);
+        }
+
+        /// <summary>
         /// =modifier|uk.agree#subject=: a masculine adjective (or «X і Y») agreed with an object, by the uk-forms table
         /// and else by the regular endings: «Злий» → «Зла» for a female twin.
         /// </summary>

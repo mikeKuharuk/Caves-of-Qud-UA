@@ -5124,7 +5124,7 @@
 {"k":"cc05a8adb995380a65b1","p":"0af4186eeb247175","s":"664355d0229f","t":"{{K|=power.name=}} [{{K|=power.cost=}} ОН]","c":["sp → ОН"]}
 {"k":"a087638b89f6cbd417ae","p":"d7b12cec3336b799","s":"e1a3e78cb5c8","t":" або "}
 {"k":"f1369e8ee8150e6ce33a","p":"8abe19d88b532bfd","s":"0d9b0fbde9a9","t":"Характеристика =attribute.statCapDisplayName= недостатньо висока, щоб купити «=powerEntry.name=»!","c":["назва характеристики — прикладка до «Характеристика» (жін. р.), назва уміння в «лапках», як у Skill UI Confirm Purchase Popup"]}
-{"k":"7fd1c105b3a1c3339983","p":"8b09ceceff1a879f","s":"4b523eb25560","t":"{{C|=minimums=}} {{=color=|=stat_title=}}","c":["лише змінні: переклад збігається з оригіналом"]}
+{"k":"7fd1c105b3a1c3339983","p":"8b09ceceff1a879f","s":"4b523eb25560","t":"{{C|=minimums=}} {{=color=|=stat_title|uk.stat=}}","c":["Вимога навички: =stat_title= — ID характеристики («Agility»), |uk.stat дає її назву («Спритність»)."]}
 {"k":"41de6794bbfd43f5ef7a","p":"c1c7b5b66df64b3d","s":"e6d9a242dadd","t":"=elements.join=","c":["лише змінні: переклад збігається з оригіналом"]}
 {"k":"17359f54d75fc01743af","p":"db194014440b552b","s":"7adff6e985cf","t":"Коли предмет увімкнено, =stat.name=: =adjust.signed==percent.if:%=","c":["When activated → «Коли предмет увімкнено» (як AddsRep, CancelRangedAttacks); «Характеристика: +N», як BasicCookingEffect_RandomStat Details"]}
 {"k":"8325c9d23904e25b605d","p":"cc44e84052699a23","s":"9ce234def9f1","t":"=stat.Name=: =adjust.signed==percent.if:%=","c":["«Сила: +2» замість «+2 Сила», як BasicCookingEffect_RandomStat Details; =stat.Name= — велика форма того самого ключа (на початку рядка)"]}
