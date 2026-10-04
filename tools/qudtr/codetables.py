@@ -174,6 +174,21 @@ def fragments_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     return table_xml("Fragments", entries, build, "the decompiled game code (parts of object names)")
 
 
+RULES = "Code.Rules.example.xml"
+RULES_NOTE = ("Правило в описі предмета чи істоти ({where}): рядок {{{{rules|…}}}} під описом. Перекладайте "
+              "реченням у стилі вже перекладених правил («Гострий: +1 до кидків пробиття»); {{0}}… — числа й "
+              "назви, які підставляє код, а слово при числі рахуйте ним: {{0}} {{0:хід:ходи:ходів}}. Англійські "
+              "займенники й дієслова-пропуски («This item»/«These items», «has»/«have») можна прибрати з нотаткою "
+              "«qud-ok: code-hole — …».")
+
+
+def rules_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """The rules lines the code writes into descriptions (codescan.scan_rules)."""
+    from . import codescan
+    entries = [(e.key, RULES_NOTE.format(where=e.where)) for e in codescan.scan_rules(decompiled)]
+    return table_xml("Rules", entries, build, "the decompiled game code (rules lines of descriptions)")
+
+
 KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@(?:Text|Forms)$", re.S)
 
 

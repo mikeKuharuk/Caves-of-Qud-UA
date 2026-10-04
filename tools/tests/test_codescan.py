@@ -44,6 +44,22 @@ class Patterns(unittest.TestCase):
         self.assertEqual(codescan.patterns('x?.Name ?? "default"'), ["default"])
         self.assertEqual(codescan.patterns('_S("ctx", "already in the tables")'), [])
 
+    def test_a_ternary_inside_a_concatenation(self):
+        expr = '"Shines" + ((chance < 100) ? (" " + chance + "% of the time") : "") + "."'
+        # one hole for the tables scanned before, both branches for the new ones
+        self.assertEqual([codescan.number_holes(p) for p in codescan.patterns(expr)], ["Shines{0}."])
+        self.assertEqual([codescan.number_holes(p) for p in codescan.patterns(expr, nested=True)],
+                         ["Shines {0}% of the time.", "Shines."])
+        # a branch with no text of its own is a hole
+        self.assertEqual([codescan.number_holes(p) for p in codescan.patterns('"by " + (named ? Name : "your " + Base)',
+                                                                              nested=True)],
+                         ["by {0}", "by your {0}"])
+
+    def test_an_empty_append_line_adds_the_break_alone(self):
+        src = 'void M()\n{\n\tsb.Append("Shiny").AppendLine().Append("Dull");\n\tShow(sb.ToString());\n}'
+        masked = codescan.mask(src)
+        self.assertEqual(codescan.resolve(src, masked, src.index("Show"), "sb.ToString()"), ["Shiny\nDull"])
+
     def test_literal_escapes(self):
         self.assertEqual(codescan.literal_value(r'"a\nb\"c"'), 'a\nb"c')
         self.assertEqual(codescan.literal_value('@"say ""hi"""'), 'say "hi"')
@@ -366,6 +382,56 @@ class FragmentsScan(unittest.TestCase):
         self.assertEqual(set(found), {"{{Y|shiny}}", "[{{B|perched on {0}}}]", "tail feathers", "keeper of the Perch",
                                       "glowing", "shimmering"})
         self.assertEqual(found["tail feathers"], "Perched: те, з чим предмет («with …»)")
+
+
+class RulesScan(unittest.TestCase):
+    # made-up parts in the shapes the game's code takes
+    SOURCES = {
+        "ModGlinting.cs": """public class ModGlinting : IModification
+{
+	public override bool HandleEvent(GetShortDescriptionEvent E)
+	{
+		E.Postfix.AppendRules(GetDescription(Tier));
+		E.Postfix.AppendRules(IComponent<GameObject>._S("Ctx", "Dull: no shine."));
+		E.Postfix.AppendRules(delegate(StringBuilder sb)
+		{
+			sb.Append("Built by an action.");
+		});
+		return base.HandleEvent(E);
+	}
+
+	public static string GetDescription(int Tier)
+	{
+		return "Glinting: +" + Tier + " to shine.";
+	}
+}""",
+        # a chain whose English only checks its localized twin: not a rule of its own
+        "Checked.cs": """public class Checked : IPart
+{
+	public override bool HandleEvent(GetShortDescriptionEvent E)
+	{
+		E.Postfix.AppendRules(GetStats());
+		return true;
+	}
+
+	public string GetStats()
+	{
+		using TextBuilder a = TextBuilder.Get();
+		using TextBuilder b = TextBuilder.Get();
+		a.Append("Shine cap: ").Append(Cap);
+		IComponent<GameObject>._T("Ctx", "Shine cap: =cap=").SetArgument("cap", Cap).CompoundTo(b, "\\n");
+		Strings.AssertLocalizationMatch(a.ToString(), b.ToString(), "Checked");
+		return b.ToString();
+	}
+}""",
+    }
+
+    def test_rules_lines_the_code_writes(self):
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.SOURCES.items():
+                (pathlib.Path(d) / rel).write_text(text, encoding="utf-8")
+            found = {e.key for e in codescan.scan_rules(pathlib.Path(d))}
+        self.assertEqual(found, {"Glinting: +{0} to shine."})
 
 if __name__ == "__main__":
     unittest.main()

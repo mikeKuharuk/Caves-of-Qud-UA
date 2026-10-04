@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using CavesOfQudUA.Grammar;
+using XRL.Blueprints;
 using XRL.World;
 
 namespace CavesOfQudUA.Patches
@@ -118,11 +120,34 @@ namespace CavesOfQudUA.Patches
 
         /// <summary>
         /// What a hole holds, in Ukrainian when it is one of the words the code keeps in constants (the Words table:
-        /// a journal tab, a stance, what a breath is made of): «{{W|Locations > Artifacts}}» → «{{W|Місця > …}}».
+        /// a journal tab, a stance, what a breath is made of): «{{W|Locations > Artifacts}}» → «{{W|Місця > …}}»; or a
+        /// statistic's ID, which the code writes as it is («a difficulty 20 Toughness save»), by the string tables'
+        /// title for it («Витривалість»).
         /// </summary>
         static string HoleText(string value)
         {
-            return CodeTables.Get("Words", value) ?? value;
+            return CodeTables.Get("Words", value) ?? StatTitle(value) ?? value;
+        }
+
+        /// <summary>
+        /// The title the string tables give the statistic whose ID the value is («Toughness» → «Витривалість»), or
+        /// null. tools/patch-tests puts its own here: outside the game no blueprints are loaded.
+        /// </summary>
+        public static System.Func<string, string> StatTitle = GameStatTitle;
+
+        static string GameStatTitle(string value)
+        {
+            if (value.Length < 2 || value.Length > 24 || !char.IsUpper(value[0])) return null;
+            foreach (char c in value)
+                if (!char.IsLetter(c)) return null;
+            try
+            {
+                return StatisticBlueprint.TryGet(value.AsSpan(), out StatisticBlueprint stat) ? stat.DisplayTitle : null;
+            }
+            catch (System.Exception)
+            {
+                return null;   // the blueprints are not loaded yet
+            }
         }
 
         /// <summary>

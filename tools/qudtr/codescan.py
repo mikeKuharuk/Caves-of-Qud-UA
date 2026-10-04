@@ -144,18 +144,20 @@ def strip_parens(expr: str) -> str:
     return expr
 
 
-def patterns(expr: str) -> list[str]:
+def patterns(expr: str, nested: bool = False) -> list[str]:
     """The texts an expression can produce: literals kept, everything else a hole. A ternary gives both branches.
-    An expression with no literal, or one routed through the string tables, gives nothing."""
+    An expression with no literal, or one routed through the string tables, gives nothing. nested: a ternary inside
+    the concatenation gives both branches too («… on hit» + (chance < 100 ? " " + chance + "% of the time" : "")),
+    where it would otherwise be one hole (the tables scanned before it keep their keys)."""
     expr = strip_parens(expr)
     if not expr:
         return []
     alternatives = split_top(expr, "??")
     if len(alternatives) > 1:
-        return [p for a in alternatives for p in patterns(a)]
+        return [p for a in alternatives for p in patterns(a, nested)]
     q = ternary(expr)
     if q:
-        return patterns(q[1]) + patterns(q[2])
+        return patterns(q[1], nested) + patterns(q[2], nested)
     if LOCALIZED.search(expr):
         return []
     out = [""]
@@ -163,9 +165,14 @@ def patterns(expr: str) -> list[str]:
     for term in split_top(expr, "+"):
         term = strip_parens(term)
         value = literal_value(term)
+        inner = ternary(term) if nested and value is None else None
+        options = [p for b in inner[1:] for p in patterns(b, nested) or [HOLE]] if inner else []
         if value is not None:
             found = True
             out = [o + value for o in out]
+        elif any(p != HOLE for p in options):
+            found = True
+            out = [o + p for o in out for p in dict.fromkeys(options)][:16]
         elif term:
             out = [o + HOLE for o in out]
     return [o for o in out if found]
@@ -662,8 +669,9 @@ def resolve(src: str, masked: str, pos: int, expr: str) -> list[str]:
             if method == "Compound" and len(args) > 1:
                 sep = args[1].strip()
                 built.append(literal_value(sep) or {"'\n'": "\n", "' '": " "}.get(sep, " "))
-            ps = patterns(args[0]) if args else []
-            built.append(ps[0] if ps else HOLE)
+            if args and args[0].strip():   # AppendLine() adds the line break alone
+                ps = patterns(args[0])
+                built.append(ps[0] if ps else HOLE)
             if method == "AppendLine":
                 built.append("\n")
         return ["".join(built)] if any(p not in (HOLE, "\n", " ") for p in built) else []
@@ -812,9 +820,9 @@ def built_texts(body: str) -> list[str]:
     in the chain included (texts_of_body keeps only the first). Nothing when it returns what the string tables give:
     a chain beside that is only the English it is checked against (ForceEmitter's InlineLocalizationMatch)."""
     returns = [split_top(body[m.end():], ";")[0] for m in re.finditer(r"\breturn\b", body)]
-    if any(LOCALIZED.search(r) for r in returns):
-        return []
-    out = [p for r in returns for p in patterns(r)]
+    if any(LOCALIZED.search(r) for r in returns) or "LocalizationMatch" in body:
+        return []   # (MeleeWeapon.GetDetailedStats builds its English only to check its _T twin against it)
+    out = [p for r in returns for p in patterns(r, nested=True)]
     parts = []
     for m in re.finditer(r"\.(?:Append|Compound)\s*\(", body):
         o = m.end() - 1
@@ -824,8 +832,10 @@ def built_texts(body: str) -> list[str]:
         args = split_top(body[o + 1:c], ",")
         arg = args[0].strip() if args else ""
         char = CHAR.match(arg)
-        value = literal_value(arg) if not char else {"\\n": "\n"}.get(char.group(1), char.group(1))
-        parts.append([value] if value is not None else patterns(arg) or [HOLE])
+        if char:
+            parts.append([{"\\n": "\n"}.get(char.group(1), char.group(1))])
+        else:
+            parts.append(patterns(arg, nested=True) or [HOLE])
     if any(p != [HOLE] for p in parts):
         out += joined(parts)
     return out
@@ -843,7 +853,7 @@ def computed_texts(expr: str, src: str, masked: str, pos: int, family: list[tupl
     branches = [q[1], q[2]] if q else split_top(expr, "??")
     if len(branches) > 1:
         return [t for b in branches for t in computed_texts(b, src, masked, pos, family, depth + 1)]
-    own = patterns(expr)
+    own = patterns(expr, nested=True)
     if own:
         return own
     a, b = enclosing_body(masked, pos)
@@ -860,7 +870,7 @@ def computed_texts(expr: str, src: str, masked: str, pos: int, family: list[tupl
                 if len(terms) > 1 and any(strip_parens(t) == name for t in terms):
                     # «text = text + " (" + …»: the text so far, grown («Fly» → «Fly ({0})»)
                     grown = " + ".join('"\\u0002"' if strip_parens(t) == name else t for t in terms)
-                    values += [p.replace("\u0002", v) for p in patterns(grown) for v in values]
+                    values += [p.replace("\u0002", v) for p in patterns(grown, nested=True) for v in values]
                 else:
                     values += computed_texts(rhs, src, masked, a + m.start(), family, depth + 1)
             return values
@@ -869,9 +879,11 @@ def computed_texts(expr: str, src: str, masked: str, pos: int, family: list[tupl
             for m in re.finditer(assigned, fmasked):
                 rhs = split_top(fsrc[m.end():], ";")[0].strip()
                 if "\n" not in rhs:   # not the tail of an object initializer
-                    out += patterns(rhs)
+                    out += patterns(rhs, nested=True)
         return out
     if BUILT.match(expr):
+        if "LocalizationMatch" in src[a:b]:
+            return []   # a builder beside the English that checks its _T twin (ModRecycling)
         return resolve(src, masked, pos, expr)
     m = CALLED.match(name)
     if m:
@@ -991,4 +1003,23 @@ def scan_fragments(src_dir: pathlib.Path) -> list[Entry]:
             for found in computed_texts(positional[0], src, masked, m.start(), family):
                 for key in code_keys(found):
                     entries.setdefault(key, f"{where}: {FRAGMENT_KINDS[m.group(1)]}")
+    return [Entry(k, w) for k, w in sorted(entries.items())]
+
+
+# ---- Rules: the rules lines of a description ---------------------------------------------------------------------
+
+RULES_CALL = re.compile(r"\.(AppendRules)\s*\(")
+
+
+def scan_rules(src_dir: pathlib.Path) -> list[Entry]:
+    """The rules lines the code writes into a description (E.Postfix.AppendRules(GetDescription(Tier)): «Keen: +2
+    to penetration rolls»): Extensions.AppendRules, which every one passes, looks them up. A text an Action builds
+    is out of reach; what the string tables give (_S, _T) is theirs."""
+    entries: dict[str, str] = {}
+    for where, family, src, masked, m, positional, named in SourceTree(src_dir).calls(RULES_CALL,
+                                                                                      "StringBuilder|TextBuilder"):
+        if positional and "=>" not in positional[0] and not positional[0].lstrip().startswith("delegate"):
+            for found in computed_texts(positional[0], src, masked, m.start(), family):
+                for key in code_keys(found):
+                    entries.setdefault(key, where)
     return [Entry(k, w) for k, w in sorted(entries.items())]

@@ -185,6 +185,27 @@ static class Tests
         Eq(null, Template("XZ", "quux", "past", null, null, "!"), "a verb the table lacks: no template");
         Eq("свій шаблон", Template("XZ", "zap", "past", null, null, "!"), "a verb's own key comes first");
 
+        // a statistic's ID in a hole: the string tables' title for it; with no blueprints loaded, the ID as it is
+        Add("Test9", "Fails a {0} save.", "Провалює кидок «{0}».");
+        Add("Test10", "Passes a {0} save.", "Проходить кидок «{0}».");
+        Eq("Провалює кидок «Toughness».", Translate("Test9", "Fails a Toughness save."), "a statistic with no blueprints");
+        FieldInfo statTitle = text.GetField("StatTitle");
+        object gameStatTitle = statTitle.GetValue(null);
+        statTitle.SetValue(null, (Func<string, string>)(v => v == "Toughness" ? "Витривалість" : null));
+        Eq("Проходить кидок «Витривалість».", Translate("Test10", "Passes a Toughness save."), "a statistic's title");
+        statTitle.SetValue(null, gameStatTitle);
+
+        // the rules lines of a description pass Extensions.AppendRules, which takes them through the Rules table
+        Add("Rules", "Glinting: +{0} to shine", "Блискучий: +{0} до сяйва");
+        MethodInfo appendRules = game.GetType("XRL.Extensions", true).GetMethods()
+            .First(m => m.Name == "AppendRules" && m.GetParameters().Select(p => p.ParameterType)
+                            .SequenceEqual(new[] { typeof(StringBuilder), typeof(string) }));
+        Eq("\n{{rules|Блискучий: +2 до сяйва}}", appendRules.Invoke(null, new object[] { new StringBuilder(), "Glinting: +2 to shine" }).ToString(),
+           "a rules line");
+        int rulesOverloads = game.GetType("XRL.Extensions", true).GetMethods()
+            .Count(m => m.Name == "AppendRules" && HarmonyLib.Harmony.GetPatchInfo(m)?.Prefixes.Count > 0);
+        Eq("5", rulesOverloads.ToString(), "every AppendRules that takes the text is patched");
+
         // what the code adds to a name comes into our DescriptionBuilder through the Fragments table
         Add("Fragments", "glinting", "блискучий");
         Add("Fragments", "[{{B|perched on {0}}}]", "[{{B|на сідалі: {0}}}]");
