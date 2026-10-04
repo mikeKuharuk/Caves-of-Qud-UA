@@ -1045,6 +1045,8 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
 
 GAME_MODE = ("режим гри (ID зі стану GameMode): рядок збереження на екрані завантаження, «Рівень 1, …»; "
              "з малої, з іменником: «класичний режим»")
+LAID_GRENADE = ("Tinkering_LayMine: чим стає закладена граната (mine — без таймера, bomb — з таймером); стає на місце "
+                "«граната» в її назві, тож іменник жіночого роду: «{{W|фугасна}} міна Mk I»")
 
 # (file, pattern, where): each a constant the player reads
 WORD_SOURCES = (
@@ -1073,6 +1075,9 @@ WORD_SOURCES = (
     # what a mine-laying robot is, after the kind of its grenade: «{{W|фугасний}} мінер Mk I» (mod/Patches/MinerPatches)
     ("XRL.World.Parts/Miner.cs", re.compile(r'MineName \+ "(\w+) mk "'),
      "Miner: робот, що ставить міни (miner) чи бомби з таймером (bomber), — іменник після прикметника гранати"),
+    # what a laid grenade becomes, in place of «граната» in its name: «{{W|фугасна}} міна Mk I»
+    ("XRL.World.Parts.Skill/Tinkering_LayMine.cs", re.compile(r'\(Countdown > 0\) \? "(\w+)"'), LAID_GRENADE),
+    ("XRL.World.Parts.Skill/Tinkering_LayMine.cs", re.compile(r'\(Countdown > 0\) \? "\w+" : "(\w+)"'), LAID_GRENADE),
 )
 BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
 # labels a Unity prefab carries, which no code or table holds; the mod sets them (mod/Patches/TextPatches.cs)

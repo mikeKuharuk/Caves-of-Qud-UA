@@ -263,6 +263,15 @@ static class Tests
         Eq("мінер {{b|сповільнення часу}}", Robot("граната {{b|сповільнення часу}} Mk I", "мінер"), "no adjective");
         Eq("пружинно-турельний мінер", Robot("пружинно-турельна граната Mk I", "мінер"), "a hyphenated adjective");
         Eq(null, Mine("гранатомет Mk I"), "no «граната», no name");
+        // a laid grenade: «граната» becomes a mine or a bomb (the real Words table has both)
+        MethodInfo createBomb = game.GetType("XRL.World.Parts.Skill.Tinkering_LayMine", true).GetMethods()
+            .First(m => m.Name == "CreateBomb" && m.GetParameters()[0].ParameterType.Name == "GameObject");
+        Eq("1", (HarmonyLib.Harmony.GetPatchInfo(createBomb)?.Postfixes.Count ?? 0).ToString(), "CreateBomb(GameObject…) is patched");
+        string Laid(string name) => (string)mineName.GetMethod("Laid").Invoke(null, new object[] { name });
+        Eq("{{W|фугасна}} міна Mk I", Laid("{{W|фугасна}} граната Mk I mine"), "a laid mine");
+        Eq("{{B|ЕМІ}}-бомба Mk II", Laid("{{B|ЕМІ}}-граната Mk II bomb"), "a laid bomb, a compound");
+        Eq("пастка міна", Laid("пастка mine"), "no «граната»: the word after the name");
+        Eq(null, Laid("{{W|фугасна}} граната Mk I"), "nothing laid, nothing changed");
 
         // the rules lines of a description pass Extensions.AppendRules, which takes them through the Rules table
         Add("Rules", "Glinting: +{0} to shine", "Блискучий: +{0} до сяйва");

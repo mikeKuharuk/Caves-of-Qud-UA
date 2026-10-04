@@ -6,6 +6,7 @@ using XRL;
 using XRL.Language;
 using XRL.World;
 using XRL.World.Parts;
+using XRL.World.Parts.Skill;
 
 namespace CavesOfQudUA.Patches
 {
@@ -48,6 +49,24 @@ namespace CavesOfQudUA.Patches
         }
     }
 
+    /// <summary>
+    /// A grenade laid becomes a mine or a bomb (Tinkering_LayMine.CreateBomb, for the player's skill and the robots
+    /// alike): the code puts «mine» or «bomb» in place of «grenade», or after a name without it, which a Ukrainian name
+    /// always is: «{{W|фугасна}} граната Mk I mine». Here «граната» becomes the word from Words («міна», «бомба»,
+    /// feminine as well, so the adjectives still agree): «{{W|фугасна}} міна Mk I».
+    /// </summary>
+    [HarmonyPatch(typeof(Tinkering_LayMine), nameof(Tinkering_LayMine.CreateBomb),
+                  new[] { typeof(GameObject), typeof(GameObject), typeof(int) })]
+    static class LaidMineNamePatch
+    {
+        static void Postfix(GameObject __result)
+        {
+            Render render = __result?.Render;
+            if (!Uk.Active || render == null || !Uk.HasCyrillic(render.DisplayName)) return;
+            render.DisplayName = MineName.Laid(render.DisplayName) ?? render.DisplayName;
+        }
+    }
+
     /// <summary>The mine in the ability's description: «{{W|фугасна}} Mk I», not «{{W|фугасна}}  mk I».</summary>
     [HarmonyPatch(typeof(Miner), nameof(Miner.CollectStats))]
     static class MinerStatsPatch
@@ -84,6 +103,23 @@ namespace CavesOfQudUA.Patches
                 After = name.Substring(m.Index + m.Length).Trim(),
                 Compound = m.Groups[1].Value == "-",
             };
+        }
+
+        /// <summary>
+        /// A laid grenade's name as the code leaves it («{{W|фугасна}} граната Mk I mine»), with «граната» made a mine
+        /// or a bomb from Words; null when it ends in neither word or Words lacks it.
+        /// </summary>
+        public static string Laid(string name)
+        {
+            foreach (string english in new[] { "mine", "bomb" })
+            {
+                if (!name.EndsWith(" " + english, StringComparison.Ordinal)) continue;
+                string word = CodeTables.Get("Words", english);
+                if (word == null) return null;
+                string bare = name.Substring(0, name.Length - english.Length - 1);
+                return Grenade.IsMatch(bare) ? Grenade.Replace(bare, m => m.Groups[1].Value + word, 1) : bare + " " + word;
+            }
+            return null;
         }
 
         /// <summary>What kind of mine it lays, agreeing with «міна» as the grenade did: «газова {{normal|нормальності}}».</summary>
