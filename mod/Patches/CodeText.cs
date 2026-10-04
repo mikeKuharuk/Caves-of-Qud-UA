@@ -83,10 +83,15 @@ namespace CavesOfQudUA.Patches
         /// </summary>
         public static string Lookup(string table, string key)
         {
-            if (string.IsNullOrEmpty(key)) return null;
-            string found = Find(table, Load(table), key, null);
-            if (found == null) Miss(table, key);
+            string found = Peek(table, key);
+            if (found == null && !string.IsNullOrEmpty(key)) Miss(table, key);
             return found;
+        }
+
+        /// <summary>Lookup without the miss: for a caller that has another key to try (DidX's «*» templates).</summary>
+        public static string Peek(string table, string key)
+        {
+            return string.IsNullOrEmpty(key) ? null : Find(table, Load(table), key, null);
         }
 
         static string Find(string name, Table t, string text, GameObject agreeWith)

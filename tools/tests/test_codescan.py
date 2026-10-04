@@ -6,7 +6,7 @@ import unittest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-from qudtr import checks, codescan  # noqa: E402
+from qudtr import checks, codescan, po  # noqa: E402
 
 EFFECT = '''using System;
 namespace XRL.World.Effects;
@@ -147,6 +147,48 @@ class DidXScan(unittest.TestCase):
         self.assertTrue({"X|begin|||bleeding|!", "X|begin|||{0}|!", "X|are|||immobilized|!", "X|are|||{0}|!"} <= found)
         # a bare null second is the preposition, not the object
         self.assertIn("XZ|give|||a treat|.", found)
+
+    def test_verbs_the_data_gives(self):
+        projectile = """public class Projectile : IPart
+{
+    public string PassByVerb = IComponent<GameObject>._S("Projectile Default PassByVerb", "whiz");
+}
+"""
+        missile = """public class MissileWeapon : IPart
+{
+    public void Fly(Projectile projectile, bool flag)
+    {
+        string passByVerb = projectile.PassByVerb;
+        IComponent<GameObject>.XDidYToZ(Object3, passByVerb, "past", target, null, "!", null, null, target);
+        IComponent<GameObject>.XDidYToZ(Object3, passByVerb, "zoom", target, null, "!", null, null, target, null, UseFullNames: false, IndefiniteSubject: false, IndefiniteObject: false, IndefiniteObjectForOthers: false, PossessiveObject: false, null, null, null, DescribeSubjectDirection: false, DescribeSubjectDirectionLate: false, AlwaysVisible: false, FromDialog: false, UsePopup: false, null, "Pass By Message");
+        DidX(flag ? "feed" : "apply", null, ".");
+    }
+}
+"""
+        blueprints = {"Items.xml": '<objects><object Name="Bolt"><part Name="Projectile" PassByVerb="streak" />'
+                                   '</object></objects>'}
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Projectile.cs").write_text(projectile, encoding="utf-8")
+            (pathlib.Path(d) / "MissileWeapon.cs").write_text(missile, encoding="utf-8")
+            found = {k for k, e, w in codescan.scan_didx(pathlib.Path(d), blueprints)}
+            verbs = {v.key for v in codescan.scan_verbs(pathlib.Path(d), blueprints)}
+        # a verb the data gives: the message keyed by the slot, the verbs into the Verbs table
+        self.assertIn("XZ|*|past|||!", found)
+        self.assertEqual(verbs, {"whiz", "streak"})
+        # a call the player reads through its _T twin gets no slot key
+        self.assertNotIn("XZ|*|zoom|||!", found)
+        # literals the code chooses between are keys as any verb
+        self.assertTrue({"X|feed||||.", "X|apply||||."} <= found)
+
+    def test_verb_slots_and_forms_are_checked(self):
+        self.assertEqual(checks.check("<subject> <verb> past <object>!", "=subject.Name= {v} повз вас!"), [])
+        errors = lambda en, uk: {i.code for i in checks.check(en, uk) if i.severity == "error"}
+        self.assertIn("verb-slot", errors("<subject> <verb> past <object>!", "=subject.Name= свистить повз вас!"))
+        self.assertIn("verb-slot", errors("<subject> die!", "=subject.Name= {v}!"))
+        entry = po.Entry(msgid="whiz", msgstr="свистить:свистите", msgctxt="entry[Key=whiz]@Forms")
+        self.assertIn("verb-forms", {i.code for i in checks.check_entry(entry)})
+        entry.msgstr = "свистить:свистите:свистять"
+        self.assertEqual(checks.check_entry(entry), [])
 
 
 class WordsScan(unittest.TestCase):

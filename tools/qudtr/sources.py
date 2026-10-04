@@ -56,6 +56,7 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
         files[spice.name] = spice.read_text(encoding="utf-8-sig")
     # nor do the tags and part fields the game shows without exporting them (tags.py); they come from the blueprints
     blueprints = path.parent / "ObjectBlueprints"
+    texts: dict[str, str] = {}
     if blueprints.is_dir():
         texts = {p.name: p.read_text(encoding="utf-8-sig") for p in sorted(blueprints.glob("*.xml"))}
         table = tags.example_xml(texts, build)
@@ -70,9 +71,14 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
     # and the English the game's C# writes itself, from the decompiled code of this very build (ilspycmd, work/)
     decompiled = REPO / "work" / "decompiled" / str(build) / "Assembly-CSharp"
     if decompiled.is_dir():
-        for name, make in ((codetables.EFFECTS, codetables.effects_xml), (codetables.DIDX, codetables.didx_xml),
-                           (codetables.TEXT, codetables.text_xml), (codetables.WORDS, codetables.words_xml)):
+        for name, make in ((codetables.EFFECTS, codetables.effects_xml), (codetables.TEXT, codetables.text_xml),
+                           (codetables.WORDS, codetables.words_xml)):
             table = make(decompiled, build)
+            if table:
+                files[name] = table
+        # the narration also needs the blueprints: the verbs the data gives (codescan.GameData)
+        for name, make in ((codetables.DIDX, codetables.didx_xml), (codetables.VERBS, codetables.verbs_xml)):
+            table = make(decompiled, build, texts)
             if table:
                 files[name] = table
     # nor the data files with no export at all, and what the Factions export misses (datatables.py)

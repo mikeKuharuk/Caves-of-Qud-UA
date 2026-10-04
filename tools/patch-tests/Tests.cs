@@ -155,7 +155,21 @@ static class Tests
            Translate("Test8", "You note the location of сокира in the {{W|Locations > Artifacts}} section of your journal."),
            "a word from the code in a hole");
         Eq("Місця", Call("XRL.UI.JournalScreen", "GetTabDisplayName", "Locations"), "the journal's title");
-        Eq("Chronology", Call("XRL.UI.JournalScreen", "GetTabDisplayName", "Chronology"), "a tab with no entry stays");
+        Eq("Some New Tab", Call("XRL.UI.JournalScreen", "GetTabDisplayName", "Some New Tab"), "a tab with no entry stays");
+
+        // a verb the game's data gives: the message's «*» template, with the verb's forms from the Verbs table
+        // (the tables load once, at the first lookup, as in the game: every entry goes in before it)
+        Add("DidX", "XZ|*|past|||!", "=subject.Name= {v} повз =object.p:вас:ціль (@)=!");
+        Add("DidX", "XZ|zap|past|||!", "свій шаблон");
+        Add("Verbs", "zing", "дзенькає:дзенькаєте:дзенькають");
+        Add("Verbs", "zap", "бахкає:бахкаєте:бахкають");
+        Type didxType = mod.GetType("CavesOfQudUA.Patches.DidX", true);
+        string Template(string kind, string verb, string prep, string iprep, string extra, string end) =>
+            (string)didxType.GetMethod("Template").Invoke(null, new object[] { kind, verb, prep, iprep, extra, end });
+        Eq("=subject.Name= =subject.v:дзенькає:дзенькаєте:дзенькають= повз =object.p:вас:ціль (@)=!",
+           Template("XZ", "zing", "past", null, null, "!"), "a data verb fills {v}");
+        Eq(null, Template("XZ", "quux", "past", null, null, "!"), "a verb the table lacks: no template");
+        Eq("свій шаблон", Template("XZ", "zap", "past", null, null, "!"), "a verb's own key comes first");
 
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");

@@ -79,6 +79,22 @@ namespace CavesOfQudUA.Grammar
         }
 
         /// <summary>
+        /// =verb|uk.v#subject=: a verb the code takes from the game's data (a device's «beep», a projectile's «whiz»: the
+        /// Verbs code table, «пищить:пищите:пищать») in the form for that object: the player «ви», a plural «вони»,
+        /// anyone else «він/вона». A verb the table does not know stays as it is.
+        /// </summary>
+        [VariablePostProcessor(new string[] { "uk.v" })]
+        public static void Verb(VariableContext Context, GameObject Object)
+        {
+            string value = Context.Value.ToString();
+            string forms = CodeTables.Get("Verbs", value);
+            if (forms == null || Object == null) return;
+            bool player = UkrainianGender.IsSecondPerson(Object);
+            bool plural = !player && UkrainianGender.Of(Object) == UkGender.Plural;
+            SetValue(Context, value, UkrainianForms.ByPerson(player, plural, forms.Split(':')));
+        }
+
+        /// <summary>
         /// =adj|uk.f=, =adj|uk.n=, =adj|uk.pl=: a masculine adjective in the feminine, neuter or plural, for a noun the
         /// template itself fixes («тверді й =…adjectives.!random|uk.pl= рештки»).
         /// </summary>

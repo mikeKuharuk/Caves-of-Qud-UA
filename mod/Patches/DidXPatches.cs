@@ -52,6 +52,26 @@ namespace CavesOfQudUA.Patches
             return string.Join("|", kind, verb ?? "", prep ?? "", iprep ?? "", extra ?? "", end ?? ".");
         }
 
+        /// <summary>
+        /// The template for a call: the one keyed by its own verb; else, for a verb the game's data gives (a projectile's
+        /// «whiz», a device's «beep»), the message's «*» template with the verb's forms from the Verbs table where {v}
+        /// stands. Null when neither is there (logged as a miss: the call's own key, or the verb the table lacks).
+        /// </summary>
+        public static string Template(string kind, string verb, string prep, string iprep, string extra, string end)
+        {
+            string key = Key(kind, verb, prep, iprep, extra, end);
+            string own = CodeText.Peek("DidX", key);
+            if (own != null) return own;
+            string general = CodeText.Peek("DidX", Key(kind, "*", prep, iprep, extra, end));
+            if (general == null)
+            {
+                CodeText.Lookup("DidX", key);
+                return null;
+            }
+            string forms = CodeText.Lookup("Verbs", verb);
+            return forms == null ? null : general.Replace("{v}", "=subject.v:" + forms + "=");
+        }
+
         /// <summary>The message of the call in progress, in Ukrainian, if its template exists.</summary>
         public static void Render(ref string message)
         {
@@ -59,7 +79,7 @@ namespace CavesOfQudUA.Patches
             Call call = calls[calls.Count - 1];
             if (call.Done || call.SubjectOverride != null || string.IsNullOrEmpty(call.Verb)) return;
             call.Done = true;
-            string template = CodeText.Lookup("DidX", Key(call.Kind, call.Verb, call.Prep, call.IPrep, call.Extra, call.End));
+            string template = Template(call.Kind, call.Verb, call.Prep, call.IPrep, call.Extra, call.End);
             if (template == null) return;
             var builder = template.StartReplace();
             if (call.Actor != null) builder.SetSubject(call.Actor);

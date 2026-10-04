@@ -40,18 +40,19 @@ def _esc(s: str) -> str:
             .replace("\n", "&#10;").replace("\t", "&#9;"))
 
 
-def table_xml(table: str, entries: list[tuple], build: str | None, source: str) -> str | None:
+def table_xml(table: str, entries: list[tuple], build: str | None, source: str, attr: str = "Text") -> str | None:
     """The string table for a code table, an entry per (key, note) or (key, English for the translator, note): the
-    key is what the patch looks up, the English what the translator reads (by default the key itself)."""
+    key is what the patch looks up, the English what the translator reads (by default the key itself). attr names
+    the translated attribute: «Forms» for a table whose entries are verb forms (checks.py knows it by that)."""
     if not entries:
         return None
     rows = [(e[0], e[0], e[1]) if len(e) == 2 else e for e in entries]
-    body = "".join(f'  <entry Key="{_esc(k)}" Text="{MARK}{_esc(text)}"' + (f' Note="{_esc(n)}"' if n else "") + " />\n"
-                   for k, text, n in rows)
+    body = "".join(f'  <entry Key="{_esc(k)}" {attr}="{MARK}{_esc(text)}"' + (f' Note="{_esc(n)}"' if n else "")
+                   + " />\n" for k, text, n in rows)
     return ('<?xml version="1.0" encoding="utf-8"?>\n<!--\n'
             f"Caves of Qud - Generated Localizable XML {build or 'unknown'}\n"
             f"Not from the game: tools/qudtr/codetables.py builds it from {source}.\n\n"
-            '<codetable Name="Key">\n\n  <entry Key="Key" Text="DisplayText">\n\n-->\n'
+            f'<codetable Name="Key">\n\n  <entry Key="Key" {attr}="DisplayText">\n\n-->\n'
             f'<codetable Name="{table}" Lang="example" Encoding="utf-8">\n{body}</codetable>\n')
 
 
@@ -89,14 +90,32 @@ DIDX_NOTE = ("Розповідь гри (DidX, {where}). <subject> — хто д
              "шаблоном нашої граматики: =subject.Name= =subject.v:…:…:…=, =object.name=, =indirect.name=, "
              "=object.p:…:…= тощо (docs/grammar.md); кінцевий знак — як в оригіналі. {{0}}… — те, що рахує код: "
              "лишіть його (слово при числі рахуйте ним: {{0}} {{0:хід:ходи:ходів}}) або, якщо це англійський "
-             "займенник («its»), приберіть і поставте нотатку «qud-ok: code-hole — займенник».")
+             "займенник («its»), приберіть і поставте нотатку «qud-ok: code-hole — займенник». <verb> — дієслово з "
+             "даних гри (снаряд, пристрій): на його місці поставте {{v}}, мод підставить його форму з таблиці Verbs "
+             "(«=subject.Name= {{v}} повз =object.p:вас:ціль (@)=!»).")
 
 
-def didx_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+def didx_xml(decompiled: pathlib.Path, build: str | None, blueprints: dict[str, str] | None = None) -> str | None:
     """The narration the game conjugates itself (codescan.scan_didx)."""
     from . import codescan
-    rows = [(key, english, DIDX_NOTE.format(where=where)) for key, english, where in codescan.scan_didx(decompiled)]
+    rows = [(key, english, DIDX_NOTE.format(where=where))
+            for key, english, where in codescan.scan_didx(decompiled, blueprints)]
     return table_xml("DidX", rows, build, "the decompiled game code (Messaging.XDidY and its wrappers)")
+
+
+VERBS = "Code.Verbs.example.xml"
+VERBS_NOTE = ("Дієслово з даних гри ({where}): так звучить снаряд, пристрій, істота. Дайте три форми, як для "
+              "=X.v:…=: він/вона — ви — вони, через двокрапку: «свистить:свистите:свистять». Фразу — цілком: "
+              "«розсипається на порох:розсипаєтеся на порох:розсипаються на порох». Мод ставить їх на місце {{v}} у "
+              "розповіді (Code.DidX) і в =verb|uk.v#subject= (Strings).")
+
+
+def verbs_xml(decompiled: pathlib.Path, build: str | None, blueprints: dict[str, str] | None = None) -> str | None:
+    """The verbs the narration takes from the game's data (codescan.scan_verbs)."""
+    from . import codescan
+    entries = [(e.key, VERBS_NOTE.format(where=e.where)) for e in codescan.scan_verbs(decompiled, blueprints)]
+    return table_xml("Verbs", entries, build, "the decompiled game code and Base/ObjectBlueprints (data verbs)",
+                     attr="Forms")
 
 
 TEXT = "Code.Text.example.xml"
@@ -126,7 +145,7 @@ def words_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     return table_xml("Words", entries, build, "the decompiled game code (constants the player reads)")
 
 
-KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@Text$", re.S)
+KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@(?:Text|Forms)$", re.S)
 
 
 def key_of(msgctxt: str, msgid: str) -> str:

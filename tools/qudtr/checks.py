@@ -100,8 +100,8 @@ EN_GRAMMAR_BARE = re.compile(r"^(?:verb|does|Does|did|Did|ternaryVerb)(?::|$)")
 # English-only post-processors a translation drops: =item.name|pluralize= → =item.name=
 EN_POSTS = {"pluralize", "article", "indefiniteArticle", "definiteArticle", "a", "an", "the"}
 # the mod's own post-processors a translation adds (mod/Grammar/UkrainianPostProcessors.cs, UkrainianCalendar.cs):
-# =rank|uk.word=, =modifier|uk.agree#subject=, =adj|uk.pl=, =saveTime|uk.date=
-UK_POSTS = {"uk.word", "uk.agree", "uk.f", "uk.n", "uk.pl", "uk.date", "uk.stem"}
+# =rank|uk.word=, =modifier|uk.agree#subject=, =adj|uk.pl=, =saveTime|uk.date=, =verb|uk.v#subject=
+UK_POSTS = {"uk.word", "uk.agree", "uk.f", "uk.n", "uk.pl", "uk.date", "uk.stem", "uk.v"}
 # the game's punctuation glue, printed only next to a value that is not empty: =subtype|after:,= avoids «Рівень 1,,
 # Classic» (around an empty value the game culls one space, never a comma: GameText.ProcessCulling)
 GLUE_POSTS = {"before", "after"}
@@ -109,7 +109,7 @@ GLUE_POSTS = {"before", "after"}
 # culling never takes brackets or quotes: «X () уникнув дуги». Glued on, =x.to.the.direction|before:(|after:)=, they
 # go with the value
 WRAPPED_DIRECTION = re.compile(r"[(«„]=([^=()|]*[Dd]irection[^=()|]*)=[)»“]")
-UK_AGREE_BARE = re.compile(r"\|uk\.agree(?![#\w.])")
+UK_AGREE_BARE = re.compile(r"\|uk\.(?:agree|v)(?![#\w.])")
 # replacers whose parameters are words to translate: =partial.if:some:all=, =already.sign:+:-=
 TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
 # the parts of a code-table pattern the code computes: «-{0} DV» (codetables.py), as CodeText finds them, also where
@@ -194,6 +194,13 @@ def check_entry(entry, msgstr: str | None = None) -> list[Issue]:
             problem = uk_forms_problem(c)
             if problem:
                 issues.append(Issue("error", "uk-forms", problem))
+    # the Verbs code table: a verb's three forms, as =X.v:…= takes them (codetables.verbs_xml)
+    text = entry.msgstr if msgstr is None else msgstr
+    if (entry.msgctxt or "").endswith("@Forms") and text:
+        forms = text.split(":")
+        if len(forms) != 3 or not all(f.strip() for f in forms):
+            issues.append(Issue("error", "verb-forms", "give the three forms, he/she : you : they: "
+                                                      "«свистить:свистите:свистять»"))
     return [i for i in issues if i.severity == "error" or i.code not in accepted]
 
 
@@ -309,7 +316,7 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
         if problem:
             err("uk-grammar", problem)
     if UK_AGREE_BARE.search(msgstr):
-        err("uk-grammar", "|uk.agree needs the object or word to agree with: =x|uk.agree#subject=")
+        err("uk-grammar", "|uk.agree and |uk.v need the object to agree with: =x|uk.agree#subject=, =verb|uk.v#subject=")
     uses_uk_grammar = spaced or any(UK_GRAMMAR.match(k) for k in dst_ph)
     # =subject.Does:hit= → =subject.Name= … : plain variables of an object whose English grammar was replaced
     replaced = {placeholder_root(k) for k in missing if EN_GRAMMAR.match(k)}
@@ -356,6 +363,12 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
     for m in WRAPPED_DIRECTION.finditer(msgstr):
         warn("empty-wrap", f"{m.group(0)}: the direction can be empty and would leave the brackets; glue them on: "
                            f"={m.group(1)}|before:(|after:)=")
+    # a narration whose verb the game's data gives (<verb>, the «*» keys of Code.DidX): the mod puts the verb's form
+    # where {v} stands (mod/Patches/DidXPatches.cs)
+    if "<verb>" in msgid and "{v}" not in msgstr:
+        err("verb-slot", "put {v} where the verb goes: the mod fills it from the Verbs table")
+    elif "<verb>" not in msgid and "{v}" in msgstr:
+        err("verb-slot", "{v} only fills a narration with <verb>")
 
     # ~Cmd key tokens (help text); '~' alternatives in dialogue are compared by count
     src_cmd = collections.Counter(COMMAND.findall(msgid))

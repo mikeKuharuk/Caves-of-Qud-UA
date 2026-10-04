@@ -312,9 +312,10 @@ def _is_string(arg: str) -> bool:
     return bool(patterns(arg)) or literal_value(strip_parens(arg)) is not None
 
 
-def didx_fields(method: str, args: list[str]) -> dict[str, str] | None:
+def didx_fields(method: str, args: list[str], is_string=None) -> dict[str, str] | None:
     """The message fields of a DidX-family call: Verb, Preposition, IndirectPreposition, Extra, EndMark, by the
-    overload the arguments select (IComponent wrappers have no Actor; Messaging statics start with it)."""
+    overload the arguments select (IComponent wrappers have no Actor; Messaging statics start with it). is_string
+    tells a string variable from an object one, when the caller knows the code around (a computed preposition)."""
     positional = [a for a in args if not NAMED_ARG.match(a)]
     named = {m.group(1): m.group(2) for a in args for m in [NAMED_ARG.match(a)] if m}
     if method.startswith(("X", "W")):
@@ -322,8 +323,9 @@ def didx_fields(method: str, args: list[str]) -> dict[str, str] | None:
             return None   # the SubjectOverride overloads: a string instead of the actor
         positional = positional[1:]
     kind = KINDS[method]
+    is_string = is_string or _is_string
     # the overload with a preposition: a string second, or a bare null there (no call passes a null object)
-    with_preposition = len(positional) > 1 and (_is_string(positional[1]) or strip_parens(positional[1]) == "null")
+    with_preposition = len(positional) > 1 and (is_string(positional[1]) or strip_parens(positional[1]) == "null")
     if kind == "X":
         order = ["Verb", "Extra", "EndMark"]
     elif kind == "XZ":
@@ -373,9 +375,128 @@ def didx_english(kind: str, verb: str, prep: str, iprep: str, extra: str, end: s
     return " ".join(p for p in parts if p) + end
 
 
-def scan_didx(src_dir: pathlib.Path) -> list[tuple[str, str, str]]:
-    """(key, English for the translator, where) for every DidX-family call with a literal verb."""
+# a verb the code takes from the game's data: the slot the DidX table keys it by, and the translation fills ({v})
+ANY_VERB = "*"
+# _S("context", "whiz") / _T(…): a default the string tables may translate; untranslated, it is the English
+LOCALIZED_DEFAULT = re.compile(r'_[ST]\s*\(\s*"(?:[^"\\]|\\.)*"\s*,\s*("(?:[^"\\]|\\.)*")\s*\)\s*$')
+FIELD_DEFAULT = re.compile(r"\b(?:public|private|protected|internal)\s+(?:static\s+)?(?:readonly\s+)?string\s+(\w+)\s*=([^;]+);")
+TAG_LOOKUP = re.compile(r'^(?:[\w.]+\.)?Get(?:TagOrStringProperty|TagOrProperty|StringProperty|Tag)\(\s*"([^"]+)"'
+                        r'(?:\s*,\s*("(?:[^"\\]|\\.)*"))?\s*\)$')
+MEMBER = re.compile(r"^[A-Za-z_]\w*\.([A-Za-z_]\w*)$")
+# blueprint verbs the code passes to a method parameter, out of the scanner's reach: BootSequence.BootUI(…, Verb, …)
+EXTRA_VERB_FIELDS = (("BootSequence", "VerbOnBootInitialized"), ("BootSequence", "VerbOnBootDone"),
+                     ("BootSequence", "VerbOnBootAborted"))
+
+
+def default_value(rhs: str) -> str | None:
+    """The English an initializer gives: a literal, or the default of a _S/_T lookup."""
+    rhs = strip_parens(rhs)
+    value = literal_value(rhs)
+    if value is not None:
+        return value
+    m = LOCALIZED_DEFAULT.search(rhs)
+    return literal_value(m.group(1)) if m else None
+
+
+class GameData:
+    """What a computed verb can be outside the method: the classes' field defaults and the blueprints' attributes
+    and tags."""
+
+    def __init__(self, src_dir: pathlib.Path, blueprints: dict[str, str] | None):
+        self.defaults: dict[str, set[str]] = {}      # field → defaults, in any class
+        self.class_defaults: dict[tuple[str, str], set[str]] = {}
+        for path in src_dir.rglob("*.cs"):
+            text = path.read_text(encoding="utf-8-sig")
+            for m in FIELD_DEFAULT.finditer(text):
+                value = default_value(m.group(2))
+                if value:
+                    self.defaults.setdefault(m.group(1), set()).add(value)
+                    self.class_defaults.setdefault((path.stem, m.group(1)), set()).add(value)
+        self.attributes: dict[str, set[str]] = {}    # attribute → values, on any part
+        self.part_attributes: dict[tuple[str, str], set[str]] = {}
+        self.tags: dict[str, set[str]] = {}
+        for text in (blueprints or {}).values():
+            from .units import uncommented
+            text = uncommented(text)
+            for part, attrs in re.findall(r'<part\s+Name="([^"]+)"([^>]*)>', text):
+                for a, v in re.findall(r'(\w+)="([^"]*)"', attrs):
+                    if v:
+                        self.attributes.setdefault(a, set()).add(v)
+                        self.part_attributes.setdefault((part, a), set()).add(v)
+            for t, v in re.findall(r'<(?:tag|property)\s+Name="([^"]+)"\s+Value="([^"]*)"', text):
+                if v:
+                    self.tags.setdefault(t, set()).add(v)
+
+    def field(self, cls: str, name: str) -> list[str]:
+        """A field of the class: its default and what the blueprints set on the part of that name."""
+        return sorted(self.class_defaults.get((cls, name), set()) | self.part_attributes.get((cls, name), set()))
+
+    def member(self, name: str) -> list[str]:
+        """x.Name of some other object: the defaults of any field so named and any blueprint attribute so named."""
+        return sorted(self.defaults.get(name, set()) | self.attributes.get(name, set()))
+
+
+def verb_sources(expr: str, src: str, masked: str, pos: int, cls: str, data: GameData,
+                 depth: int = 0) -> tuple[list[str], list[str]]:
+    """(the literals the code writes, the values the game's data gives) a verb expression can be."""
+    expr = strip_parens(expr)
+    if expr == "null" or depth > 3:
+        return [], []
+    value = literal_value(expr)
+    if value is not None:
+        return [value], []
+    branches = None
+    q = ternary(expr)
+    if q:
+        branches = [q[1], q[2]]
+    elif len(split_top(expr, "??")) > 1:
+        branches = split_top(expr, "??")
+    if branches:
+        code, given = [], []
+        for b in branches:
+            c, g = verb_sources(b, src, masked, pos, cls, data, depth + 1)
+            code += c
+            given += g
+        return code, given
+    m = TAG_LOOKUP.match(expr)
+    if m:
+        default = literal_value(m.group(2)) if m.group(2) else None
+        return [], ([default] if default else []) + sorted(data.tags.get(m.group(1), set()))
+    m = MEMBER.match(expr)
+    if m and not expr.startswith(("this.", "base.")):
+        return [], data.member(m.group(1))
+    if IDENT.match(expr) or expr.startswith(("this.", "base.")):
+        name = expr.split(".")[-1]
+        a, b = enclosing_body(masked, pos)
+        code, given = [], []
+        for am in re.finditer(rf"(?<![\w.]){re.escape(name)}\s*=(?!=)", masked[a:b]):
+            c, g = verb_sources(split_top(src[a + am.end():b], ";")[0], src, masked, pos, cls, data, depth + 1)
+            code += c
+            given += g
+        return code, given + data.field(cls, name)
+    return [], []
+
+
+def expectation_only(args: list[str]) -> bool:
+    """A call that only states the message a test expects (its last argument, ExpectMessage, a string): the player
+    reads its _T twin from the string tables instead."""
+    named = [a for a in args if NAMED_ARG.match(a)]
+    if any(NAMED_ARG.match(a).group(1) == "ExpectMessage" for a in named):
+        return True
+    return len(args) > 8 and not NAMED_ARG.match(args[-1]) and literal_value(strip_parens(args[-1])) is not None
+
+
+_ANALYSIS: dict = {}
+
+
+def _analyse_didx(src_dir: pathlib.Path, blueprints: dict[str, str] | None):
+    """The DidX keys and the data verbs of every DidX-family call, computed once per source folder."""
+    cache_key = (str(src_dir), len(blueprints or {}))
+    if cache_key in _ANALYSIS:
+        return _ANALYSIS[cache_key]
+    data = GameData(src_dir, blueprints)
     found: dict[str, tuple[str, str]] = {}
+    verbs: dict[str, str] = {}
     for path in sorted(src_dir.rglob("*.cs")):
         src = path.read_text(encoding="utf-8-sig")
         if "DidX" not in src and "XDidY" not in src:
@@ -388,19 +509,44 @@ def scan_didx(src_dir: pathlib.Path) -> list[tuple[str, str, str]]:
             c = matching(src, o)
             if c < 0 or masked[m.start() - 1:m.start()] in ("void ",) or re.search(r"\bvoid\s+$", masked[max(0, m.start() - 12):m.start()]):
                 continue   # a declaration, not a call
-            fields = didx_fields(m.group(1), split_top(src[o + 1:c], ","))
+            args = split_top(src[o + 1:c], ",")
+
+            def is_string(arg: str) -> bool:
+                # a literal or a pattern; or a variable declared a string here, or a string field of some class
+                arg = strip_parens(arg)
+                if _is_string(arg):
+                    return True
+                if IDENT.match(arg):
+                    return bool(re.search(rf"\bstring\s+{re.escape(arg)}\b", masked))
+                m2 = MEMBER.match(arg)
+                return bool(m2 and m2.group(1) in data.defaults)
+            fields = didx_fields(m.group(1), args, is_string)
             if not fields or "Verb" not in fields:
                 continue
-            verb = literal_value(strip_parens(fields["Verb"]))
-            if not verb:
+            literal = literal_value(strip_parens(fields["Verb"]))
+            if literal:
+                verb_options = [literal]
+            else:
+                # a verb the code computes: its literals key the message as any verb would; one the data gives
+                # goes to the Verbs table and keys the message by the slot, when the player reads the DidX itself
+                code, given = verb_sources(fields["Verb"], src, masked, m.start(), path.stem, data)
+                for v in given:
+                    verbs.setdefault(v, where)
+                verb_options = list(dict.fromkeys(code))
+                if given and not expectation_only(args):
+                    verb_options.append(ANY_VERB)
+            if not verb_options:
                 continue
             kind = KINDS[m.group(1)]
 
-            def options(name: str, default: str) -> list[str]:
+            def options(name: str, default: str, expr: str | None = None) -> list[str]:
                 # holes stay unnumbered here: they are counted across the key below
-                expr = strip_parens(fields.get(name, "null"))
+                expr = strip_parens(fields.get(name, "null") if expr is None else expr)
                 if expr == "null":
                     return [default]
+                q = ternary(expr)
+                if q:   # each branch, a null one included («past» with a direction or without)
+                    return list(dict.fromkeys(options(name, default, q[1]) + options(name, default, q[2])))
                 own = patterns(expr)
                 if own:
                     return own
@@ -414,14 +560,33 @@ def scan_didx(src_dir: pathlib.Path) -> list[tuple[str, str, str]]:
             ipreps = options("IndirectPreposition", "") if kind == "WXZ" else [""]
             extras = options("Extra", "")
             ends = options("EndMark", ".")
-            for prep in preps:
-                for iprep in ipreps:
-                    for extra in extras:
-                        for end in ends:
-                            parts = number_fields(prep, iprep, extra, end)
-                            key = didx_key(kind, verb, *parts)
-                            found.setdefault(key, (didx_english(kind, verb, *parts), where))
-    return [(k, e, w) for k, (e, w) in sorted(found.items())]
+            for verb in verb_options:
+                shown = "<verb>" if verb == ANY_VERB else verb
+                for prep in preps:
+                    for iprep in ipreps:
+                        for extra in extras:
+                            for end in ends:
+                                parts = number_fields(prep, iprep, extra, end)
+                                key = didx_key(kind, verb, *parts)
+                                found.setdefault(key, (didx_english(kind, shown, *parts), where))
+    for cls_name, field_name in EXTRA_VERB_FIELDS:
+        for v in data.field(cls_name, field_name):
+            verbs.setdefault(v, cls_name)
+    result = ([(k, e, w) for k, (e, w) in sorted(found.items())], [Entry(k, w) for k, w in sorted(verbs.items())])
+    _ANALYSIS[cache_key] = result
+    return result
+
+
+def scan_didx(src_dir: pathlib.Path, blueprints: dict[str, str] | None = None) -> list[tuple[str, str, str]]:
+    """(key, English for the translator, where) for every DidX-family call: literal verbs, verbs the code computes
+    from literals, and «*» for a verb the game's data gives."""
+    return _analyse_didx(src_dir, blueprints)[0]
+
+
+def scan_verbs(src_dir: pathlib.Path, blueprints: dict[str, str] | None = None) -> list[Entry]:
+    """The verbs the narration takes from the game's data (field defaults, blueprint attributes, tags): the Verbs
+    table, with a form for each person, fills the «*» templates and =verb|uk.v#X=."""
+    return _analyse_didx(src_dir, blueprints)[1]
 
 
 # ---- Text: popups, failure messages and the message log ------------------------------------------------------
