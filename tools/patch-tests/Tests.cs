@@ -249,6 +249,10 @@ static class Tests
         // the verb alone (X.GetVerb), after a name or after the code's own «You»
         Eq("Стріла не пробиває вашу броню!", Translate("Text", "Стріла fails to penetrate your armor!"), "a GetVerb key");
         Eq("Вас трохи нудить.", Translate("Text", "You feel a little queasy."), "the player's GetVerb key");
+        // an owner's noun (X.Poss): the owner's name with no «'s» (MakePossessive leaves ours), the player's «Your»
+        Eq("Атака (Пащеклац) проходить крізь ціль (сокира)!", Translate("Text", "Пащеклац attack passes through сокира!"),
+           "a Poss key");
+        Eq("З вашого носа починає текти.", Translate("Text", "Your nose begins bleeding."), "the player's Poss key");
         // the game info (XRLCore): its lines indented for the block are keys, the mode out of the Words table
         Eq("\n\n           Гра: класичний режим.\n\n           Хід 1120\n\n          Сід світу: 12345     \n\n\n   ",
            Translate("Text", "\n\n           Classic mode.\n\n           Turn 1120\n\n          World seed: 12345     \n\n\n   "),

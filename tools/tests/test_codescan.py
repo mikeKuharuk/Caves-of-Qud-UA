@@ -666,6 +666,28 @@ class DoesForms(unittest.TestCase):
             codescan._EXPAND = ()
         self.assertEqual([codescan.number_holes(t) for t in found], ["{0} the grain"])
 
+    # an owner's noun (X.Poss("noun")): the owner a hole, the player's «Your»; of two subjects one at most is the
+    # player; a noun the code builds is no noun
+    POSS_SOURCE = """public class Splint : IPart
+{
+	public void Mend(GameObject Owner, GameObject Healer)
+	{
+		IComponent<GameObject>.AddPlayerMessage(Owner.Poss("bone") + " knits back together.");
+		IComponent<GameObject>.AddPlayerMessage(Healer.Does("set") + " " + Owner.poss("bone") + " with care.");
+		IComponent<GameObject>.AddPlayerMessage(Owner.Poss("splint " + Tail) + " holds.");
+	}
+}"""
+
+    def test_an_owners_noun(self):
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Splint.cs").write_text(self.POSS_SOURCE, encoding="utf-8")
+            found = {e.key for e in codescan.scan_text(pathlib.Path(d))}
+        self.assertEqual(found, {
+            "{0} bone knits back together.", "Your bone knits back together.",
+            "{0} sets {1} bone with care.", "{0} set {1} bone with care.", "You set {0} bone with care.",
+            # the player's bone in someone else's hands; never «You set your bone»: two subjects, one player
+            "{0} sets your bone with care.", "{0} set your bone with care."})
+
 
 class OptionLists(unittest.TestCase):
     # a made-up menu in the shapes the game's code takes: options filled in a local first, a list grown by Add, an

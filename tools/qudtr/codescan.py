@@ -184,19 +184,20 @@ def patterns(expr: str, nested: bool = False) -> list[str]:
     return list(dict.fromkeys(o for o, _ in out)) if found else []
 
 
-# the calls whose verb gives its forms (does_forms): X.Does("verb") and X.GetVerb("verb") in a text the Text table
-# keys, where scan_text turns them on
+# the calls that give their forms (does_forms): X.Does("verb"), X.GetVerb("verb") and X.Poss("noun") in a text the
+# Text table keys, where scan_text turns them on
 _EXPAND: tuple[str, ...] = ()
-DOES_CALL = re.compile(r"\.([Dd]oes|GetVerb)\s*\($")
+DOES_CALL = re.compile(r"\.([Dd]oes|GetVerb|[Pp]oss)\s*\($")
 NAME_CALL = re.compile(r"^([\w.\[\]]+)\.([Tt])\(")
 
 
 def does_forms(term: str) -> tuple[str, str, list[tuple[str, str]]] | None:
-    """What X.Does("fail") / X.does("fail") / X.GetVerb("fail") can say: (X, the call, [(person, text)…]). The person
-    is «one» (the third person, «{0} fails»), «many» («{0} fail») or «you», the player («You fail»: CodeText looks
-    the player's «Ви fail» up as that). Does writes the name too, a hole; GetVerb only the verb, after the name the
-    code wrote before it, which the player's form takes the place of (with_verb). An adverb argument goes before the
-    verb («{0} merely clicks»). None when the term is no such call."""
+    """What X.Does("fail") / X.does("fail") / X.GetVerb("fail") / X.Poss("nose") can say: (X, the call, [(person,
+    text)…]). The person is «one» (the third person, «{0} fails»), «many» («{0} fail») or «you», the player («You
+    fail»: CodeText looks the player's «Ви fail» up as that). Does writes the name too, a hole; GetVerb only the verb,
+    after the name the code wrote before it, which the player's form takes the place of (with_verb); Poss the owner
+    and the noun («{0} nose», the player's «Your nose»). An adverb argument goes before the verb («{0} merely
+    clicks»). None when the term is no such call."""
     if not term.endswith(")"):
         return None
     o = term.rfind("(", 0, len(term))
@@ -206,12 +207,19 @@ def does_forms(term: str) -> tuple[str, str, list[tuple[str, str]]] | None:
     if not m or m.group(1) not in _EXPAND:
         return None
     args = split_top(term[o + 1:-1], ",")
-    verb = literal_value(args[0].strip()) if args else None
+    first = args[0].strip() if args else ""
+    # one whole literal: Poss("irritable genome acts up. " + string.Join(…)) is no noun
+    verb = literal_value(first) if first[:1] in ('"', "@") and string_end(first, 0) == len(first) else None
     if not verb:
         return None
     named = {mm.group(1): mm.group(2) for a in args for mm in [ANY_NAMED_ARG.match(a)] if mm}
     positional = [a for a in args if not ANY_NAMED_ARG.match(a)]
     receiver = term[:m.start()].strip()
+    if m.group(1) in ("Poss", "poss"):
+        # the owner's name and the noun («Пащеклац nose»: our MakePossessive adds no «'s»), the player's «Your nose»
+        your = "Your" if m.group(1) == "Poss" else "your"
+        return receiver, "Poss", [("one", HOLE + " " + verb), ("many", HOLE + " " + verb),
+                                  ("you", your + " " + verb + PLAYER_MARK)]
     if m.group(1) == "GetVerb":
         space = "" if named.get("PrependSpace", positional[1] if len(positional) > 1 else "true").strip() == "false" else " "
         return receiver, "GetVerb", [("one", space + third_person(verb)), ("many", space + verb),
@@ -230,11 +238,13 @@ def with_verb(text: str, bound: dict, does: tuple, prev: str):
     """text, whose subjects' verbs took the persons bound, followed by each form of does that agrees with them: one
     subject keeps one person («{0} tries … but fails», not «… but fail»). GetVerb's player form takes the place of
     the name before it, when that name is the same subject's (who.T() + who.GetVerb("try") → «You try») or a local
-    the method sets to «You» (says_you); after the subject's own «You», it is the bare verb."""
+    the method sets to «You» (says_you); after the subject's own «You», it is the bare verb. Two subjects are not
+    both the player («You kick at {0}, but you hold your ground» is no line)."""
     receiver, call, forms = does
     person = bound.get(receiver)
+    someone_else_you = any(v == "you" for r, v in bound.items() if r != receiver)
     for p, form in forms:
-        if person is not None and p != person:
+        if person is not None and p != person or p == "you" and someone_else_you:
             continue
         if call == "GetVerb" and p == "you":
             if person == "you":
@@ -257,16 +267,20 @@ OTHER_YOU = re.compile(r"\byou(?:r|rs|rself)?\b", re.I)
 
 def player_forms_kept(text: str) -> str | None:
     """A text with Does forms in it: the player's marks taken out, or None when a player's form shares the line
-    with another «you»."""
+    with another «you». Each mark ends a phrase of the player's own, from its «You» or «your» on («You raise your
+    shield»: both the player's)."""
     if PLAYER_MARK not in text:
         return text
     for line in text.split("\n"):
-        if PLAYER_MARK in line:
-            at = line.index(PLAYER_MARK)
-            start = max(line.rfind("You", 0, at), line.rfind("you", 0, at))
-            rest = line[:start] + line[at:]
-            if OTHER_YOU.search(rest.replace(PLAYER_MARK, "")):
-                return None
+        if PLAYER_MARK not in line:
+            continue
+        rest, last = "", 0
+        for m in re.finditer(PLAYER_MARK, line):
+            start = line.lower().rfind("you", last, m.start())
+            rest += line[last:start if start >= 0 else m.start()]
+            last = m.end()
+        if OTHER_YOU.search(rest + line[last:]):
+            return None
     return text.replace(PLAYER_MARK, "")
 
 
@@ -823,10 +837,10 @@ def _resolve(src: str, masked: str, pos: int, expr: str) -> list[str]:
         return out
     m = BUILT.match(expr)
     if m:
-        # every Append in the method, whichever builder and branch: GetVerb's forms would only make more of its
-        # glued keys look specific, so here it stays the hole it was (builder_paths gives the forms)
+        # every Append in the method, whichever builder and branch: the forms of GetVerb and Poss would only make
+        # more of its glued keys look specific, so here they stay the holes they were (builder_paths gives the forms)
         global _EXPAND
-        expand, _EXPAND = _EXPAND, tuple(c for c in _EXPAND if c != "GetVerb")
+        expand, _EXPAND = _EXPAND, tuple(c for c in _EXPAND if c in ("Does", "does"))
         try:
             return crude_chain(body, mbody, m.group(1))
         finally:
@@ -1127,10 +1141,10 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
     """Popups, failure messages and message-log lines the game's C# writes, line by line (CodeText splits a text
     into lines when the whole is not a key). A builder's text is followed through if/else as well
     (builder_paths). Also the hit message Combat builds for TakeDamage to show (SetParameter("Message",
-    sb.ToString())): Physics puts the attacker's name for its %T. A name with its verb (X.Does("fail")) gives the
-    verb's forms (does_forms)."""
+    sb.ToString())): Physics puts the attacker's name for its %T. A name with its verb (X.Does("fail")), a verb
+    alone (X.GetVerb("fail")) and an owner's noun (X.Poss("nose")) give their forms (does_forms)."""
     global _EXPAND
-    _EXPAND = ("Does", "does", "GetVerb")
+    _EXPAND = ("Does", "does", "GetVerb", "Poss", "poss")
     try:
         return _scan_text(src_dir)
     finally:
