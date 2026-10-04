@@ -633,3 +633,10 @@ shank (verb)	штрикнути		skill	proposed	дієслово до вмінн
 go berserk	упасти в шал		skill	proposed	до вміння «Берсерк!»; «шал берсерка»
 rejoinder	зустрічний удар	m	skill	proposed	як вміння «Зустрічний удар»
 inventory	інвентар	m	ui	ok	D14: родовий «інвентарю»
+Locations (journal tab)	Місця	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
+Chronology (journal tab)	Хронологія	f	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
+Gossip and Lore (journal tab)	Плітки й перекази	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
+Sultan Histories (journal tab)	Історії султанів	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
+Village Histories (journal tab)	Історії сіл	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
+General Notes (journal tab)	Загальні нотатки	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)
+Recipes (journal tab)	Рецепти	pl	ui	proposed	Code.Words: вкладка журналу (JournalScreen.STR_*)

@@ -70,6 +70,7 @@ static class Tests
             }
         }
         Patched("Qud.UI.MessageLogWindow", "GameInit", "Postfix");
+        Patched("Qud.UI.FilterBarCategoryButton", "SetCategory", "Postfix");
 
         SetActive(true);
         const string G = "XRL.Language.Grammar";
@@ -145,6 +146,16 @@ static class Tests
         Eq("Мерців буде відкликано через 12 ходів.", Recalled("12"), "12 ходів");
         Eq("Мерців буде відкликано через {{C|21}} хід.", Recalled("{{C|21}}"), "a number in markup");
         Eq("Мерців буде відкликано через 2.5 ходи.", Recalled("2.5"), "a number that is not whole");
+
+        // a hole that holds a word the code keeps in a constant comes out of the Words table; so do the journal's tabs
+        Add("Words", "Locations", "Місця");
+        Add("Test8", "You note the location of {0} in the {{W|{1} > Artifacts}} section of your journal.",
+            "Ви занотували розташування: {0} — у розділі журналу {{W|{1} > Артефакти}}.");
+        Eq("Ви занотували розташування: сокира — у розділі журналу {{W|Місця > Артефакти}}.",
+           Translate("Test8", "You note the location of сокира in the {{W|Locations > Artifacts}} section of your journal."),
+           "a word from the code in a hole");
+        Eq("Місця", Call("XRL.UI.JournalScreen", "GetTabDisplayName", "Locations"), "the journal's title");
+        Eq("Chronology", Call("XRL.UI.JournalScreen", "GetTabDisplayName", "Chronology"), "a tab with no entry stays");
 
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");

@@ -125,5 +125,22 @@ class DidXScan(unittest.TestCase):
         self.assertEqual(checks.check("<subject> die!", "=subject.Name= =subject.v:помирає:помираєте:помирають=!"), [])
 
 
+class WordsScan(unittest.TestCase):
+    def test_constants_the_player_reads(self):
+        sources = {
+            "XRL.UI/JournalScreen.cs": 'public static readonly string STR_LOCATIONS = "Locations";\n'
+                                       'public static string NotAConstant = "Other";\n',
+            "XRL.World.Parts/LongBladesCore.cs": 'public const string STR_DEFENSIVE = "defensive";\n',
+            "XRL.World.Parts.Mutation/FireBreather.cs": 'public override string GetBreathName()\n\t{\n\t\treturn "fire";\n\t}\n',
+            "XRL.World.Parts.Mutation/BreatherBase.cs": 'public virtual string GetBreathName()\n\t{\n\t\treturn "base";\n\t}\n',
+        }
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in sources.items():
+                (pathlib.Path(d) / rel).parent.mkdir(parents=True, exist_ok=True)
+                (pathlib.Path(d) / rel).write_text(text, encoding="utf-8")
+            found = {e.key for e in codescan.scan_words(pathlib.Path(d))}
+        self.assertEqual(found, {"Locations", "defensive", "fire"})
+
+
 if __name__ == "__main__":
     unittest.main()

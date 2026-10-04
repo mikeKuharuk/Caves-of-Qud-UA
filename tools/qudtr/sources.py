@@ -71,7 +71,7 @@ def load(source: str | None, tag: str | None) -> tuple[dict[str, str], str]:
     decompiled = REPO / "work" / "decompiled" / str(build) / "Assembly-CSharp"
     if decompiled.is_dir():
         for name, make in ((codetables.EFFECTS, codetables.effects_xml), (codetables.DIDX, codetables.didx_xml),
-                           (codetables.TEXT, codetables.text_xml)):
+                           (codetables.TEXT, codetables.text_xml), (codetables.WORDS, codetables.words_xml)):
             table = make(decompiled, build)
             if table:
                 files[name] = table

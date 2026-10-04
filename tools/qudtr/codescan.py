@@ -536,3 +536,33 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
                     if specific(key):
                         entries.setdefault(key, f"{where} ({name.split('.')[-1]})")
     return [Entry(k, w) for k, w in sorted(entries.items())]
+
+
+# ---- Words: short names the code keeps in constants, shows as they are or puts into a hole -----------------------
+
+# (file, pattern, where): each a constant the player reads
+WORD_SOURCES = (
+    # the journal's tabs: the screen's title shows them as they are (JournalScreen.GetTabDisplayName), and the «noted
+    # in the section of your journal» messages put them into a hole
+    ("XRL.UI/JournalScreen.cs", re.compile(r'static readonly string STR_\w+ = "([^"]+)";'),
+     "JournalScreen: вкладка журналу"),
+    # the long blade stances, which the stance narration puts into a hole («switch to the aggressive stance»)
+    ("XRL.World.Parts/LongBladesCore.cs", re.compile(r'const string STR_\w+ = "([^"]+)";'),
+     "LongBladesCore: стійка довгих клинків"),
+)
+BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
+
+
+def scan_words(src_dir: pathlib.Path) -> list[Entry]:
+    """Words the code keeps in constants and the player reads as they are: the journal's tabs, the stances, what
+    a breath is made of («a cone of confusion gas»). CodeText translates a hole that holds one exactly."""
+    entries: dict[str, str] = {}
+    for rel, pattern, where in WORD_SOURCES:
+        path = src_dir / rel
+        if path.exists():
+            for m in pattern.finditer(path.read_text(encoding="utf-8-sig")):
+                entries.setdefault(m.group(1), where)
+    for path in sorted((src_dir / "XRL.World.Parts.Mutation").glob("*Breather.cs")):
+        for m in BREATH_NAME.finditer(path.read_text(encoding="utf-8-sig")):
+            entries.setdefault(m.group(1), f"{path.stem}.GetBreathName: з чого подих")
+    return [Entry(k, w) for k, w in sorted(entries.items())]

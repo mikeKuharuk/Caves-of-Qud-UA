@@ -114,6 +114,18 @@ def text_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     return table_xml("Text", entries, build, "the decompiled game code (popups, Fail, the message log, the journal)")
 
 
+WORDS = "Code.Words.example.xml"
+WORDS_NOTE = ("Коротка назва з коду гри ({where}). Гра показує її як є або вставляє в речення на місце {{0}}, "
+              "тож перекладіть як назву в називному відмінку, з малої літери, якщо так в оригіналі.")
+
+
+def words_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """Names the code keeps in constants: journal tabs, stances, breaths (codescan.scan_words)."""
+    from . import codescan
+    entries = [(e.key, WORDS_NOTE.format(where=e.where)) for e in codescan.scan_words(decompiled)]
+    return table_xml("Words", entries, build, "the decompiled game code (constants the player reads)")
+
+
 KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@Text$", re.S)
 
 

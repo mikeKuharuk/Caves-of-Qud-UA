@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using CavesOfQudUA.Grammar;
 using HarmonyLib;
 using Qud.UI;
 using XRL.Messages;
@@ -101,6 +102,35 @@ namespace CavesOfQudUA.Patches
             if (!Uk.Active) return;
             SingletonWindowBase<MessageLogWindow>.instance?.headerText?.SetText(
                 XRL.Language.Strings._S("Message Log Title", "Message log"));
+        }
+    }
+
+    /// <summary>
+    /// The journal's tabs. Their names are English constants (JournalScreen.STR_*) that the code also compares, so they
+    /// stay English inside; what the player reads comes from the Words code table: the journal's title
+    /// (GetTabDisplayName) and the tab button's tooltip (FilterBarCategoryButton: the journal's tabs show an icon and
+    /// name themselves in the tooltip).
+    /// </summary>
+    [HarmonyPatch(typeof(JournalScreen), nameof(JournalScreen.GetTabDisplayName))]
+    static class JournalTabNamePatch
+    {
+        static void Postfix(ref string __result)
+        {
+            if (!Uk.Active) return;
+            __result = CodeTables.Get("Words", __result) ?? __result;
+        }
+    }
+
+    [HarmonyPatch(typeof(FilterBarCategoryButton), nameof(FilterBarCategoryButton.SetCategory))]
+    static class CategoryButtonTooltipPatch
+    {
+        static void Postfix(FilterBarCategoryButton __instance, string category, string tooltip)
+        {
+            if (!Uk.Active || tooltip != null) return;
+            string word = CodeTables.Get("Words", category);
+            if (word == null) return;
+            __instance.Tooltip = word;
+            __instance.tooltipText?.SetText(word);
         }
     }
 

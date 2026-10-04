@@ -104,11 +104,20 @@ namespace CavesOfQudUA.Patches
                 result = Hole.Replace(result, h =>
                 {
                     Group g = m.Groups["h" + h.Groups[1].Value];
-                    return g.Success ? g.Value : h.Value;
+                    return g.Success ? HoleText(g.Value) : h.Value;
                 });
                 return Agree(name, p.Key, result, agreeWith);
             }
             return null;
+        }
+
+        /// <summary>
+        /// What a hole holds, in Ukrainian when it is one of the words the code keeps in constants (the Words table:
+        /// a journal tab, a stance, what a breath is made of): «{{W|Locations > Artifacts}}» → «{{W|Місця > …}}».
+        /// </summary>
+        static string HoleText(string value)
+        {
+            return CodeTables.Get("Words", value) ?? value;
         }
 
         /// <summary>
