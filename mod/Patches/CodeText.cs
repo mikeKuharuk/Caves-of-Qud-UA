@@ -78,10 +78,29 @@ namespace CavesOfQudUA.Patches
             return result;
         }
 
+        // the player as X.Does("verb") writes them: our pronoun («Ви», «ви») and the English verb the code adds
+        // («Ви hit …»), where the keys have «You hit …» (tools/qudtr/codescan.py, does_forms)
+        static readonly Regex PlayerSubject = new Regex(@"(?<!\w)([Вв])и (?=[A-Za-z])");
+
+        /// <summary>
+        /// Find for the game's own text, with the player's «Ви» before an English verb tried first as «You»: as it
+        /// is, the text would take the plural key with the subject in a hole («{0} hit {1}.» → «{0} влучають…»).
+        /// </summary>
+        static string FindText(string name, Table t, string text, GameObject agreeWith)
+        {
+            string asPlayer = PlayerSubject.Replace(text, m => m.Groups[1].Value == "В" ? "You " : "you ");
+            if (asPlayer != text)
+            {
+                string found = Find(name, t, asPlayer, agreeWith);
+                if (found != null) return found;
+            }
+            return Find(name, t, text, agreeWith);
+        }
+
         static string Compute(string table, string text, GameObject agreeWith)
         {
             Table t = Load(table);
-            string whole = Find(table, t, text, agreeWith);
+            string whole = FindText(table, t, text, agreeWith);
             if (whole != null) return whole;
             if (text.IndexOf('\n') < 0)
             {
@@ -97,7 +116,7 @@ namespace CavesOfQudUA.Patches
                 string plain = cr ? lines[i].Substring(0, lines[i].Length - 1) : lines[i];
                 // a line the string tables gave (a template's Ukrainian, above the English the code adds) passes
                 if (!HasEnglish(plain)) continue;
-                string line = Find(table, t, plain, agreeWith);
+                string line = FindText(table, t, plain, agreeWith);
                 if (line != null)
                 {
                     lines[i] = cr ? line + "\r" : line;

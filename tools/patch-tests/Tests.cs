@@ -227,6 +227,22 @@ static class Tests
            Translate("Test12", "Перезаряджання: 95 ход.\nCooldown reduced by 5 due to Сила волі: висока."), "a line under a description");
         Eq("Перезаряджання: на 2 менше (Сила волі: висока).",
            Translate("Abilities", "Cooldown reduced by 2 due to Сила волі: висока."), "the Abilities table has the cooldown line");
+
+        // the player as X.Does("verb") writes them, «Ви» and the English verb: looked up as «You», before the plural
+        // key would take «Ви» into its hole (tools/qudtr/codescan.py, does_forms)
+        Add("Test13", "You hit {0}.", "Ви влучаєте в ціль ({0}).");
+        Add("Test13", "{0} hit {1}.", "{0} влучають у ціль ({1}).");
+        Add("Test13", "Rifling through {0}, you find nothing.", "Перебираючи {0}, ви нічого не знаходите.");
+        Eq("Ви влучаєте в ціль (пащеклац).", Translate("Test13", "Ви hit пащеклац."), "the player's «Ви» before an English verb");
+        Eq("Пащеклаци влучають у ціль (Ви).", Translate("Test13", "Пащеклаци hit Ви."), "«Ви» with no English after it stays");
+        Eq("Перебираючи сміття, ви нічого не знаходите.", Translate("Test13", "Rifling through сміття, ви find nothing."),
+           "«ви» inside a sentence");
+        Eq("Перебираючи сміття, ви нічого не знаходите.\nПеребираючи мотлох, ви нічого не знаходите.",
+           Translate("Test13", "Rifling through сміття, ви find nothing.\nRifling through мотлох, ви find nothing."), "line by line");
+        // the real table: a critical hit of the player's missile, the adverb out of the Words table
+        Eq("Ви критично влучаєте в ціль (пащеклац)! (x2)", Translate("Text", "Ви critically hit пащеклац! (x2)"),
+           "the Text table's player key");
+        Eq("Пащеклац критично влучає у вас! (x2)", Translate("Text", "Пащеклац critically hits you! (x2)"), "and anyone else's");
         // (a tail that renders goes through the game's template engine, which is empty outside the game)
 
         // a statistic's ID in a hole: the string tables' title for it; with no blueprints loaded, the ID as it is

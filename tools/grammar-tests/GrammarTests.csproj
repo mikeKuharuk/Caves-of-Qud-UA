@@ -12,6 +12,8 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
   <ItemGroup>
+    <!-- the code tables without their data (CodeTables.g.cs): empty until a test adds to them -->
+    <Compile Include="../../mod/Grammar/CodeTables.cs" />
     <Compile Include="../../mod/Grammar/UkrainianForms.cs" />
     <Compile Include="../../mod/Grammar/UkrainianWords.cs" />
     <Compile Include="../../mod/Grammar/UkrainianNumbers.cs" />

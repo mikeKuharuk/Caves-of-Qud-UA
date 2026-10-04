@@ -579,6 +579,43 @@ class HitMessage(unittest.TestCase):
                                  "{0} suffers {{R|welts}} {1}", "{0} suffer {{R|welts}} {1}"})
 
 
+class DoesForms(unittest.TestCase):
+    # a made-up part naming who acts with X.Does("verb"): the name and its English verb, an adverb the code computes
+    # and one it gives, the lower-case does() inside a sentence, and a line where «you» acts on «your» sleeve
+    SOURCE = """public class Rattle : IPart
+{
+	public void Shake(GameObject Who, bool Hard)
+	{
+		string adverb = (Hard ? "loudly" : null);
+		IComponent<GameObject>.AddPlayerMessage(Who.Does("rattle", int.MaxValue, null, null, adverb) + " " + ParentObject.t() + " about.");
+		IComponent<GameObject>.AddPlayerMessage(Who.Does("hum", Adverb: "softly") + ".");
+		Popup.Show("Rifling through " + ParentObject.t() + ", " + Who.does("find") + " nothing.");
+		IComponent<GameObject>.AddPlayerMessage(Who.Does("brush") + " your sleeve.");
+	}
+}"""
+
+    def test_the_verb_for_one_for_many_and_for_the_player(self):
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Rattle.cs").write_text(self.SOURCE, encoding="utf-8")
+            found = {e.key for e in codescan.scan_text(pathlib.Path(d))}
+        self.assertEqual(found, {
+            "{0} rattles {1} about.", "{0} rattle {1} about.", "You rattle {0} about.",
+            "{0} {1} rattles {2} about.", "{0} {1} rattle {2} about.", "You {0} rattle {1} about.",
+            "{0} softly hums.", "{0} softly hum.", "You softly hum.",
+            "Rifling through {0}, {1} finds nothing.", "Rifling through {0}, {1} find nothing.",
+            "Rifling through {0}, you find nothing.",
+            # «You brush your sleeve.» is not the player's: the sleeve is someone else's
+            "{0} brushes your sleeve.", "{0} brush your sleeve."})
+        # only the Text scan expands a Does: the tables scanned before it keep their one hole
+        self.assertEqual([codescan.number_holes(p) for p in codescan.patterns('X.Does("hum") + "."')], ["{0}."])
+
+    def test_the_third_person_as_the_game_gives_it(self):
+        for verb, third in (("hit", "hits"), ("miss", "misses"), ("try", "tries"), ("play", "plays"), ("are", "is"),
+                            ("were", "was"), ("don't", "doesn't"), ("can't", "can't"),
+                            ("quantum tunnel", "quantum tunnels")):
+            self.assertEqual(codescan.third_person(verb), third, verb)
+
+
 class OptionLists(unittest.TestCase):
     # a made-up menu in the shapes the game's code takes: options filled in a local first, a list grown by Add, an
     # intro built with a list of items in it, and an array that is no options at all (the hotkeys' input layers)

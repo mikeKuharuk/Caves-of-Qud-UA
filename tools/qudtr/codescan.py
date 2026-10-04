@@ -167,15 +167,72 @@ def patterns(expr: str, nested: bool = False) -> list[str]:
         value = literal_value(term)
         inner = ternary(term) if nested and value is None else None
         options = [p for b in inner[1:] for p in patterns(b, nested) or [HOLE]] if inner else []
+        does = does_forms(term) if _EXPAND_DOES and value is None else None
         if value is not None:
             found = True
             out = [o + value for o in out]
+        elif does:
+            found = True
+            out = [o + p for o in out for p in does][:16]
         elif any(p != HOLE for p in options):
             found = True
             out = [o + p for o in out for p in dict.fromkeys(options)][:16]
         elif term:
             out = [o + HOLE for o in out]
     return [o for o in out if found]
+
+
+# scan_text turns it on: X.Does("verb") in a text the Text table keys gives its verb's forms (does_forms)
+_EXPAND_DOES = False
+DOES_CALL = re.compile(r"\.([Dd]oes)\s*\($")
+
+
+def does_forms(term: str) -> list[str] | None:
+    """What X.Does("fail") / X.does("fail") can say: the name and the verb in the third person («{0} fails»), a group
+    («{0} fail»), and the player in the second («You fail»: CodeText looks the player's «Ви fail» up as that). An
+    adverb argument goes before the verb («{0} merely clicks»). None when the term is no such call."""
+    if not term.endswith(")"):
+        return None
+    o = term.rfind("(", 0, len(term))
+    while o > 0 and matching(term, o) != len(term) - 1:
+        o = term.rfind("(", 0, o)
+    m = DOES_CALL.search(term[:o + 1]) if o > 0 else None
+    if not m:
+        return None
+    args = split_top(term[o + 1:-1], ",")
+    verb = literal_value(args[0].strip()) if args else None
+    if not verb:
+        return None
+    named = {mm.group(1): mm.group(2) for a in args for mm in [ANY_NAMED_ARG.match(a)] if mm}
+    positional = [a for a in args if not ANY_NAMED_ARG.match(a)]
+    adverb_expr = named.get("Adverb", positional[4] if len(positional) > 4 else "null").strip()
+    adverb = literal_value(adverb_expr)
+    # an adverb the code computes («critically» or none, MissileWeapon) is there or not: a hole, or nothing
+    befores = [" " + adverb] if adverb else [""] + ([" " + HOLE] if IDENT.match(adverb_expr) and adverb_expr != "null" else [])
+    you = "You" if m.group(1) == "Does" else "you"
+    return [f for before in befores for f in (HOLE + before + " " + third_person(verb), HOLE + before + " " + verb,
+                                              you + before + " " + verb + PLAYER_MARK)]
+
+
+# marks the player's form of a Does until the whole line is known: a line where «you» acts on «you» or «your …» is
+# not the player's (Combat's «… doesn't penetrate your armor»), and goes
+PLAYER_MARK = "\u0003"
+OTHER_YOU = re.compile(r"\byou(?:r|rs|rself)?\b", re.I)
+
+
+def player_forms_kept(text: str) -> str | None:
+    """A text with Does forms in it: the player's marks taken out, or None when a player's form shares the line
+    with another «you»."""
+    if PLAYER_MARK not in text:
+        return text
+    for line in text.split("\n"):
+        if PLAYER_MARK in line:
+            at = line.index(PLAYER_MARK)
+            start = max(line.rfind("You", 0, at), line.rfind("you", 0, at))
+            rest = line[:start] + line[at:]
+            if OTHER_YOU.search(rest.replace(PLAYER_MARK, "")):
+                return None
+    return text.replace(PLAYER_MARK, "")
 
 
 def ternary(expr: str) -> tuple[str, str, str] | None:
@@ -820,8 +877,22 @@ def statements(masked: str, a: int, b: int):
             i = j
 
 
+# Grammar.ThirdPerson's own table: the verbs that do not take «s»
+IRREGULAR_THIRD = {"'re": "'s", "'ve": "'s", "are": "is", "aren't": "isn't", "cannot": "cannot", "can't": "can't",
+                   "caught": "caught", "could": "could", "couldn't": "couldn't", "don't": "doesn't", "grew": "grew",
+                   "had": "had", "have": "has", "may": "may", "might": "might", "must": "must", "shall": "shall",
+                   "shouldn't": "shouldn't", "should": "should", "sought": "sought", "were": "was", "will": "will",
+                   "won't": "won't", "wouldn't": "wouldn't", "would": "would"}
+
+
 def third_person(verb: str) -> str:
-    """The English third person singular the game's GetVerb gives: «hit» → «hits», «miss» → «misses»."""
+    """The English third person singular the game's GetVerb gives (Grammar.ThirdPerson): «hit» → «hits», «miss» →
+    «misses», «are» → «is», and of several words the last («quantum tunnel» → «quantum tunnels»)."""
+    if verb in IRREGULAR_THIRD:
+        return IRREGULAR_THIRD[verb]
+    if " " in verb:
+        head, _, last = verb.rpartition(" ")
+        return head + " " + third_person(last)
     if re.search(r"(?:s|sh|ch|x|z|o)$", verb):
         return verb + "es"
     if re.search(r"[^aeiou]y$", verb):
@@ -980,7 +1051,17 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
     """Popups, failure messages and message-log lines the game's C# writes, line by line (CodeText splits a text
     into lines when the whole is not a key). A builder's text is followed through if/else as well
     (builder_paths). Also the hit message Combat builds for TakeDamage to show (SetParameter("Message",
-    sb.ToString())): Physics puts the attacker's name for its %T."""
+    sb.ToString())): Physics puts the attacker's name for its %T. A name with its verb (X.Does("fail")) gives the
+    verb's forms (does_forms)."""
+    global _EXPAND_DOES
+    _EXPAND_DOES = True
+    try:
+        return _scan_text(src_dir)
+    finally:
+        _EXPAND_DOES = False
+
+
+def _scan_text(src_dir: pathlib.Path) -> list[Entry]:
     entries: dict[str, str] = {}
     files = []
     for path in sorted(src_dir.rglob("*.cs")):
@@ -1043,13 +1124,13 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
                     built = BUILT.match(strip_parens(intro))
                     texts += (builder_texts(src, masked, built.group(1), m.start(), values) if built
                               else resolve(src, masked, m.start(), intro))
-            for text in texts:
+            for text in filter(None, map(player_forms_kept, texts)):
                 for line in lines_of(text):
                     key = number_holes(line)
                     if specific(key):
                         entries.setdefault(key, f"{where} ({name.split('.')[-1]})")
         for m in MESSAGE_PARAM.finditer(masked):
-            for text in builder_texts(src, masked, m.group(1), m.start(), values):
+            for text in filter(None, map(player_forms_kept, builder_texts(src, masked, m.group(1), m.start(), values))):
                 for line in lines_of(PERCENT_CODE.sub(HOLE, text)):
                     key = number_holes(line)
                     if specific(key):
@@ -1091,6 +1172,9 @@ WORD_SOURCES = (
     # what a mine-laying robot is, after the kind of its grenade: «{{W|фугасний}} мінер Mk I» (mod/Patches/MinerPatches)
     ("XRL.World.Parts/Miner.cs", re.compile(r'MineName \+ "(\w+) mk "'),
      "Miner: робот, що ставить міни (miner) чи бомби з таймером (bomber), — іменник після прикметника гранати"),
+    # the adverb of a critical hit with a missile, in a hole before the verb: «{0} критично влучає у вас»
+    ("XRL.World.Parts/MissileWeapon.cs", re.compile(r'string adverb = \(\w+ \? "(\w+)" : null\)'),
+     "MissileWeapon: прислівник критичного влучання перед дієсловом («критично»)"),
     # what a laid grenade becomes, in place of «граната» in its name: «{{W|фугасна}} міна Mk I»
     ("XRL.World.Parts.Skill/Tinkering_LayMine.cs", re.compile(r'\(Countdown > 0\) \? "(\w+)"'), LAID_GRENADE),
     ("XRL.World.Parts.Skill/Tinkering_LayMine.cs", re.compile(r'\(Countdown > 0\) \? "\w+" : "(\w+)"'), LAID_GRENADE),

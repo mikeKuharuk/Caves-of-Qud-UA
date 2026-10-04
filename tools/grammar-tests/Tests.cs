@@ -116,6 +116,8 @@ static class Tests
 
         Eq("Скопа", CodeWords.Translate("Osprey"), "a word from the code");
         Eq("Unknown", CodeWords.Translate("Unknown"), "an unknown word stays");
+        CodeTables.Add("Words", "Wander", "мандрівний режим");
+        Eq("мандрівний режим", CodeWords.Translate("Wander"), "a word the Words code table has");
         Eq("Feminine", CodeWords.GenderOf("Owl").ToString(), "gender by the English word");
         Eq("Masculine", CodeWords.GenderOf("Орел").ToString(), "gender by the Ukrainian word");
 

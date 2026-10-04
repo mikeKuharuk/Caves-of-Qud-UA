@@ -174,7 +174,6 @@ Code.Text.po	ca4a37844c04f9edfea3	keep	відповідь на команду wi
 Code.Text.po	2a6e341a46fa117dfb31	keep	відповідь на команду wish (налагодження)
 Code.Text.po	9bae6b81ca62ac9080d2	keep	відповідь на команду wish (налагодження)
 Code.Text.po	2847a66372c3083531ed	keep	відповідь на команду wish (налагодження)
-Code.Text.po	a6b5398d67e71cd45f1f	keep	ключ склеєно з кусників коду: такого рядка гра не пише
 Code.Text.po	bcbf93420eedd8f006d1	keep	налагоджувальний текст: гравець його не бачить
 Code.Text.po	d42c20cd3aa7cb84bfe2	keep	налагоджувальний текст: гравець його не бачить
 Code.Text.po	05a71736ba6e7eb3935a	keep	налагоджувальний текст: гравець його не бачить
@@ -200,59 +199,34 @@ Code.Text.po	9b4d2930d2b8cf6f37a2	keep	ключ склеєно з кусникі
 Code.Text.po	572b18643931d80d4e69	keep	ключ склеєно з кусників коду: такого рядка гра не пише
 Code.Text.po	dd993721b827682d06ce	keep	відповідь на команду wish (налагодження)
 Code.Text.po	a3de30162c489dad38b7	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	04b7d513efe058e3f448	code	шаблон надто загальний і ловив би чужі рядки: потрібен точний ключ
 Code.Text.po	b9596d0b5508cc64b1f6	keep	відповідь на команду wish (налагодження)
-Code.Text.po	bad96532662f670ba968	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	88adfda65ca4a7fe8674	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	fd1f86553ae19bc4cd53	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	82c34144310d0f424026	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	5a8756fdff28303889ae	code	{0} буває і гравцем, і NPC: дієслово не узгодити без патча
-Code.Text.po	97adb8e8b28694af3d47	keep	гра цей рядок не показує (виклик лише задає ExpectMessage)
 Code.Text.po	a595c25b31ee9c035c22	keep	налагоджувальний текст: гравець його не бачить
 Code.Text.po	86f538b39e4d2052d3a3	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	101844c991c065a09312	code	шаблон надто загальний і ловив би чужі рядки: потрібен точний ключ
 Code.Text.po	f946d9662d89c1d56f9d	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	5cf0d25aa7cf53f9f245	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	fc7fa50ae26b5c3841fe	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	95d5febdf6daebc2d9d4	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	61ccef2fcfc37664f7d3	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	7808f0d0ba4b0873cb61	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	1eabc650b4b8320882ab	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	0a06931e2cbd664ddba4	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	7ee81524c080639494f3	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	c92d5dd6c51d0a2f2539	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	5d1c0737f607745b8275	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	26ed0f71bb5d51cdaa1a	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	fcfa73317d21ac301ef9	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	dba059d758791c4524a5	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	ae0e86ddb707586183dd	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	4e8e3aa7191dbc23bfb1	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	2a22199e8178f4deaecb	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	b7fd4120fcd1b8090ffe	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	c73b738548091b9b52c0	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	10f5d6421fb7c94e369e	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	9e739ca5404ceef09cfe	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	98b8ffe86a52f3e221e5	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	8e9c6d16ff476644eaf1	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	cc26ed4065d1277ce744	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	955b73bf7df363d00796	code	шаблон надто загальний і ловив би чужі рядки: потрібен точний ключ
-Code.Text.po	a9e8ac7959e17bea4a83	code	шаблон надто загальний і ловив би чужі рядки: потрібен точний ключ
-Code.Text.po	b00acace49577e860bd9	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	49043d1639d8c5507309	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	f2438c25a335affeb903	code	шаблон надто загальний і ловив би чужі рядки: потрібен точний ключ
 Code.Text.po	de283520cef111babc36	code	шаблон надто загальний і ловив би чужі рядки: потрібен точний ключ
 Code.Text.po	4406e531801c1a268bf7	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	05a65e1b718bd84959cf	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	373cdc75c7525907eeb5	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	9fa424785f620a8848e4	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	6d0a786ff344fc717afb	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	d109c5588624420bfbb5	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	c24ffffd54c108101565	code	пропуски поспіль: назва з пробілом розривається між ними; потрібен точний ключ чи патч
-Code.Text.po	91ac0c30debb43fdd869	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	8f96d1d0396ccaa11733	code	пропуски поспіль: назва з пробілом розривається між ними; потрібен точний ключ чи патч
 Code.Text.po	db2bdb77edeedfffdc82	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	412955ae45847fafd1c5	code	пропуски поспіль: назва з пробілом розривається між ними; потрібен точний ключ чи патч
-Code.Text.po	cf8985c089e5ae0ced81	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	f452ea9df513f1f25ee6	keep	ключ склеєно з кусників коду: такого рядка гра не пише
 Code.Text.po	78d244530c627559a623	keep	налагоджувальний текст: гравець його не бачить
 Code.Text.po	01d67d0069a55755b2c7	keep	ключ склеєно з кусників коду: такого рядка гра не пише
@@ -260,7 +234,6 @@ Code.Text.po	13a15cbb9d251a0bb13c	keep	ключ склеєно з кусникі
 Code.Text.po	935c8f97b58354170250	keep	налагоджувальний текст (wish у IZoneLandmark)
 Code.Text.po	fd747b17d92fb6707549	code	{1} — англійське дієслово смерті (CustomDeathVerb); чекає патча коду
 Code.Text.po	ac7536af5de4e5c6d6dd	code	{1} — англійське дієслово смерті (CustomDeathVerb), {2} — причина англійською; чекає патча коду
-Code.Text.po	a92efbe5b348298a046a	code	{0} — назва з англійським дієсловом (Does("lack")); чекає патча коду
 Code.Effects.po	835dbe93876de34b76e7	code	{0} — англійський прикметник ефекту (Adjective), {1} — «it is»/«you are»; чекає патча коду
 Code.Text.po	2df56704d0a8f1a92774	keep	налагоджувальне меню: стан кінця гри (команди wish gocoda, gocredits, goend)
 Code.Text.po	be9dc169e243b89f11c1	keep	налагоджувальне меню: стан кінця гри (команди wish gocoda, gocredits, goend)
@@ -273,3 +246,48 @@ Code.Text.po	3345f2b0b4aa73d842da	keep	налагоджувальне меню: 
 Code.Text.po	90f5708b2ebb7ed5da34	keep	налагоджувальне меню: стан кінця гри (команди wish gocoda, gocredits, goend)
 Code.Text.po	ad2e94d1fbcab4b623ac	keep	налагоджувальне меню: стан кінця гри (команди wish gocoda, gocredits, goend)
 Code.Text.po	aa322dcc63366ba225ff	keep	налагоджувальне меню: стан кінця гри (команди wish gocoda, gocredits, goend)
+Code.Text.po	9182522de74b8fedabd3	keep	склеєно з гілок будівника (VehicleUnpowered): такого рядка гра не пише
+Code.Text.po	586dbdce1b923d251cd5	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	e35154415937f6373493	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	399e0526ee93cc1586b4	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	2fe28f657522a7f51373	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	3387fe2f2c7015324a15	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	58e90ee0b3566eaeb448	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	50a6eed3853dc6efac39	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	59d916b4810da475c786	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	561e52caff1e0e76223b	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	784ebefa8f2ac80decbf	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	6522c3ba1b25dd5c00ae	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	79bcbf298a51cd65d603	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	5d8f49ed2efd202cbfc6	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	54f0ac85a5d6b84facca	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	be2ee58d1a2a31e62d05	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	95b061dcf04298f76859	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	ee7ea1e9529e12e6c564	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	32c0f86b8519f5ed2fce	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	e87c7c4dc5145c01e226	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	972c166a03ffd159e6ac	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	640c59848dbb9bb4ab46	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	4ca4c483e31dec350bd1	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	4910b9714132b6a94137	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	4a5dcb64b0cecc6333a9	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	aa5442d39082bb4c3a9f	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	99724bf693cb0bcc8469	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	155879deff2cbe87f9ca	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	90e3a9ebabddb77e4315	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	5017a077164385bcc458	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	1e4e756630245cef6004	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	8dbb4446726a395e2adf	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	ebaa9bcf05c7f5e6b4b5	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	94f83fa72a24dda0ed4f	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	c5e13d596adca79dea80	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	45d16c343511945ea77d	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	50ec4ec736f40966e545	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	00a5e20476912ad5ba37	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	50b10c85e2e5f75d83c9	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	36338ee022d754784ac9	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	7e34eae2116176651b92	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	dbbdea786d1685a02e82	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	995101ec6443648854cb	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	762cb58902b76ec62087	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
+Code.Text.po	cba2811ecf5d9df3b78e	keep	не трапляється: тут підмет — не гравець (форма гравця з X.Does, codescan.does_forms)
