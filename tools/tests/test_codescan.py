@@ -60,6 +60,14 @@ class Patterns(unittest.TestCase):
         masked = codescan.mask(src)
         self.assertEqual(codescan.resolve(src, masked, src.index("Show"), "sb.ToString()"), ["Shiny\nDull"])
 
+    def test_a_key_too_general_to_look_up(self):
+        self.assertFalse(codescan.specific("Turn {0}"))
+        self.assertFalse(codescan.specific("{0} hits {1}."))
+        self.assertTrue(codescan.specific("You receive {0}!"))
+        # a line indented for a block's layout matches nothing else
+        self.assertTrue(codescan.specific("           Turn {0}"))
+        self.assertFalse(codescan.specific("           {0}"))
+
     def test_literal_escapes(self):
         self.assertEqual(codescan.literal_value(r'"a\nb\"c"'), 'a\nb"c')
         self.assertEqual(codescan.literal_value('@"say ""hi"""'), 'say "hi"')

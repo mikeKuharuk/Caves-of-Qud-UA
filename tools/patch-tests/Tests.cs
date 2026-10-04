@@ -80,6 +80,9 @@ static class Tests
         Patched("XRL.World.Parts.ActivatedAbilityEntry", "Read", "Postfix");
         Patched("XRL.UI.SPNode", "ModernUIText", "Postfix");
         Patched("XRL.World.Anatomy.BodyPart", "ReadValues", "Postfix");
+        Patched("Qud.UI.CharacterStatusScreen", "UpdateViewFromData", "Postfix");
+        Patched("Qud.UI.CharacterStatusScreen", "HandleHighlightMutation", "Postfix");
+        Patched("Qud.UI.WorldGenerationScreen", "Show", "Postfix");
         int describes = game.GetType("XRL.World.GameObject", true).GetMethods()
             .Count(m => m.Name == "DescribeActivatedAbility" && HarmonyLib.Harmony.GetPatchInfo(m)?.Postfixes.Count > 0);
         Eq("3", describes.ToString(), "every DescribeActivatedAbility is patched");
@@ -243,6 +246,10 @@ static class Tests
         Eq("Ви критично влучаєте в ціль (пащеклац)! (x2)", Translate("Text", "Ви critically hit пащеклац! (x2)"),
            "the Text table's player key");
         Eq("Пащеклац критично влучає у вас! (x2)", Translate("Text", "Пащеклац critically hits you! (x2)"), "and anyone else's");
+        // the game info (XRLCore): its lines indented for the block are keys, the mode out of the Words table
+        Eq("\n\n           Гра: класичний режим.\n\n           Хід 1120\n\n          Сід світу: 12345     \n\n\n   ",
+           Translate("Text", "\n\n           Classic mode.\n\n           Turn 1120\n\n          World seed: 12345     \n\n\n   "),
+           "the game info");
         // (a tail that renders goes through the game's template engine, which is empty outside the game)
 
         // a statistic's ID in a hole: the string tables' title for it; with no blueprints loaded, the ID as it is

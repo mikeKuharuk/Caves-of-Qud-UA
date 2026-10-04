@@ -65,7 +65,9 @@ where it is in the code, what the player sees, and what would let a translation 
     is a literal, and the category lookup for `*All` (`Physics (Inventory) Category`) logs a string
     table miss.
 12. **Prefab labels**: «delete» and «Mods Differ» in `SaveManagementRow`, and the scene headers we saw on
-    the character screen («SECONDARY ATTRIBUTES», «RESISTANCES»), are prefab text with no table entry.
+    the character screen («SECONDARY ATTRIBUTES», «RESISTANCES»), are prefab text with no table entry. The
+    scene file has four more that no code sets, which look like the world generation screen's eons
+    («COSMOLOGIC», «GEOLOGIC», «DEEP HISTORIC», «NEAR HISTORIC»).
 
 ### Small issues, English included
 
@@ -75,18 +77,21 @@ where it is in the code, what the player sees, and what would let a translation 
 14. **Lookups before the mods load**: `MessageLogWindow.Init` sets the log's title once, before the
     language mods are loaded, so it stays «Message log» (we set it again in `GameInit`); the
     `DifficultyEvaluation` labels are looked up as early, which only logs misses.
+15. **A mutation's rank is set twice** (`CharacterStatusScreen.HandleHighlightMutation`): from the table
+    («CharacterStatusScreen MutationRankText») and on the next line again as `$"{{{{G|RANK {…}/10}}}}"`, so
+    the translated rank never shows.
 
 ### From our research before the playtests
 
-15. The Factions export writes the water ritual's dish question as `recipetext`, while the faction loader
+16. The Factions export writes the water ritual's dish question as `recipetext`, while the faction loader
     reads `RecipeText`, so its translation is ignored; the export also leaves out the interests'
     `BuyDescription` and the factions' `DefaultAddress`.
-16. `[DisplayText]` is missing on 21 part classes whose text is shown.
-17. `Bodies`, `Commands`, `Genders` and `Colors` have no export; we build tables for them from the game's
+17. `[DisplayText]` is missing on 21 part classes whose text is shown.
+18. `Bodies`, `Commands`, `Genders` and `Colors` have no export; we build tables for them from the game's
     own XML.
-18. `VariantName` and other tags that are shown to the player are not in the export.
-19. Ability and effect names come from code rather than from the tables.
-20. `Grammar.MakePossessive`, `Pluralize` and `MakeTitleCase` apply English rules to any text; a call
+19. `VariantName` and other tags that are shown to the player are not in the export.
+20. Ability and effect names come from code rather than from the tables.
+21. `Grammar.MakePossessive`, `Pluralize` and `MakeTitleCase` apply English rules to any text; a call
     through the `Translator` provider would let a language opt out.
 
 Everything above is something we can patch or work around, and mostly already have. We list it so that

@@ -152,9 +152,8 @@ namespace CavesOfQudUA.Patches
     }
 
     /// <summary>
-    /// Labels a Unity prefab carries, which no code or table holds: the load screen's «delete» button and «Mods
-    /// Differ» mark (SaveManagementRow). A text under them whose text is a Words key gets its Ukrainian; any markup
-    /// around it stays. Not seen in the game yet: if the prefab's label is no UITextSkin, nothing changes.
+    /// The load screen's «delete» button and «Mods Differ» mark, which only the prefab of a save's row has
+    /// (SaveManagementRow): PrefabLabels.
     /// </summary>
     [HarmonyPatch(typeof(SaveManagementRow), nameof(SaveManagementRow.setData))]
     static class SaveRowLabelsPatch
@@ -164,23 +163,8 @@ namespace CavesOfQudUA.Patches
         static void Postfix(SaveManagementRow __instance)
         {
             if (!Uk.Active) return;
-            try
-            {
-                PrefabLabels(__instance.deleteButton?.gameObject);
-                PrefabLabels(__instance.modsDiffer);
-            }
-            catch (System.Exception) { }   // a label left English must never break the load screen
-        }
-
-        static void PrefabLabels(UnityEngine.GameObject root)
-        {
-            if (root == null) return;
-            foreach (UITextSkin skin in root.GetComponentsInChildren<UITextSkin>(true))
-            {
-                string plain = UkrainianForms.StripMarkup(skin.text ?? "").Trim();
-                string word = plain.Length > 0 ? CodeTables.Get("Words", plain) : null;
-                if (word != null) skin.SetText(skin.text.Replace(plain, word));
-            }
+            PrefabLabels.Translate(__instance.deleteButton?.gameObject);
+            PrefabLabels.Translate(__instance.modsDiffer);
         }
     }
 

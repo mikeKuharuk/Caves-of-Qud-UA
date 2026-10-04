@@ -790,6 +790,9 @@ def specific(text: str) -> bool:
         return True
     literal = re.sub(r"\{\d+\}|\{\{[^|}]*\||\}\}", " ", text)
     words = re.findall(r"[A-Za-z]{2,}", literal)
+    # nor can a line indented for a block's layout, which only its block has («           Turn {0}», the game info)
+    if words and re.match(r" {4,}\S", text):
+        return True
     # a pattern matches the whole line (^…$), so two words of fixed text are enough: «You receive {0}!»
     return len(words) >= 3 or len(words) == 2 and len("".join(words)) >= 6
 
@@ -1180,10 +1183,16 @@ WORD_SOURCES = (
     ("XRL.World.Parts.Skill/Tinkering_LayMine.cs", re.compile(r'\(Countdown > 0\) \? "\w+" : "(\w+)"'), LAID_GRENADE),
 )
 BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
-# labels a Unity prefab carries, which no code or table holds; the mod sets them (mod/Patches/TextPatches.cs)
+# labels a Unity scene or prefab carries, which no code or table holds; the mod sets them (PrefabLabels in
+# mod/Patches/ScreenPatches.cs)
+EON = "WorldGenerationScreen: назва епохи під значком на екрані створення світу (великими, як в оригіналі)"
 PREFAB_WORDS = (
     ("delete", "SaveManagementRow: кнопка видалення збереження на екрані завантаження (з малої, як в оригіналі)"),
     ("Mods Differ", "SaveManagementRow: позначка в рядку збереження, коли моди збереження й гри різні"),
+    ("SECONDARY ATTRIBUTES", "CharacterStatusScreen: заголовок стовпця другорядних характеристик (великими, як в "
+                             "оригіналі; поруч — «ОСНОВНІ ХАРАКТЕРИСТИКИ»)"),
+    ("RESISTANCES", "CharacterStatusScreen: заголовок стовпця стійкостей до шкоди (великими, як в оригіналі)"),
+    ("COSMOLOGIC", EON), ("GEOLOGIC", EON), ("DEEP HISTORIC", EON), ("NEAR HISTORIC", EON),
 )
 STAT_VALUE = re.compile(r'\bstats\.Set\("(\w+)",\s*"([^"]+)"')
 STAT_WORDS = re.compile(r"[A-Za-z][a-z]*(?:[ /.]+[A-Za-z][a-z]*)*\.?")
