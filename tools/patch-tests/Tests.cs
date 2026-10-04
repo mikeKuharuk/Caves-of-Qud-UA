@@ -248,6 +248,22 @@ static class Tests
         statTitle.SetValue(null, gameStatTitle);
         Patched("XRL.World.Text.Delegates.XMLTemplateReplacers", "Value", "Prefix");
 
+        // a miner robot named after its grenade: the kind of mine, and the robot with the adjectives in the masculine
+        Patched("XRL.World.Parts.Miner", "SetupMinerConfiguration", "Postfix");
+        Patched("XRL.World.Parts.Miner", "CollectStats", "Postfix");
+        Type mineName = mod.GetType("CavesOfQudUA.Patches.MineName", true);
+        object Mine(string grenade) => mineName.GetMethod("Of").Invoke(null, new object[] { grenade });
+        string Kind(string grenade) => (string)mineName.GetProperty("Kind").GetValue(Mine(grenade));
+        string Robot(string grenade, string noun) => (string)mineName.GetMethod("Robot").Invoke(Mine(grenade), new object[] { noun });
+        Eq("{{W|фугасна}}", Kind("{{W|фугасна}} граната Mk I "), "the kind of a mine");
+        Eq("{{W|фугасний}} мінер", Robot("{{W|фугасна}} граната Mk I", "мінер"), "a miner");
+        Eq("{{w|снодійний}} газовий підривник", Robot("{{w|снодійна}} газова граната Mk III", "підривник"), "two adjectives");
+        Eq("{{B|ЕМІ}}-мінер", Robot("{{B|ЕМІ}}-граната Mk II", "мінер"), "a compound");
+        Eq("газовий мінер {{normal|нормальності}}", Robot("газова граната {{normal|нормальності}} Mk I", "мінер"), "words after");
+        Eq("мінер {{b|сповільнення часу}}", Robot("граната {{b|сповільнення часу}} Mk I", "мінер"), "no adjective");
+        Eq("пружинно-турельний мінер", Robot("пружинно-турельна граната Mk I", "мінер"), "a hyphenated adjective");
+        Eq(null, Mine("гранатомет Mk I"), "no «граната», no name");
+
         // the rules lines of a description pass Extensions.AppendRules, which takes them through the Rules table
         Add("Rules", "Glinting: +{0} to shine", "Блискучий: +{0} до сяйва");
         MethodInfo appendRules = game.GetType("XRL.Extensions", true).GetMethods()

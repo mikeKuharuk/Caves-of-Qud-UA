@@ -1070,6 +1070,9 @@ WORD_SOURCES = (
     ("Qud.UI/FilterBarCategoryButton.cs", re.compile(r'categoryTextMap = new Dictionary<string, string> '
                                                      r'\{ \{ "\*All", "([^"]+)" \} \}'),
      "FilterBarCategoryButton: кнопка фільтра «усі категорії» в інвентарі (великими, як в оригіналі)"),
+    # what a mine-laying robot is, after the kind of its grenade: «{{W|фугасний}} мінер Mk I» (mod/Patches/MinerPatches)
+    ("XRL.World.Parts/Miner.cs", re.compile(r'MineName \+ "(\w+) mk "'),
+     "Miner: робот, що ставить міни (miner) чи бомби з таймером (bomber), — іменник після прикметника гранати"),
 )
 BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
 # labels a Unity prefab carries, which no code or table holds; the mod sets them (mod/Patches/TextPatches.cs)
