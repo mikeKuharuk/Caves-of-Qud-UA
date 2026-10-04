@@ -221,7 +221,8 @@ class WordsScan(unittest.TestCase):
                 (pathlib.Path(d) / rel).parent.mkdir(parents=True, exist_ok=True)
                 (pathlib.Path(d) / rel).write_text(text, encoding="utf-8")
             found = {e.key for e in codescan.scan_words(pathlib.Path(d))}
-        self.assertEqual(found, {"Locations", "defensive", "fire"})
+        # and the damage types ElementalDamage writes into a rules line, from the blueprints
+        self.assertEqual(found, {"Locations", "defensive", "fire", *codescan.DAMAGE_TYPES})
 
 
 class AbilitiesScan(unittest.TestCase):

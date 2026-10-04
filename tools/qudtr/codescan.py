@@ -1026,7 +1026,27 @@ def scan_words(src_dir: pathlib.Path) -> list[Entry]:
     for path in sorted((src_dir / "XRL.World.Parts.Mutation").glob("*Breather.cs")):
         for m in BREATH_NAME.finditer(path.read_text(encoding="utf-8-sig")):
             entries.setdefault(m.group(1), f"{path.stem}.GetBreathName: з чого подих")
+    for word in DAMAGE_TYPES:
+        entries.setdefault(word, "ElementalDamage: тип шкоди в «{0} {1} damage» (родовий, як «вогню»)")
+    # a power line's words, in its rules line («Contains wiring enabling it to function as part of a power grid…»)
+    for path in sorted((src_dir / "XRL.World.Parts").glob("*PowerTransmission.cs")):
+        for field, value in POWER_FIELD.findall(path.read_text(encoding="utf-8-sig")):
+            if field == "Assembly":   # through Grammar.A
+                value = ("an " if value[0] in "aeiou" else "a ") + value
+            entries.setdefault(value, f"{path.stem}.{field}: {POWER_ROLES[field]}")
     return [Entry(k, w) for k, w in sorted(entries.items())]
+
+
+POWER_FIELD = re.compile(r'\b(Constituent|Assembly|Substance|Activity) = "([^"]+)";')
+POWER_ROLES = {"Constituent": "що містить лінія (знахідний: «проводку»)",
+               "Assembly": "частиною якої системи вона є (називний, у лапках)",
+               "Substance": "що вона передає (знахідний: «заряд», «енергію»)",
+               "Activity": "що вона робить (3-тя особа: «проводить»)"}
+
+
+# the damage types ElementalDamage puts into a rules line in lower case («deals 1d4 acid damage»): the blueprints'
+# Attributes of that part («fire» is a breath's word already)
+DAMAGE_TYPES = ("acid", "cold", "cosmic", "electric", "heat", "umbral")
 
 
 # ---- Abilities: what the code names an activated ability ----------------------------------------------------------
