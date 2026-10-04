@@ -427,6 +427,33 @@ class HitMessage(unittest.TestCase):
                                  "{{g|You smack with {0} {1}!}}", "{{g|You smack}}",
                                  "{0} smacks you soundly", "{0} smack you soundly"})
 
+    def test_an_event_parameter_spelled_out(self):
+        # the damage line's «damage» word: a parameter's default and the few values passed for it elsewhere
+        sources = {
+            "Hurt.cs": """public class Hurt : IPart
+{
+	public void Show(Event E)
+	{
+		string kind = E.GetStringParameter("ShowKind", "bruises");
+		string tail = E.GetStringParameter("Message", "");
+		using TextBuilder sb = TextBuilder.Get();
+		sb.Append(ParentObject.T()).Append(' ').Append(ParentObject.GetVerb("suffer", PrependSpace: false));
+		sb.Append(' ').Append(kind).Append(' ').Append(tail);
+		EmitMessage(sb.ToString());
+	}
+}""",
+            "Kick.cs": 'public class Kick { void Go() { X.Hurt(ShowKind: "{{R|welts}}", Message: "from a kick"); '
+                       'Y.Hurt(Message: "from a shove"); Z.Hurt(Message: "from a trip"); W.Hurt(Message: "from a '
+                       'fall"); V.Hurt(Message: "from a slap"); } }',
+        }
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in sources.items():
+                (pathlib.Path(d) / rel).write_text(text, encoding="utf-8")
+            found = {e.key for e in codescan.scan_text(pathlib.Path(d))}
+        # five messages are too many to spell out: the tail stays a hole
+        self.assertEqual(found, {"{0} suffers bruises {1}", "{0} suffer bruises {1}",
+                                 "{0} suffers {{R|welts}} {1}", "{0} suffer {{R|welts}} {1}"})
+
 
 class RulesScan(unittest.TestCase):
     # made-up parts in the shapes the game's code takes

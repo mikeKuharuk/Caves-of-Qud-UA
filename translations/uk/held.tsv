@@ -471,3 +471,7 @@ Code.Rules.po	15c60ceab0007159544b	code	пропуски — англійськ�
 Code.Rules.po	098a995b9336687c9a23	code	пропуски — англійські поля IPowerTransmission (wiring, power grid, conducting, charge); чекають їхнього перекладу
 Code.Rules.po	acb469fdf9cce7e1d8ae	code	пропуски — англійські поля IPowerTransmission (wiring, power grid, conducting, charge); чекають їхнього перекладу
 Code.Rules.po	7db8c4d040b99925f316	code	пропуски — англійські поля IPowerTransmission (wiring, power grid, conducting, charge); чекають їхнього перекладу
+Code.Text.po	935c8f97b58354170250	keep	налагоджувальний текст (wish у IZoneLandmark)
+Code.Text.po	fd747b17d92fb6707549	code	{1} — англійське дієслово смерті (CustomDeathVerb); чекає патча коду
+Code.Text.po	ac7536af5de4e5c6d6dd	code	{1} — англійське дієслово смерті (CustomDeathVerb), {2} — причина англійською; чекає патча коду
+Code.Text.po	a92efbe5b348298a046a	code	{0} — назва з англійським дієсловом (Does("lack")); чекає патча коду

@@ -783,12 +783,18 @@ def third_person(verb: str) -> str:
     return verb + "s"
 
 
-GET_VERB = re.compile(r'^[\w.]+\.GetVerb\(\s*"([^"]+)"\s*\)$')
+GET_VERB = re.compile(r'^[\w.]+\.GetVerb\(\s*"([^"]+)"\s*(?:,\s*PrependSpace:\s*(true|false))?\s*\)$')
+PARAMETER_DEFAULT = re.compile(r'\.GetStringParameter\(\s*"(\w+)"\s*,\s*("(?:[^"\\]|\\.)*")\s*\)$')
+# an event parameter with this many values or fewer is spelled out where a builder appends it (ShowDamageType:
+# «damage» and two more); one with more stays a hole (Message: the damage tails)
+FEW_VALUES = 4
 
 
-def appended(src: str, masked: str, var: str, s: int, e: int):
+def appended(src: str, masked: str, var: str, s: int, e: int, values: dict | None = None):
     """What one statement adds to the builder var: a list of option lists (one per piece), "clear", or None when
-    it leaves var alone. A call that takes the builder writes into it: its_(Weapon, sb) a pronoun and a name."""
+    it leaves var alone. A call that takes the builder writes into it: its_(Weapon, sb) a pronoun and a name. A
+    local read from an event parameter («E.GetStringParameter("ShowDamageType", "damage")») is its default or
+    one of the few values the code passes (values: parameter → literals)."""
     text, mtext = src[s:e], masked[s:e]
     if re.match(rf"\s*{re.escape(var)}\s*\.\s*Clear\s*\(", mtext):
         return "clear"
@@ -806,14 +812,21 @@ def appended(src: str, masked: str, var: str, s: int, e: int):
         args = split_top(text[o + 1:c], ",")
         arg = args[0].strip() if args and args[0].strip() else ""
         if m.group(1) == "Compound" and len(args) > 1:
-            parts.append([" "])
+            # the separator goes before the text when the builder is not empty: «"\n\n"» keeps the lines apart
+            sep = args[1].strip()
+            sep_char = CHAR.match(sep)
+            parts.append([literal_value(sep) if literal_value(sep) is not None
+                          else {"\\n": "\n"}.get(sep_char.group(1), sep_char.group(1)) if sep_char else " "])
         if arg:
             char = CHAR.match(arg)
             verb = GET_VERB.match(arg)
             if char:
                 parts.append([{"\\n": "\n"}.get(char.group(1), char.group(1))])
             elif verb:
-                parts.append([" " + third_person(verb.group(1)), " " + verb.group(1)])
+                space = "" if verb.group(2) == "false" else " "
+                parts.append([space + third_person(verb.group(1)), space + verb.group(1)])
+            elif IDENT.match(arg) and values is not None:
+                parts.append(parameter_values(src, masked, arg, s, values) or [HOLE])
             else:
                 parts.append(patterns(arg, nested=True) or [HOLE])
         if m.group(1) == "AppendLine":
@@ -821,7 +834,22 @@ def appended(src: str, masked: str, var: str, s: int, e: int):
     return parts
 
 
-def builder_paths(src: str, masked: str, var: str, a: int, b: int, cap: int = 64) -> list[str]:
+def parameter_values(src: str, masked: str, name: str, pos: int, values: dict) -> list[str]:
+    """The texts a local holds when the method last set it from an event parameter: the default and the few
+    values passed for it; nothing otherwise."""
+    a, _ = enclosing_body(masked, pos)
+    sets = list(re.finditer(rf"(?<![\w.]){re.escape(name)}\s*=(?!=)", masked[a:pos]))
+    if not sets:
+        return []
+    rhs = split_top(src[a + sets[-1].end():pos], ";")[0].strip()
+    m = PARAMETER_DEFAULT.search(rhs)
+    if not m or len(values.get(m.group(1), ())) > FEW_VALUES:
+        return []
+    return list(dict.fromkeys([literal_value(m.group(2))] + sorted(values.get(m.group(1), ()))))
+
+
+def builder_paths(src: str, masked: str, var: str, a: int, b: int, cap: int = 64,
+                  values: dict | None = None) -> list[str]:
     """Every text the builder var can hold after src[a:b]: its pieces in order, each if/else taking each of its
     branches (and none, without an else). A condition decided once keeps its value along the path («if
     (!TerseMessages)» twice), so no impossible mix comes out."""
@@ -836,7 +864,7 @@ def builder_paths(src: str, masked: str, var: str, a: int, b: int, cap: int = 64
             if kind != "stmt" and not touches.search(masked, *span):
                 continue   # a block that leaves the builder alone: its conditions do not matter here
             if kind == "stmt":
-                parts = appended(src, masked, var, rest[0], rest[1])
+                parts = appended(src, masked, var, rest[0], rest[1], values)
                 if parts == "clear":
                     paths = [("", d) for _, d in paths]
                 elif parts:
@@ -867,18 +895,45 @@ def builder_paths(src: str, masked: str, var: str, a: int, b: int, cap: int = 64
 
 PERCENT_CODE = re.compile(r"%[tToOdSe]")
 MESSAGE_PARAM = re.compile(r'\.SetParameter\(\s*"Message",\s*(\w+)\.ToString\(\)\s*\)')
+NAMED_LITERAL = re.compile(r'\b(\w+):\s*("(?:[^"\\]|\\.)*")')
+SET_LITERAL = re.compile(r'\.SetParameter\(\s*"(\w+)"\s*,\s*("(?:[^"\\]|\\.)*")\s*\)')
+
+
+def parameter_literals(sources) -> dict[str, set[str]]:
+    """The literals the code passes for each named argument and event parameter, by name: what a builder may read
+    back from an event (parameter_values)."""
+    values: dict[str, set[str]] = {}
+    for src in sources:
+        for pattern in (NAMED_LITERAL, SET_LITERAL):
+            for m in pattern.finditer(src):
+                value = literal_value(m.group(2))
+                if value is not None:
+                    values.setdefault(m.group(1), set()).add(value)
+    return values
+
+
+def builder_texts(src: str, masked: str, var: str, pos: int, values: dict) -> list[str]:
+    """builder_paths of var up to pos, from its declaration: a method may reuse the name in another block."""
+    a, _ = enclosing_body(masked, pos)
+    decls = list(re.finditer(rf"\b(?:TextBuilder|StringBuilder|var)\s+{re.escape(var)}\s*=", masked[a:pos]))
+    if decls:
+        a = masked.index(";", a + decls[-1].end()) + 1
+    return builder_paths(src, masked, var, a, pos, values=values)
 
 
 def scan_text(src_dir: pathlib.Path) -> list[Entry]:
     """Popups, failure messages and message-log lines the game's C# writes, line by line (CodeText splits a text
-    into lines when the whole is not a key). Also the hit message Combat builds for TakeDamage to show
-    (SetParameter("Message", sb.ToString())): Physics puts the attacker's name for its %T."""
+    into lines when the whole is not a key). A builder's text is followed through if/else as well
+    (builder_paths). Also the hit message Combat builds for TakeDamage to show (SetParameter("Message",
+    sb.ToString())): Physics puts the attacker's name for its %T."""
     entries: dict[str, str] = {}
+    files = []
     for path in sorted(src_dir.rglob("*.cs")):
         rel = path.relative_to(src_dir).as_posix()
-        if SKIP_FILE.search(rel) or rel.startswith(("XRL.Wish", "XRL.Tests")):
-            continue
-        src = path.read_text(encoding="utf-8-sig")
+        if not SKIP_FILE.search(rel) and not rel.startswith(("XRL.Wish", "XRL.Tests")):
+            files.append((path, path.read_text(encoding="utf-8-sig")))
+    values = parameter_literals(src for _, src in files)
+    for path, src in files:
         if not SINK_CALL.search(src) and not MESSAGE_PARAM.search(src):
             continue
         masked = mask(src)
@@ -906,6 +961,9 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
                 if NAMED_ARG.match(e) and not NAMED_ARG.match(e).group(1) in ("Title", "Intro", "Prompt", "Message", "Msg"):
                     continue
                 texts += resolve(src, masked, m.start(), e)
+                built = BUILT.match(strip_parens(e))
+                if built:
+                    texts += builder_texts(src, masked, built.group(1), m.start(), values)
             for arr in STRING_ARRAY.finditer(src[o + 1:c]):
                 start = o + 1 + arr.end() - 1
                 end = matching(src, start)
@@ -917,14 +975,7 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
                     if specific(key):
                         entries.setdefault(key, f"{where} ({name.split('.')[-1]})")
         for m in MESSAGE_PARAM.finditer(masked):
-            a, b = enclosing_body(masked, m.start())
-            # from the builder's declaration: a method may reuse the name in another block
-            decls = list(re.finditer(rf"\b(?:TextBuilder|StringBuilder|var)\s+{re.escape(m.group(1))}\s*=",
-                                     masked[a:m.start()]))
-            if decls:
-                a += decls[-1].end()
-                a = masked.index(";", a) + 1
-            for text in builder_paths(src, masked, m.group(1), a, m.start()):
+            for text in builder_texts(src, masked, m.group(1), m.start(), values):
                 for line in lines_of(PERCENT_CODE.sub(HOLE, text)):
                     key = number_holes(line)
                     if specific(key):
@@ -946,6 +997,9 @@ WORD_SOURCES = (
     # what flies you, in the flight ability's name: «Fly (Cathedra)»
     ("XRL.World.Parts/CyberneticsCathedra.cs", re.compile(r'FlightSourceDescription => "([^"]+)";'),
      "CyberneticsCathedra: чим ви летите, у назві здібності «Політ (…)»"),
+    # how a faction now regards you, in «You are now {{G|favored}} by …» and «… is now … to you»
+    ("XRL.World/Reputation.cs", re.compile(r'\btext = "([a-z]+)";'),
+     "Reputation: як фракція тепер до вас ставиться (прислівник: «прихильно», «байдуже»)"),
 )
 BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
 
