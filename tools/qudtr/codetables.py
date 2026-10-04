@@ -145,6 +145,20 @@ def words_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     return table_xml("Words", entries, build, "the decompiled game code (constants the player reads)")
 
 
+ABILITIES = "Code.Abilities.example.xml"
+ABILITIES_NOTE = ("Активна здібність ({where}): так її називають панель здібностей, список здібностей і спливні "
+                  "вікна. Англійське дієслово — інфінітив («Spit Acid» → «Плюнути кислотою»), англійський іменник — "
+                  "іменник («Telekinesis» → «Телекінез»), як у вже перекладених назвах здібностей у Strings. Опис "
+                  "перекладайте реченням; {{0}}… — те, що підставляє код (назва міни, число), лишіть їх.")
+
+
+def abilities_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """The names and descriptions the code gives activated abilities (codescan.scan_abilities)."""
+    from . import codescan
+    entries = [(e.key, ABILITIES_NOTE.format(where=e.where)) for e in codescan.scan_abilities(decompiled)]
+    return table_xml("Abilities", entries, build, "the decompiled game code (activated abilities)")
+
+
 KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@(?:Text|Forms)$", re.S)
 
 

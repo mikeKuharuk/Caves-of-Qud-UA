@@ -1,4 +1,5 @@
 """Finding the game on any system, and linking the mod into its Mods folder (tools/qudtr/game.py, install.py)."""
+import io
 import json
 import os
 import pathlib
@@ -86,6 +87,10 @@ class FindGame(unittest.TestCase):
 
 class Link(unittest.TestCase):
     def setUp(self):
+        # the messages are Ukrainian, and a test runner's stdout may not take them (cp1252 on Windows)
+        quiet = mock.patch("sys.stdout", io.StringIO())
+        quiet.start()
+        self.addCleanup(quiet.stop)   # cleanups run after tearDown, which prints too
         self.tmp = tempfile.TemporaryDirectory()
         root = pathlib.Path(self.tmp.name)
         self.mod = root / "repo" / "mod"

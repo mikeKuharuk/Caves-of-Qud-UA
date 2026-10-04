@@ -189,6 +189,19 @@ COMMENT[k] = "uk-forms: іржава|іржаве|іржаві"    # жіноч�
 - `EffectPatches`: назви й описи ефектів (`GetDescription`, `GetStateDescription`, `GetDetails` усіх класів
   ефектів, 264 методи) — через таблицю `Effects`, з узгодженням із носієм («отруєна», для «ви» — «отруєні»).
 
+- `AbilityPatches`: назви й описи активних здібностей, які код дає англійською
+  (`AddMyActivatedAbility("Intimidate", …)`, «Clone [3 left]»), — через таблицю `Abilities`
+  (`codescan.scan_abilities`).
+  - Запис здібності зберігає назву, а панель здібностей, список, вікна прив’язки клавіш і «не можна
+    використати» читають її звідти. Тому назва перекладається там, де потрапляє в запис:
+    `ActivatedAbilities.AddAbility`, `GameObject.SetActivatedAbilityDisplayName` і
+    `ActivatedAbilityEntry.Read` (збереження, зроблене англійською).
+  - Сканер знаходить літерали, локальні змінні (і ті, що ростуть: «Fly» → «Fly ({0})»), поля класу та його
+    підкласів (`UrchinBelcher`: `CommandName`), методи підкласів (`GetCommandDisplayName` подихів) і ланцюжки
+    `TextBuilder`. Те, що дають таблиці рядків (`_S`, `_T`), — їхнє.
+  - Самі частини гри зберігають англійське, з яким порівнюють: Wings перевіряє «Jump» на події, ще до запису.
+    Тому `Jump` у Strings лишається англійським (`held.tsv`), а на панелі стоїть «Стрибок» із `Abilities`.
+
 - `DidXPatches`: розповідь, яку гра складає сама з дієслова (`Messaging.XDidY`, `XDidYToZ`, `WDidXToYWithZ`,
   472 місця в коді: «X dies!», «You begin healing.»). Префікси запам’ятовують виклик, а єдиний для них
   `HandleMessage` замінює англійський текст шаблоном нашої граматики з таблиці `DidX`

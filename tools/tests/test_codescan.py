@@ -208,5 +208,102 @@ class WordsScan(unittest.TestCase):
         self.assertEqual(found, {"Locations", "defensive", "fire"})
 
 
+class AbilitiesScan(unittest.TestCase):
+    # made-up classes in the shapes the game's code takes
+    SOURCES = {
+        "Glower.cs": """public class Persuasion_Glower : BaseSkill
+{
+	public override bool AddSkill(GameObject GO)
+	{
+		AbilityID = AddMyActivatedAbility("Glower", "CommandGlower", "Skills", "You glower.", "*");
+		OtherID = AddMyActivatedAbility(IComponent<GameObject>._S("Ctx", "Sprouting"), "CommandSprout", "Mental Mutations");
+		return true;
+	}
+}""",
+        # a rename with a count, and a builder with a ternary and a char
+        "Copier.cs": """public class Copier : IPart
+{
+	public void Sync()
+	{
+		SetMyActivatedAbilityDisplayName(AbilityID, "Copy [" + CopiesLeft + " left]");
+	}
+
+	public string GetAbilityName(GameObject Actor = null)
+	{
+		using TextBuilder sb = TextBuilder.Get();
+		sb.Append(On ? "Switch off" : "Switch on").Append(' ').Append(ItemName);
+		return sb.ToString();
+	}
+
+	public void Add(GameObject Actor)
+	{
+		AbilityID = Actor.AddActivatedAbility(GetAbilityName(Actor), "CommandToggle", "Items");
+	}
+}""",
+        # a field a subclass sets, a method a subclass overrides, a parameter passed through
+        "Spitter.cs": """public class Spitter : BaseMutation
+{
+	public string CommandName;
+
+	public virtual string GetCommandDisplayName()
+	{
+		return "[Spitter::GetCommandDisplayName]";
+	}
+
+	public override bool Mutate(GameObject GO, int Level)
+	{
+		AbilityID = AddMyActivatedAbility(CommandName, EventKey, "Physical Mutations", null, "*");
+		OtherID = AddMyActivatedAbility(GetCommandDisplayName(), EventKey, "Physical Mutations");
+		return base.Mutate(GO, Level);
+	}
+}""",
+        "SeedSpitter.cs": """public class SeedSpitter : Spitter
+{
+	public SeedSpitter()
+	{
+		CommandName = "Spit Seeds";
+	}
+
+	public override string GetCommandDisplayName()
+	{
+		return "Spit Pits";
+	}
+}""",
+        "IComponent.cs": """public class IComponent<T>
+{
+	public Guid AddMyActivatedAbility(string Name, string Command, string Class, string Description = null)
+	{
+		return who.AddActivatedAbility(Name, Command, Class, Description);
+	}
+}""",
+        # what a subclass calls Name is not what callers pass in
+        "Banner.cs": """public class Banner : IComponent<GameObject>
+{
+	public string Name = "Not An Ability";
+}""",
+        # a local that grows: «Glide», then «Glide (…)»
+        "Gliding.cs": """public static class Gliding
+{
+	public static bool Setup(GameObject Object, IGlideSource Source)
+	{
+		string text = "Glide";
+		if (Source.Description != null)
+		{
+			text = text + " (" + Source.Description + ")";
+		}
+		Source.AbilityID = Object.AddActivatedAbility(text, Source.Command, Source.Class);
+		return true;
+	}
+}""",
+    }
+
+    def test_names_the_code_gives_and_none_the_string_tables_do(self):
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.SOURCES.items():
+                (pathlib.Path(d) / rel).write_text(text, encoding="utf-8")
+            found = {e.key for e in codescan.scan_abilities(pathlib.Path(d))}
+        self.assertEqual(found, {"Glower", "You glower.", "Copy [{0} left]", "Switch on {0}", "Switch off {0}",
+                                 "Spit Seeds", "Spit Pits", "Glide", "Glide ({0})", "Jump"})
+
 if __name__ == "__main__":
     unittest.main()

@@ -743,6 +743,9 @@ WORD_SOURCES = (
     # the long blade stances, which the stance narration puts into a hole («switch to the aggressive stance»)
     ("XRL.World.Parts/LongBladesCore.cs", re.compile(r'const string STR_\w+ = "([^"]+)";'),
      "LongBladesCore: стійка довгих клинків"),
+    # what flies you, in the flight ability's name: «Fly (Cathedra)»
+    ("XRL.World.Parts/CyberneticsCathedra.cs", re.compile(r'FlightSourceDescription => "([^"]+)";'),
+     "CyberneticsCathedra: чим ви летите, у назві здібності «Політ (…)»"),
 )
 BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
 
@@ -759,4 +762,181 @@ def scan_words(src_dir: pathlib.Path) -> list[Entry]:
     for path in sorted((src_dir / "XRL.World.Parts.Mutation").glob("*Breather.cs")):
         for m in BREATH_NAME.finditer(path.read_text(encoding="utf-8-sig")):
             entries.setdefault(m.group(1), f"{path.stem}.GetBreathName: з чого подих")
+    return [Entry(k, w) for k, w in sorted(entries.items())]
+
+
+# ---- Abilities: what the code names an activated ability ----------------------------------------------------------
+
+ABILITY_CALL = re.compile(r"(?<![\w])(AddMyActivatedAbility|AddActivatedAbility|AddAbility|SetMyActivatedAbilityDisplayName|"
+                          r"SetActivatedAbilityDisplayName)\s*\(")
+SUBCLASS = re.compile(r"\bclass\s+\w+\s*:\s*(\w+)")
+CALLED = re.compile(r"^(\w+)\s*\([^()]*\)$")
+# names the string tables keep English because code compares them, which reach AddAbility as English all the same
+EXTRA_ABILITY_NAMES = (
+    ("Jump", "GetJumpingBehaviorEvent: назва здібності (у Strings лишається «Jump»: з ним порівнює Wings)"),
+)
+
+
+def joined(parts: list[list[str]], cap: int = 16) -> list[str]:
+    """Every text a chain of pieces can make, one option from each («Activate»/«Deactivate», then a hole)."""
+    out = [""]
+    for options in parts:
+        out = [o + p for o in out for p in options][:cap]
+    return out
+
+
+CHAR = re.compile(r"^'(\\?.)'$")
+
+
+def parameters(masked: str, body_start: int) -> set[str]:
+    """The parameter names of the method whose body starts at body_start: the last (…) before it."""
+    close = masked.rfind(")", 0, body_start)
+    depth = 0
+    for k in range(close, -1, -1):
+        if masked[k] == ")":
+            depth += 1
+        elif masked[k] == "(":
+            depth -= 1
+            if depth == 0:
+                names = set()
+                for p in split_top(masked[k + 1:close], ","):
+                    words = re.findall(r"\w+", split_top(p, "=")[0])
+                    if len(words) >= 2:
+                        names.add(words[-1])
+                return names
+    return set()
+
+
+def built_texts(body: str) -> list[str]:
+    """What a method returns, its literal returns and the TextBuilder chain it builds, every branch of a ternary
+    in the chain included (texts_of_body keeps only the first). Nothing when it returns what the string tables give:
+    a chain beside that is only the English it is checked against (ForceEmitter's InlineLocalizationMatch)."""
+    returns = [split_top(body[m.end():], ";")[0] for m in re.finditer(r"\breturn\b", body)]
+    if any(LOCALIZED.search(r) for r in returns):
+        return []
+    out = [p for r in returns for p in patterns(r)]
+    parts = []
+    for m in re.finditer(r"\.(?:Append|Compound)\s*\(", body):
+        o = m.end() - 1
+        c = matching(body, o)
+        if c < 0:
+            continue
+        args = split_top(body[o + 1:c], ",")
+        arg = args[0].strip() if args else ""
+        char = CHAR.match(arg)
+        value = literal_value(arg) if not char else {"\\n": "\n"}.get(char.group(1), char.group(1))
+        parts.append([value] if value is not None else patterns(arg) or [HOLE])
+    if any(p != [HOLE] for p in parts):
+        out += joined(parts)
+    return out
+
+
+def ability_texts(expr: str, src: str, masked: str, pos: int, family: list[tuple[str, str]], depth: int = 0) -> list[str]:
+    """What a name expression can be: its literals and patterns; for a local, what the method assigns to it; for a
+    field, what the class and its subclasses assign (UrchinBelcher: CommandName = "Belch Urchins"); for a method of
+    the class or of a subclass (the breathers' GetCommandDisplayName), what it returns or builds. Text the string
+    tables give (_S, _T) is theirs."""
+    expr = strip_parens(expr)
+    if depth > 3 or expr in ("", "null") or LOCALIZED.search(expr):
+        return []
+    q = ternary(expr)
+    branches = [q[1], q[2]] if q else split_top(expr, "??")
+    if len(branches) > 1:
+        return [t for b in branches for t in ability_texts(b, src, masked, pos, family, depth + 1)]
+    own = patterns(expr)
+    if own:
+        return own
+    a, b = enclosing_body(masked, pos)
+    name = expr.removeprefix("this.")
+    if IDENT.match(name):
+        if name in parameters(masked, a):
+            return []   # the call that passes it in is the one to read (IComponent.AddMyActivatedAbility)
+        assigned = rf"(?<![\w.]){re.escape(name)}\s*=(?!=)"
+        if re.search(rf"\b(?:string|var)\s+{re.escape(name)}\b", masked[a:b]):   # a local
+            values: list[str] = []
+            for m in re.finditer(assigned, masked[a:b]):
+                rhs = split_top(src[a + m.end():b], ";")[0]
+                terms = split_top(rhs, "+")
+                if len(terms) > 1 and any(strip_parens(t) == name for t in terms):
+                    # «text = text + " (" + …»: the text so far, grown («Fly» → «Fly ({0})»)
+                    grown = " + ".join('"\\u0002"' if strip_parens(t) == name else t for t in terms)
+                    values += [p.replace("\u0002", v) for p in patterns(grown) for v in values]
+                else:
+                    values += ability_texts(rhs, src, masked, a + m.start(), family, depth + 1)
+            return values
+        out = []
+        for fsrc, fmasked in family:
+            for m in re.finditer(assigned, fmasked):
+                rhs = split_top(fsrc[m.end():], ";")[0].strip()
+                if "\n" not in rhs:   # not the tail of an object initializer
+                    out += patterns(rhs)
+        return out
+    if BUILT.match(expr):
+        return resolve(src, masked, pos, expr)
+    m = CALLED.match(name)
+    if m:
+        return [t for fsrc, fmasked in family for _, s, e in bodies(fmasked, {m.group(1)}) for t in built_texts(fsrc[s:e])]
+    return []
+
+
+def scan_abilities(src_dir: pathlib.Path) -> list[Entry]:
+    """The names the code gives activated abilities (AddMyActivatedAbility("Intimidate", …), «Clone [{0} left]» on a
+    rename) and the descriptions it passes along: the ability bar, the manager and the popups show them as the entry
+    keeps them. Names the string tables give (_S, _T) are theirs, and so are blueprint values the game's own
+    localization XML lists (the «AbilityName» tag)."""
+    raw: dict[pathlib.Path, str] = {}
+    subclasses: dict[str, list[pathlib.Path]] = {}
+    for path in sorted(src_dir.rglob("*.cs")):
+        raw[path] = path.read_text(encoding="utf-8-sig")
+        for m in SUBCLASS.finditer(raw[path]):
+            subclasses.setdefault(m.group(1), []).append(path)
+    masked_of: dict[pathlib.Path, tuple[str, str]] = {}
+
+    def text(path: pathlib.Path) -> tuple[str, str]:
+        if path not in masked_of:
+            masked_of[path] = (raw[path], mask(raw[path]))
+        return masked_of[path]
+
+    def descendants(cls: str) -> list[pathlib.Path]:
+        out, todo = [], [cls]
+        while todo:
+            for p in subclasses.get(todo.pop(), []):
+                if p not in out:
+                    out.append(p)
+                    todo.append(p.stem)
+        return out
+
+    entries: dict[str, str] = {name: where for name, where in EXTRA_ABILITY_NAMES}
+    for path in raw:
+        if SKIP_FILE.search(path.relative_to(src_dir).as_posix()) or not ABILITY_CALL.search(raw[path]):
+            continue
+        src, masked = text(path)
+        cls = CLASS.search(masked)
+        where = cls.group(1) if cls else path.stem
+        family = [(src, masked)] + [text(p) for p in descendants(where) if p != path]
+        for m in ABILITY_CALL.finditer(masked):
+            if re.search(r"\b(?:Guid|void|bool|ActivatedAbilityEntry)\s+$", masked[max(0, m.start() - 24):m.start()]):
+                continue   # a declaration
+            o = m.end() - 1
+            c = matching(src, o)
+            if c < 0:
+                continue
+            args = split_top(src[o + 1:c], ",")
+            positional = [x for x in args if not NAMED_ARG.match(x)]
+            named = {mm.group(1): mm.group(2) for x in args for mm in [NAMED_ARG.match(x)] if mm}
+            if m.group(1).startswith("Set"):
+                wanted = [(named.get("DisplayName", positional[1] if len(positional) > 1 else None), "назва")]
+            else:
+                wanted = [(named.get("Name", positional[0] if positional else None), "назва"),
+                          (named.get("Description", positional[3] if len(positional) > 3 else None), "опис")]
+            for expr, what in wanted:
+                if expr is None:
+                    continue
+                for found in ability_texts(expr, src, masked, m.start(), family):
+                    for line in lines_of(found):
+                        key = number_holes(line)
+                        literal = re.sub(r"\{\d+\}", " ", key)
+                        if "::" in key or "{0}" in key and not re.search(r"[A-Za-z]{3,}", literal):
+                            continue   # a placeholder naming a method («[BreatherBase::…]»), or holes alone
+                        entries.setdefault(key, f"{where}: {what} здібності")
     return [Entry(k, w) for k, w in sorted(entries.items())]

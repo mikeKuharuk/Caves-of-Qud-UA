@@ -106,4 +106,8 @@ def main(argv=None) -> int:
 
 
 if __name__ == "__main__":
+    # the messages are Ukrainian: a Windows pipe or file would take them in cp1252 and fail on the first letter
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
     sys.exit(main())

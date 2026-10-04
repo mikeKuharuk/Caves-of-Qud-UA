@@ -73,6 +73,9 @@ static class Tests
         Patched("Qud.UI.FilterBarCategoryButton", "SetCategory", "Postfix");
         Patched("XRL.World.Anatomy.BodyPart", "GetOrdinalName", "Prefix");
         Patched("XRL.World.Anatomy.BodyPart", "GetOrdinalDescription", "Prefix");
+        Patched("XRL.World.Parts.ActivatedAbilities", "AddAbility", "Prefix");
+        Patched("XRL.World.GameObject", "SetActivatedAbilityDisplayName", "Prefix");
+        Patched("XRL.World.Parts.ActivatedAbilityEntry", "Read", "Postfix");
 
         SetActive(true);
         const string G = "XRL.Language.Grammar";
