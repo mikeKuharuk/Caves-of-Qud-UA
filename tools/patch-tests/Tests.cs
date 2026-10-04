@@ -83,6 +83,11 @@ static class Tests
         Eq("крила, роги", Call(G, "MakeTheList", new List<string> { "крила", "роги" }, false), "no «the» list");
         Eq("б’є", Call(G, "ThirdPerson", "б’є", false), "no English third person");
         Eq("сидіти", Call(G, "PastTenseOf", "сидіти"), "no English past tense");
+        const string X = "XRL.Extensions";
+        Eq("5 ходів", Call(X, "Things", 5, "turn", null), "Things: a count the code writes");
+        Eq("ще 1 хід", Call(X, "Things", 1, "more turn", "more turns"), "Things: «more»");
+        Eq("3 клітинки", Call(X, "Things", 3f, "square", null), "Things on a float");
+        Eq("4 widgets", Call(X, "Things", 4, "widget", null), "Things: an English word we do not know");
 
         // the code tables: exact keys, patterns, lines, agreement, and the effect patch on a real effect class
         Type tables = mod.GetType("CavesOfQudUA.Grammar.CodeTables", true);
@@ -143,6 +148,7 @@ static class Tests
 
         SetActive(false);
         Eq("сокираs", Call(G, "Pluralize", "сокира"), "other languages keep the game's behaviour");
+        Eq("5 turns", Call(X, "Things", 5, "turn", null), "other languages keep the English count");
 
         Console.WriteLine(failures == 0 ? "all patch tests passed" : $"{failures} failure(s)");
         return failures == 0 ? 0 : 1;

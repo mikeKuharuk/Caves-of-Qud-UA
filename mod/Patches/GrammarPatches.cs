@@ -115,4 +115,29 @@ namespace CavesOfQudUA.Patches
             return false;
         }
     }
+
+    /// <summary>
+    /// Extensions.Things, the counts the code writes into its sentences: «You are crippled for 5 turns!», «You must
+    /// wait 3 rounds». The code tables translate the sentence around the count as a hole, so the count itself must come
+    /// out Ukrainian: «Вас скалічено на 5 ходів!» (UkrainianThings).
+    /// </summary>
+    [HarmonyPatch]
+    static class ThingsPatch
+    {
+        static IEnumerable<System.Reflection.MethodBase> TargetMethods()
+        {
+            foreach (System.Type number in new[] { typeof(int), typeof(float), typeof(double) })
+                yield return AccessTools.Method(typeof(XRL.Extensions), "Things",   // [Obsolete]: no nameof, no warning
+                                                new[] { number, typeof(string), typeof(string) });
+        }
+
+        static bool Prefix(object[] __args, string what, ref string __result)
+        {
+            if (!Uk.Active || __args[0] == null) return true;
+            string count = UkrainianThings.Count(System.Convert.ToDouble(__args[0]), __args[0].ToString(), what);
+            if (count == null) return true;
+            __result = count;
+            return false;
+        }
+    }
 }

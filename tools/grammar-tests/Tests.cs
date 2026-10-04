@@ -25,6 +25,17 @@ static class Tests
             Eq(pair.Value, UkrainianForms.ByNumber(pair.Key, turns), $"plural of {pair.Key}");
         Eq("драм", UkrainianForms.ByNumber(5, new[] { "драм" }), "a single form stands in for all");
 
+        // the counts the code writes with Extensions.Things
+        Eq("1 хід", UkrainianThings.Count(1, "1", "turn"), "1 turn");
+        Eq("5 ходів", UkrainianThings.Count(5, "5", "round"), "5 rounds");
+        Eq("ще 3 ходи", UkrainianThings.Count(3, "3", "more turn"), "3 more turns");
+        Eq("21 клітинка", UkrainianThings.Count(21, "21", "square"), "21 squares");
+        Eq("12 драмів", UkrainianThings.Count(12, "12", "dram"), "12 drams");
+        Eq("2 очки мутацій", UkrainianThings.Count(2, "2", "mutation point"), "2 mutation points");
+        Eq("2,5 клітинки", UkrainianThings.Count(2.5, "2,5", "square"), "a number that is not whole");
+        Eq("стріла ×3", UkrainianThings.Count(3, "3", "стріла"), "a Ukrainian name has no plural to give");
+        Eq(null, UkrainianThings.Count(3, "3", "widget"), "an English word we do not know stays with the game");
+
         string[] fell = { "упав", "упала", "упало", "упали" };
         Eq("упав", UkrainianForms.ByGender(UkGender.Masculine, fell), "masculine");
         Eq("упала", UkrainianForms.ByGender(UkGender.Feminine, fell), "feminine");
