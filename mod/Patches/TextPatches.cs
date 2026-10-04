@@ -121,16 +121,66 @@ namespace CavesOfQudUA.Patches
         }
     }
 
+    /// <summary>
+    /// And the inventory filter's first button: its label is a constant of the button (categoryTextMap: «*All» →
+    /// «ALL»), from the Words table too, and so is its tooltip, the bare «*All».
+    /// </summary>
     [HarmonyPatch(typeof(FilterBarCategoryButton), nameof(FilterBarCategoryButton.SetCategory))]
     static class CategoryButtonTooltipPatch
     {
         static void Postfix(FilterBarCategoryButton __instance, string category, string tooltip)
         {
-            if (!Uk.Active || tooltip != null) return;
+            if (!Uk.Active || category == null) return;
+            if (FilterBarCategoryButton.categoryTextMap.TryGetValue(category, out string label))
+            {
+                string shown = CodeTables.Get("Words", label);
+                if (shown == null) return;
+                __instance.text?.SetText(shown);
+                if (tooltip == null) SetTooltip(__instance, shown);
+                return;
+            }
+            if (tooltip != null) return;
             string word = CodeTables.Get("Words", category);
-            if (word == null) return;
-            __instance.Tooltip = word;
-            __instance.tooltipText?.SetText(word);
+            if (word != null) SetTooltip(__instance, word);
+        }
+
+        static void SetTooltip(FilterBarCategoryButton button, string text)
+        {
+            button.Tooltip = text;
+            button.tooltipText?.SetText(text);
+        }
+    }
+
+    /// <summary>
+    /// Labels a Unity prefab carries, which no code or table holds: the load screen's «delete» button and «Mods
+    /// Differ» mark (SaveManagementRow). A text under them whose text is a Words key gets its Ukrainian; any markup
+    /// around it stays. Not seen in the game yet: if the prefab's label is no UITextSkin, nothing changes.
+    /// </summary>
+    [HarmonyPatch(typeof(SaveManagementRow), nameof(SaveManagementRow.setData))]
+    static class SaveRowLabelsPatch
+    {
+        static bool Prepare() => !Uk.OutsideUnity;   // Unity components: only the game can patch them
+
+        static void Postfix(SaveManagementRow __instance)
+        {
+            if (!Uk.Active) return;
+            try
+            {
+                PrefabLabels(__instance.deleteButton?.gameObject);
+                PrefabLabels(__instance.modsDiffer);
+            }
+            catch (System.Exception) { }   // a label left English must never break the load screen
+        }
+
+        static void PrefabLabels(UnityEngine.GameObject root)
+        {
+            if (root == null) return;
+            foreach (UITextSkin skin in root.GetComponentsInChildren<UITextSkin>(true))
+            {
+                string plain = UkrainianForms.StripMarkup(skin.text ?? "").Trim();
+                string word = plain.Length > 0 ? CodeTables.Get("Words", plain) : null;
+                if (word != null) skin.SetText(skin.text.Replace(plain, word));
+            }
         }
     }
 

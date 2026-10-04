@@ -614,7 +614,28 @@ SINK_CALL = re.compile(
     r"(?:MessageQueue\.|IComponent<GameObject>\.)?AddPlayerMessage|(?:[\w.]+\.)?EmitMessage|"
     r"(?:[\w.]+\.)?DisplayMessage)\s*\(")   # DisplayMessage: journal notices («You note the location of…»)
 SKIP_FILE = re.compile(r"Wish|Debug|Test|Cheat|MapEditor")
-STRING_ARRAY = re.compile(r"new\s+(?:string\s*\[\s*\]|List<string>)\s*\{")
+STRING_ARRAY = re.compile(r"new\s+(?:string\s*\[\s*\d*\s*\]|List<string>(?:\s*\(\s*\))?)\s*\{")
+# where an option list, and the intro above it, go among a popup's positional arguments
+OPTIONS_INDEX = {"PickOption": 4, "PickOptionAsync": 3, "ShowOptionList": 1}
+INTRO_INDEX = {"PickOption": 1, "PickOptionAsync": 1, "ShowOptionList": 4}
+
+
+def local_options(src: str, masked: str, pos: int, name: str) -> list[str]:
+    """The texts a local option list gets in the method around pos: the arrays assigned to it («options = new
+    string[5] { "Control Mapping", … }») and what it Adds."""
+    a, b = enclosing_body(masked, pos)
+    body, mbody = src[a:b], masked[a:b]
+    out = []
+    for m in re.finditer(rf"(?<![\w.]){re.escape(name)}\s*=(?!=)\s*", mbody):
+        arr = STRING_ARRAY.match(mbody, m.end())
+        if arr:
+            start = arr.end() - 1
+            for item in split_top(body[start + 1:matching(body, start)], ","):
+                out += patterns(item)
+    for m in re.finditer(rf"(?<![\w.]){re.escape(name)}\s*\.\s*Add\s*\(", mbody):
+        o = m.end() - 1
+        out += patterns(body[o + 1:matching(body, o)])
+    return out
 IDENT = re.compile(r"^[A-Za-z_]\w*$")
 BUILT = re.compile(r"^([A-Za-z_]\w*)\.ToString\(\)$")
 METHOD_HEAD = re.compile(r"\)\s*(?:where[^{]*)?$")
@@ -814,13 +835,19 @@ def appended(src: str, masked: str, var: str, s: int, e: int, values: dict | Non
     if not re.match(rf"\s*{re.escape(var)}\s*\.", mtext):
         return None
     parts = []
-    for m in re.finditer(r"\.(Append|AppendLine|Compound)\s*\(", mtext):
+    for m in re.finditer(r"\.(Append|AppendLine|Compound|AppendPrefixed|AppendRange)\s*\(", mtext):
         o = m.end() - 1
         c = matching(text, o)
         if c < 0:
             continue
         args = split_top(text[o + 1:c], ",")
         arg = args[0].strip() if args and args[0].strip() else ""
+        if m.group(1) in ("AppendPrefixed", "AppendRange"):
+            # a list of items the code computes, each after the prefix («\n{{y|:}} » before a mod's title) or between
+            # them: one hole, after the prefix's own text
+            prefix = literal_value(args[1].strip()) if m.group(1) == "AppendPrefixed" and len(args) > 1 else None
+            parts.append([(prefix or "") + HOLE])
+            continue
         if m.group(1) == "Compound":
             # the separator goes before the text only when the builder is not empty (a SEPARATOR the paths resolve);
             # «"\n\n"» keeps the lines apart, and with none given it is a space
@@ -976,11 +1003,30 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
                 built = BUILT.match(strip_parens(e))
                 if built:
                     texts += builder_texts(src, masked, built.group(1), m.start(), values)
-            for arr in STRING_ARRAY.finditer(src[o + 1:c]):
-                start = o + 1 + arr.end() - 1
-                end = matching(src, start)
-                for item in split_top(src[start + 1:end], ","):
-                    texts += patterns(item)
+            # an option list given in place; not an array inside another argument (HotkeySpread.get(new string[2] {
+            # "Menus", "UINav" }) names input layers)
+            for a in args:
+                named = ANY_NAMED_ARG.match(a)
+                value = (named.group(2) if named else a).strip()
+                arr = STRING_ARRAY.match(value)
+                if arr:
+                    for item in split_top(value[arr.end():matching(value, arr.end() - 1)], ","):
+                        texts += patterns(item)
+            # an option list the method fills in a local first (the system menu's «Save and Quit»), and the intro
+            # above the options, which is not the first argument («Instruct … to follow at what distance?»)
+            short = name.split(".")[-1]
+            if short in OPTIONS_INDEX:
+                positional = [a for a in args if not ANY_NAMED_ARG.match(a)]
+                options = next((mm.group(2) for a in args for mm in [ANY_NAMED_ARG.match(a)] if mm and mm.group(1) == "Options"), None)
+                if options is None and len(positional) > OPTIONS_INDEX[short]:
+                    options = positional[OPTIONS_INDEX[short]]
+                if options is not None and IDENT.match(options.strip()):
+                    texts += local_options(src, masked, m.start(), options.strip())
+                if len(positional) > INTRO_INDEX[short]:
+                    intro = positional[INTRO_INDEX[short]]
+                    built = BUILT.match(strip_parens(intro))
+                    texts += (builder_texts(src, masked, built.group(1), m.start(), values) if built
+                              else resolve(src, masked, m.start(), intro))
             for text in texts:
                 for line in lines_of(text):
                     key = number_holes(line)
@@ -997,6 +1043,9 @@ def scan_text(src_dir: pathlib.Path) -> list[Entry]:
 
 # ---- Words: short names the code keeps in constants, shows as they are or puts into a hole -----------------------
 
+GAME_MODE = ("режим гри (ID зі стану GameMode): рядок збереження на екрані завантаження, «Рівень 1, …»; "
+             "з малої, з іменником: «класичний режим»")
+
 # (file, pattern, where): each a constant the player reads
 WORD_SOURCES = (
     # the journal's tabs: the screen's title shows them as they are (JournalScreen.GetTabDisplayName), and the «noted
@@ -1012,8 +1061,24 @@ WORD_SOURCES = (
     # how a faction now regards you, in «You are now {{G|favored}} by …» and «… is now … to you»
     ("XRL.World/Reputation.cs", re.compile(r'\btext = "([a-z]+)";'),
      "Reputation: як фракція тепер до вас ставиться (прислівник: «прихильно», «байдуже»)"),
+    # the game mode a save names on the load screen («Рівень 1, =gamemode|uk.word=»): the ID the code compares
+    ("XRL/XRLGame.cs", re.compile(r'GetStringGameState\("GameMode", "(\w+)"\)'), GAME_MODE),
+    ("XRL/CheckpointingSystem.cs", re.compile(r'stringGameState [!=]= "(\w+)"'), GAME_MODE),
+    ("XRL.CharacterBuilds.Qud/QudGamemodeModule.cs", re.compile(r'\bMode [!=]= "(\w+)"'), GAME_MODE),
+    ("XRL.CharacterBuilds.Qud/QudGamemodeModuleData.cs", re.compile(r'\bMode [!=]= "(\w+)"'), GAME_MODE),
+    # the inventory filter's first button, «ALL»
+    ("Qud.UI/FilterBarCategoryButton.cs", re.compile(r'categoryTextMap = new Dictionary<string, string> '
+                                                     r'\{ \{ "\*All", "([^"]+)" \} \}'),
+     "FilterBarCategoryButton: кнопка фільтра «усі категорії» в інвентарі (великими, як в оригіналі)"),
 )
 BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
+# labels a Unity prefab carries, which no code or table holds; the mod sets them (mod/Patches/TextPatches.cs)
+PREFAB_WORDS = (
+    ("delete", "SaveManagementRow: кнопка видалення збереження на екрані завантаження (з малої, як в оригіналі)"),
+    ("Mods Differ", "SaveManagementRow: позначка в рядку збереження, коли моди збереження й гри різні"),
+)
+STAT_VALUE = re.compile(r'\bstats\.Set\("(\w+)",\s*"([^"]+)"')
+STAT_WORDS = re.compile(r"[A-Za-z][a-z]*(?:[ /.]+[A-Za-z][a-z]*)*\.?")
 
 
 def scan_words(src_dir: pathlib.Path) -> list[Entry]:
@@ -1030,6 +1095,17 @@ def scan_words(src_dir: pathlib.Path) -> list[Entry]:
             entries.setdefault(m.group(1), f"{path.stem}.GetBreathName: з чого подих")
     for word in DAMAGE_TYPES:
         entries.setdefault(word, "ElementalDamage: тип шкоди в «{0} {1} damage» (родовий, як «вогню»)")
+    for word, where in PREFAB_WORDS:
+        entries.setdefault(word, where)
+    # a statistic's value an ability's description shows as it is («Range: sight», «Cooldown: once per night»):
+    # words, not the identifiers a template switches on («Pistol», «TrashDivining»)
+    for path in sorted(src_dir.rglob("*.cs")):
+        text = path.read_text(encoding="utf-8-sig")
+        if "stats.Set(" not in text:
+            continue
+        for key, value in STAT_VALUE.findall(text):
+            if len(value) >= 3 and STAT_WORDS.fullmatch(value) and (" " in value or value.islower()):
+                entries.setdefault(value, f"{path.stem}: значення рядка статистики «{key}» в описі здібності")
     # a power line's words, in its rules line («Contains wiring enabling it to function as part of a power grid…»)
     for path in sorted((src_dir / "XRL.World.Parts").glob("*PowerTransmission.cs")):
         for field, value in POWER_FIELD.findall(path.read_text(encoding="utf-8-sig")):
@@ -1234,13 +1310,151 @@ def code_keys(text: str) -> list[str]:
     return out
 
 
+# ---- the lines an ability's numbers add under its description: Templates.StatCollector ---------------------------
+
+COLLECTOR_FILE = "XRL/Templates.cs"
+COLLECTOR_METHOD = re.compile(r"\bpublic\s+(?:int|void|\([^()]*\))\s+(\w+)\s*\(([^()]*)\)\s*\{")
+POSTFIX_STATEMENT = re.compile(r"\bpostfix\s*(?:\+=|=\s*postfix\s*\+)\s*")
+
+
+def interpolation(token: str) -> list[tuple[str, str]] | None:
+    """The pieces of an interpolated literal ($"…"): ("text", s) and ("expr", e); None for anything else."""
+    if not token.startswith('$"') or not token.endswith('"'):
+        return None
+    body, out, i = token[2:-1], [], 0
+    text = []
+    while i < len(body):
+        c = body[i]
+        if c in "{}" and body[i + 1:i + 2] == c:
+            text.append(c)
+            i += 2
+        elif c == "{":
+            j = matching(body, i)
+            if text:
+                out.append(("text", literal_value('"' + "".join(text) + '"')))
+                text = []
+            out.append(("expr", body[i + 1:j].split(":")[0].strip()))
+            i = j + 1
+        else:
+            text.append(c)
+            if c == "\\":
+                text.append(body[i + 1])
+                i += 1
+            i += 1
+    if text:
+        out.append(("text", literal_value('"' + "".join(text) + '"')))
+    return out
+
+
+def collector_methods(src: str) -> dict[str, list[tuple[list[tuple[str, bool]], str]]]:
+    """StatCollector's public methods that append a line to its postfix, themselves or through another, by name: for
+    each overload, its parameters (name, has a default) and body."""
+    cls = re.search(r"\bclass\s+StatCollector\b[^{]*\{", src)
+    if not cls:
+        return {}
+    region = src[cls.end() - 1:matching(src, cls.end() - 1) + 1]
+    out: dict[str, list] = {}
+    for m in COLLECTOR_METHOD.finditer(region):
+        params = [p.strip() for p in split_top(m.group(2), ",") if p.strip()]
+        names = [(p.split("=")[0].split()[-1], "=" in p) for p in params]
+        body_start = m.end() - 1
+        out.setdefault(m.group(1), []).append((names, region[body_start:matching(region, body_start) + 1]))
+    appends = {name for name, overloads in out.items()
+               if any(POSTFIX_STATEMENT.search(mask(body)) for _, body in overloads)}
+    while True:
+        callers = {name for name, overloads in out.items() if name not in appends
+                   and any(re.search(rf"(?<![\w.])(?:{'|'.join(appends)})\s*\(", mask(body)) for _, body in overloads)}
+        if not callers or not appends:
+            break
+        appends |= callers
+    return {name: overloads for name, overloads in out.items() if name in appends}
+
+
+def postfix_pieces(statement: str) -> list[tuple[str, str]]:
+    """The pieces of what a «postfix += …» statement appends: literal text, interpolated holes, concatenated holes."""
+    out = []
+    for term in split_top(statement, "+"):
+        term = term.strip()
+        value = literal_value(term)
+        parts = interpolation(term)
+        if value is not None:
+            out.append(("text", value))
+        elif parts is not None:
+            out.extend(parts)
+        elif term:
+            out.append(("expr", term))
+    if out and out[0][0] == "text":
+        out[0] = ("text", out[0][1].removeprefix("\n"))
+    return out
+
+
+def collector_lines(methods: dict, name: str, args: list[str], depth: int = 0) -> list[str]:
+    """The lines a call of a StatCollector method appends, with HOLE where the code computes a part. A string
+    argument gives its literal text, both texts of a ternary («high strength» / «low strength»), or a hole; any other
+    part is a hole. A method that passes its numbers on to another (AddComputePowerPostfix → AddChangePostfix(what,
+    change, "compute power")) appends what that one does."""
+    out: list[str] = []
+    for params, body in methods.get(name, []):
+        required = sum(1 for _, default in params if not default)
+        if not required <= len(args) <= len(params) or depth > 4:
+            continue
+        given = {p: args[i] for i, (p, _) in enumerate(params) if i < len(args)}
+        # a parameter left out may fall back on another: «if (IsNullOrEmpty(statDisplayName)) statDisplayName = stat;»
+        for p, _ in params:
+            if p not in given:
+                m = re.search(rf"\b{p}\s*=\s*(\w+);", body)
+                if m and m.group(1) in given:
+                    given[p] = given[m.group(1)]
+        masked = mask(body)
+        for m in POSTFIX_STATEMENT.finditer(masked):
+            end = statement_end(masked, m.end(), len(masked))
+            texts = [""]
+            for kind, e in postfix_pieces(body[m.end():end].strip().removesuffix(";")):
+                options = [e] if kind == "text" else (patterns(given[e]) if e in given else []) or [HOLE]
+                texts = [t + o for t in texts for o in dict.fromkeys(options)][:16]
+            out.extend(texts)
+        for m in re.finditer(rf"(?<![\w.])({'|'.join(methods)})\s*\(", masked):
+            o = m.end() - 1
+            inner = [a.strip() for a in split_top(body[o + 1:matching(body, o)], ",")]
+            # an argument that is one of this method's own parameters passes the caller's value on
+            passed = [given.get(a, a) for a in inner]
+            out.extend(collector_lines(methods, m.group(1), passed, depth + 1))
+    return list(dict.fromkeys(out))
+
+
+def postfix_keys(tree: SourceTree) -> dict[str, str]:
+    """The English lines Templates.StatCollector adds under an ability's description, a key each: «Cooldown reduced
+    by {0} due to {1}.», «Damage increased by {0}-{1} due to high strength.». Each call outside the collector gives
+    its own what and why; a method's own lines (the cooldown's) are keys as they stand."""
+    path = tree.src_dir / COLLECTOR_FILE
+    methods = collector_methods(tree.raw[path]) if path in tree.raw else {}
+    if not methods:
+        return {}
+    keys: dict[str, str] = {}
+    for where, _family, _src, _masked, m, positional, _named in tree.calls(
+            re.compile(rf"\.({'|'.join(methods)})\s*\("), "int|void"):
+        for line in collector_lines(methods, m.group(1), positional):
+            for key in code_keys(line):
+                keys.setdefault(key, f"{where}: рядок під описом здібності (Templates.StatCollector)")
+    # the cooldown's own lines, with the reason the cooldown event gives
+    for params, _body in methods.get("CollectCooldownTurns", []):
+        for line in collector_lines(methods, "CollectCooldownTurns", [p for p, _ in params]):
+            for key in code_keys(line):
+                keys.setdefault(key, "Templates.StatCollector: перезаряджання здібності під її описом")
+    return keys
+
+
 def scan_abilities(src_dir: pathlib.Path) -> list[Entry]:
     """The names the code gives activated abilities (AddMyActivatedAbility("Intimidate", …), «Clone [{0} left]» on a
     rename) and the descriptions it passes along: the ability bar, the manager and the popups show them as the entry
     keeps them. Names the string tables give (_S, _T) are theirs, and so are blueprint values the game's own
-    localization XML lists (the «AbilityName» tag)."""
+    localization XML lists (the «AbilityName» tag). And the lines a description's numbers add under it
+    (postfix_keys)."""
     entries: dict[str, str] = {name: where for name, where in EXTRA_ABILITY_NAMES}
-    for where, family, src, masked, m, positional, named in SourceTree(src_dir).calls(
+    tree = SourceTree(src_dir)
+    for key, where in postfix_keys(tree).items():
+        entries.setdefault(key, where)
+    for where, family, src, masked, m, positional, named in tree.calls(
             ABILITY_CALL, "Guid|void|bool|ActivatedAbilityEntry"):
         if m.group(1).startswith("Set"):
             wanted = [(named.get("DisplayName", positional[1] if len(positional) > 1 else None), "назва")]

@@ -78,6 +78,11 @@ static class Tests
         Patched("XRL.World.Parts.Physics", "ProcessTakeDamage", "Prefix");
         Patched("Qud.API.JournalAPI", "AddAccomplishment", "Prefix");
         Patched("XRL.World.Parts.ActivatedAbilityEntry", "Read", "Postfix");
+        Patched("XRL.UI.SPNode", "ModernUIText", "Postfix");
+        Patched("XRL.World.Anatomy.BodyPart", "ReadValues", "Postfix");
+        int describes = game.GetType("XRL.World.GameObject", true).GetMethods()
+            .Count(m => m.Name == "DescribeActivatedAbility" && HarmonyLib.Harmony.GetPatchInfo(m)?.Postfixes.Count > 0);
+        Eq("3", describes.ToString(), "every DescribeActivatedAbility is patched");
 
         SetActive(true);
         const string G = "XRL.Language.Grammar";
@@ -208,6 +213,20 @@ static class Tests
         Eq("False", codeText.GetMethod("HasEnglishWord").Invoke(null, new object[] { "від =object.p:вашої атаки:атаки (@)=." }).ToString(),
            "our grammar variables are not English");
         Eq(null, Tail("від укусу."), "a tail the string tables gave passes");
+        // a key's name in a button and a variable the game has not replaced are not English to translate
+        string HasEnglish(string s) => codeText.GetMethod("HasEnglish").Invoke(null, new object[] { s }).ToString();
+        Eq("False", HasEnglish("{{W|[{{keybind|Esc}}]}} {{y|Скасувати}}"), "a key's name");
+        Eq("False", HasEnglish("Кидок проти кровотечі: =statistics[Toughness].title= "), "an unreplaced variable");
+        Eq("True", HasEnglish("{{W|[{{keybind|Esc}}]}} {{y|Cancel}}"), "English beside a key's name");
+
+        // an ability's description built again from its template: the template's lines pass, the code's English
+        // lines under it go through the table (the real Abilities table has them: tools/qudtr/codescan.postfix_keys)
+        Add("Test12", "Cooldown reduced by {0} due to {1}.", "Перезаряджання: на {0} менше ({1}).");
+        Add("Test12", "{0}: {1}", "should never match a Ukrainian line");
+        Eq("Перезаряджання: 95 ход.\nПерезаряджання: на 5 менше (Сила волі: висока).",
+           Translate("Test12", "Перезаряджання: 95 ход.\nCooldown reduced by 5 due to Сила волі: висока."), "a line under a description");
+        Eq("Перезаряджання: на 2 менше (Сила волі: висока).",
+           Translate("Abilities", "Cooldown reduced by 2 due to Сила волі: висока."), "the Abilities table has the cooldown line");
         // (a tail that renders goes through the game's template engine, which is empty outside the game)
 
         // a statistic's ID in a hole: the string tables' title for it; with no blueprints loaded, the ID as it is
@@ -218,7 +237,16 @@ static class Tests
         object gameStatTitle = statTitle.GetValue(null);
         statTitle.SetValue(null, (Func<string, string>)(v => v == "Toughness" ? "Витривалість" : null));
         Eq("Проходить кидок «Витривалість».", Translate("Test10", "Passes a Toughness save."), "a statistic's title");
+        // a statistic's value a description shows: a word from the Words table, a statistic before its number
+        Type statValues = mod.GetType("CavesOfQudUA.Patches.StatValues", true);
+        string Shown(string v) => (string)statValues.GetMethod("Shown").Invoke(null, new object[] { v });
+        Add("Words", "out of reach", "поза досяжністю");
+        Eq("поза досяжністю", Shown("out of reach"), "a value from the Words table");
+        Eq("Витривалість 21", Shown("Toughness 21"), "a statistic and its number");
+        Eq(null, Shown("Wisdom 21"), "a statistic with no title stays");
+        Eq(null, Shown("1d8+2"), "dice are no English");
         statTitle.SetValue(null, gameStatTitle);
+        Patched("XRL.World.Text.Delegates.XMLTemplateReplacers", "Value", "Prefix");
 
         // the rules lines of a description pass Extensions.AppendRules, which takes them through the Rules table
         Add("Rules", "Glinting: +{0} to shine", "Блискучий: +{0} до сяйва");

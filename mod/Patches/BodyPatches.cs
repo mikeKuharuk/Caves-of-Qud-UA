@@ -69,6 +69,32 @@ namespace CavesOfQudUA.Patches
         }
     }
 
+    /// <summary>
+    /// A part from a save made before the names were Ukrainian keeps the English it got then: the equipment screen of
+    /// such a character reads «Left Hand», «Worn on Back». A part whose name is still its type's, sides aside, takes the
+    /// type's Ukrainian name and description, sided as ChangeLaterality sides them; a part the game or a mutation named
+    /// otherwise stays as it is.
+    /// </summary>
+    [HarmonyPatch(typeof(BodyPart), nameof(BodyPart.ReadValues))]
+    static class BodyPartLoadPatch
+    {
+        static void Postfix(BodyPart __instance)
+        {
+            BodyPart part = __instance;
+            if (!Uk.Active || string.IsNullOrEmpty(part.Name) || Uk.HasCyrillic(part.Name)) return;
+            try
+            {
+                BodyPartType type = part.GetVariantTypeModelIfExists();
+                if (type == null || !Uk.HasCyrillic(type.Name)) return;
+                string bare = Laterality.StripLateralityAdjective(part.Name, part.Laterality);
+                if (!string.Equals(bare, part.VariantType ?? part.Type, System.StringComparison.OrdinalIgnoreCase)) return;
+                part.Name = Laterality.WithLateralityAdjective(type.Name, part.Laterality);
+                part.Description = Laterality.WithLateralityAdjective(type.Description, part.Laterality, Capitalized: true);
+            }
+            catch (System.Exception) { }   // a name left English must never break loading the save
+        }
+    }
+
     static class BodyParts
     {
         /// <summary>The gender of a body part's name, by its last words («ліва рука» → «рука»).</summary>

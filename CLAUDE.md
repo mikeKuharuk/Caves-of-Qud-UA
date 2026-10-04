@@ -69,7 +69,7 @@ py tools/qud.py stats       # прогрес
 py tools/qud.py worksheet Skills.po --out work/batch/Skills.jsonl   # неперекладене → пакет JSONL
 py tools/qud.py check-worksheet work/batch/Skills.uk.jsonl          # перевірити пакет, не чіпаючи PO
 py tools/qud.py apply work/batch/Skills.uk.jsonl                    # заповнений пакет → PO
-py -m unittest discover -s tools/tests   # 138 тестів, зокрема на реальних даних гри
+py -m unittest discover -s tools/tests   # 151 тест, зокрема на реальних даних гри
 ```
 
 - Пакети (`work/batch/`, не в git) — зручний спосіб перекладати великими порціями:

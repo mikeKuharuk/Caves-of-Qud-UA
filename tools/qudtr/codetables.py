@@ -150,12 +150,18 @@ ABILITIES_NOTE = ("Активна здібність ({where}): так її на
                   "вікна. Англійське дієслово — інфінітив («Spit Acid» → «Плюнути кислотою»), англійський іменник — "
                   "іменник («Telekinesis» → «Телекінез»), як у вже перекладених назвах здібностей у Strings. Опис "
                   "перекладайте реченням; {{0}}… — те, що підставляє код (назва міни, число), лишіть їх.")
+ABILITIES_POSTFIX_NOTE = ("Рядок під описом здібності ({where}): що змінило число в рядку статистики над ним і чому. "
+                          "Форма одна на всі: «Перезаряджання: на {{0}} менше (Сила волі: висока).», «Шкода: на "
+                          "{{0}}-{{1}} більше (висока Сила).» — назва як у рядку статистики, причина в дужках у "
+                          "називному. {{0}}… — числа й причина, яку дає код (вже українською); лишіть їх.")
 
 
 def abilities_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
-    """The names and descriptions the code gives activated abilities (codescan.scan_abilities)."""
+    """The names and descriptions the code gives activated abilities (codescan.scan_abilities), and the lines their
+    numbers add under a description (codescan.postfix_keys)."""
     from . import codescan
-    entries = [(e.key, ABILITIES_NOTE.format(where=e.where)) for e in codescan.scan_abilities(decompiled)]
+    entries = [(e.key, (ABILITIES_POSTFIX_NOTE if "StatCollector" in e.where else ABILITIES_NOTE).format(where=e.where))
+               for e in codescan.scan_abilities(decompiled)]
     return table_xml("Abilities", entries, build, "the decompiled game code (activated abilities)")
 
 

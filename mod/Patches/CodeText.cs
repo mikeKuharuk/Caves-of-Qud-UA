@@ -33,11 +33,21 @@ namespace CavesOfQudUA.Patches
         static readonly Regex Counted = new Regex(@"\{(\d+):([^{}]*)\}");
         static readonly Regex English = new Regex("[A-Za-z]{2}");
         static readonly Regex EnglishWord = new Regex("[A-Za-z]{3}");
+        // a key's name in a button («[{{keybind|Esc}}] Скасувати»), and a variable the game has not replaced yet
+        // («Кидок проти кровотечі: =statistics[Toughness].title=»): English letters, but nothing to translate
+        static readonly Regex Keybind = new Regex(@"\{\{keybind\|[^{}]*\}\}");
+        static readonly Regex GameVariable = new Regex(@"=[A-Za-z_][\w.\[\]]*(?:[:|#][^=\n]*)?=");
+
+        /// <summary>What the player reads of text: its markup, key names and unreplaced variables aside.</summary>
+        static string Readable(string text)
+        {
+            return UkrainianForms.StripMarkup(GameVariable.Replace(Keybind.Replace(text, " "), " "));
+        }
 
         /// <summary>Whether text, its markup aside, has English in it: what the string tables did not translate.</summary>
         public static bool HasEnglish(string text)
         {
-            return !string.IsNullOrEmpty(text) && English.IsMatch(UkrainianForms.StripMarkup(text));
+            return !string.IsNullOrEmpty(text) && English.IsMatch(Readable(text));
         }
 
         static readonly Regex Variable = new Regex(@"=[A-Za-z_][\w.]*(?::[^=\n]*)?=");
@@ -85,6 +95,8 @@ namespace CavesOfQudUA.Patches
                 // a «\r\n» line is looked up without its «\r» (the keys have none) and keeps it
                 bool cr = lines[i].EndsWith("\r");
                 string plain = cr ? lines[i].Substring(0, lines[i].Length - 1) : lines[i];
+                // a line the string tables gave (a template's Ukrainian, above the English the code adds) passes
+                if (!HasEnglish(plain)) continue;
                 string line = Find(table, t, plain, agreeWith);
                 if (line != null)
                 {
@@ -228,7 +240,7 @@ namespace CavesOfQudUA.Patches
 
         static void Miss(string table, string text)
         {
-            if (!Uk.Active || string.IsNullOrEmpty(text) || !EnglishWord.IsMatch(UkrainianForms.StripMarkup(text))) return;
+            if (!Uk.Active || string.IsNullOrEmpty(text) || !EnglishWord.IsMatch(Readable(text))) return;
             if (!Missed.Add(table + "\u0001" + text)) return;
             try { MetricsManager.LogInfo("[uk-miss] " + table + ": " + text); }
             catch (System.Exception) { }   // a log line must never break the text (and there is no Unity in the tests)

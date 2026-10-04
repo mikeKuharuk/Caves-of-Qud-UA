@@ -31,10 +31,15 @@ namespace CavesOfQudUA.Grammar
             return new KeyValuePair<string, UkGender>(ukrainian, gender);
         }
 
-        /// <summary>The Ukrainian for a word from the code, or the word itself when it is not in the table.</summary>
+        /// <summary>
+        /// The Ukrainian for a word from the code, or the word itself when no table has it: this one (the words a
+        /// gender goes with), then the Words code table (Code.Words: a save's game mode, a journal tab…).
+        /// </summary>
         public static string Translate(string word)
         {
-            return word != null && Words.TryGetValue(word, out KeyValuePair<string, UkGender> w) ? w.Key : word;
+            if (word == null) return null;
+            if (Words.TryGetValue(word, out KeyValuePair<string, UkGender> w)) return w.Key;
+            return CodeTables.Get("Words", word) ?? word;
         }
 
         /// <summary>The gender of a word from the code, given in English or already translated; null if unknown.</summary>

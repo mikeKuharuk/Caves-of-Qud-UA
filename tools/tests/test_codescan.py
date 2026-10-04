@@ -215,14 +215,20 @@ class WordsScan(unittest.TestCase):
             "XRL.World.Parts/LongBladesCore.cs": 'public const string STR_DEFENSIVE = "defensive";\n',
             "XRL.World.Parts.Mutation/FireBreather.cs": 'public override string GetBreathName()\n\t{\n\t\treturn "fire";\n\t}\n',
             "XRL.World.Parts.Mutation/BreatherBase.cs": 'public virtual string GetBreathName()\n\t{\n\t\treturn "base";\n\t}\n',
+            # a game mode the code compares, the default it reads one with
+            "XRL/CheckpointingSystem.cs": 'if (stringGameState != "Strolling" && stringGameState != "Acting")\n',
+            "XRL/XRLGame.cs": 'GameMode = GetStringGameState("GameMode", "Plain"),\n'
+                              'Seed = GetStringGameState("Seed", "NotAMode"),\n',
         }
         with tempfile.TemporaryDirectory() as d:
             for rel, text in sources.items():
                 (pathlib.Path(d) / rel).parent.mkdir(parents=True, exist_ok=True)
                 (pathlib.Path(d) / rel).write_text(text, encoding="utf-8")
             found = {e.key for e in codescan.scan_words(pathlib.Path(d))}
-        # and the damage types ElementalDamage writes into a rules line, from the blueprints
-        self.assertEqual(found, {"Locations", "defensive", "fire", *codescan.DAMAGE_TYPES})
+        # and the damage types ElementalDamage writes into a rules line, from the blueprints; and the labels of a
+        # Unity prefab, which no code holds
+        self.assertEqual(found, {"Locations", "defensive", "fire", "Strolling", "Acting", "Plain",
+                                 *codescan.DAMAGE_TYPES, *(w for w, _ in codescan.PREFAB_WORDS)})
 
 
 class AbilitiesScan(unittest.TestCase):
@@ -321,6 +327,115 @@ class AbilitiesScan(unittest.TestCase):
             found = {e.key for e in codescan.scan_abilities(pathlib.Path(d))}
         self.assertEqual(found, {"Glower", "You glower.", "Copy [{0} left]", "Switch on {0}", "Switch off {0}",
                                  "Spit Seeds", "Spit Pits", "Glide", "Glide ({0})", "Jump"})
+
+
+class StatPostfixScan(unittest.TestCase):
+    # a made-up collector in the shape of Templates.StatCollector, and parts that call it
+    SOURCES = {
+        "XRL/Templates.cs": """public static class Templates
+{
+	public class StatCollector
+	{
+		public string postfix = "";
+
+		public void Set(string Key, string Value)
+		{
+		}
+
+		public int AddChangePostfix(string what, int change, string dueTo)
+		{
+			if (change > 0)
+			{
+				postfix += $"\\n{what} up by {change} from {dueTo}.";
+				return 1;
+			}
+			postfix += $"\\n{what} down by {-change} from {dueTo}.";
+			return -1;
+		}
+
+		public int AddChangePostfix(string what, int changeMin, int changeMax, string dueTo)
+		{
+			if (changeMin == changeMax)
+			{
+				return AddChangePostfix(what, changeMin, dueTo);
+			}
+			postfix += $"\\n{what} up by {changeMin}-{changeMax} from {dueTo}.";
+			return 1;
+		}
+
+		public void AddComputePowerPostfix(string what, int change)
+		{
+			AddChangePostfix(what, change, "brain power");
+		}
+
+		public int CollectComputePowerAdjustUp(ActivatedAbilityEntry ability, string what, int baseValue, float factor = 1f)
+		{
+			int num = Adjust(ability, baseValue, factor);
+			AddComputePowerPostfix(what, num - baseValue);
+			return num;
+		}
+
+		public int CollectBonusModifiers(string stat, int baseValue, string statDisplayName = null)
+		{
+			if (string.IsNullOrEmpty(statDisplayName))
+			{
+				statDisplayName = stat;
+			}
+			foreach (ModifierInfo item in Modifiers(stat))
+			{
+				AddChangePostfix(statDisplayName, item.Bonus, item.Source);
+			}
+			return baseValue;
+		}
+
+		public void CollectCooldownTurns(ActivatedAbilityEntry ability, int BaseTurns)
+		{
+			foreach (Calculation calculation in Calculations(ability))
+			{
+				postfix += $"\\nRecharge down by {calculation.Turns} from {calculation.Reason}.";
+			}
+			postfix = postfix + "\\nRecharge stops at " + Floor(BaseTurns) + " turns.";
+		}
+	}
+}""",
+        "Glare.cs": """public class Glare : BaseSkill
+{
+	public override void CollectStats(Templates.StatCollector stats)
+	{
+		int num = Bonus();
+		stats.AddChangePostfix("Glare", num, (num > 0) ? "high ego" : "low ego");
+		stats.AddChangePostfix("Sting", num, num * 2, "sharp teeth");
+		stats.AddChangePostfix("Cooldown", -10, IComponent<GameObject>._S("Glare Mastery Ctx", "Glare Mastery"));
+		stats.CollectComputePowerAdjustUp(ability, "Reach", Reach);
+		stats.CollectBonusModifiers("Range", 2);
+		stats.Set("Glare", "plenty");
+	}
+}""",
+    }
+
+    def test_each_call_gives_its_own_what_and_why(self):
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in self.SOURCES.items():
+                path = pathlib.Path(d) / rel
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text, encoding="utf-8")
+            found = codescan.postfix_keys(codescan.SourceTree(pathlib.Path(d)))
+        self.assertEqual(set(found), {
+            # a ternary reason gives both
+            "Glare up by {0} from high ego.", "Glare down by {0} from high ego.",
+            "Glare up by {0} from low ego.", "Glare down by {0} from low ego.",
+            # a range, and the single number it falls back on
+            "Sting up by {0}-{1} from sharp teeth.", "Sting up by {0} from sharp teeth.",
+            "Sting down by {0} from sharp teeth.",
+            # a reason the string tables give is a hole
+            "Cooldown up by {0} from {1}.", "Cooldown down by {0} from {1}.",
+            # passed on with the reason the collector gives
+            "Reach up by {0} from brain power.", "Reach down by {0} from brain power.",
+            # a parameter left out falls back on another
+            "Range up by {0} from {1}.", "Range down by {0} from {1}.",
+            # the collector's own lines
+            "Recharge down by {0} from {1}.", "Recharge stops at {0} turns."})
+        self.assertIn("Glare", found["Glare up by {0} from high ego."])
 
 
 class FragmentsScan(unittest.TestCase):
@@ -462,6 +577,41 @@ class HitMessage(unittest.TestCase):
         # five messages are too many to spell out: the tail stays a hole
         self.assertEqual(found, {"{0} suffers bruises {1}", "{0} suffer bruises {1}",
                                  "{0} suffers {{R|welts}} {1}", "{0} suffer {{R|welts}} {1}"})
+
+
+class OptionLists(unittest.TestCase):
+    # a made-up menu in the shapes the game's code takes: options filled in a local first, a list grown by Add, an
+    # intro built with a list of items in it, and an array that is no options at all (the hotkeys' input layers)
+    SOURCE = """public class Lounge : IPart
+{
+	public void Menu(bool Quiet)
+	{
+		string[] options;
+		if (Quiet)
+		{
+			options = new string[2] { "Nap", "&KShout" };
+		}
+		else
+		{
+			options = new string[2] { "&KNap", "Shout" };
+		}
+		Popup.PickOption("", null, "", "Sounds/UI/ui_notification", options, new char[2] { 'n', 's' }, AllowEscape: true);
+		List<string> list = new List<string>();
+		list.Add("Rename the lounge");
+		list.Add("Name it after " + Owner.t() + ".");
+		Popup.PickOption("Lounge", null, "", "Sounds/UI/ui_notification", list, HotkeySpread.get(new string[2] { "Menus", "UINav" }));
+		using TextBuilder sb = TextBuilder.Get();
+		sb.Compound("These guests are {{R|asleep}} here:{{R|", '\\n').AppendPrefixed(Guests.Select(Name), "\\n{{y|:}} ").Append("}}");
+		Popup.PickOption("", sb.ToString(), "", "Sounds/UI/ui_notification", new string[3] { "soft", "loud", "deafening" });
+	}
+}"""
+
+    def test_options_filled_first_and_the_intro_above_them(self):
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Lounge.cs").write_text(self.SOURCE, encoding="utf-8")
+            found = {e.key for e in codescan.scan_text(pathlib.Path(d))}
+        self.assertEqual(found, {"Nap", "&KShout", "&KNap", "Shout", "Rename the lounge", "Name it after {0}.", "Lounge",
+                                 "These guests are {{R|asleep}} here:{{R|", "soft", "loud", "deafening"})
 
 
 class DamageScan(unittest.TestCase):
