@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import re
 
-from .units import MARK
+from .units import MARK, uncommented
 
 NAME = "Tags.example.xml"
 
@@ -59,7 +59,7 @@ def example_xml(blueprints: dict[str, str], build: str | None) -> str | None:
     found: dict[str, list[str]] = {}
     for _, text in sorted(blueprints.items()):
         current = None
-        for line in text.splitlines():
+        for line in uncommented(text).splitlines():
             m = OBJECT.search(line)
             if m:
                 current = m.group(1)

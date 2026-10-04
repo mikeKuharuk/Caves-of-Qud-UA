@@ -17,7 +17,7 @@ import pathlib
 import re
 import xml.etree.ElementTree as ET
 
-from .units import MARK
+from .units import MARK, uncommented
 
 PREFIX = "Code."
 SPECIES = "Code.Species.example.xml"
@@ -64,9 +64,9 @@ def species_xml(blueprints: dict[str, str], genotypes: str | None, build: str | 
     Species property or tag; the genotypes' Species)."""
     keys = set()
     for text in blueprints.values():
-        keys.update(SPECIES_TAG.findall(text))
+        keys.update(SPECIES_TAG.findall(uncommented(text)))
     if genotypes:
-        keys.update(GENOTYPE_SPECIES.findall(genotypes))
+        keys.update(GENOTYPE_SPECIES.findall(uncommented(genotypes)))
     keys = sorted(k for k in keys if re.search(r"[A-Za-z]", k))  # not the "*" wildcard
     return table_xml("Species", [(k, None) for k in keys], build,
                      "the Species tags of Base/ObjectBlueprints and Base/Genotypes.xml")

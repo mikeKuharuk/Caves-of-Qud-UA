@@ -124,6 +124,15 @@ def game_build(xml_text: str) -> str | None:
     return m.group(1) if m else None
 
 
+XML_COMMENT = re.compile(r"<!--.*?-->", re.S)
+
+
+def uncommented(xml_text: str) -> str:
+    """XML text without its comments, line breaks kept: what the game loads. The game ships blueprints commented out
+    (Furniture.xml's «Electric Crematorium»), and a merge with one is a MODERROR on every start."""
+    return XML_COMMENT.sub(lambda m: "\n" * m.group(0).count("\n"), xml_text)
+
+
 def unindent(text: str) -> str:
     """What the game does to XML text nodes (TextBuilder.Unindent): trim the whole text, then
     drop leading whitespace of every line, and remove carriage returns."""

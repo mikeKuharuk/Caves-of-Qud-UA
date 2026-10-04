@@ -366,7 +366,7 @@ def cherub_types(creatures_xml: str) -> dict[str, str]:
     no space («херувим-павіан»), so the cut throws when a tomb crypt or Shesh spawns a cherub, and a mechanical cherub
     would get «механічний». Giving every cherub the tag keeps the English description as it is in English."""
     out = {}
-    for name, body in CHERUB.findall(creatures_xml):
+    for name, body in CHERUB.findall(units.uncommented(creatures_xml)):
         m = re.search(r'<part\s+Name="Render"[^>]*\bDisplayName="([^"]*)"', body)
         if m and "AlternateCreatureType" not in body:
             out[name] = m.group(1).replace("mechanical ", "").split(" ")[0]
