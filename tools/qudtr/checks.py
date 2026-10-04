@@ -213,6 +213,16 @@ def check_entry(entry, msgstr: str | None = None) -> list[Issue]:
         if len(forms) != 3 or not all(f.strip() for f in forms):
             issues.append(Issue("error", "verb-forms", "give the three forms, he/she : you : they: "
                                                       "«свистить:свистите:свистять»"))
+    # a «qud-ok: code-hole» note that names the holes it lets go lets only those go: a {n} lost by a slip stays an
+    # error. (A note that names only holes still there, to say what they hold, names none it lets go.)
+    named = {h for c in entry.translator_comments if c.startswith("qud-ok") and "code-hole" in c.split("—")[0]
+             for h in CODE_HOLE.findall(c)}
+    gone = set(code_holes(entry.msgid)) - set(code_holes(text)) if text else set()
+    if named & gone:
+        lost = gone - named
+        if lost:
+            issues.append(Issue("error", "code-hole", f"{sorted(lost)} gone, and the qud-ok note names only "
+                                                      f"{sorted(named)}"))
     return [i for i in issues if i.severity == "error" or i.code not in accepted]
 
 

@@ -240,6 +240,12 @@ COMMENT[k] = "uk-forms: іржава|іржаве|іржаві"    # жіноч�
   =object.p:(ваш):(@):=!» → «від вогню!»). Хвіст, який загальний ключ («from %t {0}!» газу) узяв з англійським
   словом у пропуску, лишається, як його пише гра, і йде в журнал як `[uk-miss]`.
 
+- `JournalPatches`: досягнення гравця, які код пише англійською (`JournalAPI.AddAccomplishment`): запис у
+  журналі («You journeyed to Golgotha.» → «Ви вирушили до Голгофи.»), фреска в гробниці гравця й євангеліє,
+  яке переказують села наприкінці. Таблиця `Journal` (`codescan.scan_journal`). Фреска й євангеліє — про
+  гравця в третій особі, минулий час з `=player.g:…=`, як у `HistorySpice` (docs/history.md, 6b);
+  `AddAccomplishment` сам розгортає їхні `<spice…>` і `=…=`.
+
 - `RulesPatches`: рядки правил під описом предмета чи істоти, які код пише англійською («Keen: +2 to
   penetration rolls», «Requires training in {0} to use.»). Усі вони проходять `Extensions.AppendRules`
   (п’ять перевантажень із самим текстом), тож перекладаються там, за таблицею `Rules` (`codescan.scan_rules`).

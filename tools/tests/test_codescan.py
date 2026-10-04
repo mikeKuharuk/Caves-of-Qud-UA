@@ -503,6 +503,35 @@ class DamageScan(unittest.TestCase):
                                  "from %t embers.", "from %t sap!"})
 
 
+class JournalScan(unittest.TestCase):
+    SOURCE = """public class Pilgrim : IPart
+{
+	public void Arrive(string Where)
+	{
+		JournalAPI.AddAccomplishment("You walked to " + Where + ".", "=name= walked to " + Where + ".", null, null, "general");
+		JournalAPI.AddAccomplishment(gospelText: "<spice.x.!random>, =name= sang.", text: "You sang.");
+		JournalAPI.AddAccomplishment(IComponent<GameObject>._T("Ctx", "You rested."));
+	}
+
+	// a method of the quest's own, which only shares the name
+	public static void AddAccomplishment(string Choice)
+	{
+	}
+
+	public static void Choose()
+	{
+		AddAccomplishment("Nacham");
+	}
+}"""
+
+    def test_the_three_texts_of_an_accomplishment(self):
+        with tempfile.TemporaryDirectory() as d:
+            (pathlib.Path(d) / "Pilgrim.cs").write_text(self.SOURCE, encoding="utf-8")
+            found = {e.key for e in codescan.scan_journal(pathlib.Path(d))}
+        self.assertEqual(found, {"You walked to {0}.", "=name= walked to {0}.", "<spice.x.!random>, =name= sang.",
+                                 "You sang."})
+
+
 class RulesScan(unittest.TestCase):
     # made-up parts in the shapes the game's code takes
     SOURCES = {

@@ -319,6 +319,8 @@ def scan_effects(src_dir: pathlib.Path) -> list[Entry]:
 
 DIDX_CALL = re.compile(r"(?<![\w])(DidX|DidXToY|DidXToYWithZ|XDidY|XDidYToZ|WDidXToYWithZ)\s*\(")
 NAMED_ARG = re.compile(r"^\s*([A-Z]\w*)\s*:(?!:)\s*(.*)$", re.S)
+# a named argument whatever its case (JournalAPI's gospelText:); the older scans keep NAMED_ARG, and their keys
+ANY_NAMED_ARG = re.compile(r"^\s*([A-Za-z_]\w*)\s*:(?!:)\s*(.*)$", re.S)
 KINDS = {"DidX": "X", "XDidY": "X", "DidXToY": "XZ", "XDidYToZ": "XZ", "DidXToYWithZ": "WXZ", "WDidXToYWithZ": "WXZ"}
 
 
@@ -1215,8 +1217,8 @@ class SourceTree:
                     continue
                 args = split_top(src[o + 1:c], ",")
                 family = family or self.family(path, where)
-                yield (where, family, src, masked, m, [x for x in args if not NAMED_ARG.match(x)],
-                       {mm.group(1): mm.group(2) for x in args for mm in [NAMED_ARG.match(x)] if mm})
+                yield (where, family, src, masked, m, [x for x in args if not ANY_NAMED_ARG.match(x)],
+                       {mm.group(1): mm.group(2) for x in args for mm in [ANY_NAMED_ARG.match(x)] if mm})
 
 
 def code_keys(text: str) -> list[str]:
@@ -1349,4 +1351,26 @@ def scan_damage(src_dir: pathlib.Path) -> list[Entry]:
                 args = split_top(src[o + 1:matching(src, o)], ",")
                 if len(args) > 1 and not BUILT.match(strip_parens(args[1])):
                     add(computed_texts(args[1], src, masked, m.start(), [(src, masked)]), f"{path.stem} (TakeDamage)")
+    return [Entry(k, w) for k, w in sorted(entries.items())]
+
+
+# ---- Journal: the accomplishments the code writes -----------------------------------------------------------------
+
+ACCOMPLISHMENT = re.compile(r"(?<![\w])JournalAPI\.(AddAccomplishment)\s*\(")
+ACCOMPLISHMENT_PARTS = (("text", "запис у журналі (вкладка «Хронологія»)"),
+                        ("muralText", "фреска в гробниці гравця; =name= — гравець"),
+                        ("gospelText", "євангеліє, яке переказують села наприкінці; =name= — гравець"))
+
+
+def scan_journal(src_dir: pathlib.Path) -> list[Entry]:
+    """What JournalAPI.AddAccomplishment is given in English: the journal's line, the mural's and the gospel's
+    (named or in their places), followed through locals, fields and builders. What the string tables give is theirs."""
+    entries: dict[str, str] = {}
+    for where, family, src, masked, m, positional, named in SourceTree(src_dir).calls(ACCOMPLISHMENT, "void"):
+        for i, (name, what) in enumerate(ACCOMPLISHMENT_PARTS):
+            expr = named.get(name, positional[i] if len(positional) > i else None)
+            if expr is not None:
+                for found in computed_texts(expr, src, masked, m.start(), family):
+                    for key in code_keys(found):
+                        entries.setdefault(key, f"{where}: {what}")
     return [Entry(k, w) for k, w in sorted(entries.items())]

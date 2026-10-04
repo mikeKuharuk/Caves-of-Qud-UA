@@ -124,6 +124,18 @@ class Checks(unittest.TestCase):
         e.translator_comments = ["uk-forms: іржава|іржаве"]
         self.assertEqual({i.code for i in checks.check_entry(e)}, {"uk-forms"})
 
+    def test_a_code_hole_note_lets_go_only_the_holes_it_names(self):
+        # a note that names {0} and {2} as dropped: {1} lost by a slip («(1)» from a careless f-string) is an error
+        e = po.Entry(msgid="{0} told of {1} and {2}.", msgstr="розповів про своє життя (1).",
+                     translator_comments=["qud-ok: code-hole — {0}, {2}: англійський займенник"])
+        self.assertEqual({i.code for i in checks.check_entry(e)}, {"code-hole"})
+        e.msgstr = "розповів про своє життя ({1})."
+        self.assertEqual(checks.check_entry(e), [])
+        # a note that names only a hole still there, to say what it holds, names none it lets go
+        e = po.Entry(msgid="{0} fling {1}!", msgstr="метає: {1}!",
+                     translator_comments=["qud-ok: code-hole — англійський займенник; {1} — назва голок"])
+        self.assertEqual(checks.check_entry(e), [])
+
     def test_code_markers_stay(self):
         # PostProcessors.CrypticMachine replaces a line containing *READOUT* with machine gibberish
         self.assertIn("code-marker", codes("*READOUT*", "*ЗЧИТУВАННЯ*", severity="error"))

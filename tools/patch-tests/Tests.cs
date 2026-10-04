@@ -76,6 +76,7 @@ static class Tests
         Patched("XRL.World.Parts.ActivatedAbilities", "AddAbility", "Prefix");
         Patched("XRL.World.GameObject", "SetActivatedAbilityDisplayName", "Prefix");
         Patched("XRL.World.Parts.Physics", "ProcessTakeDamage", "Prefix");
+        Patched("Qud.API.JournalAPI", "AddAccomplishment", "Prefix");
         Patched("XRL.World.Parts.ActivatedAbilityEntry", "Read", "Postfix");
 
         SetActive(true);

@@ -204,6 +204,19 @@ def damage_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
     return table_xml("Damage", entries, build, "the decompiled game code (TakeDamage messages)")
 
 
+JOURNAL = "Code.Journal.example.xml"
+JOURNAL_NOTE = ("Досягнення гравця ({where}). Запис у журналі — про «ви» («Ви вирушили до Ґолґофи.»); фреска й "
+                "євангеліє — про =name=, у третій особі й урочисто, як історія султанів. <spice…>, =name=, =year= "
+                "лишайте як є (див. docs/history.md); {{0}}… — те, що підставляє код.")
+
+
+def journal_xml(decompiled: pathlib.Path, build: str | None) -> str | None:
+    """What JournalAPI.AddAccomplishment is given in English (codescan.scan_journal): mod/Patches/JournalPatches."""
+    from . import codescan
+    entries = [(e.key, JOURNAL_NOTE.format(where=e.where)) for e in codescan.scan_journal(decompiled)]
+    return table_xml("Journal", entries, build, "the decompiled game code (journal accomplishments)")
+
+
 KEY_IN_CONTEXT = re.compile(r"^entry\[Key=(.*)\]@(?:Text|Forms)$", re.S)
 
 
