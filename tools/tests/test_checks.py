@@ -90,6 +90,10 @@ class Checks(unittest.TestCase):
         self.assertEqual(checks.check("from %t bite.", "від =object.p:вашого укусу:укусу (@):укусу=."), [])
         self.assertIn("uk-grammar", codes("from %t bite.", "від =object.p::укусу (@):укусу=.", severity="error"))
         self.assertIn("uk-grammar", codes("from %t bite.", "від =object.p:a:b:c:d=.", severity="error"))
+        # one form of =X.p:…= ends up in the text: a hole in each of them is that hole once
+        self.assertEqual(checks.check("from %t {0} armor!", "від =object.p:вашої {0} броні:{0} броні (@):{0} броні=!"), [])
+        self.assertIn("code-hole", codes("from %t {0} armor!", "від =object.p:вашої {0}:{0} (@):{0}= {0}!",
+                                         severity="error"))
         # the game's punctuation glue may come and go: a comma only after a subtype that is there
         self.assertEqual(checks.check("Level =level= =subtype= =gamemode=", "Рівень =level=, =subtype|after:,= =gamemode="), [])
         # a direction can be empty (the player; the same cell): brackets around it must be glued on

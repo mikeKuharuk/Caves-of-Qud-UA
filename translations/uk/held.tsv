@@ -1,22 +1,22 @@
 # Units left untranslated on purpose (tools/qudtr/held.py): catalog, unit key, keep|code, reason.
 # keep — stays English: an identifier the code compares, or a decision. code — waits for a patch of the game's code.
 # `py tools/qud.py stats --held` lists them with their contexts.
-Creatures.po	9c611700323ad082022b	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	34bf54ef24962e9b4c19	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	c640af2dc1daa28805ac	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	7526bd1d6c2283821834	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	04f08635af77bd274f03	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	8b760b28ab86c43116cf	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	28f06f938a37452e5b05	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	debf3c226761d10af50f	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	90d8a9729bde6a2bca72	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	57d299604828fd2f5a61	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	d2cf553018f424ae7191	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	172c7d2978bb0c6439b4	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	08d35357029c474c5f7b	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	6a5d2009414ba232792c	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	d494f42d7809d5cd13b2	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Creatures.po	3cd9cb3c97996db61f0f	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
+Creatures.po	9c611700323ad082022b	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	34bf54ef24962e9b4c19	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	c640af2dc1daa28805ac	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	7526bd1d6c2283821834	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	04f08635af77bd274f03	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	8b760b28ab86c43116cf	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	28f06f938a37452e5b05	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	debf3c226761d10af50f	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	90d8a9729bde6a2bca72	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	57d299604828fd2f5a61	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	d2cf553018f424ae7191	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	172c7d2978bb0c6439b4	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	08d35357029c474c5f7b	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	6a5d2009414ba232792c	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	d494f42d7809d5cd13b2	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Creatures.po	3cd9cb3c97996db61f0f	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 Creatures.po	9f75d964cbbfb652412d	keep	цитата Езри Паунда лишається англійською (рішення Mike)
 Furniture.po	ecc5d5a3583f1ebc366b	keep	код порівнює прийменник з англійським «in»; у перекладених шаблонах не показується
 Furniture.po	10975bbdfde5bfc3f50b	keep	код порівнює прийменник з англійським «in»; у перекладених шаблонах не показується
@@ -29,70 +29,70 @@ Furniture.po	6b4da591b165880c91b3	keep	код порівнює прийменн�
 Furniture.po	eaeb2e449cf7bf4eda95	keep	код порівнює прийменник з англійським «in»; у перекладених шаблонах не показується
 Furniture.po	a98d430ab21ee7adf06d	keep	код порівнює прийменник з англійським «in»; у перекладених шаблонах не показується
 Furniture.po	5db861d96a47a0eb541b	code	прийменник для англійської склейки IZoneLandmark.Append
-HiddenObjects.po	895ee452c29eda206855	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
+HiddenObjects.po	895ee452c29eda206855	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 HiddenObjects.po	4eba1f466ac855bf359a	keep	клавіша дії — перша літера напису; клавіші лишаються латинськими (D12)
 HiddenObjects.po	78f1d61da9baff978bb8	keep	клавіша дії — перша літера напису; клавіші лишаються латинськими (D12)
-Items.po	96b866e0b8337c96ee1d	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	a1c7c4f2c0ea262a3feb	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	688932c6be2b268305ed	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	8bac19305d29152d90e8	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	c6e774fd4c219eced7fe	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	0b762e0acbc28a89d397	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	d3df1180f8267c6e6d41	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	102c27305efa8dd0243e	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	e96cc88e8a9478352249	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	5e4b38b0cc89ea35be0b	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	600e10740c57cc1396ce	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	4a3aefd76dad00d4b59a	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	11f69a1ffca19f949c8d	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	5cbc866c72d21fa7bebf	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	4159040c7009fd623127	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	6a30d8a10fdbfa6c0dc7	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	b8aee3bdebe03a0f624f	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	3e831662b6661780d0aa	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	9fbd1909fdf2468174fb	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	74a783720232bb12e4bb	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	d3cf756bf2a89d0517da	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	9fba84b9fa044c12a672	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	6ced380d3e878ba1d212	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	0a323c4e04871d6ce266	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	73cb0c305d3f5e31166f	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	6798e3e25c5b45e699ea	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	b4b1f2793db5ddd5868b	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	30135093f9dbbbec5483	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	8951f40cfcfe9468f29a	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	b3c792bfc4b202678c91	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	8108ab198082e9012990	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	5b5ef9ef565dfd1afc65	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	54d55059dff1e5230231	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	da85f4a0f0d1a0840b9a	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	426e711c2722131a9c38	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	b03fda784210bc80c7e8	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	c265bd07f69b9884646f	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	7bd575709c5c03931b4e	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	c1579191d9cda60a082c	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	f89af2f8d67fe89afc45	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	bba6a3d140f8cdf24453	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	6e5ae0b6e7ed279fc08d	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	178eb5365ca4c8cd83f8	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	fa1ff9fba9fb3b7a65a9	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	00a37291d61d5c578e9e	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	f2beac19a0fe04225432	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	cbc73bc518d44e931730	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	6c36eccaef800704a0c8	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	a4a6f258b7675f636955	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	e21542b42b1ec4173254	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	b8ffab9babe9b43fa337	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	6a8e03ad8dbe68e86a36	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
+Items.po	96b866e0b8337c96ee1d	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	a1c7c4f2c0ea262a3feb	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	688932c6be2b268305ed	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	8bac19305d29152d90e8	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	c6e774fd4c219eced7fe	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	0b762e0acbc28a89d397	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	d3df1180f8267c6e6d41	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	102c27305efa8dd0243e	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	e96cc88e8a9478352249	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	5e4b38b0cc89ea35be0b	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	600e10740c57cc1396ce	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	4a3aefd76dad00d4b59a	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	11f69a1ffca19f949c8d	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	5cbc866c72d21fa7bebf	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	4159040c7009fd623127	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	6a30d8a10fdbfa6c0dc7	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	b8aee3bdebe03a0f624f	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	3e831662b6661780d0aa	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	9fbd1909fdf2468174fb	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	74a783720232bb12e4bb	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	d3cf756bf2a89d0517da	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	9fba84b9fa044c12a672	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	6ced380d3e878ba1d212	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	0a323c4e04871d6ce266	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	73cb0c305d3f5e31166f	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	6798e3e25c5b45e699ea	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	b4b1f2793db5ddd5868b	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	30135093f9dbbbec5483	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	8951f40cfcfe9468f29a	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	b3c792bfc4b202678c91	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	8108ab198082e9012990	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	5b5ef9ef565dfd1afc65	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	54d55059dff1e5230231	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	da85f4a0f0d1a0840b9a	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	426e711c2722131a9c38	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	b03fda784210bc80c7e8	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	c265bd07f69b9884646f	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	7bd575709c5c03931b4e	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	c1579191d9cda60a082c	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	f89af2f8d67fe89afc45	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	bba6a3d140f8cdf24453	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	6e5ae0b6e7ed279fc08d	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	178eb5365ca4c8cd83f8	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	fa1ff9fba9fb3b7a65a9	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	00a37291d61d5c578e9e	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	f2beac19a0fe04225432	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	cbc73bc518d44e931730	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	6c36eccaef800704a0c8	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	a4a6f258b7675f636955	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	e21542b42b1ec4173254	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	b8ffab9babe9b43fa337	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	6a8e03ad8dbe68e86a36	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 Items.po	310d43b3e76b039be744	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Items.po	aad090a8e108dfcf434d	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	784d0f1837d9e69f9ca5	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	e46a4e0cfdeb167024c9	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	88730415234c34a203b1	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	842a8b1072d5b20c1629	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	550d2774dc01918553a5	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	caa06860b557a6e2d31c	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Items.po	cc2371ad81f5b1d4f120	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
+Items.po	784d0f1837d9e69f9ca5	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	e46a4e0cfdeb167024c9	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	88730415234c34a203b1	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	842a8b1072d5b20c1629	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	550d2774dc01918553a5	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	caa06860b557a6e2d31c	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Items.po	cc2371ad81f5b1d4f120	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 Liquids.po	45ff8b3d271f5b10dbce	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Liquids.po	87e3fd486c630a64e01d	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Liquids.po	8ba3d3e036fc71bf18dc	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
@@ -313,29 +313,28 @@ Strings.po	7c1a9ee186925c55845a	keep	слово, яке гравець ввод�
 Strings.po	bbe8154c970b8f9ecf83	keep	слово, яке гравець вводить для підтвердження; лишаємо латиницею, як клавіші (D12)
 Strings.po	a7402767a8a8857563d8	keep	ключ: Wings порівнює назву здібності з англійським «Jump»; на панелі здібностей її перекладає Code.Abilities («Стрибок»)
 Strings.po	c8e0c3a7c207108bbeb1	code	англійський артикль у властивості зони чи предмета; українською має бути порожньо — потрібен патч
-Strings.po	dd6e403169c33565d7a8	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
+Strings.po	dd6e403169c33565d7a8	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 Strings.po	2f3f4a8f5e630e4f6cbc	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Strings.po	ef1002b1fefa32ffb47c	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Strings.po	67ae4ff87cbd863775ef	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
+Strings.po	67ae4ff87cbd863775ef	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 Strings.po	558509c4cc05be630bfb	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Strings.po	87d9d5f5fc00d347e091	keep	ключ у CamelCase: IntPropertyChanger порівнює його з назвою властивості
-Strings.po	7bbe25f9ac386dd5b7c0	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Strings.po	b70b2a95177013cb71bc	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Strings.po	bac5863f992b35d087fd	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Strings.po	ee4a3a956b0444df75fa	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
+Strings.po	7bbe25f9ac386dd5b7c0	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Strings.po	b70b2a95177013cb71bc	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Strings.po	bac5863f992b35d087fd	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
+Strings.po	ee4a3a956b0444df75fa	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 Strings.po	30b3f5bd4bd1d616785d	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Strings.po	a1a5e06b00f1364f0191	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Strings.po	e61070d5af93a915c863	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Strings.po	a505b2ad6b646b1e020b	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
 Strings.po	8da70f43d94417f78593	code	шаблон відмінює англійське дієслово з коду (=subject.Does#verb=) або вклеюється в англійське речення коду
-Strings.po	0241cb19b597d744c494	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Strings.po	d8af4116a944d1383917	code	вставляється в англійське повідомлення коду («from %t glass armor!»)
+Strings.po	0241cb19b597d744c494	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 Strings.po	b8b55f948d6def936d0e	keep	ключ: <switch> в ActivatedAbilities порівнює його; українські описи тип отрути не показують
 Strings.po	60650c2012034a260832	keep	ключ: <switch> в ActivatedAbilities порівнює його; українські описи тип отрути не показують
 Strings.po	f8c1a3322a1d678a014c	keep	ключ: <switch> в ActivatedAbilities порівнює його; українські описи тип отрути не показують
 Strings.po	4b089c407a945f0cb19e	code	шаблон відмінює англійське дієслово з коду (=subject.Does#verb=) або вклеюється в англійське речення коду
 Strings.po	4be95373a43d1612be19	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
-Strings.po	bbfb9a0f693b4a522c17	code	дієслово, яке код відмінює англійською (DidX, XDidY, Does); чекає патча склейок
+Strings.po	bbfb9a0f693b4a522c17	keep	дієслово з даних: лишається ключем, форми дає таблиця Verbs (DidX, =verb|uk.v#X=)
 Strings.po	e4498d4c6d2e615d91fc	keep	код порівнює прийменник з англійським «in»; у перекладених шаблонах не показується
 Strings.po	e99da83f64954a94fe47	code	англійський артикль у властивості зони чи предмета; українською має бути порожньо — потрібен патч
 Strings.po	f2952e04ca5ad9474d3d	code	англійський артикль у властивості зони чи предмета; українською має бути порожньо — потрібен патч
@@ -419,7 +418,6 @@ Code.Text.po	5a8756fdff28303889ae	code	{0} буває і гравцем, і NPC:
 Code.Text.po	97adb8e8b28694af3d47	keep	гра цей рядок не показує (виклик лише задає ExpectMessage)
 Code.Text.po	a595c25b31ee9c035c22	keep	налагоджувальний текст: гравець його не бачить
 Code.Text.po	86f538b39e4d2052d3a3	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
-Code.Text.po	58aca33c2357d9494f67	code	англійські назви частин тіла (Bodies ще не локалізовано)
 Code.Text.po	101844c991c065a09312	code	шаблон надто загальний і ловив би чужі рядки: потрібен точний ключ
 Code.Text.po	f946d9662d89c1d56f9d	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок
 Code.Text.po	5cf0d25aa7cf53f9f245	code	у пропусках ім’я з англійським дієсловом чи інші англійські слова з коду (Does, GetVerb, артиклі): чекає патча склейок

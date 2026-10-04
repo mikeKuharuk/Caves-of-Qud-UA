@@ -115,6 +115,16 @@ TEXT_PARAMS = re.compile(r"^((?:[A-Za-z_]\w*\.)*(?:if|sign))[:#]")
 # the parts of a code-table pattern the code computes: «-{0} DV» (codetables.py), as CodeText finds them, also where
 # markup ends right after one: {{C|{0}}}
 CODE_HOLE = re.compile(r"\{\d+\}")
+# =X.p:<гравець>:<інший>:<нікого>=: one form of it ends up in the text, so its holes count once, as its fullest form
+P_FORMS = re.compile(r"=(?:[A-Za-z_]\w*\.)+[pP]:([^=\n]*)=")
+
+
+def code_holes(text: str) -> collections.Counter:
+    """The {n} holes of text, a =X.p:…= counted as the form of it with the most."""
+    collapsed = P_FORMS.sub(lambda m: max(m.group(1).split(":"), key=lambda f: len(CODE_HOLE.findall(f))), text)
+    return collections.Counter(CODE_HOLE.findall(collapsed))
+
+
 # a word a translation counts with a hole's number: «через {0} {0:хід:ходи:ходів}» (mod/Patches/CodeText.cs)
 CODE_COUNTED = re.compile(r"\{(\d+):([^{}]*)\}")
 # the mod's own parameters a translation adds: =player.species:voc= (the vocative, mod/Grammar/UkrainianTemplateKeys.cs)
@@ -351,8 +361,8 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
 
     # {0}, {1}… in the code tables stand for what the code computes (codetables.py): all of them must stay; one may
     # go when it only held an English word such as «its» (accept that with qud-ok: code-hole)
-    src_holes = collections.Counter(CODE_HOLE.findall(msgid))
-    dst_holes = collections.Counter(CODE_HOLE.findall(msgstr))
+    src_holes = code_holes(msgid)
+    dst_holes = code_holes(msgstr)
     if dst_holes - src_holes:
         err("code-hole", f"{{n}} not in the source: {sorted(dst_holes - src_holes)}")
     elif src_holes != dst_holes:
