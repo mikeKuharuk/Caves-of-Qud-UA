@@ -51,20 +51,43 @@ namespace CavesOfQudUA.Patches
         }
     }
 
-    /// <summary>The equipment screen's «Друга ліва рука».</summary>
+    /// <summary>The equipment screen's «Друга ліва рука», and «Спина» where the game writes «Worn on Back».</summary>
     [HarmonyPatch(typeof(BodyPart), nameof(BodyPart.GetOrdinalDescription))]
     static class OrdinalDescriptionPatch
     {
         static bool Prefix(BodyPart __instance, ref string __result)
         {
             BodyPart part = __instance;
-            if (!Uk.Ours(part.Description) || part.IgnorePosition || part.GetPartDescriptionCount(part.Description) == 1)
-                return true;
-            string description = string.IsNullOrEmpty(part.DescriptionPrefix)
-                ? part.Description
-                : part.DescriptionPrefix + " " + part.Description;
-            __result = BodyParts.Colored(part, UkrainianLaterality.WithOrdinal(part.GetDescriptionPosition(), description,
-                                                                                BodyParts.GenderOf(part.Description), true));
+            if (!Uk.Ours(part.Description)) return true;
+            bool ordinal = !part.IgnorePosition && part.GetPartDescriptionCount(part.Description) != 1;
+            if (!ordinal && !BodyParts.EnglishPrefix(part)) return true;
+            string description = BodyParts.Described(part);
+            __result = BodyParts.Colored(part, ordinal
+                ? UkrainianLaterality.WithOrdinal(part.GetDescriptionPosition(), description, BodyParts.GenderOf(part.Description), true)
+                : description);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// A part's description with its position («Спина (2)»), the other form the equipment screen shows. The type's
+    /// English DescriptionPrefix («Worn on» before the back and the hands, Bodies.xml; a save keeps it too) goes before a
+    /// Ukrainian description: Ukrainian names the slot by the part alone, as it does the head and the feet.
+    /// </summary>
+    [HarmonyPatch(typeof(BodyPart), nameof(BodyPart.GetCardinalDescription))]
+    static class CardinalDescriptionPatch
+    {
+        static bool Prefix(BodyPart __instance, ref string __result)
+        {
+            BodyPart part = __instance;
+            if (!Uk.Ours(part.Description) || !BodyParts.EnglishPrefix(part)) return true;
+            string text = part.Description;
+            if (!part.IgnorePosition)
+            {
+                int position = part.GetDescriptionPosition();
+                if (position != 1) text += " (" + position + ")";
+            }
+            __result = BodyParts.Colored(part, text);
             return false;
         }
     }
@@ -101,6 +124,20 @@ namespace CavesOfQudUA.Patches
         public static UkGender GenderOf(string name)
         {
             return UkrainianGender.OfZoneName(name) ?? UkGender.Masculine;
+        }
+
+        /// <summary>Whether the part's type puts an English prefix before its description («Worn on»).</summary>
+        public static bool EnglishPrefix(BodyPart part)
+        {
+            return !string.IsNullOrEmpty(part.DescriptionPrefix) && !Uk.HasCyrillic(part.DescriptionPrefix);
+        }
+
+        /// <summary>The description with the type's prefix, unless that prefix is English (EnglishPrefix).</summary>
+        public static string Described(BodyPart part)
+        {
+            return string.IsNullOrEmpty(part.DescriptionPrefix) || EnglishPrefix(part)
+                ? part.Description
+                : part.DescriptionPrefix + " " + part.Description;
         }
 
         /// <summary>The name in its category's colour, as GetOrdinalName writes it.</summary>

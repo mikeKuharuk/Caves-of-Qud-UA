@@ -169,9 +169,16 @@ def patterns(expr: str, nested: bool = False) -> list[str]:
         inner = ternary(term) if nested and value is None else None
         options = [p for b in inner[1:] for p in patterns(b, nested) or [HOLE]] if inner else []
         does = does_forms(term) if _EXPAND and value is None else None
+        color = MARKUP_COLOR.match(term) if _EXPAND and value is None and term.endswith(")") else None
+        if color and matching(term, term.index("(")) != len(term) - 1:
+            color = None   # «Markup.Color(…).Trim()» and the like
         if value is not None:
             found = True
             out = [(o + value, b) for o, b in out]
+        elif color:
+            # the colour's markup is text of the key, the name inside it a hole as before
+            inside = [p for p in patterns(color.group(2)) if p != HOLE] or [HOLE]
+            out = [(o + "{{" + color.group(1) + "|" + p + "}}", b) for o, b in out for p in inside][:16]
         elif does:
             found = True
             out = [v for o, b in out for v in with_verb(o, b, does, prev)][:16]
@@ -185,9 +192,11 @@ def patterns(expr: str, nested: bool = False) -> list[str]:
 
 
 # the calls that give their forms (does_forms): X.Does("verb"), X.GetVerb("verb") and X.Poss("noun") in a text the
-# Text table keys, where scan_text turns them on
+# Text table keys, where scan_text turns them on; with no X inside GameObject itself («Does("heal") + " for "…»)
 _EXPAND: tuple[str, ...] = ()
-DOES_CALL = re.compile(r"\.([Dd]oes|GetVerb|[Pp]oss)\s*\($")
+DOES_CALL = re.compile(r"(?:^|\.)([Dd]oes|GetVerb|[Pp]oss)\s*\($")
+# a name in a colour (Markup.Color("c", ability.DisplayName)): «{{c|…}}», the text inside it looked at too
+MARKUP_COLOR = re.compile(r'^Markup\.Color\(\s*"(\w+)"\s*,(.+)\)$', re.S)
 NAME_CALL = re.compile(r"^([\w.\[\]]+)\.([Tt])\(")
 
 
@@ -208,18 +217,21 @@ def does_forms(term: str) -> tuple[str, str, list[tuple[str, str]]] | None:
         return None
     args = split_top(term[o + 1:-1], ",")
     first = args[0].strip() if args else ""
-    # one whole literal: Poss("irritable genome acts up. " + string.Join(…)) is no noun
+    # one whole literal; Poss("irritable genome acts up. " + string.Join(…)) is no literal but text with a hole
     verb = literal_value(first) if first[:1] in ('"', "@") and string_end(first, 0) == len(first) else None
+    receiver = term[:m.start()].strip() or "this"
+    if m.group(1) in ("Poss", "poss"):
+        # the owner's name and the noun («Пащеклац nose»: our MakePossessive adds no «'s»), the player's «Your nose»
+        nouns = [verb] if verb else [p for p in patterns(first) if p != HOLE] if first else []
+        if not nouns:
+            return None
+        your = "Your" if m.group(1) == "Poss" else "your"
+        return receiver, "Poss", [form for noun in nouns for form in (
+            ("one", HOLE + " " + noun), ("many", HOLE + " " + noun), ("you", your + " " + noun + PLAYER_MARK))]
     if not verb:
         return None
     named = {mm.group(1): mm.group(2) for a in args for mm in [ANY_NAMED_ARG.match(a)] if mm}
     positional = [a for a in args if not ANY_NAMED_ARG.match(a)]
-    receiver = term[:m.start()].strip()
-    if m.group(1) in ("Poss", "poss"):
-        # the owner's name and the noun («Пащеклац nose»: our MakePossessive adds no «'s»), the player's «Your nose»
-        your = "Your" if m.group(1) == "Poss" else "your"
-        return receiver, "Poss", [("one", HOLE + " " + verb), ("many", HOLE + " " + verb),
-                                  ("you", your + " " + verb + PLAYER_MARK)]
     if m.group(1) == "GetVerb":
         space = "" if named.get("PrependSpace", positional[1] if len(positional) > 1 else "true").strip() == "false" else " "
         return receiver, "GetVerb", [("one", space + third_person(verb)), ("many", space + verb),
@@ -1232,6 +1244,10 @@ def _scan_text(src_dir: pathlib.Path) -> list[Entry]:
 
 GAME_MODE = ("режим гри (ID зі стану GameMode): рядок збереження на екрані завантаження, «Рівень 1, …»; "
              "з малої, з іменником: «класичний режим»")
+TOGGLE = ("GameObject: стан здібності, яку ви перемикаєте («You toggle Sprint on.»): стоїть окремо після назви, тож "
+          "прислівник чи дієприкметник: «увімкнено», «вимкнено»")
+AI_DISABLE = ("GameObject: чи може супутник користуватися здібністю («Your Sprint ability is now forbidden.»): стоїть окремо, "
+              "тож «заборонено», «дозволено»")
 LAID_GRENADE = ("Tinkering_LayMine: чим стає закладена граната (mine — без таймера, bomb — з таймером); стає на місце "
                 "«граната» в її назві, тож іменник жіночого роду: «{{W|фугасна}} міна Mk I»")
 
@@ -1268,6 +1284,15 @@ WORD_SOURCES = (
     # what a laid grenade becomes, in place of «граната» in its name: «{{W|фугасна}} міна Mk I»
     ("XRL.World.Parts.Skill/Tinkering_LayMine.cs", re.compile(r'\(Countdown > 0\) \? "(\w+)"'), LAID_GRENADE),
     ("XRL.World.Parts.Skill/Tinkering_LayMine.cs", re.compile(r'\(Countdown > 0\) \? "\w+" : "(\w+)"'), LAID_GRENADE),
+    # a toggled ability's state, after its name: «Ви перемикаєте {{c|Спринт}}: увімкнено.»
+    ("XRL.World/GameObject.cs", re.compile(r'string text = \(flag \? "(\w+)" : "\w+"\);'), TOGGLE),
+    ("XRL.World/GameObject.cs", re.compile(r'string text = \(flag \? "\w+" : "(\w+)"\);'), TOGGLE),
+    # whether a companion may use an ability: «Здібність «Спринт» тепер: заборонено.»
+    ("XRL.World/GameObject.cs", re.compile(r'\(activatedAbilityEntry\.AIDisable \? "(\w+)" : "\w+"\)'), AI_DISABLE),
+    ("XRL.World/GameObject.cs", re.compile(r'\(activatedAbilityEntry\.AIDisable \? "\w+" : "(\w+)"\)'), AI_DISABLE),
+    # what holds the player in place, the only one the game gives (no code or data sets another): «Ви знерухомлені!»
+    ("XRL.World.Effects/Immobilized.cs", re.compile(r'public string Text = "(\w+)";'),
+     "Immobilized: ваш стан, коли не можете рухатися («You are immobilized!»), тож прикметник для «ви»: множина"),
 )
 BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
 # labels a Unity scene or prefab carries, which no code or table holds; the mod sets them (PrefabLabels in

@@ -114,6 +114,25 @@ static class Tests
         // (an English name goes to the game's own code, which needs the string tables and so Unity: not testable here)
         Eq("рука", Call("XRL.World.Capabilities.Laterality", "StripLateralityAdjective", "ліва рука", 1, false), "the sides taken off");
 
+        // a slot whose type puts English before it («Worn on Back», Bodies.xml DescriptionPrefix): the part alone
+        Type bodyPartType = game.GetType("XRL.World.Anatomy.BodyPart", true);
+        object slot = System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(bodyPartType);
+        void SetMember(string member, object value)
+        {
+            FieldInfo field = bodyPartType.GetField(member);
+            if (field != null) field.SetValue(slot, value);
+            else bodyPartType.GetProperty(member).SetValue(slot, value);
+        }
+        string Describe(string method) => (string)bodyPartType.GetMethod(method, Type.EmptyTypes).Invoke(slot, null);
+        SetMember("DescriptionPrefix", "Worn on");
+        SetMember("IgnorePosition", true);
+        SetMember("Abstract", true);   // no category colour
+        SetMember("Description", "Спина");
+        Eq("Спина", Describe("GetCardinalDescription"), "an English prefix before a Ukrainian slot");
+        Eq("Спина", Describe("GetOrdinalDescription"), "an English prefix before a Ukrainian slot, ordinal");
+        SetMember("Description", "Back");
+        Eq("Worn on Back", Describe("GetCardinalDescription"), "an English slot keeps its prefix");
+
         // the code tables: exact keys, patterns, lines, agreement, and the effect patch on a real effect class
         Type tables = mod.GetType("CavesOfQudUA.Grammar.CodeTables", true);
         Type text = mod.GetType("CavesOfQudUA.Patches.CodeText", true);
@@ -246,6 +265,10 @@ static class Tests
         Eq("Ви критично влучаєте в ціль (пащеклац)! (x2)", Translate("Text", "Ви critically hit пащеклац! (x2)"),
            "the Text table's player key");
         Eq("Пащеклац критично влучає у вас! (x2)", Translate("Text", "Пащеклац critically hits you! (x2)"), "and anyone else's");
+        // GameObject's own Does (no X before it), a name in a colour, a state word out of Words
+        Eq("Ви відновлюєте 5 очок здоров’я.", Translate("Text", "Ви heal for 5 hit points."), "a Does with no X, counted");
+        Eq("Ви перемикаєте {{c|Спринт}}: увімкнено.", Translate("Text", "You toggle {{c|Спринт}} on."), "a name in a colour");
+        Eq("Ви знерухомлені!", Translate("Text", "You are immobilized!"), "a state word");
         // the verb alone (X.GetVerb), after a name or after the code's own «You»
         Eq("Стріла не пробиває вашу броню!", Translate("Text", "Стріла fails to penetrate your armor!"), "a GetVerb key");
         Eq("Вас трохи нудить.", Translate("Text", "You feel a little queasy."), "the player's GetVerb key");

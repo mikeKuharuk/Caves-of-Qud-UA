@@ -82,18 +82,20 @@ where it is in the code, what the player sees, and what would let a translation 
     the translated rank never shows.
 16. **A doubled verb in a missile hit** (`MissileWeapon`): `Projectile.Does("hit", …) + Projectile.GetVerb("hit")`
     reads «… hits hits …» in English too.
+17. **Hit points lost** (`GameObject`, stat penalty): `Does("lose") + num + " hit " + …` gets a negative `num`
+    and no space before it: «You lose-5 hit points.».
 
 ### From our research before the playtests
 
-17. The Factions export writes the water ritual's dish question as `recipetext`, while the faction loader
+18. The Factions export writes the water ritual's dish question as `recipetext`, while the faction loader
     reads `RecipeText`, so its translation is ignored; the export also leaves out the interests'
     `BuyDescription` and the factions' `DefaultAddress`.
-18. `[DisplayText]` is missing on 21 part classes whose text is shown.
-19. `Bodies`, `Commands`, `Genders` and `Colors` have no export; we build tables for them from the game's
+19. `[DisplayText]` is missing on 21 part classes whose text is shown.
+20. `Bodies`, `Commands`, `Genders` and `Colors` have no export; we build tables for them from the game's
     own XML.
-20. `VariantName` and other tags that are shown to the player are not in the export.
-21. Ability and effect names come from code rather than from the tables.
-22. `Grammar.MakePossessive`, `Pluralize` and `MakeTitleCase` apply English rules to any text; a call
+21. `VariantName` and other tags that are shown to the player are not in the export.
+22. Ability and effect names come from code rather than from the tables.
+23. `Grammar.MakePossessive`, `Pluralize` and `MakeTitleCase` apply English rules to any text; a call
     through the `Translator` provider would let a language opt out.
 
 Everything above is something we can patch or work around, and mostly already have. We list it so that

@@ -308,7 +308,7 @@
 {"k":"6848a60ce997dc50db2d","p":"8e73aae18a3b538e","s":"4c26c11f9f96","t":"Мутації","c":["qud-ok: placeholder — =term|pluralize|title= дав би англійську множину («Мутаціяs»). Термін майже завжди «мутація» (GetMutationTermEvent), тож множину написано словом; для робота (термін «модуль») треба було б «Модулі» — граматика ще не має множини іменників."]}
 {"k":"a4a852f5d2cce4ca673d","p":"6b22d23d67274f32","s":"73d621ab4f76","t":"=term|title="}
 {"k":"464c4ab7e8d1ab25fd06","p":"7118fe427d41f4b3","s":"f33daa00e379","t":"=term|upper="}
-{"k":"148915d28087a3c0d251","p":"c97cac3941c2d869","s":"d8a76e0e6957","t":"=subject.genotype.name= =subject.subtype.name="}
+{"k":"148915d28087a3c0d251","p":"c97cac3941c2d869","s":"d8a76e0e6957","t":"=subject.subtype.name= =subject.genotype.name|initLower|before:(|after:)="}
 {"k":"595f1601e2037a06741b","p":"674de2e2a1a03839","s":"9fdac4fe3065","t":"Рівень: =level= » ОЗ: =hp=/=hpfull= » ОД: =xp=/=xpnextlevel= » Вага: =weight=#"}
 {"k":"8dfbb3e5651fd9508655","p":"eaf3bb2b29156e2e","s":"cf8f2d08bbc6","t":"Очки характеристик: {{=color=|=ap=}}"}
 {"k":"b4fadfb74f63480638b8","p":"f56cbad2ecae9ed5","s":"d25bc79c6028","t":"ОМ: {{=color=|=mp=}}"}
