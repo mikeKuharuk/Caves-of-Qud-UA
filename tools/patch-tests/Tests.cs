@@ -324,6 +324,35 @@ static class Tests
         Eq("{{W|фугасна}} міна Mk I", Laid("{{W|фугасна}} граната Mk I mine"), "a laid mine");
         Eq("{{B|ЕМІ}}-бомба Mk II", Laid("{{B|ЕМІ}}-граната Mk II bomb"), "a laid bomb, a compound");
         Eq("пастка міна", Laid("пастка mine"), "no «граната»: the word after the name");
+
+        // the Tomb's cherubim and the Cloneling's clones, named in English around a Ukrainian name
+        foreach (string spawner in new[] { "XRL.World.Parts.CherubimSpawner", "XRL.World.Parts.HexacherubimSpawner" })
+        {
+            MethodBase handle = game.GetType(spawner, true).GetMethods().First(m => m.Name == "HandleEvent"
+                && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType.Name == "BeforeObjectCreatedEvent");
+            if (HarmonyLib.Harmony.GetPatchInfo(handle)?.Postfixes.Count is null or 0)
+            {
+                failures++;
+                Console.WriteLine($"FAIL no Postfix on {spawner}.HandleEvent(BeforeObjectCreatedEvent)");
+            }
+        }
+        Type cherubNames = mod.GetType("CavesOfQudUA.Patches.CherubNames", true);
+        string Cherub(string method, string name) => (string)cherubNames.GetMethod(method).Invoke(null, new object[] { name });
+        Eq("механічний скляний херувим-павіан", Cherub("Rebuilt", "mechanical glass механічний херувим-павіан"),
+           "a mechanical cherub of an element");
+        Eq("зоряний херувим-павіан", Cherub("Rebuilt", "star херувим-павіан"), "a cherub of an element");
+        Eq("glass baboon cherub", Cherub("Rebuilt", "glass baboon cherub"), "an English cherub stays");
+        Eq("гексахерувим-павіан", Cherub("Hexa", "херувим-павіан"), "a hexacherub");
+        // the transpiler wraps the literals: four in the Cloneling, the «already a clone» check alone in Cloning
+        Type cloneNames = mod.GetType("CavesOfQudUA.Patches.CloneNames", true);
+        MethodInfo cloneLocal = cloneNames.GetMethod("Local");
+        int Wrapped(MethodBase method) => HarmonyLib.PatchProcessor.GetCurrentInstructions(method)
+            .Count(i => i.opcode == System.Reflection.Emit.OpCodes.Call && Equals(i.operand, cloneLocal));
+        Eq("4", Wrapped(HarmonyLib.AccessTools.Method(game.GetType("XRL.World.Parts.Cloneling", true), "PerformCloning")).ToString(),
+           "the Cloneling's «clone of» literals");
+        Eq("1", Wrapped(HarmonyLib.AccessTools.Method(game.GetType("XRL.World.Capabilities.Cloning", true), "PostprocessClone")).ToString(),
+           "Cloning's «clone of» check");
+        Eq("клон ", cloneLocal.Invoke(null, new object[] { "clone of " }), "a clone's name in Ukrainian");
         Eq(null, Laid("{{W|фугасна}} граната Mk I"), "nothing laid, nothing changed");
 
         // the rules lines of a description pass Extensions.AppendRules, which takes them through the Rules table
