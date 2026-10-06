@@ -2,7 +2,7 @@
   "ID": "CavesOfQudUA",
   "Title": "Українська мова (Ukrainian)",
   "Description": "Неофіційний український переклад Caves of Qud. Працює лише на гілці lang-experimental (2.0.212+). Unofficial Ukrainian translation; requires the lang-experimental branch.",
-  "Version": "0.0.1",
+  "Version": "0.1.0",
   "Author": "Mike Kuharuk",
   "Tags": "Localization",
   "Directories": [
