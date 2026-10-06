@@ -121,6 +121,72 @@ static class Tests
         Eq("Feminine", CodeWords.GenderOf("Owl").ToString(), "gender by the English word");
         Eq("Masculine", CodeWords.GenderOf("Орел").ToString(), "gender by the Ukrainian word");
 
+        // names in a case (UkrainianCases), as the game's names stand in the translation
+        foreach (string adjective in new[] { "шкіряний", "фугасний", "велетенський", "поїдений", "молодий", "слоновий",
+                                             "базовий", "механічний", "жовтушний", "сирий", "вигнутий", "великий",
+                                             "херувимський", "задушливий", "ходячий", "вогняний", "печерний" })
+            AdjectiveLexicon.Add(adjective);
+        AdjectiveLexicon.AddNoun("дочка");   // the build learns it from «apple farmer's daughter»
+        string In(string name, UkGender gender, bool animate, UkCase c) => UkrainianCases.Inflect(name, gender, animate, c);
+        var M = UkGender.Masculine; var F = UkGender.Feminine; var N = UkGender.Neuter; var P = UkGender.Plural;
+        var gen = UkCase.Genitive; var dat = UkCase.Dative; var acc = UkCase.Accusative; var ins = UkCase.Instrumental;
+        var loc = UkCase.Locative;
+        // masculine: an animate accusative is the genitive, an inanimate one the nominative
+        Eq("пащеклаца", In("пащеклац", M, true, acc), "an animate masculine accusative");
+        Eq("пащеклацові", In("пащеклац", M, true, dat), "an animate masculine dative");
+        Eq("пащеклацом", In("пащеклац", M, true, ins), "a masculine instrumental");
+        Eq("меч", In("меч", M, false, acc), "an inanimate masculine accusative");
+        Eq("меча", In("меч", M, false, gen), "a masculine genitive");
+        Eq("мечем", In("меч", M, false, ins), "a sibilant's instrumental");
+        Eq("базового ведмедя", In("базовий ведмідь", M, true, acc), "an adjective and an irregular noun");
+        Eq("механічного херувима-павіана", In("механічний херувим-павіан", M, true, gen), "a hyphenated noun, both parts");
+        Eq("іссахарі-рейдера", In("іссахарі-рейдер", M, true, acc), "an indeclinable part stays");
+        Eq("майстра турелей", In("майстер турелей", M, true, acc), "the genitive after the head stays");
+        Eq("трупом печерного павука", In("труп печерного павука", M, false, ins), "an inanimate head before a genitive");
+        Eq("мішка", In("мішок", M, false, gen), "a vowel that drops");
+        Eq("мішку", In("мішок", M, false, loc), "a locative after к");
+        Eq("гаманцем", In("гаманець", M, false, ins), "-ець");
+        Eq("ліхтаря", In("ліхтар", M, false, gen), "a soft -ар");
+        Eq("Мехрока", In("Мехрок", M, true, acc), "a proper name keeps its vowel");
+        Eq("Андрієм", In("Андрій", M, true, ins), "a name on -ій is a noun");
+        // feminine
+        Eq("шкіряну броню", In("шкіряна броня", F, false, acc), "a feminine accusative, soft");
+        Eq("шкіряною бронею", In("шкіряна броня", F, false, ins), "a feminine instrumental, soft");
+        Eq("{{W|фугасну}} гранату Mk I", In("{{W|фугасна}} граната Mk I", F, false, acc), "markup and a mark stay");
+        Eq("{{W|фугасній}} гранаті Mk I", In("{{W|фугасна}} граната Mk I", F, false, dat), "a feminine dative");
+        Eq("дочці фермера яблук", In("дочка фермера яблук", F, true, dat), "к → ц, the genitives after it stay");
+        Eq("поїденою іржею пилкою", In("поїдена іржею пилка", F, false, ins), "an instrumental between adjective and head");
+        Eq("молодої слонової кості", In("молода слонова кість", F, false, gen), "a feminine on a consonant");
+        Eq("велетенську амебу", In("велетенська амеба", F, true, acc), "a feminine accusative, animate alike");
+        Eq("змією", In("змія", F, true, ins), "-ія");
+        Eq("сталлю", In("сталь", F, false, ins), "a doubled consonant");
+        Eq("кашею", In("каша", F, false, ins), "a sibilant feminine");
+        Eq("руці", In("рука", F, false, loc), "к → ц in the locative");
+        // neuter
+        Eq("жовтушного сяйва", In("жовтушне сяйво", N, false, gen), "a neuter genitive");
+        Eq("жовтушному сяйві", In("жовтушне сяйво", N, false, loc), "a neuter locative");
+        Eq("сирого м’яса крокодила", In("сире м’ясо крокодила", N, false, gen), "a neuter with an apostrophe");
+        Eq("алое порта", In("алое порта", N, false, gen), "a loanword stays");
+        Eq("яйцем", In("яйце", N, false, ins), "-е");
+        // plural
+        Eq("вигнутих рогів", In("вигнуті роги", P, false, gen), "a plural genitive");
+        Eq("вигнуті роги", In("вигнуті роги", P, false, acc), "an inanimate plural accusative");
+        Eq("великими жвалами", In("великі жвала", P, false, ins), "a neuter plural");
+        Eq("ікол", In("ікла", P, false, gen), "a vowel between two consonants");
+        Eq("рукавичок", In("рукавички", P, false, gen), "-ки → -ок");
+        Eq("кігтями", In("кігті", P, false, ins), "a soft plural");
+        Eq("ходячих ібисів", In("ходячі ібиси", P, true, acc), "an animate plural accusative");
+        Eq("людей", In("люди", P, true, acc), "an irregular plural");
+        Eq("модифікацій", In("модифікації", P, false, gen), "-ії → -ій");
+        Eq("зябер", In("зябра", P, false, gen), "е before р");
+        Eq("ніші становлення", In("ніша становлення", F, false, gen), "a noun before a verbal noun");
+        Eq("гіперпружних сухожиль", In("гіперпружні сухожилля", P, false, gen), "an adjective before a plural on -лля");
+        Eq("почуттів", In("почуття", P, false, gen), "-ття → -ттів");
+        Eq("сторінки Шредінгера з Літописів", In("сторінка Шредінгера з Літописів", F, false, gen), "a noun before a proper name");
+        Eq("{{B|сапфірову}} статуетку", In("{{B|сапфірова}} статуетка", F, false, acc), "an adjective the lexicon lacks");
+        Eq("вас", UkrainianCases.You(acc), "the player");
+        Eq("Mk I", In("Mk I", M, false, gen), "no Cyrillic: as it is");
+
         Eq("Упав", UkrainianForms.Capitalize("упав"), "capitalize");
         Eq("{{W|Упав}}", UkrainianForms.Capitalize("{{W|упав}}"), "capitalize inside markup");
         Eq("’Ять", UkrainianForms.Capitalize("’ять"), "capitalize skips punctuation");

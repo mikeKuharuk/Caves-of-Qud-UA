@@ -22,6 +22,7 @@ STORE_DIR = REPO / "translations" / "uk"
 OUT_DIR = REPO / "mod" / "Language"
 GENDERS_OUT = REPO / "mod" / "Grammar" / "NounGenders.g.cs"
 ADJECTIVES_OUT = REPO / "mod" / "Grammar" / "AdjectiveForms.g.cs"
+LEXICON_OUT = REPO / "mod" / "Grammar" / "AdjectiveLexicon.g.cs"
 CODE_TABLES = REPO / "mod" / "Grammar" / "CodeTables.g.cs"
 VARIANT_NAMES = "VariantNames.uk.xml"
 CREATURE_TYPES = "CreatureTypes.uk.xml"
@@ -313,6 +314,12 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
     if not ADJECTIVES_OUT.exists() or ADJECTIVES_OUT.read_text(encoding="utf-8") != code:
         ADJECTIVES_OUT.write_text(code, encoding="utf-8", newline="\n")
     print(f"{ADJECTIVES_OUT.name:40} {len(adjectives):6} adjectives")
+    lexicon = adjective_lexicon(files, po_dir, store_dir)
+    nouns = noun_lexicon(files, lexicon, po_dir, store_dir)
+    code = adjective_lexicon_cs(lexicon, nouns)
+    if not LEXICON_OUT.exists() or LEXICON_OUT.read_text(encoding="utf-8") != code:
+        LEXICON_OUT.write_text(code, encoding="utf-8", newline="\n")
+    print(f"{LEXICON_OUT.name:40} {len(lexicon):6} masculine adjectives, {len(nouns)} nouns")
     return problems
 
 
@@ -439,6 +446,82 @@ def adjective_forms(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
                     if key:
                         forms.setdefault(key, [f.strip() for f in m.group(1).split("|")])
     return forms
+
+
+# words that end like a masculine adjective but are nouns: never to be read as one
+LEXICON_NOUNS = {"змій", "буревій", "водій", "кий", "рій", "гній", "палій", "лиходій"}
+LEXICON_WORD = re.compile(r"(?<![\w’'-])([а-щьюяєіїґ’'-]{2,}(?:ий|ій|їй))(?![\w’'])")
+
+
+def adjective_lexicon(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
+                      store_dir: pathlib.Path = STORE_DIR) -> set[str]:
+    """Every masculine adjective the translation uses: words on -ий, -ій, -їй in lower case. mod/Grammar tells an
+    adjective of another gender by them («слонова» is one, «слоновий» being in here; «дочка» is not) when it puts
+    a name in a case (UkrainianCases)."""
+    words: set[str] = set()
+    for name, text in sorted(files.items()):
+        cat, _ = load_catalog(text, name, po_dir, store_dir)
+        for e in cat.entries:
+            if e.obsolete or not e.msgstr:
+                continue
+            words.update(LEXICON_WORD.findall(checks.plain_text(e.msgstr)))
+    return {w for w in words if w not in LEXICON_NOUNS}
+
+
+NAME_WORD = re.compile(r"[а-щьюяєіїґА-ЩЬЮЯЄІЇҐ’'-]+")
+# one noun, then «of» or a possessive before it: «statue of Bel», «apple farmer's daughter»
+NOUN_FIRST = re.compile(r"^(?:(?:a|an|the|some) )?[A-Za-z’'-]+ of |^[^']+'s [A-Za-z-]+$")
+
+
+def noun_lexicon(files: dict[str, str], adjectives: set[str], po_dir: pathlib.Path = PO_DIR,
+                 store_dir: pathlib.Path = STORE_DIR) -> set[str]:
+    """Nouns of the translation, in lower case: a name of one word («мавпа»), a word with a qud-gender note, and the
+    word after a known adjective in a name («велетенська амеба» → «амеба»). UkrainianCases takes such a word for a
+    noun where an unknown word before a noun would read as an adjective («дочка фермера»)."""
+    nouns: set[str] = set()
+
+    def masculine(word: str) -> set[str]:
+        stem = word[:-1]
+        return {stem + "ий", stem + "ій", stem + "їй"}
+
+    for name, text in sorted(files.items()):
+        cat, _ = load_catalog(text, name, po_dir, store_dir)
+        for e in cat.entries:
+            if e.obsolete or not e.msgstr:
+                continue
+            named = bool(DISPLAY_NAME.match(e.msgctxt or ""))
+            gendered = any(QUD_GENDER.match(c) for c in e.translator_comments)
+            if not (named or gendered):
+                continue
+            text = checks.plain_text(e.msgstr)
+            words = [w.lower() for w in NAME_WORD.findall(text)]
+            if len(words) == 1 and len(words[0]) > 2:
+                nouns.add(words[0])
+            # «statue of Bel», «sower's seed»: an English name led by its noun leads with it in Ukrainian too, the
+            # genitive after it («статуя Бела», «насінина сіяча»); a capital («Кахова петля») is a possessive
+            if (named and len(words) > 1 and NOUN_FIRST.match(checks.plain_text(e.msgid)) and text[:1].islower()
+                    and words[0][-1:] in ("а", "я", "е", "є", "о") and not masculine(words[0]) & adjectives):
+                nouns.add(words[0])
+            for before, word in zip(words, words[1:]):
+                if (before[-1:] in ("а", "я", "е", "є", "і", "ї") and masculine(before) & adjectives and len(word) > 2
+                        and not masculine(word) & adjectives):
+                    nouns.add(word)
+    return {n for n in nouns if n not in adjectives}
+
+
+def adjective_lexicon_cs(words: set[str], nouns: set[str] = frozenset()) -> str:
+    body = " ".join(sorted(words))
+    noun_body = " ".join(sorted(nouns))
+    return ("// <auto-generated> by `py tools/qud.py build` from the words of the translation. Not in git.\n"
+            "using System.Collections.Generic;\n\n"
+            "namespace CavesOfQudUA.Grammar\n{\n"
+            "    public static partial class AdjectiveLexicon\n    {\n"
+            "        static partial void Fill(HashSet<string> t)\n        {\n"
+            f'            t.UnionWith("{body}".Split(\' \'));\n'
+            "        }\n\n"
+            "        static partial void FillNouns(HashSet<string> t)\n        {\n"
+            f'            t.UnionWith("{noun_body}".Split(\' \'));\n'
+            "        }\n    }\n}\n")
 
 
 def adjective_forms_cs(forms: dict[str, list[str]]) -> str:
