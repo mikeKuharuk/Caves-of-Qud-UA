@@ -28,7 +28,9 @@ Freehold мод приберемо. Лист Freehold (**Q4**, [`docs/freehold-r
    - `py tools/qud.py validate` — 0 помилок;
    - `py -m unittest discover -s tools/tests`;
    - `dotnet build tools/grammar-build` і `dotnet run --project tools/patch-tests`;
-   - запустити гру, у `build_log.txt` — «Compiling … Success» і «Applying Harmony patches… Success».
+   - запустити гру, у `build_log.txt` — «Compiling … Success» і «Applying Harmony patches… Success»;
+   - у грі wish (Ctrl+W) `testlangreplacers`: вікно з переліком змінних відкривається, а в
+     `Local/VariableReplacers.txt` (поруч із `Player.log`) немає жодного «!=» — приклади замінників мода збіглися.
 3. Номер версії — `Version` у `mod/manifest.json` (гра пише його в тег предмета `manifest_version`).
 4. Завантажити з гри (Mike): «Mods» → мод → кнопка Workshop. Перше завантаження просить прийняти угоду Steam
    Workshop — це робить Mike, на сторінці Steam. Видимість у `workshop.json` — `Private`: перевірити сторінку

@@ -47,7 +47,7 @@ namespace CavesOfQudUA.Grammar
         }
 
         /// <summary>
-        /// =object.p:<for the player>:<for anyone else>= — a phrase that names X in the third person, which «ви»
+        /// =object.p:«for the player»:«for anyone else»= — a phrase that names X in the third person, which «ви»
         /// cannot fill («розтрощує розум (ви)»). The player gets their own wording; anyone else the second form,
         /// where @ stands for the name as =object.name= prints it: =object.p:ваш розум:розум (@)=.
         /// </summary>
@@ -70,6 +70,9 @@ namespace CavesOfQudUA.Grammar
         /// stripped. A name the declension cannot read stays as it is (UkrainianCases).
         /// </summary>
         [VariableReplacer("n", Capitalization = true, Default = "")]
+        [VariableParametrizedExample("acc", "пащеклаца:Пащеклаца", new object[] { "Snapjaw" })]
+        [VariableParametrizedExample("ins", "пащеклацом:Пащеклацом", new object[] { "Snapjaw" })]
+        [VariableParametrizedExample("dat", "вам:Вам", new object[] { "Player" })]
         public static string Name(VariableContext Context, GameObject Object)
         {
             UkCase c = CaseOf(Context);
@@ -86,6 +89,7 @@ namespace CavesOfQudUA.Grammar
 
         /// <summary>=hands.n:ins= — a noun the game passes with its pronouns («руками»).</summary>
         [VariableReplacer("n", Capitalization = true, Default = "")]
+        [VariableParametrizedExample("ins", "руками:Руками", new object[] { "руки:plural" })]
         public static string Name(VariableContext Context, GenderedNoun Noun)
         {
             UkGender gender = Noun.Proper ? UkrainianGender.Of(Noun) : UkrainianGender.OfText(Noun.Name);
@@ -103,6 +107,7 @@ namespace CavesOfQudUA.Grammar
 
         /// <summary>=faction.n:gen= — a faction's name («баратрумитів»).</summary>
         [VariableReplacer("n", Capitalization = true, Default = "")]
+        [VariableParametrizedExample("gen", "баратрумитів:Баратрумитів", new object[] { "Barathrumites" })]
         public static string Name(VariableContext Context, Faction Faction)
         {
             string name = Faction.DisplayName;
@@ -111,6 +116,7 @@ namespace CavesOfQudUA.Grammar
 
         /// <summary>=liquid.n:gen= — a liquid («32 драми прісної води»).</summary>
         [VariableReplacer("n", Capitalization = true, Default = "")]
+        [VariableParametrizedExample("gen", "{{B|води}}:{{B|Води}}", new object[] { "water" })]
         public static string Name(VariableContext Context, XRL.Liquids.BaseLiquid Liquid)
         {
             string name = Liquid.GetName();
@@ -127,6 +133,8 @@ namespace CavesOfQudUA.Grammar
 
         /// <summary>=mutationName.n:gen= — a name the game passes as text: a mutation, a generated name.</summary>
         [VariableReplacer("n", Capitalization = true, Default = "")]
+        [VariableParametrizedExample("gen", "Нічного зору:Нічного зору", new object[] { "Нічний зір" })]
+        [VariableParametrizedExample("acc", "шкіряну броню:Шкіряну броню", new object[] { "шкіряна броня" })]
         public static string Name(VariableContext Context, string Text)
         {
             return Finish(Context, UkrainianCases.Inflect(Text, UkrainianGender.OfText(Text), false, CaseOf(Context)));

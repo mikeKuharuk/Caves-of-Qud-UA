@@ -86,6 +86,14 @@ static class Tests
         int describes = game.GetType("XRL.World.GameObject", true).GetMethods()
             .Count(m => m.Name == "DescribeActivatedAbility" && HarmonyLib.Harmony.GetPatchInfo(m)?.Postfixes.Count > 0);
         Eq("3", describes.ToString(), "every DescribeActivatedAbility is patched");
+        // the brain's lines under a description (BrainPatches): the patch sits on HandleEvent(GetShortDescriptionEvent)
+        MethodBase brainDescription = HarmonyLib.AccessTools.Method(game.GetType("XRL.World.Parts.Brain", true), "HandleEvent",
+            new[] { game.GetType("XRL.World.GetShortDescriptionEvent", true) });
+        Eq("1", (HarmonyLib.Harmony.GetPatchInfo(brainDescription)?.Postfixes.Count ?? 0).ToString(), "the brain's description lines");
+        Eq("Під водою мерехтять цятки.\nВдача: {{g|сумирна}}\nМанера бою: {{r|наступальна}}",
+           mod.GetType("CavesOfQudUA.Patches.BrainLines", true).GetMethod("Translate")
+               .Invoke(null, new object[] { "Під водою мерехтять цятки.\nBase demeanor: {{g|docile}}\nEngagement style: {{r|aggressive}}" }),
+           "the brain's lines in Ukrainian");
 
         SetActive(true);
         const string G = "XRL.Language.Grammar";
@@ -174,6 +182,13 @@ static class Tests
         Add("Test5", "{0} and {0} again", "{0} двічі");
         Eq("пащеклац двічі", Translate("Test5", "пащеклац and пащеклац again"), "a repeated hole");
         Eq("пащеклац and сокира again", Translate("Test5", "пащеклац and сокира again"), "a repeated hole is the same text");
+
+        // the player's melee hit (Combat.cs): a weapon name with markup inside the message's own {{g|…}}
+        Add("Test14", "{{g|You hit {{{0}|(x{1})}} for {2} damage with {3} {4}! [{5}]}}",
+            "{{g|Ви влучаєте {{{0}|(x{1})}} і завдаєте {2} шкоди ({4})! [{5}]}}");
+        Eq("{{g|Ви влучаєте {{Y|(x2)}} і завдаєте 6 шкоди ({{B|мокрий}} залізний довгий меч)! [11]}}",
+           Translate("Test14", "{{g|You hit {{Y|(x2)}} for 6 damage with your {{B|мокрий}} залізний довгий меч! [11]}}"),
+           "a hit message with a coloured weapon");
 
         // «\r\n» lines (the inventory quick keys): looked up without the «\r», which stays
         Add("Test6", "Inventory quick keys", "Швидкі клавіші інвентаря");
