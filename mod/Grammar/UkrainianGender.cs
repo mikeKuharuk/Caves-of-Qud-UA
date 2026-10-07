@@ -62,6 +62,19 @@ namespace CavesOfQudUA.Grammar
             return words.Length == 1 ? UkrainianForms.GuessByEnding(words[0]) : null;
         }
 
+        /// <summary>
+        /// The gender of a name the game passes as text (a body part, a faction, a stat): a translator's qud-gender
+        /// note on the whole or its last words, a word from the code tables, else a guess from the ending of its
+        /// first word that is no adjective («нічний зір» → «зір»: masculine); the masculine when nothing tells.
+        /// </summary>
+        public static UkGender OfText(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return UkGender.Masculine;
+            string plain = UkrainianForms.StripMarkup(text).Trim();
+            return NounGenders.OfWord(plain) ?? CodeWords.GenderOf(plain) ?? OfZoneName(plain) ?? UkrainianCases.GuessGender(plain)
+                   ?? UkGender.Masculine;
+        }
+
         /// <summary>A noun the game passes with its own pronouns (a body part, an effect, a random official).</summary>
         public static UkGender Of(GenderedNoun noun)
         {

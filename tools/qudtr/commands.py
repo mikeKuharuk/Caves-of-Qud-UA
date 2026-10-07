@@ -314,12 +314,15 @@ def cmd_build(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: p
     if not ADJECTIVES_OUT.exists() or ADJECTIVES_OUT.read_text(encoding="utf-8") != code:
         ADJECTIVES_OUT.write_text(code, encoding="utf-8", newline="\n")
     print(f"{ADJECTIVES_OUT.name:40} {len(adjectives):6} adjectives")
-    lexicon = adjective_lexicon(files, po_dir, store_dir)
+    texts = translation_texts(files, po_dir, store_dir)
+    lexicon = adjective_lexicon(files, po_dir, store_dir, texts)
     nouns = noun_lexicon(files, lexicon, po_dir, store_dir)
-    code = adjective_lexicon_cs(lexicon, nouns)
+    stems = noun_stems(vocabulary(texts))
+    code = adjective_lexicon_cs(lexicon, nouns, stems)
     if not LEXICON_OUT.exists() or LEXICON_OUT.read_text(encoding="utf-8") != code:
         LEXICON_OUT.write_text(code, encoding="utf-8", newline="\n")
-    print(f"{LEXICON_OUT.name:40} {len(lexicon):6} masculine adjectives, {len(nouns)} nouns")
+    print(f"{LEXICON_OUT.name:40} {len(lexicon):6} masculine adjectives, {len(nouns)} nouns, "
+          f"{sum(len(s) for s in stems)} noun stems")
     return problems
 
 
@@ -453,19 +456,61 @@ LEXICON_NOUNS = {"змій", "буревій", "водій", "кий", "рій",
 LEXICON_WORD = re.compile(r"(?<![\w’'-])([а-щьюяєіїґ’'-]{2,}(?:ий|ій|їй))(?![\w’'])")
 
 
-def adjective_lexicon(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
-                      store_dir: pathlib.Path = STORE_DIR) -> set[str]:
-    """Every masculine adjective the translation uses: words on -ий, -ій, -їй in lower case. mod/Grammar tells an
-    adjective of another gender by them («слонова» is one, «слоновий» being in here; «дочка» is not) when it puts
-    a name in a case (UkrainianCases)."""
-    words: set[str] = set()
+def translation_texts(files: dict[str, str], po_dir: pathlib.Path = PO_DIR,
+                      store_dir: pathlib.Path = STORE_DIR) -> list[str]:
+    """The plain text (no markup) of every translation."""
+    texts: list[str] = []
     for name, text in sorted(files.items()):
         cat, _ = load_catalog(text, name, po_dir, store_dir)
-        for e in cat.entries:
-            if e.obsolete or not e.msgstr:
-                continue
-            words.update(LEXICON_WORD.findall(checks.plain_text(e.msgstr)))
-    return {w for w in words if w not in LEXICON_NOUNS}
+        texts.extend(checks.plain_text(e.msgstr) for e in cat.entries if not e.obsolete and e.msgstr)
+    return texts
+
+
+def vocabulary(texts: list[str]) -> set[str]:
+    """Every word of the texts, in lower case."""
+    return {w.lower() for t in texts for w in NAME_WORD.findall(t)}
+
+
+def soft_adjective(word: str, words: set[str]) -> bool:
+    """Whether a word on -ій, -їй is a soft adjective: the translation uses its other forms («синій»: «синього»,
+    «синім»). A noun's genitive plural («модифікацій») and a hard adjective's feminine dative («прямокутній») end
+    the same way but have none."""
+    stem = word[:-2]
+    forms = ("його", "йому", "йої", "йою", "їм", "їх", "їми") if word.endswith("їй") else \
+        ("ього", "ьому", "ьої", "ьою", "ім", "іх", "іми")
+    return any(stem + f in words for f in forms)
+
+
+def adjective_lexicon(files: dict[str, str], po_dir: pathlib.Path = PO_DIR, store_dir: pathlib.Path = STORE_DIR,
+                      texts: list[str] | None = None) -> set[str]:
+    """Every masculine adjective the translation uses: words on -ий (and -ій, -їй when soft_adjective) in lower case.
+    mod/Grammar tells an adjective of another gender by them («слонова» is one, «слоновий» being in here; «дочка» is
+    not) when it puts a name in a case (UkrainianCases)."""
+    texts = translation_texts(files, po_dir, store_dir) if texts is None else texts
+    words = vocabulary(texts)
+    found = {w for t in texts for w in LEXICON_WORD.findall(t)}
+    return {w for w in found if w not in LEXICON_NOUNS and (w.endswith("ий") or soft_adjective(w, words))}
+
+
+def noun_stems(words: set[str]) -> tuple[set[str], set[str], set[str], set[str]]:
+    """Stems of the nouns the translation declines, for UkrainianCases to put a plural in the genitive by: feminine
+    by their instrumental, «трубою» → «труб» (hard), «піснею» → «пісн» (soft), «тінню», «кистю» → «тін», «кист» (on a
+    consonant), so «труби» → «труб», «пісні» → «пісень», «тіні» → «тіней»; masculine by a genitive plural the
+    translation has, «залишків» → «залишк», so «залишки» → «залишків». An adjective's stem («великою») in here does
+    no harm: no plural noun is made of it."""
+    masculine = {w[:-2] for w in words if w.endswith("ів") and len(w) > 4 and "-" not in w}
+    hard = {w[:-2] for w in words if w.endswith("ою") and len(w) > 4 and "-" not in w}
+    soft = {w[:-2] for w in words if w.endswith("ею") and len(w) > 4 and "-" not in w}
+    # a word on -а, -я with no masculine form beside it («залоза», but no «залоз», «залозом», «залозові»; «гриба» has
+    # «гриб»); not on -к, where a masculine's dropped vowel hides its nominative («кілка» of «кілок»)
+    hard |= {w[:-1] for w in words if w.endswith("а") and len(w) > 3 and "-" not in w and not w.endswith("ка")
+             and not {w[:-1], w[:-1] + "ом", w[:-1] + "ові", w[:-1] + "ів"} & words}
+    soft |= {w[:-1] for w in words if w.endswith("я") and len(w) > 3 and "-" not in w
+             and not {w[:-1] + "ь", w[:-1] + "й", w[:-1] + "ем", w[:-1] + "єм", w[:-1] + "еві", w[:-1] + "ів",
+                      w[:-1] + "їв"} & words}
+    third = {w[:-2] for w in words if len(w) > 4 and w.endswith("ю") and w[-2] == w[-3] and w[-2] in "лнтдзсцчжш"}
+    third |= {w[:-1] for w in words if len(w) > 4 and w.endswith("стю")}
+    return hard - masculine, soft - masculine, third, masculine
 
 
 NAME_WORD = re.compile(r"[а-щьюяєіїґА-ЩЬЮЯЄІЇҐ’'-]+")
@@ -502,26 +547,41 @@ def noun_lexicon(files: dict[str, str], adjectives: set[str], po_dir: pathlib.Pa
             if (named and len(words) > 1 and NOUN_FIRST.match(checks.plain_text(e.msgid)) and text[:1].islower()
                     and words[0][-1:] in ("а", "я", "е", "є", "о") and not masculine(words[0]) & adjectives):
                 nouns.add(words[0])
-            for before, word in zip(words, words[1:]):
+            for k, (before, word) in enumerate(zip(words, words[1:])):
+                after = words[k + 2] if k + 2 < len(words) else ""
                 if (before[-1:] in ("а", "я", "е", "є", "і", "ї") and masculine(before) & adjectives and len(word) > 2
-                        and not masculine(word) & adjectives):
+                        and not masculine(word) & adjectives and not agrees(word, after)):
                     nouns.add(word)
     return {n for n in nouns if n not in adjectives}
 
 
-def adjective_lexicon_cs(words: set[str], nouns: set[str] = frozenset()) -> str:
-    body = " ".join(sorted(words))
-    noun_body = " ".join(sorted(nouns))
+def agrees(word: str, after: str) -> bool:
+    """Whether word could be an adjective before the noun after it, by their endings («кристалосталева уламкова
+    кольчуга»: «уламкова» is no noun); UkrainianCases.AgreesBeforeNoun reads a name the same way."""
+    if word[-1:] in ("а", "я"):
+        # -ка ends a noun (дочка, коробка) far more often than an adjective
+        if word.endswith("ка") and not word.endswith(("ська", "цька", "зька")):
+            return False
+        return after[-1:] in ("а", "я", "ь")
+    if word[-1:] in ("е", "є"):
+        return after[-1:] in ("о", "е", "є", "я")
+    if word[-1:] in ("і", "ї"):
+        return after[-1:] in ("и", "і", "ї", "а", "я")
+    return False
+
+
+def adjective_lexicon_cs(words: set[str], nouns: set[str] = frozenset(),
+                         stems: tuple[set[str], ...] = (frozenset(),) * 4) -> str:
+    def fill(name: str, *sets: set[str]) -> str:
+        params = ", ".join(f"HashSet<string> t{i}" for i in range(len(sets)))
+        body = "".join(f'            t{i}.UnionWith("{" ".join(sorted(s))}".Split(\' \'));\n' for i, s in enumerate(sets))
+        return f"        static partial void {name}({params})\n        {{\n{body}        }}\n"
     return ("// <auto-generated> by `py tools/qud.py build` from the words of the translation. Not in git.\n"
             "using System.Collections.Generic;\n\n"
             "namespace CavesOfQudUA.Grammar\n{\n"
             "    public static partial class AdjectiveLexicon\n    {\n"
-            "        static partial void Fill(HashSet<string> t)\n        {\n"
-            f'            t.UnionWith("{body}".Split(\' \'));\n'
-            "        }\n\n"
-            "        static partial void FillNouns(HashSet<string> t)\n        {\n"
-            f'            t.UnionWith("{noun_body}".Split(\' \'));\n'
-            "        }\n    }\n}\n")
+            + fill("Fill", words) + "\n" + fill("FillNouns", nouns) + "\n" + fill("FillStems", *stems)
+            + "    }\n}\n")
 
 
 def adjective_forms_cs(forms: dict[str, list[str]]) -> str:

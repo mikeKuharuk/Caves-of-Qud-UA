@@ -81,13 +81,18 @@ def placeholder_key(token: str) -> str:
 
 
 # =X.v:<3 од.>:<2 мн.>[:<3 мн.>]=, =X.g:<ч.>:<ж.>[:<с.>[:<мн.>[:<гравець>]]]=, =N.plural:<1>:<2–4>:<5+>=,
-# =X.p:<для гравця>[:<для інших, @ — ім’я>[:<коли нікого немає: лише хвости шкоди, DamagePatches>]]= (mod/Grammar)
-UK_GRAMMAR = re.compile(r"^(?:[A-Za-z_][\w]*\.)+(v|V|g|G|plural|p|P)(?::|$)")
+# =X.p:<для гравця>[:<для інших, @ — ім’я>[:<коли нікого немає: лише хвости шкоди, DamagePatches>]]=,
+# =X.n:<відмінок>[:<параметри name>]= (mod/Grammar)
+UK_GRAMMAR = re.compile(r"^(?:[A-Za-z_][\w]*\.)+(v|V|g|G|plural|p|P|n|N)(?::|$)")
 UK_GRAMMAR_FORMS = {"v": (2, 3), "g": (2, 5), "plural": (3, 3), "p": (1, 3)}
+# the cases of =X.n:…= (UkrainianCases.Parse) and the game's own parameters of name that may follow
+UK_CASES = ("nom", "gen", "dat", "acc", "ins", "loc")
+NAME_PARAMS = {"single", "long", "withTitles", "asIfKnown", "stripped", "noConfusion"}
 # the same, with forms that may contain spaces: the game accepts them, PLACEHOLDER does not see them
-UK_GRAMMAR_SPACED = re.compile(r"=((?:[A-Za-z_]\w*\.)+(?:v|V|g|G|plural|p|P):[^=\n]*\s[^=\n]*)=")
-# names a =X.p:…= stands for (its @): =object.name=, =object.name:withTitles=, =object.the.name's=
-NAME_OF = re.compile(r"^\w+(?:\.the|\.a)?\.(?:name|Name)\b")
+UK_GRAMMAR_SPACED = re.compile(r"=((?:[A-Za-z_]\w*\.)+(?:v|V|g|G|plural|p|P|n|N):[^=\n]*\s[^=\n]*)=")
+# names a =X.p:…= (its @) and a =X.n:…= stand for: =object.name=, =object.name:withTitles=, =object.the.name's=,
+# =limb.ordinalName=, =item.the.basename=
+NAME_OF = re.compile(r"^\w+(?:\.the|\.a)?\.(?:name|Name|ordinalName|basename)\b")
 # English grammar the game computes for an object: a translation may drop it for Ukrainian grammar
 EN_GRAMMAR = re.compile(
     r"^(?:[A-Za-z_]\w*\.)+(?:does|doesly|did|didly|verb|ternaryVerb|t|a|an|the|it|its|is|are|has|have|was|were|itis|"
@@ -153,6 +158,13 @@ def uk_grammar_problem(key: str) -> str | None:
     head = key.split("|", 1)[0]
     name = UK_GRAMMAR.match(head).group(1)
     forms = head.split(":")[1:]
+    if name.lower() == "n":
+        if not forms or forms[0] not in UK_CASES:
+            return f"={key}= needs a case first: {', '.join(UK_CASES)}"
+        unknown = [f for f in forms[1:] if f not in NAME_PARAMS]
+        if unknown:
+            return f"={key}= has parameter(s) the name does not take: {unknown} (only {', '.join(sorted(NAME_PARAMS))})"
+        return None
     lo, hi = UK_GRAMMAR_FORMS[name.lower()]
     # p's third form, for no one to blame, may say nothing: «від вогню=object.p: (ваш): (@):=!»
     filled = forms[:2] if name.lower() == "p" else forms
@@ -355,10 +367,10 @@ def check(msgid: str, msgstr: str, compound: bool = False, template: bool = Fals
     if uses_uk_grammar:
         for key in [k for k in missing if EN_GRAMMAR_BARE.match(k)]:
             del missing[key]
-    # =object.p:ваш розум:розум (@)= names its object
+    # =object.p:ваш розум:розум (@)= and =object.n:acc= name their object
     p_roots = {placeholder_root(k) for k in list(dst_ph) + spaced
-               if UK_GRAMMAR.match(k) and UK_GRAMMAR.match(k).group(1).lower() == "p"}
-    for key in [k for k in missing if placeholder_root(k) in p_roots and NAME_OF.match(k)]:
+               if UK_GRAMMAR.match(k) and UK_GRAMMAR.match(k).group(1).lower() in ("p", "n")}
+    for key in [k for k in missing if placeholder_root(k) in p_roots and (NAME_OF.match(k) or k == placeholder_root(k))]:
         del missing[key]
     # the narration table (Code.DidX) names its participants <subject>, <object>, <indirect>: the translation
     # brings the variables for them

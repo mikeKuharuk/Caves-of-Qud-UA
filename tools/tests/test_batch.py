@@ -53,6 +53,11 @@ class Batch(unittest.TestCase):
         e = next(e for e in self.cat.entries if e.msgctxt == "option[ID=B]@DisplayText")
         self.assertTrue(e.fuzzy)
         self.assertEqual(e.translator_comments, ["перевірити в грі"])
+        # an empty comment keeps the old one; clear_comment drops it
+        batch.apply_rows(self.cat, [dict(r, fuzzy=False, comment="")])
+        self.assertEqual(e.translator_comments, ["перевірити в грі"])
+        batch.apply_rows(self.cat, [dict(r, fuzzy=False, comment="", clear_comment=True)])
+        self.assertEqual(e.translator_comments, [])
 
     def test_rows_carry_the_unit_kind(self):
         self.assertEqual(self.row("option[ID=A]@Values")["flags"], ["qud-compound"])

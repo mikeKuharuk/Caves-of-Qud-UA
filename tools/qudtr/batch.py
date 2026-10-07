@@ -7,7 +7,8 @@ A worksheet is a JSON Lines file under work/batch/ (not in git: it carries the E
 
 `worksheet` writes one from a local PO catalog; after the "uk" fields are filled in, `apply`
 puts them into the catalog (and the store). Lines with an empty "uk" are skipped; a line may
-carry "fuzzy": true to mark a doubtful translation, and "comment" for a translator comment.
+carry "fuzzy": true to mark a doubtful translation, "comment" for a translator comment (it replaces
+the old one), and "clear_comment": true to drop the old comment.
 """
 from __future__ import annotations
 
@@ -103,5 +104,7 @@ def apply_rows(cat: po.Catalog, rows: list[dict]) -> tuple[int, list[str]]:
         e.fuzzy = bool(r.get("fuzzy"))
         if r.get("comment"):
             e.translator_comments = r["comment"].split("\n")
+        elif r.get("clear_comment"):
+            e.translator_comments = []
         applied += 1
     return applied, problems

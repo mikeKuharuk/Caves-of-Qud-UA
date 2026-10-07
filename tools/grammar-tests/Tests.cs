@@ -124,9 +124,13 @@ static class Tests
         // names in a case (UkrainianCases), as the game's names stand in the translation
         foreach (string adjective in new[] { "шкіряний", "фугасний", "велетенський", "поїдений", "молодий", "слоновий",
                                              "базовий", "механічний", "жовтушний", "сирий", "вигнутий", "великий",
-                                             "херувимський", "задушливий", "ходячий", "вогняний", "печерний" })
+                                             "херувимський", "задушливий", "ходячий", "вогняний", "печерний",
+                                             "гравірований", "мармуровий", "письмовий", "обліплений" })
             AdjectiveLexicon.Add(adjective);
         AdjectiveLexicon.AddNoun("дочка");   // the build learns it from «apple farmer's daughter»
+        AdjectiveLexicon.AddFeminineStem("труб");               // «трубою»
+        AdjectiveLexicon.AddFeminineStem("пісн", soft: true);    // «піснею»
+        AdjectiveLexicon.AddFeminineStem("тін", third: true);    // «тінню»
         string In(string name, UkGender gender, bool animate, UkCase c) => UkrainianCases.Inflect(name, gender, animate, c);
         var M = UkGender.Masculine; var F = UkGender.Feminine; var N = UkGender.Neuter; var P = UkGender.Plural;
         var gen = UkCase.Genitive; var dat = UkCase.Dative; var acc = UkCase.Accusative; var ins = UkCase.Instrumental;
@@ -184,6 +188,66 @@ static class Tests
         Eq("почуттів", In("почуття", P, false, gen), "-ття → -ттів");
         Eq("сторінки Шредінгера з Літописів", In("сторінка Шредінгера з Літописів", F, false, gen), "a noun before a proper name");
         Eq("{{B|сапфірову}} статуетку", In("{{B|сапфірова}} статуетка", F, false, acc), "an adjective the lexicon lacks");
+        // masculine: -у, alternations, soft and hard -ар, the dropping о
+        Eq("письмового стола", In("письмовий стіл", M, false, gen), "і → о");
+        Eq("мосту на південь", In("міст на південь", M, false, gen), "і → о with -у");
+        Eq("газу", In("газ", M, false, gen), "a substance takes -у");
+        Eq("клею", In("клей", M, false, gen), "a soft substance takes -ю");
+        Eq("сланцю", In("сланець", M, false, gen), "-ець with -ю");
+        Eq("самоцвіту", In("самоцвіт", M, false, gen), "a compound of -цвіт");
+        Eq("радара", In("радар", M, false, gen), "a thing on -ар is hard");
+        Eq("ліхтаря", In("ліхтар", M, false, gen), "but not ліхтар");
+        Eq("аптекаря", In("аптекар", M, true, acc), "a person on -ар is soft");
+        Eq("панцира", In("панцир", M, false, gen), "-ир is hard");
+        Eq("упиря", In("упир", M, true, acc), "but not упир");
+        Eq("блока", In("блок", M, false, gen), "no vowel drops from блок");
+        Eq("огірка", In("огірок", M, false, gen), "a vowel drops from огірок");
+        Eq("пса", In("пес", M, true, acc), "пес → пса");
+        Eq("релікварію повернення", In("релікварій повернення", M, false, gen), "-арій is a noun");
+        Eq("вартового", In("вартовий", M, true, acc), "an adjective that names a person");
+        Eq("голема-мопанго-колісничого", In("голем-мопанго-колісничий", M, true, gen), "the same inside a compound");
+        Eq("гамма-метелика", In("гамма-метелик", M, true, acc), "a prefix stays");
+        Eq("Фіне", In("Фіне", M, true, gen), "a masculine on -е is foreign");
+        Eq("моа", In("моа", F, true, gen), "a vowel before -а: a loanword");
+        Eq("{{m|тако супрема}}", In("{{m|тако супрема}}", N, false, gen), "тако never changes");
+        Eq("Ґям’йо", In("Ґям’йо", N, true, gen), "nor a name on -йо");
+        // other genders
+        Eq("{{K|обліплених дьогтем кісток}}", In("{{K|обліплені дьогтем кістки}}", P, false, gen), "a masculine instrumental between");
+        Eq("пишно гравірованих мармурових дверей", In("пишно гравіровані мармурові двері", P, false, gen), "an adverb before");
+        Eq("екуемекійської зелені", In("екуемекійська зелень", F, false, gen), "-ська before a noun on -ь");
+        Eq("гвинтівкової турелі", In("гвинтівкова турель", F, false, gen), "an unknown adjective before -ь");
+        Eq("зупинки самохода", In("зупинка самохода", F, false, gen), "-ка is a noun");
+        Eq("Про мімікрію", In("Про мімікрію", F, false, gen), "a title on a preposition stays");
+        Eq("троленяти", In("троленя", N, true, gen), "a young creature");
+        Eq("Багатоокого", In("Багатоокий", N, true, gen), "a neuter name on -ий");
+        Eq("Дойоби", In("Дойоба", N, true, gen), "a neuter name on -а");
+        Eq("реле", In("реле", N, false, gen), "реле never changes");
+        // plural genitives
+        Eq("труб", In("труби", P, false, gen), "a feminine plural ends bare");
+        Eq("грибів", In("гриби", P, false, gen), "a masculine plural takes -ів");
+        Eq("гаків", In("гаки", P, false, gen), "-ки after a vowel: masculine");
+        Eq("пісень", In("пісні", P, false, gen), "a soft feminine plural");
+        Eq("тіней", In("тіні", P, false, gen), "a feminine plural on a consonant");
+        Eq("цінностей", In("цінності", P, false, gen), "-ості → -остей");
+        Eq("полів", In("поля", P, false, gen), "a neuter plural on -я");
+        Eq("ясел", In("ясла", P, false, gen), "е between two consonants");
+        Eq("гір", In("гори", P, false, gen), "an alternation in the plural");
+        Eq("Мімік і скаженоголовок", In("Мімік і скаженоголовок", P, false, gen), "a plural name with no plural head");
+        Eq("глина, обшивка й тканина", In("глина, обшивка й тканина", P, false, gen), "a list stays");
+        Eq("Злочин і кара", In("Злочин і кара", M, false, gen), "two things joined stay");
+        Eq("купи брухту й глини", In("купа брухту й глини", F, false, gen), "but not a genitive joined");
+        Eq("біонічних кистей", In("біонічні кисті", P, false, gen), "-сті → -стей");
+        Eq("виповзка василіска", In("виповзок василіска", M, false, gen), "a vowel drops after two consonants");
+        Eq("строку", In("строк", M, false, dat), "but not after тр");
+        Eq("Кристалічності", In("Кристалічність", F, false, gen), "-ість → -ості");
+        Eq("Кристалічністю", In("Кристалічність", F, false, ins), "but -істю");
+        Eq("в’язки шумотрави", In("в’язка шумотрави", F, false, gen), "an adjective's look-alike before a genitive");
+        Eq("механічного херувима-квітку", In("механічний херувим-квітка", M, true, acc), "each part in its own accusative");
+        Eq("Повісті про страх", In("Повість про страх", F, false, gen), "повість → повісті");
+        Eq("вартового Святилища", In("вартовий Святилища", M, true, acc), "an adjective before a proper genitive");
+        Eq("іссахарі-стрільця", In("іссахарі-стрілець", M, true, acc), "-лець → -льця");
+        AdjectiveLexicon.AddMasculinePluralStem("залишк");   // «залишків»
+        Eq("залишків багаття", In("залишки багаття", P, false, gen), "a masculine plural on -ки");
         Eq("вас", UkrainianCases.You(acc), "the player");
         Eq("Mk I", In("Mk I", M, false, gen), "no Cyrillic: as it is");
 

@@ -106,6 +106,19 @@ class Checks(unittest.TestCase):
         self.assertIn("empty-wrap", codes(src, "=subject.Name= (=subject.to.the.direction=) падає!"))
         self.assertEqual(checks.check(src, "=subject.Name= =subject.to.the.direction|before:(|after:)= падає!"), [])
 
+    def test_a_name_in_a_case(self):
+        # =object.n:acc= names its object in a case (mod/Grammar/UkrainianCases.cs): it stands for =object.the.name=,
+        # =object.name= and a bare =stat=
+        self.assertEqual(checks.check("You cannot find a path to =object.the.name=.", "Ви не знаходите шляху до =object.n:gen=."), [])
+        self.assertEqual(checks.check("=subject.T= =verb:hit= =object.name=.", "=subject.Name= =subject.v:б’є:б’єте= =object.n:acc=."), [])
+        self.assertEqual(checks.check("+2 =stat=", "+2 до =stat.n:gen="), [])
+        self.assertEqual(checks.check("=object.the.name=", "=object.N:ins:withTitles="), [])
+        # the case comes first and must be one the mod knows; then only the game's own parameters of name
+        self.assertIn("uk-grammar", codes("=object.name=", "=object.n=", severity="error"))
+        self.assertIn("uk-grammar", codes("=object.name=", "=object.n:accusative=", severity="error"))
+        self.assertIn("uk-grammar", codes("=object.name=", "=object.n:withTitles:acc=", severity="error"))
+        self.assertIn("uk-grammar", codes("=object.name=", "=object.n:acc:plural=", severity="error"))
+
     def test_grammar_feedback_of_the_first_packages(self):
         # a fifth form for the player is allowed in g
         self.assertNotIn("uk-grammar", codes("=object.t=", "=object.g:його:її:його:їх:вас="))
