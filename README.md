@@ -1,4 +1,4 @@
-<p align="center"><img src="mod/preview.jpg" alt="Caves of Qud — український переклад" width="512"></p>
+<p align="center"><img src="mod/preview.jpg" alt="Caves of Qud — український переклад" width="800"></p>
 
 # Caves of Qud — українською
 
