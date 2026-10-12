@@ -18,10 +18,12 @@
   - Невеликі цитати в документації й тестах ілюструють технічні питання.
   - Глосарій (`glossary/terms.tsv`) — список окремих назв і термінів гри з українськими
     відповідниками, а не текст гри.
-- Готові файли моду (`mod/Language/*.uk.xml`) генеруються й поширюються лише як сам мод. Формат
+- Готові файли моду (`mod/Language/*.uk.xml`) генеруються й поширюються лише як сам мод (Steam Workshop). Формат
   локалізації Freehold вимагає, щоб у них були англійські ідентифікатори рядків (для таблиць
   рядків ідентифікатор — це англійський текст). Англійською лишаються й неперекладені частини
   записів, які гра замінює цілком.
+- Картинка моду (`mod/preview.jpg`, `mod/preview.png`) — наш арт; назва й логотип Caves of Qud на ній належать
+  Freehold Games.
 - Якщо Freehold Games попросять щось прибрати або змінити, ми зробимо це одразу.
 
 ## In English
@@ -45,7 +47,9 @@
   - The glossary (`glossary/terms.tsv`) lists individual names and terms from the game with their
     Ukrainian equivalents, not the game's text.
 - The built mod files (`mod/Language/*.uk.xml`) are generated and distributed only as the mod
-  itself. Freehold's localization format requires them to contain English string IDs (for string
+  itself (Steam Workshop). Freehold's localization format requires them to contain English string IDs (for string
   tables the ID is the English text). Untranslated parts of entries that the game replaces as a
   whole also stay in English there.
+- The mod's picture (`mod/preview.jpg`, `mod/preview.png`) is our own art; the Caves of Qud name and logo on it
+  belong to Freehold Games.
 - If Freehold Games ask us to remove or change anything, we will do so promptly.

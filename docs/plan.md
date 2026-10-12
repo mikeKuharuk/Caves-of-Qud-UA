@@ -448,6 +448,9 @@ Mike вичитує, у грі перевіряється вибірково.
 - [x] Steam Workshop (2026-10-06): `mod/workshop.json` (назва, опис BBCode українською й англійською, теги,
       видимість `Private`), прев’ю 512×512 `mod/preview.png` (`tools/preview.ps1`), версія 0.1.0, порядок релізу —
       [`docs/release.md`](release.md). Завантажує Mike з гри, після рішення.
+- [x] **Реліз 0.1.0 у Steam Workshop (2026-10-12)**: предмет
+      [3818344334](https://steamcommunity.com/sharedfiles/filedetails/?id=3818344334), публічний; прев’ю — арт Mike
+      (`mod/preview.jpg`, він же банер README). README: встановлення зі Workshop для гравців.
 - [ ] Збір відгуків і звітів про пропущені рядки.
 
 ---
