@@ -1,33 +1,30 @@
-﻿# Draws the Workshop preview, mod/preview.png (512×512): the game's dark teal, a yellow frame, the Ukrainian flag's
-# colours, and the mod's name. Our own picture, no game art. Run: powershell -File tools/preview.ps1
+# Makes the mod's picture from an artwork: mod/preview.jpg, 1024x1024, a JPEG under Steam's 1 MB limit for a Workshop
+# preview. The game shows it in the mod list, Steam on the item's page, and README.md at its top.
+# Run: powershell -File tools/preview.ps1 <artwork> (a square picture; a wider one is cut to its middle square)
+param([Parameter(Mandatory = $true)][string]$Source)
 Add-Type -AssemblyName System.Drawing
-$out = Join-Path $PSScriptRoot "..\mod\preview.png"
-$size = 512
-$bmp = New-Object System.Drawing.Bitmap $size, $size
-$g = [System.Drawing.Graphics]::FromImage($bmp)
-$g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
-$g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::AntiAliasGridFit
-function Color($hex) { [System.Drawing.ColorTranslator]::FromHtml($hex) }
-$g.Clear((Color "#0D1F1C"))
-$frame = New-Object System.Drawing.Pen (Color "#CFC041"), 4
-$g.DrawRectangle($frame, 14, 14, $size - 28, $size - 28)
-$thin = New-Object System.Drawing.Pen (Color "#155352"), 2
-$g.DrawRectangle($thin, 26, 26, $size - 52, $size - 52)
-$center = New-Object System.Drawing.StringFormat
-$center.Alignment = [System.Drawing.StringAlignment]::Center
-$center.LineAlignment = [System.Drawing.StringAlignment]::Center
-function Text($s, $font, $px, $style, $hex, $y, $h) {
-    $f = New-Object System.Drawing.Font -ArgumentList $font, $px, $style, ([System.Drawing.GraphicsUnit]::Pixel)
-    $b = New-Object System.Drawing.SolidBrush -ArgumentList (Color $hex)
-    $box = New-Object System.Drawing.RectangleF -ArgumentList 0, $y, 512, $h
-    $g.DrawString($s, $f, $b, $box, $center)
+$out = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\mod\preview.jpg"))
+$side = 1024
+$quality = 90L
+$art = [System.Drawing.Image]::FromFile((Resolve-Path $Source).Path)
+try {
+    $cut = [Math]::Min($art.Width, $art.Height)
+    $from = New-Object System.Drawing.Rectangle -ArgumentList ([int](($art.Width - $cut) / 2)), ([int](($art.Height - $cut) / 2)), $cut, $cut
+    $to = New-Object System.Drawing.Rectangle -ArgumentList 0, 0, $side, $side
+    $bmp = New-Object System.Drawing.Bitmap -ArgumentList $side, $side
+    $g = [System.Drawing.Graphics]::FromImage($bmp)
+    $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+    $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
+    $g.DrawImage($art, $to, $from, [System.Drawing.GraphicsUnit]::Pixel)
+    $jpeg = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq "image/jpeg" }
+    $params = New-Object System.Drawing.Imaging.EncoderParameters -ArgumentList 1
+    $params.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter -ArgumentList ([System.Drawing.Imaging.Encoder]::Quality), $quality
+    $bmp.Save($out, $jpeg, $params)
+    $g.Dispose()
+    $bmp.Dispose()
+} finally {
+    $art.Dispose()
 }
-Text "CAVES OF QUD" "Consolas" 44 ([System.Drawing.FontStyle]::Bold) "#B1C9C3" 70 70
-$g.FillRectangle((New-Object System.Drawing.SolidBrush (Color "#0057B7")), 106, 165, 300, 48)
-$g.FillRectangle((New-Object System.Drawing.SolidBrush (Color "#FFD700")), 106, 213, 300, 48)
-Text "Українська" "Segoe UI" 66 ([System.Drawing.FontStyle]::Bold) "#FFFFFF" 278 96
-Text "переклад гри · Ukrainian translation" "Segoe UI" 21 ([System.Drawing.FontStyle]::Regular) "#B1C9C3" 372 40
-Text "lang-experimental 2.0.212+" "Consolas" 18 ([System.Drawing.FontStyle]::Regular) "#77BFCF" 430 32
-$bmp.Save($out, [System.Drawing.Imaging.ImageFormat]::Png)
-$g.Dispose(); $bmp.Dispose()
-"wrote $out"
+$bytes = (Get-Item $out).Length
+"wrote $out ($side x $side, $bytes bytes)"
+if ($bytes -ge 1MB) { throw "the preview is over Steam's 1 MB: lower the quality" }

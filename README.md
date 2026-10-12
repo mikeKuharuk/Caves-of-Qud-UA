@@ -1,3 +1,5 @@
+<p align="center"><img src="mod/preview.jpg" alt="Caves of Qud — український переклад" width="512"></p>
+
 # Caves of Qud — українською
 
 Неофіційний український переклад [Caves of Qud](https://store.steampowered.com/app/333640/Caves_of_Qud/)
