@@ -44,7 +44,7 @@ namespace CavesOfQudUA.Patches
 
     /// <summary>
     /// The description the code builds again from the ability's template with its numbers (DescribeActivatedAbility,
-    /// on each change of level, stance or equipment). The template is Ukrainian; the lines Templates.StatCollector adds
+    /// on each change of level, stance or equipment). The template is Ukrainian; the lines StatCollector adds
     /// under it are English («Cooldown reduced by 5 due to Сила волі: висока.», «Damage increased by 1-2 due to high
     /// strength.»): those go through the Abilities table line by line, the template's own lines pass.
     /// </summary>
@@ -73,7 +73,7 @@ namespace CavesOfQudUA.Patches
     [HarmonyPatch(typeof(XMLTemplateReplacers), nameof(XMLTemplateReplacers.Value))]
     static class StatValuePatch
     {
-        static void Prefix(Templates.StatCollector Stats, string Key, out string __state)
+        static void Prefix(XRL.Templates.StatCollector Stats, string Key, out string __state)
         {
             __state = null;
             if (!Uk.Active || Stats == null || Key == null
@@ -84,7 +84,7 @@ namespace CavesOfQudUA.Patches
             Stats.values[Key] = (shown, entry.changes, entry.changedState);
         }
 
-        static void Postfix(Templates.StatCollector Stats, string Key, string __state)
+        static void Postfix(XRL.Templates.StatCollector Stats, string Key, string __state)
         {
             if (__state == null || !Stats.values.TryGetValue(Key, out (string text, bool changes, int changedState) entry))
                 return;

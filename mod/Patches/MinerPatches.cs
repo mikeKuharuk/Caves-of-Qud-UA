@@ -71,7 +71,7 @@ namespace CavesOfQudUA.Patches
     [HarmonyPatch(typeof(Miner), nameof(Miner.CollectStats))]
     static class MinerStatsPatch
     {
-        static void Postfix(Miner __instance, Templates.StatCollector stats)
+        static void Postfix(Miner __instance, XRL.Templates.StatCollector stats)
         {
             if (!Uk.Active || stats == null || !Uk.HasCyrillic(__instance.MineName)) return;
             stats.Set("MineDisplayName", __instance.MineName.Trim() + " Mk " + XRL.Language.Grammar.GetRomanNumeral(__instance.Mark));
