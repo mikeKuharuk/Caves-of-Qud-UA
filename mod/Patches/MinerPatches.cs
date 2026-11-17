@@ -21,29 +21,53 @@ namespace CavesOfQudUA.Patches
     [HarmonyPatch(typeof(Miner), nameof(Miner.SetupMinerConfiguration))]
     static class MinerNamePatch
     {
-        static void Prefix(Miner __instance, out bool __state)
+        static void Postfix(Miner __instance)
         {
-            __state = string.IsNullOrEmpty(__instance.MineType);   // the code names the robot only this first time
+            if (Uk.Active) MinerNames.Fix(__instance);
         }
+    }
 
-        static void Postfix(Miner __instance, bool __state)
+    /// <summary>
+    /// A robot from a save made before MinerNamePatch (2026-10-04) keeps the code's names: «… граната Mk III miner
+    /// mk III», «Поставити міну [… граната Mk III Mk III]». Once its parts are read, it gets ours, as a new one does.
+    /// </summary>
+    [HarmonyPatch(typeof(GameObject), nameof(GameObject.FinalizeRead))]
+    static class MinerLoadPatch
+    {
+        static void Postfix(GameObject __instance)
         {
-            if (!Uk.Active || !__state || !Uk.HasCyrillic(__instance.MineName)) return;
+            if (!Uk.Active) return;
+            Miner miner = __instance.GetPart<Miner>();
+            if (miner != null) MinerNames.Fix(miner);
+        }
+    }
+
+    public static class MinerNames
+    {
+        /// <summary>
+        /// The robot's name, its ability's and its MineName from the grenade's Ukrainian name, while MineName still is
+        /// that whole name («… граната Mk I »): the code's first naming, or a save from before. Ours has no «граната»
+        /// left, so a second call does nothing.
+        /// </summary>
+        public static void Fix(Miner miner)
+        {
+            if (!Uk.HasCyrillic(miner.MineName)) return;
             try
             {
-                MineName mine = MineName.Of(__instance.MineName);
+                MineName mine = MineName.Of(miner.MineName);
                 if (mine == null) return;
-                string roman = XRL.Language.Grammar.GetRomanNumeral(__instance.Mark);
-                __instance.MineName = mine.Kind + " ";
-                GameObject robot = __instance.ParentObject;
+                string roman = XRL.Language.Grammar.GetRomanNumeral(miner.Mark);
+                miner.MineName = mine.Kind + " ";
+                GameObject robot = miner.ParentObject;
+                if (robot == null) return;
                 if (!robot.HasProperName)
                 {
-                    string noun = CodeTables.Get("Words", __instance.MineTimer == "-1" ? "miner" : "bomber");
+                    string noun = CodeTables.Get("Words", miner.MineTimer == "-1" ? "miner" : "bomber");
                     if (noun != null) robot.Render.DisplayName = mine.Robot(noun) + " Mk " + roman;
                 }
-                if (__instance.ActivatedAbilityID != Guid.Empty)
-                    robot.SetActivatedAbilityDisplayName(__instance.ActivatedAbilityID,
-                                                         "Lay Mine [" + __instance.MineName + "mk " + roman + "]");
+                if (miner.ActivatedAbilityID != Guid.Empty)
+                    robot.SetActivatedAbilityDisplayName(miner.ActivatedAbilityID,
+                                                         "Lay Mine [" + miner.MineName + "mk " + roman + "]");
             }
             catch (Exception) { }   // a name left as the code made it must never break the robot
         }

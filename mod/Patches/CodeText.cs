@@ -37,11 +37,13 @@ namespace CavesOfQudUA.Patches
         // («Кидок проти кровотечі: =statistics[Toughness].title=»): English letters, but nothing to translate
         static readonly Regex Keybind = new Regex(@"\{\{keybind\|[^{}]*\}\}");
         static readonly Regex GameVariable = new Regex(@"=[A-Za-z_][\w.\[\]]*(?:[:|#][^=\n]*)?=");
+        // a device's mark in our names («{{W|фугасна}} граната Mk III»): Latin, but the Ukrainian keeps it as it is
+        static readonly Regex Mark = new Regex(@"(?<![\p{L}\d])Mk [IVXLC]+(?![\p{L}\d])");
 
-        /// <summary>What the player reads of text: its markup, key names and unreplaced variables aside.</summary>
+        /// <summary>What the player reads of text: its markup, key names, unreplaced variables and marks aside.</summary>
         static string Readable(string text)
         {
-            return UkrainianForms.StripMarkup(GameVariable.Replace(Keybind.Replace(text, " "), " "));
+            return UkrainianForms.StripMarkup(GameVariable.Replace(Keybind.Replace(Mark.Replace(text, " "), " "), " "));
         }
 
         /// <summary>Whether text, its markup aside, has English in it: what the string tables did not translate.</summary>

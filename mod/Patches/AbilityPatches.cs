@@ -106,9 +106,28 @@ namespace CavesOfQudUA.Patches
             string title = m.Success ? CodeText.StatTitle(m.Groups[1].Value) : null;
             return title == null ? null : title + " " + m.Groups[2].Value;
         }
+
+        static readonly Regex StatInText = new Regex(@"(?<![\p{L}\d])([A-Z][a-z]+) (\d+)(?![\p{L}\d])");
+
+        /// <summary>
+        /// A Ukrainian description built before StatValuePatch, as a save keeps it: «Кидок проти падіння:
+        /// {{G|Strength 21}}» gets the statistic's title, «Сила 21». A capitalized word that is no statistic stays.
+        /// </summary>
+        public static string InText(string text)
+        {
+            if (string.IsNullOrEmpty(text) || !Uk.HasCyrillic(text)) return text;
+            return StatInText.Replace(text, m =>
+            {
+                string title = CodeText.StatTitle(m.Groups[1].Value);
+                return title == null ? m.Value : title + " " + m.Groups[2].Value;
+            });
+        }
     }
 
-    /// <summary>An ability from a save made in English, or before the table knew its name.</summary>
+    /// <summary>
+    /// An ability from a save made in English, or before the table knew its name; a description saved before
+    /// StatValuePatch has its statistics' values in English (StatValues.InText).
+    /// </summary>
     [HarmonyPatch(typeof(ActivatedAbilityEntry), nameof(ActivatedAbilityEntry.Read))]
     static class AbilityLoadPatch
     {
@@ -116,7 +135,7 @@ namespace CavesOfQudUA.Patches
         {
             if (!Uk.Active) return;
             __instance.DisplayName = CodeText.Translate("Abilities", __instance.DisplayName);
-            __instance.Description = CodeText.Translate("Abilities", __instance.Description);
+            __instance.Description = CodeText.Translate("Abilities", StatValues.InText(__instance.Description));
         }
     }
 }

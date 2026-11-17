@@ -255,6 +255,9 @@ static class Tests
         Eq("False", HasEnglish("{{W|[{{keybind|Esc}}]}} {{y|Скасувати}}"), "a key's name");
         Eq("False", HasEnglish("Кидок проти кровотечі: =statistics[Toughness].title= "), "an unreplaced variable");
         Eq("True", HasEnglish("{{W|[{{keybind|Esc}}]}} {{y|Cancel}}"), "English beside a key's name");
+        // a device's mark is no English either; the code's own lower-case «mk» beside English words still is
+        Eq("False", HasEnglish("Поставити міну [{{K|гравітаційна}} Mk III]"), "a mark in our name");
+        Eq("True", HasEnglish("Lay Mine [{{K|gravity}} mk III]"), "English with a mark");
 
         // an ability's description built again from its template: the template's lines pass, the code's English
         // lines under it go through the table (the real Abilities table has them: tools/qudtr/codescan.postfix_keys)
@@ -338,8 +341,15 @@ static class Tests
         Eq("Витривалість 21", Shown("Toughness 21"), "a statistic and its number");
         Eq(null, Shown("Wisdom 21"), "a statistic with no title stays");
         Eq(null, Shown("1d8+2"), "dice are no English");
+        // and in a description a save kept from before (Shield Slam's knockdown save, coloured as it changed)
+        string InText(string v) => (string)statValues.GetMethod("InText").Invoke(null, new object[] { v });
+        Eq("Кидок проти падіння: {{G|Витривалість 21}}", InText("Кидок проти падіння: {{G|Toughness 21}}"),
+           "a saved description's statistic");
+        Eq("Кидок проти падіння: Wisdom 21", InText("Кидок проти падіння: Wisdom 21"), "no title, as it was");
+        Eq("Knockdown save: Toughness 21", InText("Knockdown save: Toughness 21"), "an English description is the table's");
         statTitle.SetValue(null, gameStatTitle);
         Patched("XRL.World.Text.Delegates.XMLTemplateReplacers", "Value", "Prefix");
+        Patched("XRL.World.Parts.ActivatedAbilityEntry", "Read", "Postfix");
 
         // a miner robot named after its grenade: the kind of mine, and the robot with the adjectives in the masculine
         Patched("XRL.World.Parts.Miner", "SetupMinerConfiguration", "Postfix");
@@ -354,6 +364,17 @@ static class Tests
         Eq("{{B|ЕМІ}}-мінер", Robot("{{B|ЕМІ}}-граната Mk II", "мінер"), "a compound");
         Eq("газовий мінер {{normal|нормальності}}", Robot("газова граната {{normal|нормальності}} Mk I", "мінер"), "words after");
         Eq("мінер {{b|сповільнення часу}}", Robot("граната {{b|сповільнення часу}} Mk I", "мінер"), "no adjective");
+        // a robot from a save made before the patch is named on load, once (MinerNames.Fix; no robot object here)
+        Patched("XRL.World.GameObject", "FinalizeRead", "Postfix");
+        Type minerType = game.GetType("XRL.World.Parts.Miner", true);
+        object miner = Activator.CreateInstance(minerType);
+        minerType.GetField("MineName").SetValue(miner, "{{K|гравітаційна}} граната Mk III ");
+        minerType.GetField("Mark").SetValue(miner, 3);
+        MethodInfo fixMiner = mod.GetType("CavesOfQudUA.Patches.MinerNames", true).GetMethod("Fix");
+        fixMiner.Invoke(null, new[] { miner });
+        Eq("{{K|гравітаційна}} ", minerType.GetField("MineName").GetValue(miner), "a saved robot's mine");
+        fixMiner.Invoke(null, new[] { miner });
+        Eq("{{K|гравітаційна}} ", minerType.GetField("MineName").GetValue(miner), "named once");
         Eq("пружинно-турельний мінер", Robot("пружинно-турельна граната Mk I", "мінер"), "a hyphenated adjective");
         Eq(null, Mine("гранатомет Mk I"), "no «граната», no name");
         // a laid grenade: «граната» becomes a mine or a bomb (the real Words table has both)
