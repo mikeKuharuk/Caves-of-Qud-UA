@@ -265,3 +265,5 @@ Code.Text.po	b214c0a43fb7234e3949	keep	ключ склеєно з кусникі
 Code.Text.po	c39728f157b5a05fc879	keep	ключ склеєно з кусників коду: такого рядка гра не пише
 Code.Damage.po	ed4c9f4dcc4754acd114	keep	шматок хвоста шкоди (GasDamaging без DamageBlueprint): у грі всі гази мають шаблон шкоди, тож такого рядка вона не пише
 Code.Damage.po	7524d26673dbd4c9da53	keep	шматок хвоста шкоди (GasDamaging без DamageBlueprint): у грі всі гази мають шаблон шкоди, тож такого рядка вона не пише
+Code.Text.po	7cc97e188861de4f0163	keep	налагоджувальний текст: гравець його не бачить (wish soundlog)
+Code.Text.po	4928e8c52d6b4c044f4c	keep	налагоджувальний текст: гравець його не бачить (wish reclamation:timer)
