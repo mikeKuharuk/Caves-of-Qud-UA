@@ -166,6 +166,11 @@ def patterns(expr: str, nested: bool = False) -> list[str]:
     for term in split_top(expr, "+"):
         term = strip_parens(term)
         value = literal_value(term)
+        # an interpolated literal ($"You block with {arg}! (+{part.AV} AV)"): its text, a hole for each {…}
+        pieces = interpolation(term) if value is None else None
+        if pieces is not None:
+            found = found or any(kind == "text" and v for kind, v in pieces)
+            value = "".join(v if kind == "text" else HOLE for kind, v in pieces)
         inner = ternary(term) if nested and value is None else None
         options = [p for b in inner[1:] for p in patterns(b, nested) or [HOLE]] if inner else []
         does = does_forms(term) if _EXPAND and value is None else None
@@ -173,7 +178,7 @@ def patterns(expr: str, nested: bool = False) -> list[str]:
         if color and matching(term, term.index("(")) != len(term) - 1:
             color = None   # «Markup.Color(…).Trim()» and the like
         if value is not None:
-            found = True
+            found = found or pieces is None
             out = [(o + value, b) for o, b in out]
         elif color:
             # the colour's markup is text of the key, the name inside it a hole as before
@@ -1293,6 +1298,11 @@ WORD_SOURCES = (
     # what holds the player in place, the only one the game gives (no code or data sets another): «Ви знерухомлені!»
     ("XRL.World.Effects/Immobilized.cs", re.compile(r'public string Text = "(\w+)";'),
      "Immobilized: ваш стан, коли не можете рухатися («You are immobilized!»), тож прикметник для «ви»: множина"),
+    # what holds you in place since 2.0.212.32 (Immobilized went to the string tables): web, sticky liquid, ice, a grab
+    # arm; Grabber's own («схоплено») comes from the string tables
+    ("XRL.World.Effects/Stuck.cs", re.compile(r'public string Adjective = "(\w+)";'),
+     "Stuck: стан, коли вас тримає павутиння, клейка рідина, лід чи захват («You are stuck!», «X is stuck!»). Іде "
+     "в «Вас {0}!» і «=subject.N:acc= {0}!», тож безособова форма, як «схоплено» у Grabber"),
 )
 BREATH_NAME = re.compile(r'override string GetBreathName\(\)\s*\{\s*return "([^"]+)";')
 # labels a Unity scene or prefab carries, which no code or table holds; the mod sets them (PrefabLabels in

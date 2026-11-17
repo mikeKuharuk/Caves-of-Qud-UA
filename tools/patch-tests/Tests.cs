@@ -283,10 +283,12 @@ static class Tests
         // GameObject's own Does (no X before it), a name in a colour, a state word out of Words
         Eq("Ви відновлюєте 5 очок здоров’я.", Translate("Text", "Ви heal for 5 hit points."), "a Does with no X, counted");
         Eq("Ви перемикаєте {{c|Спринт}}: увімкнено.", Translate("Text", "You toggle {{c|Спринт}} on."), "a name in a colour");
-        // (2.0.212.32 moved the state words the code passed, «immobilized» among them, into the string tables, so the word
-        // is the test's own; the key «You are {0}!» is still the real one, Stuck's)
-        Add("Words", "immobilized", "знерухомлені");
-        Eq("Ви знерухомлені!", Translate("Text", "You are immobilized!"), "a state word");
+        // (Stuck's «You are {0}!»: its own «stuck» out of Words, and Grabber's word, which the string tables already gave)
+        Eq("Вас сковано!", Translate("Text", "You are stuck!"), "a state word");
+        Eq("Вас схоплено!", Translate("Text", "You are схоплено!"), "a state word the string tables gave");
+        // an interpolated string in the code ($"You block with {arg}! (+{part.AV} AV)", Combat)
+        Eq("Ви блокуєте удар: {{B|залізний баклер}}! (+2 ЗБ)", Translate("Text", "You block with {{B|залізний баклер}}! (+2 AV)"),
+           "an interpolated key");
         // the verb alone (X.GetVerb), after a name or after the code's own «You»
         Eq("Стріла не пробиває вашу броню!", Translate("Text", "Стріла fails to penetrate your armor!"), "a GetVerb key");
         Eq("Ви влучаєте в ціль (пащеклац) — у життєво важливе місце.",

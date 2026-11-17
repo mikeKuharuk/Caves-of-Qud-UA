@@ -72,6 +72,17 @@ class Patterns(unittest.TestCase):
         self.assertEqual(codescan.literal_value(r'"a\nb\"c"'), 'a\nb"c')
         self.assertEqual(codescan.literal_value('@"say ""hi"""'), 'say "hi"')
 
+    def test_an_interpolated_string(self):
+        # Combat's shield block: «You block with {arg}! (+{part.AV} AV)»; a format after «:» stays out of the key
+        self.assertEqual([codescan.number_holes(p) for p in
+                          codescan.patterns('$"You block with {arg}! (+{part.AV} AV)"')],
+                         ["You block with {0}! (+{1} AV)"])
+        self.assertEqual([codescan.number_holes(p) for p in codescan.patterns('$"{n:N0} drams" + " left"')],
+                         ["{0} drams left"])
+        # a doubled brace is one brace of text (C#), so the game's markup is written four times over; holes alone are no key
+        self.assertEqual(codescan.patterns('$"{{{{W|{name}}}}}!"'), ["{{W|" + codescan.HOLE + "}}!"])
+        self.assertEqual(codescan.patterns('$"{a}{b}"'), [])
+
 
 class Effects(unittest.TestCase):
     def test_names_and_detail_lines(self):
@@ -227,6 +238,8 @@ class WordsScan(unittest.TestCase):
             "XRL/CheckpointingSystem.cs": 'if (stringGameState != "Strolling" && stringGameState != "Acting")\n',
             "XRL/XRLGame.cs": 'GameMode = GetStringGameState("GameMode", "Plain"),\n'
                               'Seed = GetStringGameState("Seed", "NotAMode"),\n',
+            # what holds you in place, put into «You are {0}!» and «<subject> are {0}!»
+            "XRL.World.Effects/Stuck.cs": 'public string Adjective = "glued";\n',
         }
         with tempfile.TemporaryDirectory() as d:
             for rel, text in sources.items():
@@ -235,7 +248,7 @@ class WordsScan(unittest.TestCase):
             found = {e.key for e in codescan.scan_words(pathlib.Path(d))}
         # and the damage types ElementalDamage writes into a rules line, from the blueprints; and the labels of a
         # Unity prefab, which no code holds
-        self.assertEqual(found, {"Locations", "defensive", "fire", "Strolling", "Acting", "Plain",
+        self.assertEqual(found, {"Locations", "defensive", "fire", "Strolling", "Acting", "Plain", "glued",
                                  *codescan.DAMAGE_TYPES, *(w for w, _ in codescan.PREFAB_WORDS)})
 
 
