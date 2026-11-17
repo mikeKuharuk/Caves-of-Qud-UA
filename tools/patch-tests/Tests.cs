@@ -286,6 +286,25 @@ static class Tests
         // (Stuck's «You are {0}!»: its own «stuck» out of Words, and Grabber's word, which the string tables already gave)
         Eq("Вас сковано!", Translate("Text", "You are stuck!"), "a state word");
         Eq("Вас схоплено!", Translate("Text", "You are схоплено!"), "a state word the string tables gave");
+        // Stuck's own state (StuckStatePatch): the effect's name, its tag and «X are {0}!»; nothing holding you here
+        Patched("XRL.World.Effects.Stuck", "GetDetails", "Postfix");
+        Type stuckType = game.GetType("XRL.World.Effects.Stuck", true);
+        // its own GetStateDescription(GameObject From), not the parameterless one it inherits
+        MethodInfo stuckState = stuckType.GetMethod("GetStateDescription", new[] { game.GetType("XRL.World.GameObject", true) });
+        if ((HarmonyLib.Harmony.GetPatchInfo(stuckState)?.Postfixes.Count ?? 0) == 0)
+        {
+            failures++;
+            Console.WriteLine("FAIL no Postfix on XRL.World.Effects.Stuck.GetStateDescription(GameObject)");
+        }
+        object stuck = Activator.CreateInstance(stuckType);
+        string StuckState() => (string)stuckState.Invoke(stuck, new object[] { null });
+        Eq("у пастці", StuckState(), "Stuck with nothing holding you");
+        stuckType.GetField("Adjective").SetValue(stuck, "схоплено");
+        Eq("схоплено", StuckState(), "Grabber's state, the string tables' already");
+        SetActive(false);
+        stuckType.GetField("Adjective").SetValue(stuck, "stuck");
+        Eq("stuck", StuckState(), "Stuck in English when the game is not in Ukrainian");
+        SetActive(true);
         // an interpolated string in the code ($"You block with {arg}! (+{part.AV} AV)", Combat)
         Eq("Ви блокуєте удар: {{B|залізний баклер}}! (+2 ЗБ)", Translate("Text", "You block with {{B|залізний баклер}}! (+2 AV)"),
            "an interpolated key");
