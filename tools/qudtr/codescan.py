@@ -1541,7 +1541,8 @@ def code_keys(text: str) -> list[str]:
 
 # ---- the lines an ability's numbers add under its description: Templates.StatCollector ---------------------------
 
-COLLECTOR_FILE = "XRL/Templates.cs"
+# the class XRL.Templates.StatCollector: its own file since 2.0.212.32, nested in the static class XRL.Templates before
+COLLECTOR_FILES = ("XRL.Templates/StatCollector.cs", "XRL/Templates.cs")
 COLLECTOR_METHOD = re.compile(r"\bpublic\s+(?:int|void|\([^()]*\))\s+(\w+)\s*\(([^()]*)\)\s*\{")
 POSTFIX_STATEMENT = re.compile(r"\bpostfix\s*(?:\+=|=\s*postfix\s*\+)\s*")
 
@@ -1655,8 +1656,8 @@ def postfix_keys(tree: SourceTree) -> dict[str, str]:
     """The English lines Templates.StatCollector adds under an ability's description, a key each: «Cooldown reduced
     by {0} due to {1}.», «Damage increased by {0}-{1} due to high strength.». Each call outside the collector gives
     its own what and why; a method's own lines (the cooldown's) are keys as they stand."""
-    path = tree.src_dir / COLLECTOR_FILE
-    methods = collector_methods(tree.raw[path]) if path in tree.raw else {}
+    paths = [tree.src_dir / name for name in COLLECTOR_FILES if tree.src_dir / name in tree.raw]
+    methods = collector_methods(tree.raw[paths[0]]) if paths else {}
     if not methods:
         return {}
     keys: dict[str, str] = {}

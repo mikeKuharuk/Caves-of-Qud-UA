@@ -445,6 +445,22 @@ class StatPostfixScan(unittest.TestCase):
             "Recharge down by {0} from {1}.", "Recharge stops at {0} turns."})
         self.assertIn("Glare", found["Glare up by {0} from high ego."])
 
+    def test_the_collector_in_its_own_namespace(self):
+        # 2.0.212.32 moved StatCollector out of the static class XRL.Templates into the namespace XRL.Templates
+        old = self.SOURCES["XRL/Templates.cs"]
+        inner = old[old.index("\tpublic class StatCollector"):old.rindex("}")]
+        sources = {"XRL.Templates/StatCollector.cs": "namespace XRL.Templates;\n\n" + inner.replace("\n\t", "\n").lstrip("\t"),
+                   "Glare.cs": self.SOURCES["Glare.cs"].replace("Templates.StatCollector", "StatCollector")}
+        with tempfile.TemporaryDirectory() as d:
+            for rel, text in sources.items():
+                path = pathlib.Path(d) / rel
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text, encoding="utf-8")
+            found = codescan.postfix_keys(codescan.SourceTree(pathlib.Path(d)))
+        self.assertIn("Glare up by {0} from high ego.", found)
+        self.assertIn("Recharge down by {0} from {1}.", found)
+        self.assertEqual(len(found), 15)
+
 
 class FragmentsScan(unittest.TestCase):
     # made-up parts in the shapes the game's code takes
