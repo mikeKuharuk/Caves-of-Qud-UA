@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Liquids.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Liquids.example.xml"}
 {"k":"64a03aff861c0d0ae6b6","p":"db0586a5910c79ea","s":"6c58ab1eeba9","t":"теча","c":["назва ефекту кровотечі для істот, що втрачають цю рідину (Bleeding.DisplayName, як «кровотеча»); іменник у називному. Англійські склейки «begin …», «from …» гра поки дописує в коді"]}
 {"k":"3221f3b2ed5962593287","p":"37174f05ad045ade","s":"5f537b80f1f2","t":"теча","c":["лише в Nosebleed: «nose» + це слово («nosebleed»); іменник у називному, як «кровотеча»"]}
 {"k":"10648b3e273ccb77b47e","p":"d44dd6a6672d90ba","s":"4d07e7f374da","t":"{{G|кислота}}","c":["qud-gender: f"]}

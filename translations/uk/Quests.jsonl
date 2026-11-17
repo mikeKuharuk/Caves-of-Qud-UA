@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Quests.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Quests.example.xml"}
 {"k":"a28026a8b5483c6ec6a3","p":"8af9b8ec7c5c8492","s":"197f7eabbdf5","t":"Що гризе водолозу?"}
 {"k":"a26714a1a7aecbd21b87","p":"35531b328d33c8e0","s":"5ef39c529fb9","t":"Ви розгадали таємницю обгризеної водолози й попередили селян Джоппи про ґіршів."}
 {"k":"c00b66bf64fd7c28df77","p":"8efd20754b0b9ded","s":"76da11cee7ec","t":"У місяці =month= =year==name= проходить під хромовими арками, відганяє навалу ґіршлінгів і зцілює зів’ялі посіви.","c":["Hagiograph: XRLGame.FinishQuest спершу обробляє його без ForceThirdPerson (=player.g= дав би форму «ви»), тож без граматики гравця: історичний теперішній час («=name= …є»), що роду не має. «In the month of =month= of =year=» → «У місяці =month= =year=», як в інших муралах перекладу; без коми після дати на початку речення, як у літописах."]}

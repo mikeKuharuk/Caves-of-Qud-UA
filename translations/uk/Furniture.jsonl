@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Furniture.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Furniture.example.xml"}
 {"k":"5fdd4713c1c7ebcf0093","p":"967a0f8be3fc20b5","s":"9e20ea5fe36a","t":"панель зв’язку","c":["qud-gender: f"]}
 {"k":"e4d3eae174e5e3844dcb","p":"573d4dcd75c4f883","s":"c4a4963635e1","t":"Металеві ламелі розсіюють звук динаміка двостороннього зв’язку. З нижнього кута випинається маленька кнопка."}
 {"k":"5a1cbc98528aecb9e32c","p":"65afd806480ba0a7","s":"232cba90736c","t":"Інтерком","c":["NameForStatus лише показується: IActivePart.GetStatusDescription → StyledStatus.Format «[=name=: =value=]» (техсканування); код його не порівнює. Стиль CamelCase, як ActivePartStatus у Strings («ОсновнаСистемаНеактивна», «БезЖивлення»)"]}

@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Relics.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Relics.example.xml"}
 {"k":"4649ae44fba014cbc8ae","p":"ccbfcf283020b510","s":"025412d3df80","t":"сокира","c":["має збігатися з перекладом HistorySpice (elements.might.nouns, пакет Hist-lexicon: «сокира»); і HistorySpice items.weapons (Hist-world) — теж «сокира»"]}
 {"k":"c6c98e1c444ccd146533","p":"34cee8d2bbce60b6","s":"6415fae65a2b","t":"кинджал","c":["має збігатися з перекладом HistorySpice (professions.glassblower.items, пакет Hist-lexicon: «кинджал»); і items.weapons (Hist-world) — теж «кинджал»"]}
 {"k":"27d1394c81ad4240d287","p":"c97403a8c82f8834","s":"2d69120f4a37","t":"кортик","c":["у поточному HistorySpice такого типу предмета немає (застаріле ім’я); переклад довільний, лише щоб Type лишався той самий; dirk → кортик"]}

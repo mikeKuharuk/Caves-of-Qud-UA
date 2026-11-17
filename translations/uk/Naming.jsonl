@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Naming.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Naming.example.xml"}
 {"k":"3337afe37e50e736eb1a","p":"8f2634edb4c11a65","s":"3973e022e932","t":"-","c":["не текст: роздільник усередині імені (NameStyles.HandleNameStylesNode)"]}
 {"k":"d269459cbda47e12e6a4","p":"343dcd6ac8dcc58d","s":"36a9e7f1c95b","t":" ","c":["не текст: роздільник між двома іменами (TwoNameChance)"]}
 {"k":"5df7e7c1338bb856b32f","p":"955cbb70e05da614","s":"3097e26b7f3c","t":"фа"}

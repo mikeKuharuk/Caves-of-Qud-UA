@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Foods.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Foods.example.xml"}
 {"k":"faabaeef64fed37b43a2","p":"591ecd817a0fecb4","s":"af464142df66","t":"{{y|[{{C|=number=}} =number.plural:порція:порції:порцій=]}}","c":["CustomStackerDisplay (Stacker): =number= — ціле число, тож =number.plural:…= мода замість англійського =number.pluralize:serving=; serving → «порція»"]}
 {"k":"9507c0e539f5a0d50fb0","p":"566e29d20630a84a","s":"83e01dda3eb5","t":"порція","c":["лічильник «X of Y» (adjunct noun): український шаблон GameObject.GetDisplayName adjunct noun pre показує саму назву, тож слово лише для повноти, як у Items"]}
 {"k":"79ef3eba8e6f60a7d6bc","p":"e5cc1e0f778f9683","s":"e57bb3fabe5a","t":"М’ясо жилаве, зате ситне."}

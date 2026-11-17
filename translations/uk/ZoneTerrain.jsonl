@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "ZoneTerrain.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "ZoneTerrain.example.xml"}
 {"k":"2acaceacd4726588deb6","p":"27cde7b9f2556593","s":"c80bf876dd9e","t":"дошка","c":["uk-case: називний однини: =primaryPlant.semantic:Plank:plank|pluralize|capitalize= of … (Strings VillageBase getAVillageWall planks; англійське |pluralize шаблон має прибрати); склейки VillageCodaBase поки англійські"]}
 {"k":"f9c3ebd5ba7183794ed4","p":"7afddd95242b0955","s":"d60384034b77","t":"смуга","c":["uk-case: називний однини: «… and =secondaryPlant.semantic:Fiber:strip|pluralize= of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks); склейки VillageCodaBase поки англійські"]}
 {"k":"86ee07295b2c9f709fbe","p":"f84b51418b7e4d49","s":"14ea6507645c","t":"кора","c":["uk-case: називний однини: «strips of X =secondaryPlant.semantic:FiberMaterial:bark=» (Strings VillageBase getAVillageWall planks, VillageCodaBase — getSingularSemantic)"]}

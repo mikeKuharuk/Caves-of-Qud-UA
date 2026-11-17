@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Bodies.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Bodies.example.xml"}
 {"k":"d1eae064fbd2328d3f48","p":"bf9ec2ab4bc0833c","s":"230d8358dc8e","t":"тіло","c":["qud-gender: n"]}
 {"k":"7a7cba0c6838276d1a07","p":"2b05026da932b30e","s":"6ccaa6415b5e","t":"Тіло","c":["qud-gender: n"]}
 {"k":"6510ea74056773a23504","p":"2d821e208dad11cc","s":"9f2e6d33a371","t":"голова","c":["qud-gender: f"]}

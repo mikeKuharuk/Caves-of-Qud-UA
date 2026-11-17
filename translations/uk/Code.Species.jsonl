@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Code.Species.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Code.Species.example.xml"}
 {"k":"29e929d8c217fb7255a4","p":"f61c7b918004f91f","s":"8d3287c6fbb6","t":"алое","c":["qud-gender: n"]}
 {"k":"2952c94a0f62c8260bf3","p":"c1b52db171cc1e8e","s":"c25340a1397a","t":"амеба","c":["qud-gender: f","uk-voc: амебо"]}
 {"k":"ecfc24820303348baf8a","p":"6b56cb1f59fe7cf4","s":"67a333356cdc","t":"мураха","c":["qud-gender: f","uk-voc: мурахо"]}

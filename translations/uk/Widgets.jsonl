@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "Widgets.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "Widgets.example.xml"}
 {"k":"077367eb5ee7576b8833","p":"535fab012cb4c25c","s":"9d07204fbfa6","t":"хатина","c":["qud-gender: f"]}
 {"k":"90601809ed4aacd567a0","p":"3b5542ce48ae8aeb","s":"582967534d0f","t":"у","c":["прийменник перед назвою орієнтира (IZoneLandmark.Append): «Мехмет, у хатині Ірудада». Код склеює англійський присвійний («Irudad's») і артиклі, а назва стоїть у називному — потрібен патч","uk-case: name=loc"]}
 {"k":"6e1087f3826f26a63e85","p":"f57ee705cf5be468","s":"ee510d1a07ac","t":"майстерня","c":["qud-gender: f"]}

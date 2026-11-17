@@ -1,4 +1,4 @@
-{"build": "2.0.212.31", "format": "qud-ua-store/1", "lang": "uk", "source": "PronounSets.example.xml"}
+{"build": "2.0.212.32", "format": "qud-ua-store/1", "lang": "uk", "source": "PronounSets.example.xml"}
 {"k":"2b85d6a76a67d5e7c588","p":"9aef798ee472c18e","s":"bb0347a468d9","t":"ви","c":["займенник гравця: гравець завжди «ви» (D3); =subject.Name= для гравця бере його (TranslatorBase.GameObjectDisplayName)"]}
 {"k":"717107ce4f732de811f4","p":"04559be7f30398f7","s":"bb0347a468d9","t":"вас","c":["займенник гравця: гравець завжди «ви» (D3); =subject.Name= для гравця бере його (TranslatorBase.GameObjectDisplayName)"]}
 {"k":"54bdcf5f6acacfe44fe7","p":"c7c92cd9ce825d37","s":"4d040d3f6466","t":"ваш","c":["займенник гравця: гравець завжди «ви» (D3); =subject.Name= для гравця бере його (TranslatorBase.GameObjectDisplayName)"]}
