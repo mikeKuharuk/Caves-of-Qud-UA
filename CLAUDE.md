@@ -51,7 +51,7 @@
 | Моди, логи, опції | `%USERPROFILE%\AppData\LocalLow\Freehold Games\CavesOfQud\` (`Mods\`, `Player.log`, `build_log.txt`, `Local\PlayerOptions.json`) |
 | Переклад у git | `translations/uk/*.jsonl` |
 | Робочі PO (з англійським) | `work/po/uk/*.po` (локально) |
-| Декомпільований код | `work/decompiled/<версія>/Assembly-CSharp/` (є `2.0.211.56` і `2.0.212.31`) |
+| Декомпільований код | `work/decompiled/<версія>/Assembly-CSharp/` (є `2.0.211.56`, `2.0.212.31` і `2.0.212.32`) |
 | Таблиці рядків по збірках | `work/example-language/` (git-дзеркало gnarf, теги `212.x`) |
 | Збережені логи гри | `work/logs/` |
 
@@ -69,7 +69,7 @@ py tools/qud.py stats       # прогрес
 py tools/qud.py worksheet Skills.po --out work/batch/Skills.jsonl   # неперекладене → пакет JSONL
 py tools/qud.py check-worksheet work/batch/Skills.uk.jsonl          # перевірити пакет, не чіпаючи PO
 py tools/qud.py apply work/batch/Skills.uk.jsonl                    # заповнений пакет → PO
-py -m unittest discover -s tools/tests   # 163 тести, зокрема на реальних даних гри
+py -m unittest discover -s tools/tests   # 164 тести, зокрема на реальних даних гри
 ```
 
 - Пакети (`work/batch/`, не в git) — зручний спосіб перекладати великими порціями:
